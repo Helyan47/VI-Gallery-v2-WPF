@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProyectoWPF"
         mc:Ignorable="d"
-        Title="VI-Gallery" Width="1920" Height="1080" WindowState="Maximized" WindowStartupLocation="CenterScreen" Background="White" WindowStyle="None">
+        Title="VI-Gallery" Width="1920" Height="1080" WindowStartupLocation="CenterScreen" Background="White">
     <Grid>
         <DockPanel>
-            <Grid Height="28" VerticalAlignment="Top" Width="1912" HorizontalAlignment="Left" DockPanel.Dock="Top">
+            <Grid Height="28" DockPanel.Dock="Top" VerticalAlignment="Top">
                 <Grid.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FF2E2E2E"/>
@@ -33,14 +33,14 @@
                     <RowDefinition Height="0.25*"/>
                 </Grid.RowDefinitions>
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
-                    <StackPanel Grid.Row="1" CanVerticallyScroll="True" >
-                        <Button Content="Button" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White"/>
-                        <Button Content="Button" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White"/>
-                        <Button Content="Button" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White"/>
-                        <Button Content="Button" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White"/>
-                        <Button Content="Button" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White"/>
-                        <Button Content="Button" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White"/>
-                        <Button Content="Button" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White"/>
+                    <StackPanel x:Name="buttonStack" Grid.Row="1" CanVerticallyScroll="True" >
+                        <Button x:Name="Peliculas" Content="Películas" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
+                        <Button x:Name="Series" Content="Series" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
+                        <Button x:Name="Anime" Content="Anime" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
+                        <Button x:Name="Manga" Content="Manga" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
+                        <Button x:Name="Galeria" Content="Galería" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
+                        <Button Content="Button1" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
+                        <Button Content="Button2" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
                     </StackPanel>
                 </ScrollViewer>
                 <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434"/>
@@ -57,15 +57,15 @@
                 <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
                     <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
                     <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                    <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                    <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
+                    <Button Content="AddFolder" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
+                    <Button x:Name="addButton" Content="Add" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_MouseLeftButtonUp"/>
                 </StackPanel>
-                <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0"/>
+                <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
             </Grid>
-            <Canvas >
-                
+            <Grid x:Name="gridPrincipal">
 
-            </Canvas>
+
+            </Grid>
 
         </DockPanel>
 
