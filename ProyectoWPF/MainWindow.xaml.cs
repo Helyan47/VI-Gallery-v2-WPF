@@ -55,9 +55,9 @@ namespace ProyectoWPF {
 
         private void Button_MouseLeftButtonUp(object sender, RoutedEventArgs e) {
             Carpeta r = new Carpeta();
-            
             WrapPanelPrincipal wp = lista.getWrapVisible();
-
+            System.Windows.Media.Color c = ((SolidColorBrush)gridPrincipal.Background).Color;
+            wp.setColorGridPadre(c);
             if (wp != null) {
                 wp.addComponent(r);
             }

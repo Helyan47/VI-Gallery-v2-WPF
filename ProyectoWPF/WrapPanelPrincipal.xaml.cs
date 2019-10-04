@@ -20,21 +20,26 @@ namespace ProyectoWPF
     /// </summary>
     public partial class WrapPanelPrincipal : UserControl
     {
+        private System.Windows.Media.Color colorGridPadre;
         public WrapPanelPrincipal()
         {
             InitializeComponent();
         }
 
         public void addComponent(Carpeta c) {
-            
 
+            c.setColorGridPadre(colorGridPadre);
             c.Width = 250;
             c.Height = 400;
             c.Margin = new Thickness(10, 10, 10, 10);
             c.setDefaultSource();
-            c.changeColor(System.Drawing.Color.Red);
+            //c.changeColor(System.Drawing.Color.Red);
             wrapPanel.Children.Add(c);
             
+        }
+
+        public void setColorGridPadre(Color grid) {
+            this.colorGridPadre = grid;
         }
     }
 }

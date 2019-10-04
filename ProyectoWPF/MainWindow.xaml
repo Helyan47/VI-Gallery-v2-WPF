@@ -25,24 +25,26 @@
                 <Button Content="Button" Grid.Column="2" Background="#00DDDDDD" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
                 <Button Content="Button" Grid.Column="3" Background="#00DDDDDD" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
             </Grid>
-            <Grid Width="280" HorizontalAlignment="Left" Background="#FF232323">
+            <Grid Width="280" HorizontalAlignment="Left" Background="#FF171717">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.30*"/>
                     <RowDefinition Height="*"/>
+                    
                     <RowDefinition Height="0.05*"/>
                     <RowDefinition Height="0.25*"/>
                 </Grid.RowDefinitions>
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                     <StackPanel x:Name="buttonStack" Grid.Row="1" CanVerticallyScroll="True" >
-                        <Button x:Name="Peliculas" Content="Películas" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
-                        <Button x:Name="Series" Content="Series" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
-                        <Button x:Name="Anime" Content="Anime" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
-                        <Button x:Name="Manga" Content="Manga" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
-                        <Button x:Name="Galeria" Content="Galería" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
-                        <Button Content="Button1" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
-                        <Button Content="Button2" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
+                        <Button x:Name="Peliculas" Content="Películas" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0,2,0,0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button x:Name="Series" Content="Series" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0,2,0,0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button x:Name="Anime" Content="Anime" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0,2,0,0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button x:Name="Manga" Content="Manga" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0,2,0,0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button x:Name="Galeria" Content="Galería" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0,2,0,0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button Content="Button1" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0,2,0,0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button Content="Button2" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0,2,0,0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
                     </StackPanel>
                 </ScrollViewer>
+
                 <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
                 <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
                 <GridSplitter Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -11,11 +12,14 @@ namespace ProyectoWPF {
     /// </summary>
     public partial class Carpeta : UserControl {
 
-        public String defaultSource = ".\\icons\\folder-ico_png.png";
+        private System.Windows.Media.Color ColorgridPadre;
+        private DispatcherTimer dispatcherTimer;
         public Carpeta() {
             InitializeComponent();
 
         }
+
+
 
         public void setDefaultSource() {
             Bitmap bm = Properties.Resources.folder_ico_png1;
@@ -51,6 +55,36 @@ namespace ProyectoWPF {
             img.Width = 250;
             img.Height = 400;
             img.Stretch = System.Windows.Media.Stretch.Uniform;
+        }
+
+        private void img_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
+            descripcion.Visibility = Visibility.Visible;
+            SolidColorBrush sc = new SolidColorBrush(ColorgridPadre);
+            descripcion.Background = sc;
+            descripcion.Opacity = 0.04;
+            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+            dispatcherTimer.Start();
+
+            img.Visibility = Visibility.Hidden;
+        }
+
+        private void descripcion_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e) {
+            descripcion.Visibility = Visibility.Hidden;
+            img.Visibility = Visibility.Visible;
+        }
+
+        private void dispatcherTimer_Tick(object sender, EventArgs e) {
+            descripcion.Opacity+=0.04;
+            if (descripcion.Opacity >= 1) {
+                dispatcherTimer.Stop();
+            }
+        }
+
+
+        public void setColorGridPadre(System.Windows.Media.Color grid) {
+            this.ColorgridPadre = grid;
         }
     }
 }
