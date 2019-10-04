@@ -54,9 +54,7 @@ namespace ProyectoWPF {
         }
 
         private void Button_MouseLeftButtonUp(object sender, RoutedEventArgs e) {
-            Rectangle r = new Rectangle();
-            r.Fill = new SolidColorBrush(System.Windows.Media.Colors.Black);
-            r.Visibility = Visibility.Visible;
+            Carpeta r = new Carpeta();
             
             WrapPanelPrincipal wp = lista.getWrapVisible();
 

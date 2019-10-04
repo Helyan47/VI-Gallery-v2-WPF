@@ -43,9 +43,9 @@
                         <Button Content="Button2" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu"/>
                     </StackPanel>
                 </ScrollViewer>
-                <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434"/>
-                <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434"/>
-                <GridSplitter Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434"/>
+                <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
+                <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
+                <GridSplitter Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
             </Grid>
             <Grid DockPanel.Dock="Top" Height="30" Background="#FF232323">
                 <Grid.ColumnDefinitions>
@@ -62,7 +62,7 @@
                 </StackPanel>
                 <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
             </Grid>
-            <Grid x:Name="gridPrincipal">
+            <Grid x:Name="gridPrincipal" Background="#FF232323">
 
 
             </Grid>

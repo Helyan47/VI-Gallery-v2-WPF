@@ -25,15 +25,15 @@ namespace ProyectoWPF
             InitializeComponent();
         }
 
-        public void addComponent(object c) {
+        public void addComponent(Carpeta c) {
             
-            Rectangle r= (Rectangle) c;
 
-            r.Width = 200;
-            r.Height = 100;
-            r.Margin = new Thickness(10, 10, 10, 10);
-
-            wrapPanel.Children.Add(r);
+            c.Width = 250;
+            c.Height = 400;
+            c.Margin = new Thickness(10, 10, 10, 10);
+            c.setDefaultSource();
+            c.changeColor(System.Drawing.Color.Red);
+            wrapPanel.Children.Add(c);
             
         }
     }
