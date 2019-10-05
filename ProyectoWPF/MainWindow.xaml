@@ -54,7 +54,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="0.7*" />
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="Return" Content="Button" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Bottom" Width="75" Height="75" Click="Return_MouseLeftButtonUp"/>
+                    <Button x:Name="Return" Content="Button" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Bottom" Width="75" Height="75" Click="Return_MouseLeftButtonUp" Visibility="Hidden"/>
                     <Button x:Name="Properties" Content="Button" HorizontalAlignment="Left" Grid.Column="0" VerticalAlignment="Bottom" Width="75" Height="75"/>
                 </Grid>
                 
@@ -72,9 +72,9 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
-                        <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                        <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                        <Button Content="AddFolder" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
+                        <Button Content="Button" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
+                        <Button Content="Button" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" />
+                        <Button Content="AddFolder" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" MouseLeftButtonUp="Button_MouseLeftButtonUp_1" Click="Button_MouseLeftButtonUp_2"/>
                         <Button x:Name="addButton" Content="Add" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_AddCarpeta"/>
                     </StackPanel>
                     <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>

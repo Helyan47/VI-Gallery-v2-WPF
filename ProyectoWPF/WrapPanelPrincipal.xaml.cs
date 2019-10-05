@@ -33,11 +33,15 @@ namespace ProyectoWPF
             InitializeComponent();
         }
 
-        public void addComponent(Carpeta c) {
+        public void addCarpeta(Carpeta c) {
             c.Width = 250;
             c.Height = 400;
             c.Margin = new Thickness(10, 10, 10, 10);
-            c.setDefaultSource();
+            if (!c.getSerie().getDirImg().Equals("")) {
+                c.setImg();
+            } else {
+                c.setDefaultSource();
+            }
             //c.changeColor(System.Drawing.Color.Red);
             wrapPanel.Children.Add(c);
             
@@ -69,10 +73,15 @@ namespace ProyectoWPF
         }
 
         public void addSubCarpeta(SubCarpeta p) {
-            p.Width = 125;
-            p.Height = 200;
+            p.Width = 187.5;
+            p.Height = 300;
             p.chageFontSize(14);
             p.Margin = new Thickness(10, 10, 10, 10);
+            if (!p.getSerie().getDirImg().Equals("")) {
+                p.setImg();
+            } else {
+                p.setDefaultSource();
+            }
             wrapPanel.Children.Add(p);
         }
 
@@ -90,5 +99,6 @@ namespace ProyectoWPF
         public void setSubcarpetaPadre(SubCarpeta p) {
             subCarpetaPadre = p;
         }
+
     }
 }

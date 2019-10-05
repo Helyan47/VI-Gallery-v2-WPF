@@ -1,19 +1,12 @@
 ﻿using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace ProyectoWPF {
     /// <summary>
@@ -27,7 +20,7 @@ namespace ProyectoWPF {
         string[] folders;
         private int num1, num2, num3 = 0;
         private int num = 0;
-        private Carpeta aux = new Carpeta();
+        private Carpeta aux;
         private SubCarpeta aux2;
         List<string> rutas = new List<string>();
         //SaveData sv = new SaveData("SeriesFile.txt", "FilmsFile.txt", "AnimesFile.txt");
@@ -39,7 +32,7 @@ namespace ProyectoWPF {
             foreach (Button b in botones) {
                 botonesMenu.Add(b);
                 string name = b.Content.ToString();
-                
+                aux = new Carpeta(this);
                 WrapPanelPrincipal wp = new WrapPanelPrincipal();
                 wp.Name = name;
                 gridPrincipal.Children.Add(wp);
@@ -68,10 +61,10 @@ namespace ProyectoWPF {
         }
 
         private void Button_MouseLeftButtonUp(object sender, RoutedEventArgs e) {
-            Carpeta r = new Carpeta();
+            Carpeta r = new Carpeta(this);
             WrapPanelPrincipal wp = lista.getWrapVisible();
             if (wp != null) {
-                wp.addComponent(r);
+                wp.addCarpeta(r);
             }
         }
 
@@ -79,6 +72,55 @@ namespace ProyectoWPF {
             addSubCarpeta();
         }
 
+        private void Button_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e) {
+            string[] files = new string[0];
+            using (var folderDialog = new CommonOpenFileDialog()) {
+
+                folderDialog.IsFolderPicker = true;
+                if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
+                    folders = Directory.GetDirectories(folderDialog.FileName);
+
+                    for (int i = 0; i < folders.Length; i++) {
+                        rutas.Add(folders[i]);
+
+                        string[] aux = Directory.GetDirectories(folders[i]);
+                        for (int j = 0; j < aux.Length; j++) {
+                            rutas.Add(aux[j]);
+                        }
+                    }
+                    if (folders != null) {
+                        addText(folders);
+                    }
+
+
+                }
+            }
+        }
+        private void Button_MouseLeftButtonUp_2(object sender, RoutedEventArgs e) {
+            string[] files = new string[0];
+            using (var folderDialog = new CommonOpenFileDialog()) {
+
+                folderDialog.IsFolderPicker = true;
+                if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
+                    folders = Directory.GetDirectories(folderDialog.FileName);
+
+                    for (int i = 0; i < folders.Length; i++) {
+                        rutas.Add(folders[i]);
+
+                        string[] aux = Directory.GetDirectories(folders[i]);
+                        for (int j = 0; j < aux.Length; j++) {
+                            rutas.Add(aux[j]);
+                        }
+                    }
+                    if (folders != null) {
+                        addText(folders);
+                    }
+
+
+                }
+            }
+            
+        }
 
         private void addSubCarpeta() {
             SubCarpeta c = new SubCarpeta();
@@ -144,7 +186,6 @@ namespace ProyectoWPF {
             SubCarpeta c = new SubCarpeta();
             lista.addSubCarpeta(c);
             if (p1.getListaCarpetas() == null) {
-                MessageBox.Show("es null2");
             }
             p1.clickEspecial();
             //FlowCarpeta p = listaSeries.getFlowCarpVisible();
@@ -184,7 +225,7 @@ namespace ProyectoWPF {
             SubCarpeta c = new SubCarpeta();
             lista.addSubCarpeta(c);
             if (sp1.GetListaCarpetas() == null) {
-                MessageBox.Show("es null2");
+                System.Windows.MessageBox.Show("es null2");
             }
             sp1.click();
             //FlowCarpeta p = listaSeries.getFlowCarpVisible();
@@ -219,29 +260,7 @@ namespace ProyectoWPF {
             c.Visibility = Visibility.Visible;
             return c;
         }
-        private void AddFolder_Click(object sender, EventArgs e) {
-            string[] files = new string[0];
 
-
-            OpenFileDialog folderDialog = new OpenFileDialog();
-            if (folderDialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
-                folders = Directory.GetDirectories(folderDialog.FileName);
-
-                for (int i = 0; i < folders.Length; i++) {
-                    rutas.Add(folders[i]);
-
-                    string[] aux = Directory.GetDirectories(folders[i]);
-                    for (int j = 0; j < aux.Length; j++) {
-                        rutas.Add(aux[j]);
-                    }
-                }
-                if (folders != null) {
-                    addText(folders);
-                }
-
-
-            }
-        }
 
         private void addText(string[] files) {
 
@@ -288,7 +307,7 @@ namespace ProyectoWPF {
         }
 
         private void addCarpeta() {
-            Carpeta p1 = new Carpeta();
+            Carpeta p1 = new Carpeta(this);
             p1.setListaCarpetas(this.lista);
             lista.addCarpeta(p1);
             AddCarpeta newSerie = new AddCarpeta(p1);
@@ -315,7 +334,7 @@ namespace ProyectoWPF {
                 //    p1.setRuta("Pelicula/" + p1.getSerie().getTitle());
                 //}
                 p1.SetGridPadre(gridPrincipal);
-                aux.addComponent(p1);
+                aux.addCarpeta(p1);
                 p1.setPadreSerie(aux);
                 p1.SetGridsOpciones(GridPrincipal, GridSecundario);
 
@@ -326,7 +345,7 @@ namespace ProyectoWPF {
         }
 
         private Carpeta addCarpetaCompleta(string filename) {
-            Carpeta p1 = new Carpeta();
+            Carpeta p1 = new Carpeta(this);
             p1.setListaCarpetas(this.lista);
             p1.setRuta(filename);
             lista.addCarpeta(p1);
@@ -348,7 +367,7 @@ namespace ProyectoWPF {
             //}
 
             
-            aux.addComponent(p1);
+            aux.addCarpeta(p1);
             
             p1.SetGridsOpciones(GridPrincipal, GridSecundario);
             p1.setPadreSerie(aux);
@@ -391,6 +410,8 @@ namespace ProyectoWPF {
             //}
         }
 
+        
+
         public bool checkString(string s) {
             foreach (string h in rutas) {
                 if (s.Equals(h)) {
@@ -399,6 +420,14 @@ namespace ProyectoWPF {
                 }
             }
             return false;
+        }
+
+        public void ReturnVisibility(bool flag) {
+            if (flag) {
+                Return.Visibility = Visibility.Visible;
+            } else {
+                Return.Visibility = Visibility.Hidden;
+            }
         }
     }
 }

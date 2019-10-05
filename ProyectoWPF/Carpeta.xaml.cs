@@ -24,15 +24,25 @@ namespace ProyectoWPF {
         private Menu menuCarpeta;
         private Grid gridPadre;
         private string ruta;
+        private MainWindow ventanaMain;
 
-        public Carpeta() {
+        public Carpeta(MainWindow ventana) {
             InitializeComponent();
             numSubcarpetas = 0;
             Title.Content = "";
+            ventanaMain = ventana;
         }
 
 
+        public void setImg() {
+            Bitmap bm = new Bitmap(serie.getDirImg());
 
+            IntPtr hBitmap = bm.GetHbitmap();
+            System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+            Img.Source = WpfBitmap;
+            Img.Stretch = System.Windows.Media.Stretch.Uniform;
+        }
         public void setDefaultSource() {
             Bitmap bm = Properties.Resources.folder_ico_png1;
 
@@ -40,8 +50,6 @@ namespace ProyectoWPF {
             System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
             Img.Source = WpfBitmap;
-            Img.Width = 250;
-            Img.Height = 400;
             Img.Stretch = System.Windows.Media.Stretch.Uniform;
 
         }
@@ -208,6 +216,8 @@ namespace ProyectoWPF {
 
             gridSecundario.SetValue(Grid.RowProperty, 0);
             gridPrincipal.SetValue(Grid.RowProperty, 1);
+
+            ventanaMain.ReturnVisibility(true);
         }
 
         public void clickEspecial() {
@@ -220,7 +230,7 @@ namespace ProyectoWPF {
                 wrapCarpetaPropia.setSubcarpeta(null);
                 gridPadre.Children.Add(menuCarpeta);
                 menuCarpeta.SetFlowLayAnterior(wrapPanelAnterior);
-                menuCarpeta.getWrapSubCarpetas().Children.Add(gridPadre); //checkear padre
+                //menuCarpeta.Children.Add(menuCarpeta); //checkear padre
                 wrapCarpetaPropia.setGridSubCarpetas(menuCarpeta.getWrapSubCarpetas());
 
                 menuCarpeta.SetFlowCarpPrincipal(wrapCarpetaPropia);
@@ -237,6 +247,7 @@ namespace ProyectoWPF {
 
             gridSecundario.SetValue(Grid.RowProperty, 1);
             gridPrincipal.SetValue(Grid.RowProperty, 0);
+            ventanaMain.ReturnVisibility(false);
         }
 
         private void MouseClick(object sender, MouseButtonEventArgs e) {

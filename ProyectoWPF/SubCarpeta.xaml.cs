@@ -28,6 +28,27 @@ namespace ProyectoWPF {
             numSubCarpetas = 0;
         }
 
+        public void setDefaultSource() {
+            Bitmap bm = Properties.Resources.folder_ico_png1;
+
+            IntPtr hBitmap = bm.GetHbitmap();
+            System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+            Img.Source = WpfBitmap;
+            Img.Stretch = System.Windows.Media.Stretch.Uniform;
+
+        }
+
+        public void setImg() {
+            Bitmap bm = new Bitmap(serie.getDirImg());
+
+            IntPtr hBitmap = bm.GetHbitmap();
+            System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+            Img.Source = WpfBitmap;
+            Img.Stretch = System.Windows.Media.Stretch.Uniform;
+        }
+
         public void setRuta(string s) {
             ruta = s;
         }
