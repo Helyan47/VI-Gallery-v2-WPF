@@ -16,9 +16,24 @@ namespace ProyectoWPF {
     /// <summary>
     /// Lógica de interacción para newSubCarpeta.xaml
     /// </summary>
-    public partial class newSubCarpeta : Window {
-        public newSubCarpeta() {
+    public partial class NewSubCarpeta : Window {
+
+        private SubCarpeta p;
+        public NewSubCarpeta() {
             InitializeComponent();
+        }
+
+        private void BAceptar_Click(object sender, EventArgs e) {
+            p.setTitle(newName.Text);
+            this.Close();
+        }
+
+        public void setSubCarpeta(SubCarpeta s) {
+            p = s;
+        }
+
+        public SubCarpeta getSubCarpeta() {
+            return p;
         }
     }
 }

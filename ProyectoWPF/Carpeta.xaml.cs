@@ -13,7 +13,6 @@ namespace ProyectoWPF {
     /// </summary>
     public partial class Carpeta : UserControl {
 
-        private System.Windows.Media.Color ColorgridPadre;
         private DispatcherTimer dispatcherTimer;
         private SerieClass serie;
         private WrapPanelPrincipal wrapPanelAnterior;
@@ -71,7 +70,7 @@ namespace ProyectoWPF {
 
         private void img_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
             descripcion.Visibility = Visibility.Visible;
-            SolidColorBrush sc = new SolidColorBrush(ColorgridPadre);
+            SolidColorBrush sc = new SolidColorBrush(((SolidColorBrush)gridPadre.Background).Color);
             descripcion.Background = sc;
             descripcion.Opacity = 0.04;
             dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
@@ -94,20 +93,16 @@ namespace ProyectoWPF {
             }
         }
 
-        public void setColorGridPadre(System.Windows.Media.Color grid) {
-            this.ColorgridPadre = grid;
-        }
 
         public void setPadreSerie(WrapPanelPrincipal wrapPadre) {
 
             wrapPanelAnterior = wrapPadre;
         }
 
-        public void SetPanelPadre(Grid p) {
+        public void SetGridPadre(Grid p) {
             gridPadre = p;
-            p.Children.Add(wrapCarpetaPropia);
         }
-        public Grid getPanelPadre() {
+        public Grid GetGridPadre() {
             return gridPadre;
         }
 
@@ -193,13 +188,13 @@ namespace ProyectoWPF {
                 menuCarpeta = new Menu(this);
                 listas.addMenu(menuCarpeta);
                 wrapCarpetaPropia = new WrapPanelPrincipal();
-                listas.addWrapCarpeta(wrapCarpetaPropia);
+                listas.addSubWrap(wrapCarpetaPropia);
                 wrapCarpetaPropia.setCarpeta(this);
                 wrapCarpetaPropia.setSubcarpeta(null);
                 gridPadre.Children.Add(menuCarpeta);
                 menuCarpeta.SetFlowLayAnterior(wrapPanelAnterior);
-                menuCarpeta.getPanelCarpetas().Children.Add(gridPadre); //checkear padre
-                wrapCarpetaPropia.setPanelCarpetas(menuCarpeta.getPanelCarpetas());
+                //menuCarpeta.Children.Add(menuCarpeta); //checkear padre
+                wrapCarpetaPropia.setGridSubCarpetas(menuCarpeta.getWrapSubCarpetas());
 
                 menuCarpeta.SetFlowCarpPrincipal(wrapCarpetaPropia);
                 wrapCarpetaPropia.Visibility = Visibility.Hidden;
@@ -210,8 +205,9 @@ namespace ProyectoWPF {
             menuCarpeta.Visibility = Visibility.Visible;
             wrapCarpetaPropia.Visibility = Visibility.Visible;
 
-            gridPrincipal.Visibility = Visibility.Hidden;
-            gridSecundario.Visibility = Visibility.Visible;
+
+            gridSecundario.SetValue(Grid.RowProperty, 0);
+            gridPrincipal.SetValue(Grid.RowProperty, 1);
         }
 
         public void clickEspecial() {
@@ -219,13 +215,13 @@ namespace ProyectoWPF {
                 menuCarpeta = new Menu(this);
                 listas.addMenu(menuCarpeta);
                 wrapCarpetaPropia = new WrapPanelPrincipal();
-                listas.addWrapCarpeta(wrapCarpetaPropia);
+                listas.addSubWrap(wrapCarpetaPropia);
                 wrapCarpetaPropia.setCarpeta(this);
                 wrapCarpetaPropia.setSubcarpeta(null);
                 gridPadre.Children.Add(menuCarpeta);
                 menuCarpeta.SetFlowLayAnterior(wrapPanelAnterior);
-                menuCarpeta.getPanelCarpetas().Children.Add(gridPadre); //checkear padre
-                wrapCarpetaPropia.setPanelCarpetas(menuCarpeta.getPanelCarpetas());
+                menuCarpeta.getWrapSubCarpetas().Children.Add(gridPadre); //checkear padre
+                wrapCarpetaPropia.setGridSubCarpetas(menuCarpeta.getWrapSubCarpetas());
 
                 menuCarpeta.SetFlowCarpPrincipal(wrapCarpetaPropia);
                 wrapCarpetaPropia.Visibility = Visibility.Hidden;
@@ -239,28 +235,22 @@ namespace ProyectoWPF {
             wrapPanelAnterior.Visibility = Visibility.Visible;
             wrapCarpetaPropia.Visibility = Visibility.Hidden;
 
-            gridPrincipal.Visibility = Visibility.Visible;
-            gridSecundario.Visibility = Visibility.Hidden;
+            gridSecundario.SetValue(Grid.RowProperty, 1);
+            gridPrincipal.SetValue(Grid.RowProperty, 0);
         }
 
-        private void Serie_MouseClick(object sender, MouseEventArgs e) {
+        private void MouseClick(object sender, MouseButtonEventArgs e) {
 
             click();
         }
 
-        private void Img_Click(object sender, EventArgs e) {
-            click();
-        }
-
-        private void Title_Click(object sender, EventArgs e) {
-            click();
-        }
-
-        private void Borde_MouseClick(object sender, MouseEventArgs e) {
-            click();
-        }
         public void changeTitle(String titulo) {
             Title.Content = titulo;
         }
+
+        public string getTitle() {
+            return (string)Title.Content;
+        }
+
     }
 }

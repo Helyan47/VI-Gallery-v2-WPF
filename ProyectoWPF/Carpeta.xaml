@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="250">
     <Grid>
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="White">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="White" MouseLeftButtonUp="MouseClick">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.05*"/>
                 <ColumnDefinition Width="*"/>

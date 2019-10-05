@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProyectoWPF"
         mc:Ignorable="d"
-        Title="VI-Gallery" Width="1920" Height="1080" WindowStartupLocation="CenterScreen" Background="White">
+        Title="VI-Gallery" Width="1920" Height="1080" WindowStartupLocation="CenterScreen" Background="White" WindowState="Maximized">
     <Grid>
         <DockPanel>
             <Grid Height="28" DockPanel.Dock="Top" VerticalAlignment="Top">
@@ -48,6 +48,16 @@
                 <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
                 <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
                 <GridSplitter Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.7*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="0.7*" />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="Return" Content="Button" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Bottom" Width="75" Height="75" Click="Return_MouseLeftButtonUp"/>
+                    <Button x:Name="Properties" Content="Button" HorizontalAlignment="Left" Grid.Column="0" VerticalAlignment="Bottom" Width="75" Height="75"/>
+                </Grid>
+                
             </Grid>
             <Grid DockPanel.Dock="Top" Height="30" Background="#FF232323">
                 <Grid.RowDefinitions>
@@ -65,7 +75,7 @@
                         <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
                         <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
                         <Button Content="AddFolder" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                        <Button x:Name="addButton" Content="Add" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_MouseLeftButtonUp"/>
+                        <Button x:Name="addButton" Content="Add" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_AddCarpeta"/>
                     </StackPanel>
                     <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
                 </Grid>
@@ -80,15 +90,12 @@
                         <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
                         <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
                         <Button Content="addArchivo" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                        <Button x:Name="addSubCarp" Content="SubCarp" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_MouseLeftButtonUp"/>
+                        <Button x:Name="addSubCarp" Content="SubCarp" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="NewTemp_Click"/>
                     </StackPanel>
                     <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
                 </Grid>
             </Grid>
-            <Grid x:Name="gridPrincipal" Background="#FF232323">
-
-
-            </Grid>
+            <Grid x:Name="gridPrincipal" Background="#FF232323" />
 
         </DockPanel>
 

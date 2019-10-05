@@ -47,6 +47,19 @@ namespace ProyectoWPF {
             return false;
         }
 
+        public void addSubWrap(WrapPanelPrincipal wp) {
+            wrapsSecundarios.Add(wp);
+        }
+
+        public WrapPanelPrincipal getSubWrapsVisibles() {
+            foreach (WrapPanelPrincipal wp in wrapsSecundarios) {
+                if (wp.Visibility == System.Windows.Visibility.Visible) {
+                    return wp;
+                }
+            }
+            return null;
+        }
+
         public void showWrapFromButton(Button b) {
             int comp = 0;
             int cont = 0;
@@ -200,6 +213,9 @@ namespace ProyectoWPF {
         public void hideAll() {
             foreach (Menu m in menus) {
                 m.Visibility = System.Windows.Visibility.Hidden;
+            }
+            foreach (WrapPanelPrincipal wp in wrapsSecundarios) {
+                wp.Visibility = System.Windows.Visibility.Hidden;
             }
             ocultarWrapsPrincipales();
         }

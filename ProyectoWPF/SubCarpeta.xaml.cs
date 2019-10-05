@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -67,11 +69,11 @@ namespace ProyectoWPF {
             serie = newSerie;
         }
 
-        public Lista getListaSeries() {
+        public Lista GetListaCarpetas() {
             return listas;
         }
 
-        public void setListaSeries(Lista listaSeries) {
+        public void SetListaCarpetas(Lista listaSeries) {
             this.listas = listaSeries;
         }
 
@@ -88,7 +90,7 @@ namespace ProyectoWPF {
             return serie;
         }
 
-        public WrapPanelPrincipal getFlowCarpPrincipal() {
+        public WrapPanelPrincipal getWrapCarpPrincipal() {
             return wrapCarpPropia;
         }
 
@@ -121,7 +123,7 @@ namespace ProyectoWPF {
 
 
             this.listas = listas;
-            this.listas.addWrapCarpeta(wrapCarpPropia);
+            this.listas.addSubWrap(wrapCarpPropia);
             gridPadre = gridP;
             gridPadre.Children.Add(wrapCarpPropia);
             //flowCarpPropia.Dock = DockStyle.Fill;
@@ -149,29 +151,18 @@ namespace ProyectoWPF {
         public void clickInverso() {
             wrapCarpAnterior.Visibility = System.Windows.Visibility.Visible;
             wrapCarpPropia.Visibility = System.Windows.Visibility.Hidden;
+
+            if (wrapCarpAnterior.getSubCarpeta() != null) {
+                menuCarpeta.Title.Content = wrapCarpAnterior.getSubCarpeta().getTitle();
+            }else if(wrapCarpAnterior.getCarpeta() != null) {
+                menuCarpeta.Title.Content = wrapCarpAnterior.getCarpeta().getTitle();
+            }
         }
 
-        private void Img_Click(object sender, EventArgs e) {
-
+        private void OnClick(object sender,RoutedEventArgs e) {
             click();
         }
 
-
-        private void Borde_MouseClick(object sender, MouseEventArgs e) {
-            /*
-            fl.Parent = this.Parent.Parent;
-            fl.setFlowPadre(padreSerie);
-            this.Parent.Visible = false;
-            fl.Dock = DockStyle.Fill;
-            fl.Visible = true;
-            */
-            click();
-
-        }
-
-        private void Title_Click(object sender, EventArgs e) {
-            click();
-        }
 
         public void setTitle(String titulo) {
             nombre = titulo;
@@ -184,6 +175,10 @@ namespace ProyectoWPF {
 
         private void SubCarpeta_MouseClick(object sender, MouseEventArgs e) {
             click();
+        }
+
+        public void chageFontSize(int size) {
+            Title.FontSize = size;
         }
     }
 }

@@ -34,8 +34,6 @@ namespace ProyectoWPF
         }
 
         public void addComponent(Carpeta c) {
-
-            c.setColorGridPadre(colorGridPadre);
             c.Width = 250;
             c.Height = 400;
             c.Margin = new Thickness(10, 10, 10, 10);
@@ -49,13 +47,14 @@ namespace ProyectoWPF
             this.colorGridPadre = grid;
         }
 
-        public void setPanelCarpetas(Grid p) {
+        public void setGridSubCarpetas(Grid p) {
             gridCarpeta = p;
         }
 
-        public Panel GetPanelCarpeta() {
+        public Grid GetGridSubCarpetas() {
             return gridCarpeta;
         }
+
 
         //public void setBackColor(Color c) {
         //    flowLayoutPanel1.BackColor = c;
@@ -70,6 +69,10 @@ namespace ProyectoWPF
         }
 
         public void addSubCarpeta(SubCarpeta p) {
+            p.Width = 125;
+            p.Height = 200;
+            p.chageFontSize(14);
+            p.Margin = new Thickness(10, 10, 10, 10);
             wrapPanel.Children.Add(p);
         }
 

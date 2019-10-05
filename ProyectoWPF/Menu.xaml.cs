@@ -68,6 +68,8 @@ namespace ProyectoWPF {
 
         public void SetFlowCarpPrincipal(WrapPanelPrincipal wrapCarp) {
             this.wrapCarpPrincipal = wrapCarp;
+
+            WrapSubCarpetas.Children.Add(this.wrapCarpPrincipal);
         }
 
         public WrapPanelPrincipal getFlowCarpPrincipal() {
@@ -82,12 +84,12 @@ namespace ProyectoWPF {
             wrapAnterior = fl;
         }
 
-        public Grid getPanelCarpetas() {
+        public Grid getWrapSubCarpetas() {
             return WrapSubCarpetas;
         }
 
         public void changeTitle(String nombre) {
-            Title.Content += " " + nombre;
+            Title.Content = nombre;
         }
 
         private void BReturn_Click(object sender, EventArgs e) {

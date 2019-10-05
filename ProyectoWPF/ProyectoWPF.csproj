@@ -66,8 +66,8 @@
     <Compile Include="Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="newSubCarpeta.xaml.cs">
-      <DependentUpon>newSubCarpeta.xaml</DependentUpon>
+    <Compile Include="NewSubCarpeta.xaml.cs">
+      <DependentUpon>NewSubCarpeta.xaml</DependentUpon>
     </Compile>
     <Compile Include="SerieClass.cs" />
     <Compile Include="SubCarpeta.xaml.cs">
@@ -100,7 +100,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="newSubCarpeta.xaml">
+    <Page Include="NewSubCarpeta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
