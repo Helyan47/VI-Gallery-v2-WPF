@@ -20,7 +20,14 @@ namespace ProyectoWPF
     /// </summary>
     public partial class WrapPanelPrincipal : UserControl
     {
+
         private System.Windows.Media.Color colorGridPadre;
+        private Carpeta carpeta;
+        private SubCarpeta subcarpeta;
+        private SubCarpeta subCarpetaPadre;
+        public String nombre = "luis";
+        private Grid gridCarpeta;
+
         public WrapPanelPrincipal()
         {
             InitializeComponent();
@@ -40,6 +47,45 @@ namespace ProyectoWPF
 
         public void setColorGridPadre(Color grid) {
             this.colorGridPadre = grid;
+        }
+
+        public void setPanelCarpetas(Grid p) {
+            gridCarpeta = p;
+        }
+
+        public Panel GetPanelCarpeta() {
+            return gridCarpeta;
+        }
+
+        //public void setBackColor(Color c) {
+        //    flowLayoutPanel1.BackColor = c;
+        //}
+
+        public void setCarpeta(Carpeta p) {
+            carpeta = p;
+        }
+
+        public Carpeta getCarpeta() {
+            return carpeta;
+        }
+
+        public void addSubCarpeta(SubCarpeta p) {
+            wrapPanel.Children.Add(p);
+        }
+
+        public SubCarpeta getSubCarpeta() {
+            return subcarpeta;
+        }
+
+        public void setSubcarpeta(SubCarpeta p) {
+            subcarpeta = p;
+        }
+        public SubCarpeta getSubCarpetaPadre() {
+            return subCarpetaPadre;
+        }
+
+        public void setSubcarpetaPadre(SubCarpeta p) {
+            subCarpetaPadre = p;
         }
     }
 }

@@ -56,13 +56,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddCarpeta.xaml.cs">
+      <DependentUpon>AddCarpeta.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Carpeta.xaml.cs">
       <DependentUpon>Carpeta.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lista.cs" />
+    <Compile Include="Menu.xaml.cs">
+      <DependentUpon>Menu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="newSubCarpeta.xaml.cs">
+      <DependentUpon>newSubCarpeta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SerieClass.cs" />
+    <Compile Include="SubCarpeta.xaml.cs">
+      <DependentUpon>SubCarpeta.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WrapPanelPrincipal.xaml.cs">
       <DependentUpon>WrapPanelPrincipal.xaml</DependentUpon>
     </Compile>
+    <Page Include="AddCarpeta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Carpeta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -79,6 +96,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="newSubCarpeta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SubCarpeta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WrapPanelPrincipal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

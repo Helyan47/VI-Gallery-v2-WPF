@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -14,9 +15,21 @@ namespace ProyectoWPF {
 
         private System.Windows.Media.Color ColorgridPadre;
         private DispatcherTimer dispatcherTimer;
+        private SerieClass serie;
+        private WrapPanelPrincipal wrapPanelAnterior;
+        private Grid gridPrincipal;
+        private Grid gridSecundario;
+        private Lista listas;
+        private int numSubcarpetas;
+        private WrapPanelPrincipal wrapCarpetaPropia;
+        private Menu menuCarpeta;
+        private Grid gridPadre;
+        private string ruta;
+
         public Carpeta() {
             InitializeComponent();
-
+            numSubcarpetas = 0;
+            Title.Content = "";
         }
 
 
@@ -27,12 +40,11 @@ namespace ProyectoWPF {
             IntPtr hBitmap = bm.GetHbitmap();
             System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-            img.Source = WpfBitmap;
-            img.Width = 250;
-            img.Height = 400;
-            img.Stretch = System.Windows.Media.Stretch.Uniform;
+            Img.Source = WpfBitmap;
+            Img.Width = 250;
+            Img.Height = 400;
+            Img.Stretch = System.Windows.Media.Stretch.Uniform;
 
-            
         }
 
         public void changeColor(System.Drawing.Color c) {
@@ -51,10 +63,10 @@ namespace ProyectoWPF {
             IntPtr hBitmap = bm.GetHbitmap();
             System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-            img.Source = WpfBitmap;
-            img.Width = 250;
-            img.Height = 400;
-            img.Stretch = System.Windows.Media.Stretch.Uniform;
+            Img.Source = WpfBitmap;
+            Img.Width = 250;
+            Img.Height = 400;
+            Img.Stretch = System.Windows.Media.Stretch.Uniform;
         }
 
         private void img_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
@@ -67,12 +79,12 @@ namespace ProyectoWPF {
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
             dispatcherTimer.Start();
 
-            img.Visibility = Visibility.Hidden;
+            Img.Visibility = Visibility.Hidden;
         }
 
         private void descripcion_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e) {
             descripcion.Visibility = Visibility.Hidden;
-            img.Visibility = Visibility.Visible;
+            Img.Visibility = Visibility.Visible;
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e) {
@@ -82,9 +94,173 @@ namespace ProyectoWPF {
             }
         }
 
-
         public void setColorGridPadre(System.Windows.Media.Color grid) {
             this.ColorgridPadre = grid;
+        }
+
+        public void setPadreSerie(WrapPanelPrincipal wrapPadre) {
+
+            wrapPanelAnterior = wrapPadre;
+        }
+
+        public void SetPanelPadre(Grid p) {
+            gridPadre = p;
+            p.Children.Add(wrapCarpetaPropia);
+        }
+        public Grid getPanelPadre() {
+            return gridPadre;
+        }
+
+        public void setRuta(string s) {
+            ruta = s;
+        }
+
+        public string getRuta() {
+            return ruta;
+        }
+
+        public void setTitle(string title) {
+            Title.Content = title;
+        }
+
+        public void AddSubCarpetas() {
+            numSubcarpetas++;
+        }
+
+        public int getNumSubCarp() {
+            return numSubcarpetas;
+        }
+
+        public void setSerie(SerieClass newSerie) {
+
+            serie = newSerie;
+        }
+
+        public Lista getListaCarpetas() {
+            return listas;
+        }
+
+        public void setListaCarpetas(Lista listaSeries) {
+            this.listas = listaSeries;
+        }
+
+        public WrapPanelPrincipal GetWrapCarpPrincipal() {
+            return wrapCarpetaPropia;
+        }
+
+        public Grid getGridButtonsPrincipal() {
+            return gridPrincipal;
+        }
+
+        public Grid getGridButtonsSecundario() {
+            return gridSecundario;
+        }
+
+        public void SetGridsOpciones(Grid principal, Grid secundario) {
+            gridPrincipal = principal;
+            gridSecundario = secundario;
+        }
+
+        public SerieClass getSerie() {
+
+            return serie;
+        }
+
+        public void actualizar() {
+            if (serie.getTitle().Equals("")) {
+
+            } else {
+                Title.Content = serie.getTitle();
+                if (serie.getDirImg() != "") {
+                    Bitmap bm = new Bitmap(serie.getDirImg());
+
+                    IntPtr hBitmap = bm.GetHbitmap();
+                    System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                    Img.Source = WpfBitmap;
+                }
+
+            }
+
+        }
+
+        public Menu GetMenuCarpeta() {
+            return menuCarpeta;
+        }
+
+        public void click() {
+            if (menuCarpeta == null) {
+                menuCarpeta = new Menu(this);
+                listas.addMenu(menuCarpeta);
+                wrapCarpetaPropia = new WrapPanelPrincipal();
+                listas.addWrapCarpeta(wrapCarpetaPropia);
+                wrapCarpetaPropia.setCarpeta(this);
+                wrapCarpetaPropia.setSubcarpeta(null);
+                gridPadre.Children.Add(menuCarpeta);
+                menuCarpeta.SetFlowLayAnterior(wrapPanelAnterior);
+                menuCarpeta.getPanelCarpetas().Children.Add(gridPadre); //checkear padre
+                wrapCarpetaPropia.setPanelCarpetas(menuCarpeta.getPanelCarpetas());
+
+                menuCarpeta.SetFlowCarpPrincipal(wrapCarpetaPropia);
+                wrapCarpetaPropia.Visibility = Visibility.Hidden;
+                menuCarpeta.Visibility = Visibility.Hidden;
+            }
+            menuCarpeta.actualizar();
+            wrapPanelAnterior.Visibility = Visibility.Hidden;
+            menuCarpeta.Visibility = Visibility.Visible;
+            wrapCarpetaPropia.Visibility = Visibility.Visible;
+
+            gridPrincipal.Visibility = Visibility.Hidden;
+            gridSecundario.Visibility = Visibility.Visible;
+        }
+
+        public void clickEspecial() {
+            if (menuCarpeta == null) {
+                menuCarpeta = new Menu(this);
+                listas.addMenu(menuCarpeta);
+                wrapCarpetaPropia = new WrapPanelPrincipal();
+                listas.addWrapCarpeta(wrapCarpetaPropia);
+                wrapCarpetaPropia.setCarpeta(this);
+                wrapCarpetaPropia.setSubcarpeta(null);
+                gridPadre.Children.Add(menuCarpeta);
+                menuCarpeta.SetFlowLayAnterior(wrapPanelAnterior);
+                menuCarpeta.getPanelCarpetas().Children.Add(gridPadre); //checkear padre
+                wrapCarpetaPropia.setPanelCarpetas(menuCarpeta.getPanelCarpetas());
+
+                menuCarpeta.SetFlowCarpPrincipal(wrapCarpetaPropia);
+                wrapCarpetaPropia.Visibility = Visibility.Hidden;
+                menuCarpeta.Visibility = Visibility.Hidden;
+            }
+            menuCarpeta.actualizar();
+        }
+
+        public void clickInverso() {
+            menuCarpeta.Visibility = Visibility.Hidden;
+            wrapPanelAnterior.Visibility = Visibility.Visible;
+            wrapCarpetaPropia.Visibility = Visibility.Hidden;
+
+            gridPrincipal.Visibility = Visibility.Visible;
+            gridSecundario.Visibility = Visibility.Hidden;
+        }
+
+        private void Serie_MouseClick(object sender, MouseEventArgs e) {
+
+            click();
+        }
+
+        private void Img_Click(object sender, EventArgs e) {
+            click();
+        }
+
+        private void Title_Click(object sender, EventArgs e) {
+            click();
+        }
+
+        private void Borde_MouseClick(object sender, MouseEventArgs e) {
+            click();
+        }
+        public void changeTitle(String titulo) {
+            Title.Content = titulo;
         }
     }
 }

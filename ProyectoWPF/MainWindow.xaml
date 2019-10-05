@@ -50,19 +50,40 @@
                 <GridSplitter Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
             </Grid>
             <Grid DockPanel.Dock="Top" Height="30" Background="#FF232323">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.8*"/>
-                    <ColumnDefinition Width="0.075*"/>
-                    <ColumnDefinition Width="0.25*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
-                    <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                    <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                    <Button Content="AddFolder" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                    <Button x:Name="addButton" Content="Add" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_MouseLeftButtonUp"/>
-                </StackPanel>
-                <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0*"/>
+                </Grid.RowDefinitions>
+                <Grid x:Name="GridPrincipal" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.8*"/>
+                        <ColumnDefinition Width="0.075*"/>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
+                        <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
+                        <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
+                        <Button Content="AddFolder" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
+                        <Button x:Name="addButton" Content="Add" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_MouseLeftButtonUp"/>
+                    </StackPanel>
+                    <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
+                </Grid>
+                <Grid x:Name="GridSecundario" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.8*"/>
+                        <ColumnDefinition Width="0.075*"/>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
+                        <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
+                        <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
+                        <Button Content="addArchivo" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
+                        <Button x:Name="addSubCarp" Content="SubCarp" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_MouseLeftButtonUp"/>
+                    </StackPanel>
+                    <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
+                </Grid>
             </Grid>
             <Grid x:Name="gridPrincipal" Background="#FF232323">
 

@@ -6,18 +6,35 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace ProyectoWPF {
-    class Lista {
+    public class Lista {
+
+        private ICollection<WrapPanelPrincipal> wrapsSecundarios;
         private ICollection<WrapPanelPrincipal> wrapsPrincipales;
+        private ICollection<Menu> menus;
         private ICollection<Button> buttons;
+        private ICollection<Carpeta> carpetas;
+        private ICollection<SerieClass> seriesClase;
+        private ICollection<SubCarpeta> subCarpetas;
+
 
         public Lista(ICollection<WrapPanelPrincipal> wraps, ICollection<Button> buttons) {
             this.wrapsPrincipales = wraps;
             this.buttons = buttons;
+            this.menus = new List<Menu>();
+            this.seriesClase = new List<SerieClass>();
+            this.carpetas = new List<Carpeta>();
+            this.subCarpetas = new List<SubCarpeta>();
+            this.wrapsSecundarios = new List<WrapPanelPrincipal>();
         }
 
         public Lista() {
             this.wrapsPrincipales = new List<WrapPanelPrincipal>();
             this.buttons = new List<Button>();
+            this.menus = new List<Menu>();
+            this.seriesClase = new List<SerieClass>();
+            this.carpetas = new List<Carpeta>();
+            this.subCarpetas = new List<SubCarpeta>();
+            this.wrapsSecundarios = new List<WrapPanelPrincipal>();
         }
 
 
@@ -63,6 +80,128 @@ namespace ProyectoWPF {
                 }
             }
             return null;
+        }
+        public void addSeriesClase(SerieClass serie) {
+            this.seriesClase.Add(serie);
+            serie.setIdSerie(this.seriesClase.Count);
+        }
+
+        public void removeSeriesClase(SerieClass serie) {
+            this.seriesClase.Remove(serie);
+        }
+
+        public void addMenu(Menu m) {
+            this.menus.Add(m);
+        }
+
+        public void removeMenu(Menu m) {
+
+            this.menus.Remove(m);
+        }
+
+        public void addCarpeta(Carpeta m) {
+            carpetas.Add(m);
+        }
+
+        public void removeCarpeta(Carpeta m) {
+            carpetas.Remove(m);
+        }
+
+        public void addWrapCarpeta(WrapPanelPrincipal p) {
+            wrapsPrincipales.Add(p);
+        }
+
+        public void removeWrapCarpeta(WrapPanelPrincipal p) {
+            wrapsPrincipales.Remove(p);
+        }
+
+        public void addSubCarpeta(SubCarpeta m) {
+            subCarpetas.Add(m);
+        }
+
+        public void removeSubCarpeta(SubCarpeta m) {
+            subCarpetas.Remove(m);
+        }
+
+        public Menu getMenuVisible() {
+            foreach (Menu m in menus) {
+                if (m.Visibility == System.Windows.Visibility.Visible) {
+                    return m;
+                }
+            }
+
+            return null;
+        }
+
+        public Carpeta getCarpetaVisible() {
+            foreach (Carpeta c in carpetas) {
+                if (c.Visibility == System.Windows.Visibility.Visible) {
+                    return c;
+                }
+            }
+            return null;
+        }
+
+        public WrapPanelPrincipal getWrapCarptVisible() {
+            foreach (WrapPanelPrincipal c in wrapsPrincipales) {
+                if (c.Visibility == System.Windows.Visibility.Visible) {
+                    return c;
+                }
+            }
+            return null;
+        }
+
+        public SubCarpeta getSubCarpetaVisible() {
+            foreach (SubCarpeta c in subCarpetas) {
+                if (c.Visibility == System.Windows.Visibility.Visible) {
+                    return c;
+                }
+            }
+            return null;
+        }
+
+
+        public Menu searchMenu(Carpeta p) {
+            foreach (Menu m in menus) {
+                if (m.getCarpeta() == p) {
+                    return m;
+                }
+            }
+
+            return null;
+        }
+
+        public void ocultarWrapsPrincipales() {
+            foreach (WrapPanelPrincipal f in wrapsPrincipales) {
+                f.Visibility = System.Windows.Visibility.Hidden;
+            }
+        }
+
+        public void mostrar(SubCarpeta s, Carpeta c) {
+            foreach (WrapPanelPrincipal f in wrapsPrincipales) {
+                if ((f.getCarpeta() == c) && (f.getSubCarpetaPadre() == s)) {
+                    f.Visibility = System.Windows.Visibility.Visible;
+                } else {
+                    f.Visibility = System.Windows.Visibility.Hidden;
+                }
+            }
+        }
+
+
+        public SubCarpeta searchRuta(string s) {
+            foreach (SubCarpeta p in subCarpetas) {
+                if (p.getRuta().Equals(s)) {
+                    return p;
+                }
+            }
+            return null;
+        }
+
+        public void hideAll() {
+            foreach (Menu m in menus) {
+                m.Visibility = System.Windows.Visibility.Hidden;
+            }
+            ocultarWrapsPrincipales();
         }
     }
 }
