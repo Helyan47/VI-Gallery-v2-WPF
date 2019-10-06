@@ -78,6 +78,7 @@
     <Compile Include="NewSubCarpeta.xaml.cs">
       <DependentUpon>NewSubCarpeta.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SaveData.cs" />
     <Compile Include="SerieClass.cs" />
     <Compile Include="SubCarpeta.xaml.cs">
       <DependentUpon>SubCarpeta.xaml</DependentUpon>

@@ -27,6 +27,7 @@ namespace ProyectoWPF
         private SubCarpeta subCarpetaPadre;
         public String nombre = "luis";
         private Grid gridCarpeta;
+        private Button ButtonPrincipal;
 
         public WrapPanelPrincipal()
         {

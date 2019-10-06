@@ -23,12 +23,14 @@ namespace ProyectoWPF {
         private Carpeta aux;
         private SubCarpeta aux2;
         List<string> rutas = new List<string>();
-        //SaveData sv = new SaveData("SeriesFile.txt", "FilmsFile.txt", "AnimesFile.txt");
+        SaveData sv = new SaveData("ArchivoData.txt");
+        private Button activatedButton;
         public MainWindow() {
             InitializeComponent();
             UIElementCollection botones = buttonStack.Children;
             wrapsPrincipales = new List<WrapPanelPrincipal>();
             botonesMenu = new List<Button>();
+            int cont = 0;
             foreach (Button b in botones) {
                 botonesMenu.Add(b);
                 string name = b.Content.ToString();
@@ -36,11 +38,14 @@ namespace ProyectoWPF {
                 WrapPanelPrincipal wp = new WrapPanelPrincipal();
                 wp.Name = name;
                 gridPrincipal.Children.Add(wp);
-                if (name.Equals("Anime")) {
+                if (cont == 0) {
                     wp.Visibility = Visibility.Visible;
+                    cont++;
+                    activatedButton = b;
                 } else {
                     wp.Visibility = Visibility.Hidden;
                 }
+                
                 wrapsPrincipales.Add(wp);
             }
             lista = new Lista(wrapsPrincipales, botonesMenu);
@@ -58,6 +63,7 @@ namespace ProyectoWPF {
                 lista.showWrapFromButton(b);
 
             }
+            activatedButton = b;
         }
 
         private void Button_MouseLeftButtonUp(object sender, RoutedEventArgs e) {
@@ -143,14 +149,11 @@ namespace ProyectoWPF {
                         c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
                         c.setRuta(p.getSubCarpeta().getRuta() + "/" + c.getTitle());
 
-                        //SerieClass sComp = p.getSubCarpeta().getSerie();
-                        //if (sComp.getTipo().Equals("Anime")) {
-                        //    sv.saveAnime(c.getRuta());
-                        //} else if (sComp.getTipo().Equals("Serie")) {
-                        //    sv.saveSerie(c.getRuta());
-                        //} else if (sComp.getTipo().Equals("Pelicula")) {
-                        //    sv.saveFilm(c.getRuta());
-                        //}
+                        string name = activatedButton.Name;
+                        c.getSerie().setTipo(name);
+                        c.setRuta(p.getSubCarpeta().getRuta() + "/" + c.getTitle());
+                        sv.saveData(c.getRuta(), name);
+
                     } else {
 
                         c.setDatos(p.getCarpeta().getSerie(), p,
@@ -161,14 +164,11 @@ namespace ProyectoWPF {
                         c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
                         c.setRuta(p.getCarpeta().getRuta() + "/" + c.getTitle());
 
-                        //SerieClass sComp = p.getCarpeta().getSerie();
-                        //if (sComp.getTipo().Equals("Anime")) {
-                        //    sv.saveAnime(c.getRuta());
-                        //} else if (sComp.getTipo().Equals("Serie")) {
-                        //    sv.saveSerie(c.getRuta());
-                        //} else if (sComp.getTipo().Equals("Pelicula")) {
-                        //    sv.saveFilm(c.getRuta());
-                        //}
+                        string name = activatedButton.Name;
+                        c.getSerie().setTipo(name);
+                        c.setRuta(p.getCarpeta().getRuta() + "/" + c.getTitle());
+                        sv.saveData(c.getRuta(), name);
+
                     }
 
                 }
@@ -200,6 +200,12 @@ namespace ProyectoWPF {
                     c.setIdHijo(p.getSubCarpeta().getNumSubCarp());
                     c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
                     c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
+
+                    string name = activatedButton.Name;
+                    c.getSerie().setTipo(name);
+                    c.setRuta(p.getSubCarpeta().getRuta() + "/" + c.getTitle());
+                    sv.saveData(c.getRuta(), name);
+
                 } else {
 
                     c.setDatos(p.getCarpeta().getSerie(), p,
@@ -209,6 +215,12 @@ namespace ProyectoWPF {
                     c.setIdHijo(p.getCarpeta().getNumSubCarp());
                     c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
                     c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
+
+                    string name = activatedButton.Name;
+                    c.getSerie().setTipo(name);
+                    c.setRuta(p.getCarpeta().getRuta() + "/" + c.getTitle());
+                    sv.saveData(c.getRuta(), name);
+
                 }
 
             }
@@ -240,6 +252,12 @@ namespace ProyectoWPF {
                     c.setIdHijo(p.getSubCarpeta().getNumSubCarp());
                     c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
                     c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
+
+                    string name = activatedButton.Name;
+                    c.getSerie().setTipo(name);
+                    c.setRuta(p.getSubCarpeta().getRuta() + "/" + c.getTitle());
+                    sv.saveData(c.getRuta(), name);
+
                 } else {
 
                     c.setDatos(p.getCarpeta().getSerie(), p,
@@ -249,6 +267,12 @@ namespace ProyectoWPF {
                     c.setIdHijo(p.getCarpeta().getNumSubCarp());
                     c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
                     c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
+
+                    string name = activatedButton.Name;
+                    c.getSerie().setTipo(name);
+                    c.setRuta(p.getCarpeta().getRuta()+"/"+ c.getTitle());
+                    sv.saveData(c.getRuta(), name);
+
                 }
 
             }
@@ -320,19 +344,12 @@ namespace ProyectoWPF {
 
 
                 p1.actualizar();
-                //panelAux = p1;
-                //if (fl[i] == flowAnime) {
-                //    p1.getSerie().setTipo("Anime");
-                //    p1.setRuta("Anime/" + p1.getSerie().getTitle());
-                //    sv.saveAnime(p1.getRuta());
 
-                //} else if (fl[i] == flowSeries) {
-                //    p1.getSerie().setTipo("Serie");
-                //    p1.setRuta("Serie/" + p1.getSerie().getTitle());
-                //} else if (fl[i] == flowPelis) {
-                //    p1.getSerie().setTipo("Pelicula");
-                //    p1.setRuta("Pelicula/" + p1.getSerie().getTitle());
-                //}
+                string name = activatedButton.Name;
+                p1.getSerie().setTipo(name);
+                p1.setRuta("C/"+name+"/" + p1.getSerie().getTitle());
+                sv.saveData(p1.getRuta(),name);
+
                 p1.SetGridPadre(gridPrincipal);
                 aux.addCarpeta(p1);
                 p1.setPadreSerie(aux);
@@ -359,14 +376,13 @@ namespace ProyectoWPF {
             p1.setSerie(s);
             p1.actualizar();
 
-            //panelAux = p1;
-            //if (fl[i] == flowAnime) {
-            //    p1.getSerie().setTipo("Anime");
-            //} else if (fl[i] == flowSeries) {
-            //    p1.getSerie().setTipo("Serie");
-            //}
+            string name = activatedButton.Name;
+            p1.getSerie().setTipo(name);
+            p1.setRuta("C/"+name + "/" + p1.getSerie().getTitle());
+            sv.saveData(p1.getRuta(), name);
 
-            
+
+
             aux.addCarpeta(p1);
             
             p1.SetGridsOpciones(GridPrincipal, GridSecundario);

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProyectoWPF"
         mc:Ignorable="d"
-        Title="AddCarpeta" Height="735.925" Width="800">
+        Title="AddCarpeta" Height="735.925" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid x:Name="gridPrincipal" Background="#FF292929">
             <Grid.ColumnDefinitions>
