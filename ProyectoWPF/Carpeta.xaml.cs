@@ -25,12 +25,14 @@ namespace ProyectoWPF {
         private Grid gridPadre;
         private string ruta;
         private MainWindow ventanaMain;
+        private Canvas defaultCanvas;
 
         public Carpeta(MainWindow ventana) {
             InitializeComponent();
             numSubcarpetas = 0;
             Title.Content = "";
             ventanaMain = ventana;
+            defaultCanvas = canvasFolder;
         }
 
 
@@ -40,40 +42,28 @@ namespace ProyectoWPF {
             IntPtr hBitmap = bm.GetHbitmap();
             System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-            Img.Source = WpfBitmap;
-            Img.Stretch = System.Windows.Media.Stretch.Uniform;
+            Img2.Source = WpfBitmap;
+            Img2.Stretch = System.Windows.Media.Stretch.Uniform;
+            borde.Visibility = Visibility.Visible;
+            Img2.Visibility = Visibility.Visible;
+            Img.Visibility = Visibility.Hidden;
         }
         public void setDefaultSource() {
-            Bitmap bm = Properties.Resources.folder_ico_png1;
+            //Bitmap bm = ;
 
-            IntPtr hBitmap = bm.GetHbitmap();
-            System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            //IntPtr hBitmap = bm.GetHbitmap();
+            //System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-            Img.Source = WpfBitmap;
-            Img.Stretch = System.Windows.Media.Stretch.Uniform;
-
+            //Img.Source = WpfBitmap;
+            //Img.Stretch = System.Windows.Media.Stretch.Uniform;
+            canvasFolder = defaultCanvas;
+            Img2.Visibility = Visibility.Hidden;
+            Img.Visibility = Visibility.Visible;
         }
 
-        public void changeColor(System.Drawing.Color c) {
-            Bitmap bm = Properties.Resources.folder_ico_png1;
-
-            for(int i = 0; i < bm.Width; i++) {
-                for(int j = 0; j < bm.Height; j++) {
-                    System.Drawing.Color aux = bm.GetPixel(i, j);
-                    if (aux.A != 0) {
-                        c = System.Drawing.Color.FromArgb(aux.A, c.R, c.G, c.B);
-                        bm.SetPixel(i, j, c);
-                    }
-                }
-            }
-
-            IntPtr hBitmap = bm.GetHbitmap();
-            System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-            Img.Source = WpfBitmap;
-            Img.Width = 250;
-            Img.Height = 400;
-            Img.Stretch = System.Windows.Media.Stretch.Uniform;
+        public void changeColor(System.Windows.Media.Color c) {
+            SolidColorBrush sb = new SolidColorBrush(c);
+            ColorPath.Fill = sb;
         }
 
         private void img_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
@@ -85,6 +75,7 @@ namespace ProyectoWPF {
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
             dispatcherTimer.Start();
+            borde.Visibility = Visibility.Visible;
 
             Img.Visibility = Visibility.Hidden;
         }
@@ -92,6 +83,7 @@ namespace ProyectoWPF {
         private void descripcion_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e) {
             descripcion.Visibility = Visibility.Hidden;
             Img.Visibility = Visibility.Visible;
+            borde.Visibility = Visibility.Hidden;
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e) {
@@ -180,7 +172,7 @@ namespace ProyectoWPF {
                     IntPtr hBitmap = bm.GetHbitmap();
                     System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-                    Img.Source = WpfBitmap;
+                    //Img.Source = WpfBitmap;
                 }
 
             }

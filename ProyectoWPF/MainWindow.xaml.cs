@@ -203,7 +203,7 @@ namespace ProyectoWPF {
 
                     string name = activatedButton.Name;
                     c.getSerie().setTipo(name);
-                    c.setRuta(p.getSubCarpeta().getRuta() + "/" + c.getTitle());
+                    c.setRuta(nombre);
                     sv.saveData(c.getRuta(), name);
 
                 } else {
@@ -218,7 +218,7 @@ namespace ProyectoWPF {
 
                     string name = activatedButton.Name;
                     c.getSerie().setTipo(name);
-                    c.setRuta(p.getCarpeta().getRuta() + "/" + c.getTitle());
+                    c.setRuta(nombre);
                     sv.saveData(c.getRuta(), name);
 
                 }
@@ -255,7 +255,7 @@ namespace ProyectoWPF {
 
                     string name = activatedButton.Name;
                     c.getSerie().setTipo(name);
-                    c.setRuta(p.getSubCarpeta().getRuta() + "/" + c.getTitle());
+                    c.setRuta(nombre);
                     sv.saveData(c.getRuta(), name);
 
                 } else {
@@ -315,14 +315,14 @@ namespace ProyectoWPF {
                 if (Directory.GetDirectories(files[i]) != null) {
                     addText(Directory.GetDirectories(files[i]));
                 }
-                if (Directory.GetFiles(files[i]) != null) {
-                    string[] archivos = Directory.GetFiles(files[i]);
-                    for (int j = 0; j < archivos.Length; j++) {
-                        /*textBox1.Text += archivos[i] + "\r\n";*/
+                //if (Directory.GetFiles(files[i]) != null) {
+                //    string[] archivos = Directory.GetFiles(files[i]);
+                //    for (int j = 0; j < archivos.Length; j++) {
+                //        /*textBox1.Text += archivos[i] + "\r\n";*/
 
-                    }
+                //    }
 
-                }
+                //}
             }
         }
 
@@ -378,7 +378,7 @@ namespace ProyectoWPF {
 
             string name = activatedButton.Name;
             p1.getSerie().setTipo(name);
-            p1.setRuta("C/"+name + "/" + p1.getSerie().getTitle());
+            p1.setRuta(filename);
             sv.saveData(p1.getRuta(), name);
 
 

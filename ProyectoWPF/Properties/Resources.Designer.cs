@@ -61,12 +61,22 @@ namespace ProyectoWPF.Properties {
         }
         
         /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        ///   Busca una cadena traducida similar a &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;!--This file is NOT compatible with Silverlight--&gt;
+        ///&lt;Viewbox xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot; Stretch=&quot;Uniform&quot;&gt;
+        ///  &lt;Canvas Name=&quot;svg3745&quot; Width=&quot;210&quot; Height=&quot;297&quot;&gt;
+        ///    &lt;Canvas.RenderTransform&gt;
+        ///      &lt;TranslateTransform X=&quot;0&quot; Y=&quot;0&quot;/&gt;
+        ///    &lt;/Canvas.RenderTransform&gt;
+        ///        &lt;Canvas.Resources/&gt;
+        ///        &lt;!--Unknown tag: sodipodi:namedview--&gt;
+        ///    &lt;!--Unknown tag: metadata--&gt;
+        ///    &lt;Canvas Name=&quot;layer1&quot;&gt;
+        ///      &lt;Path xmlns:x=&quot;http://schemas.micros [resto de la cadena truncado]&quot;;.
         /// </summary>
-        internal static System.Drawing.Bitmap folder_ico_png1 {
+        internal static string folder_xaml1 {
             get {
-                object obj = ResourceManager.GetObject("folder_ico_png1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("folder_xaml1", resourceCulture);
             }
         }
         

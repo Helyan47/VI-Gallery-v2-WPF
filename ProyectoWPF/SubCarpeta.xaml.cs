@@ -23,20 +23,17 @@ namespace ProyectoWPF {
         private int idHijo;
         private Menu menuCarpeta;
         private string ruta;
+        private Canvas defaultCanvas;
         public SubCarpeta() {
             InitializeComponent();
             numSubCarpetas = 0;
+            defaultCanvas = canvasFolder;
         }
 
         public void setDefaultSource() {
-            Bitmap bm = Properties.Resources.folder_ico_png1;
-
-            IntPtr hBitmap = bm.GetHbitmap();
-            System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-            Img.Source = WpfBitmap;
-            Img.Stretch = System.Windows.Media.Stretch.Uniform;
-
+            canvasFolder = defaultCanvas;
+            Img2.Visibility = Visibility.Hidden;
+            Img.Visibility = Visibility.Visible;
         }
 
         public void setImg() {
@@ -45,8 +42,11 @@ namespace ProyectoWPF {
             IntPtr hBitmap = bm.GetHbitmap();
             System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-            Img.Source = WpfBitmap;
-            Img.Stretch = System.Windows.Media.Stretch.Uniform;
+            Img2.Source = WpfBitmap;
+            Img2.Stretch = System.Windows.Media.Stretch.Uniform;
+            borde.Visibility = Visibility.Visible;
+            Img2.Visibility = Visibility.Visible;
+            Img.Visibility = Visibility.Hidden;
         }
 
         public void setRuta(string s) {
@@ -125,12 +125,7 @@ namespace ProyectoWPF {
 
             } else {
                 if (serie.getDirImg() != "") {
-                    Bitmap bm = new Bitmap(serie.getDirImg());
-
-                    IntPtr hBitmap = bm.GetHbitmap();
-                    System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                    Img.Source = WpfBitmap;
+                    setImg();
                 }
             }
 
