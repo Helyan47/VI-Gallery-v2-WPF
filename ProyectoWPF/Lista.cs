@@ -190,15 +190,15 @@ namespace ProyectoWPF {
             }
         }
 
-        public void mostrar(SubCarpeta s, Carpeta c) {
-            foreach (WrapPanelPrincipal f in wrapsPrincipales) {
-                if ((f.getCarpeta() == c) && (f.getSubCarpetaPadre() == s)) {
-                    f.Visibility = System.Windows.Visibility.Visible;
-                } else {
-                    f.Visibility = System.Windows.Visibility.Hidden;
-                }
-            }
-        }
+        //public void mostrar(SubCarpeta s, Carpeta c) {
+        //    foreach (WrapPanelPrincipal f in wrapsPrincipales) {
+        //        if ((f.getCarpeta() == c) && (f.getSubCarpetaPadre() == s)) {
+        //            f.Visibility = System.Windows.Visibility.Visible;
+        //        } else {
+        //            f.Visibility = System.Windows.Visibility.Hidden;
+        //        }
+        //    }
+        //}
 
 
         public SubCarpeta searchRuta(string s) {
@@ -218,6 +218,15 @@ namespace ProyectoWPF {
                 wp.Visibility = System.Windows.Visibility.Hidden;
             }
             ocultarWrapsPrincipales();
+        }
+
+        public void hideAllExceptPrinc() {
+            foreach (Menu m in menus) {
+                m.Visibility = System.Windows.Visibility.Hidden;
+            }
+            foreach (WrapPanelPrincipal wp in wrapsSecundarios) {
+                wp.Visibility = System.Windows.Visibility.Hidden;
+            }
         }
     }
 }

@@ -66,19 +66,12 @@ namespace ProyectoWPF {
             activatedButton = b;
         }
 
-        private void Button_MouseLeftButtonUp(object sender, RoutedEventArgs e) {
-            Carpeta r = new Carpeta(this);
-            WrapPanelPrincipal wp = lista.getWrapVisible();
-            if (wp != null) {
-                wp.addCarpeta(r);
-            }
-        }
 
         private void NewTemp_Click(object sender, EventArgs e) {
             addSubCarpeta();
         }
 
-        private void Button_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e) {
+        private void Button_MouseLeftButtonUp(object sender, RoutedEventArgs e) {
             string[] files = new string[0];
             using (var folderDialog = new CommonOpenFileDialog()) {
 
@@ -101,30 +94,7 @@ namespace ProyectoWPF {
 
                 }
             }
-        }
-        private void Button_MouseLeftButtonUp_2(object sender, RoutedEventArgs e) {
-            string[] files = new string[0];
-            using (var folderDialog = new CommonOpenFileDialog()) {
-
-                folderDialog.IsFolderPicker = true;
-                if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
-                    folders = Directory.GetDirectories(folderDialog.FileName);
-
-                    for (int i = 0; i < folders.Length; i++) {
-                        rutas.Add(folders[i]);
-
-                        string[] aux = Directory.GetDirectories(folders[i]);
-                        for (int j = 0; j < aux.Length; j++) {
-                            rutas.Add(aux[j]);
-                        }
-                    }
-                    if (folders != null) {
-                        addText(folders);
-                    }
-
-
-                }
-            }
+            lista.hideAllExceptPrinc();
             
         }
 
@@ -145,7 +115,7 @@ namespace ProyectoWPF {
                         p.getSubCarpeta().GetListaCarpetas(), p.getSubCarpeta().GetGridCarpeta());
                         p.addSubCarpeta(c);
                         p.getSubCarpeta().AddSubCarpetas();
-                        c.setIdHijo(p.getSubCarpeta().getNumSubCarp());
+                        //c.setIdHijo(p.getSubCarpeta().getNumSubCarp());
                         c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
                         c.setRuta(p.getSubCarpeta().getRuta() + "/" + c.getTitle());
 
@@ -160,7 +130,7 @@ namespace ProyectoWPF {
                         p.getCarpeta().getListaCarpetas(), p.GetGridSubCarpetas());
                         p.addSubCarpeta(c);
                         p.getCarpeta().AddSubCarpetas();
-                        c.setIdHijo(p.getCarpeta().getNumSubCarp());
+                        //c.setIdHijo(p.getCarpeta().getNumSubCarp());
                         c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
                         c.setRuta(p.getCarpeta().getRuta() + "/" + c.getTitle());
 
@@ -197,7 +167,7 @@ namespace ProyectoWPF {
                     p.getSubCarpeta().GetListaCarpetas(), p.getSubCarpeta().GetGridCarpeta());
                     p.addSubCarpeta(c);
                     p.getSubCarpeta().AddSubCarpetas();
-                    c.setIdHijo(p.getSubCarpeta().getNumSubCarp());
+                    //c.setIdHijo(p.getSubCarpeta().getNumSubCarp());
                     c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
                     c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
 
@@ -212,7 +182,7 @@ namespace ProyectoWPF {
                     p.getCarpeta().getListaCarpetas(), p.GetGridSubCarpetas());
                     p.addSubCarpeta(c);
                     p.getCarpeta().AddSubCarpetas();
-                    c.setIdHijo(p.getCarpeta().getNumSubCarp());
+                    //c.setIdHijo(p.getCarpeta().getNumSubCarp());
                     c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
                     c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
 
@@ -249,7 +219,7 @@ namespace ProyectoWPF {
                     p.getSubCarpeta().GetListaCarpetas(), p.getSubCarpeta().GetGridCarpeta());
                     p.addSubCarpeta(c);
                     p.getSubCarpeta().AddSubCarpetas();
-                    c.setIdHijo(p.getSubCarpeta().getNumSubCarp());
+                    //c.setIdHijo(p.getSubCarpeta().getNumSubCarp());
                     c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
                     c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
 
@@ -264,7 +234,7 @@ namespace ProyectoWPF {
                     p.getCarpeta().getListaCarpetas(), p.GetGridSubCarpetas());
                     p.addSubCarpeta(c);
                     p.getCarpeta().AddSubCarpetas();
-                    c.setIdHijo(p.getCarpeta().getNumSubCarp());
+                    //c.setIdHijo(p.getCarpeta().getNumSubCarp());
                     c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
                     c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
 

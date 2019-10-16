@@ -24,7 +24,6 @@ namespace ProyectoWPF
         private System.Windows.Media.Color colorGridPadre;
         private Carpeta carpeta;
         private SubCarpeta subcarpeta;
-        private SubCarpeta subCarpetaPadre;
         public String nombre = "luis";
         private Grid gridCarpeta;
         private Button ButtonPrincipal;
@@ -92,13 +91,6 @@ namespace ProyectoWPF
 
         public void setSubcarpeta(SubCarpeta p) {
             subcarpeta = p;
-        }
-        public SubCarpeta getSubCarpetaPadre() {
-            return subCarpetaPadre;
-        }
-
-        public void setSubcarpetaPadre(SubCarpeta p) {
-            subCarpetaPadre = p;
         }
 
     }

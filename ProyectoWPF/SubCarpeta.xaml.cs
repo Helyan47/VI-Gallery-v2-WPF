@@ -20,7 +20,6 @@ namespace ProyectoWPF {
         private int numSubCarpetas;
         private WrapPanelPrincipal wrapCarpPropia;
         private Grid gridPadre;
-        private int idHijo;
         private Menu menuCarpeta;
         private string ruta;
         private Canvas defaultCanvas;
@@ -66,14 +65,6 @@ namespace ProyectoWPF {
 
         public Grid GetGridCarpeta() {
             return gridPadre;
-        }
-
-        public void setIdHijo(int num) {
-            idHijo = num;
-        }
-
-        public int getIdHijo() {
-            return idHijo;
         }
 
         public WrapPanelPrincipal getPadreSerie() {
