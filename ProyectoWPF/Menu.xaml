@@ -6,36 +6,40 @@
              xmlns:local="clr-namespace:ProyectoWPF"
              mc:Ignorable="d" 
              d:DesignHeight="1020" d:DesignWidth="1650">
-    <Grid>
+    <Grid Background="#FF0E0E0E">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.3*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF1B1B1B">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.2*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="0.5*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="0.2*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.01*" />
-                <ColumnDefinition Width="0.1*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="0.01*" />
+        <Border CornerRadius="10" Background="#FF1B1B1B" Grid.Row="0" Margin="10,10,10,0">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="0.5*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="0.2*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.01*" />
+                    <ColumnDefinition Width="0.1*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0.01*" />
 
-            </Grid.ColumnDefinitions>
-            
-           
-            
-            <Border x:Name="ImgBorde" CornerRadius="10" BorderThickness="5" BorderBrush="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4"/>
-            <Label x:Name="Title" Content="Carpeta" Grid.Column="2" HorizontalAlignment="Left" Margin="10" Grid.Row="1" VerticalAlignment="Top" FontSize="48" FontWeight="Bold" Foreground="White"/>
-            <Label x:Name="Descripcion" Content="Descripcion" Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="2" VerticalAlignment="Stretch" FontSize="12" Margin="10,0,0,0" Foreground="White"/>
-            <Label x:Name="Generos" Content="Generos" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="White" Margin="10,0,0,0" VerticalContentAlignment="Center"/>
-            <Label x:Name="listaGeneros" Content="ListaGeneros" Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="4" VerticalAlignment="Stretch" FontSize="12" Foreground="White" Margin="10,0,0,0"/>
-        </Grid>
-        <Grid x:Name="WrapSubCarpetas" Grid.Row="1" Background="#FF0F0F0F"/>
+                </Grid.ColumnDefinitions>
+
+
+
+                <Border x:Name="ImgBorde" CornerRadius="10" BorderThickness="5" BorderBrush="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4"/>
+                <Label x:Name="Title" Content="Carpeta" Grid.Column="2" HorizontalAlignment="Left" Margin="10" Grid.Row="1" VerticalAlignment="Top" FontSize="48" FontWeight="Bold" Foreground="White"/>
+                <Label x:Name="Descripcion" Content="Descripcion" Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="2" VerticalAlignment="Stretch" FontSize="12" Margin="10,0,0,0" Foreground="White"/>
+                <Label x:Name="Generos" Content="Generos" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="White" Margin="10,0,0,0" VerticalContentAlignment="Center"/>
+                <Label x:Name="listaGeneros" Content="ListaGeneros" Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="4" VerticalAlignment="Stretch" FontSize="12" Foreground="White" Margin="10,0,0,0"/>
+            </Grid>
+        </Border>
+        <Border CornerRadius="10" Background="#FF1B1B1B" Grid.Row="1" Margin="10">
+            <Grid x:Name="WrapSubCarpetas" Grid.Row="1"/>
+        </Border>
     </Grid>
 </UserControl>
