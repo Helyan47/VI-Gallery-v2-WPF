@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace ProyectoWPF {
@@ -31,21 +32,14 @@ namespace ProyectoWPF {
 
         public void setDefaultSource() {
             canvasFolder = defaultCanvas;
-            Img2.Visibility = Visibility.Hidden;
+            ImgBorde.Visibility = Visibility.Hidden;
             Img.Visibility = Visibility.Visible;
         }
 
         public void setImg() {
-            Bitmap bm = new Bitmap(serie.getDirImg());
-
-            IntPtr hBitmap = bm.GetHbitmap();
-            System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-            Img2.Source = WpfBitmap;
-            Img2.Stretch = System.Windows.Media.Stretch.Uniform;
-            borde.Visibility = Visibility.Visible;
-            Img2.Visibility = Visibility.Visible;
-            Img.Visibility = Visibility.Hidden;
+            ImageBrush ib = new ImageBrush(new BitmapImage(
+        new Uri(@serie.getDirImg(), UriKind.Absolute)));
+            ImgBorde.Background = ib;
         }
 
         public void setRuta(string s) {
@@ -173,7 +167,7 @@ namespace ProyectoWPF {
 
         public void setTitle(String titulo) {
             nombre = titulo;
-            Title.Content = titulo;
+            Title.Text = titulo;
         }
 
         public string getTitle() {

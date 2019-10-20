@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -30,35 +31,24 @@ namespace ProyectoWPF {
         public Carpeta(MainWindow ventana) {
             InitializeComponent();
             numSubcarpetas = 0;
-            Title.Content = "";
+            Title.Text = "";
             ventanaMain = ventana;
             defaultCanvas = canvasFolder;
         }
 
 
         public void setImg() {
-            Bitmap bm = new Bitmap(serie.getDirImg());
-
-            IntPtr hBitmap = bm.GetHbitmap();
-            System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-            Img2.Source = WpfBitmap;
-            Img2.Stretch = System.Windows.Media.Stretch.Uniform;
-            borde.Visibility = Visibility.Visible;
-            Img2.Visibility = Visibility.Visible;
-            Img.Visibility = Visibility.Hidden;
+            ImageBrush ib = new ImageBrush(new BitmapImage(
+        new Uri(@serie.getDirImg(), UriKind.Absolute)));
+            ImgBorde.Background = ib;
         }
+
+
         public void setDefaultSource() {
-            //Bitmap bm = ;
-
-            //IntPtr hBitmap = bm.GetHbitmap();
-            //System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-            //Img.Source = WpfBitmap;
-            //Img.Stretch = System.Windows.Media.Stretch.Uniform;
             canvasFolder = defaultCanvas;
-            Img2.Visibility = Visibility.Hidden;
             Img.Visibility = Visibility.Visible;
+            bordeDesc.Visibility = Visibility.Visible;
+            descripcion.Visibility = Visibility.Hidden;
         }
 
         public void changeColor(System.Windows.Media.Color c) {
@@ -67,23 +57,29 @@ namespace ProyectoWPF {
         }
 
         private void img_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
-            descripcion.Visibility = Visibility.Visible;
-            SolidColorBrush sc = new SolidColorBrush(((SolidColorBrush)gridPadre.Background).Color);
-            descripcion.Background = sc;
+            bordeDesc.Visibility = Visibility.Visible;
+            Img.Visibility = Visibility.Hidden;
+            ImgBorde.Visibility = Visibility.Hidden;
             descripcion.Opacity = 0.04;
             dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
             dispatcherTimer.Start();
-            borde.Visibility = Visibility.Visible;
+            descripcion.Visibility = Visibility.Visible;
+            
+        }
 
-            Img.Visibility = Visibility.Hidden;
+        private void bordeDesc_MouseLeave(object sender, MouseEventArgs e) {
+            bordeDesc.Visibility = Visibility.Hidden;
+            Img.Visibility = Visibility.Visible;
+            ImgBorde.Visibility = Visibility.Visible;
+            descripcion.Visibility = Visibility.Hidden;
         }
 
         private void descripcion_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e) {
-            descripcion.Visibility = Visibility.Hidden;
+            bordeDesc.Visibility = Visibility.Hidden;
             Img.Visibility = Visibility.Visible;
-            borde.Visibility = Visibility.Hidden;
+            //borde.Visibility = Visibility.Hidden;
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e) {
@@ -115,7 +111,7 @@ namespace ProyectoWPF {
         }
 
         public void setTitle(string title) {
-            Title.Content = title;
+            Title.Text = title;
         }
 
         public void AddSubCarpetas() {
@@ -165,7 +161,7 @@ namespace ProyectoWPF {
             if (serie.getTitle().Equals("")) {
 
             } else {
-                Title.Content = serie.getTitle();
+                Title.Text = serie.getTitle();
                 if (serie.getDirImg() != "") {
                     Bitmap bm = new Bitmap(serie.getDirImg());
 
@@ -248,12 +244,13 @@ namespace ProyectoWPF {
         }
 
         public void changeTitle(String titulo) {
-            Title.Content = titulo;
+            Title.Text = titulo;
         }
 
         public string getTitle() {
-            return (string)Title.Content;
+            return (string)Title.Text;
         }
 
+        
     }
 }

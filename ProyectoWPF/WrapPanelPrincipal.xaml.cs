@@ -36,7 +36,7 @@ namespace ProyectoWPF
         public void addCarpeta(Carpeta c) {
             c.Width = 250;
             c.Height = 400;
-            c.Margin = new Thickness(10, 10, 10, 10);
+            c.Margin = new Thickness(40, 40, 40, 40);
             if (!c.getSerie().getDirImg().Equals("")) {
                 c.setImg();
             } else {
@@ -73,10 +73,10 @@ namespace ProyectoWPF
         }
 
         public void addSubCarpeta(SubCarpeta p) {
-            p.Width = 187.5;
-            p.Height = 300;
+            p.Width = 250;
+            p.Height = 400;
             p.chageFontSize(14);
-            p.Margin = new Thickness(10, 10, 10, 10);
+            p.Margin = new Thickness(20, 20, 20, 20);
             if (!p.getSerie().getDirImg().Equals("")) {
                 p.setImg();
             } else {

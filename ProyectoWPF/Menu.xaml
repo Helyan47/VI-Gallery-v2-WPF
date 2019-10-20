@@ -28,9 +28,9 @@
 
             </Grid.ColumnDefinitions>
             
-            <Image x:Name="Img2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" Visibility="Hidden"/>
+           
             
-            <Border BorderThickness="5" BorderBrush="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4"/>
+            <Border x:Name="ImgBorde" CornerRadius="10" BorderThickness="5" BorderBrush="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4"/>
             <Label x:Name="Title" Content="Carpeta" Grid.Column="2" HorizontalAlignment="Left" Margin="10" Grid.Row="1" VerticalAlignment="Top" FontSize="48" FontWeight="Bold" Foreground="White"/>
             <Label x:Name="Descripcion" Content="Descripcion" Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="2" VerticalAlignment="Stretch" FontSize="12" Margin="10,0,0,0" Foreground="White"/>
             <Label x:Name="Generos" Content="Generos" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="White" Margin="10,0,0,0" VerticalContentAlignment="Center"/>

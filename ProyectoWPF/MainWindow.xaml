@@ -29,7 +29,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.30*"/>
                     <RowDefinition Height="*"/>
-                    
+
                     <RowDefinition Height="0.05*"/>
                     <RowDefinition Height="0.25*"/>
                 </Grid.RowDefinitions>
@@ -57,7 +57,7 @@
                     <Button x:Name="Return" Content="Button" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Bottom" Width="75" Height="75" Click="Return_MouseLeftButtonUp" Visibility="Hidden"/>
                     <Button x:Name="Properties" Content="Button" HorizontalAlignment="Left" Grid.Column="0" VerticalAlignment="Bottom" Width="75" Height="75"/>
                 </Grid>
-                
+
             </Grid>
             <Grid DockPanel.Dock="Top" Height="30" Background="#FF232323">
                 <Grid.RowDefinitions>
@@ -95,7 +95,11 @@
                     <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
                 </Grid>
             </Grid>
-            <Grid x:Name="gridPrincipal" Background="#FF232323" />
+            <Grid x:Name="gridPrincipal" >
+                <Grid.Background>
+                    <ImageBrush ImageSource="D:\Handikey47\Imagenes\Wallpaper\Paisajes\wallhaven-51581.jpg"/>
+                </Grid.Background>
+            </Grid>
 
         </DockPanel>
 

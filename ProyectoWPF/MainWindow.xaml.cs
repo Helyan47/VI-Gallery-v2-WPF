@@ -170,7 +170,7 @@ namespace ProyectoWPF {
                     //c.setIdHijo(p.getSubCarpeta().getNumSubCarp());
                     c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
                     c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
-
+                    
                     string name = activatedButton.Name;
                     c.getSerie().setTipo(name);
                     c.setRuta(nombre);
@@ -228,6 +228,7 @@ namespace ProyectoWPF {
                     c.setRuta(nombre);
                     sv.saveData(c.getRuta(), name);
 
+
                 } else {
 
                     c.setDatos(p.getCarpeta().getSerie(), p,
@@ -242,6 +243,7 @@ namespace ProyectoWPF {
                     c.getSerie().setTipo(name);
                     c.setRuta(p.getCarpeta().getRuta()+"/"+ c.getTitle());
                     sv.saveData(c.getRuta(), name);
+
 
                 }
 
@@ -309,8 +311,6 @@ namespace ProyectoWPF {
             if (!p1.getSerie().getTitle().Equals("")) {
                 WrapPanelPrincipal aux = lista.getWrapVisible();
                 
-                p1.Width = 250;
-                p1.Height = 400;
 
 
                 p1.actualizar();
@@ -339,8 +339,7 @@ namespace ProyectoWPF {
 
             WrapPanelPrincipal aux = lista.getWrapVisible();
 
-            p1.Width = 250;
-            p1.Height = 400;
+
 
             SerieClass s = new SerieClass(System.IO.Path.GetFileNameWithoutExtension(filename), "");
             p1.setSerie(s);

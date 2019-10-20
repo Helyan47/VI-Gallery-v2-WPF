@@ -56,13 +56,9 @@ namespace ProyectoWPF {
             }
 
             if (carpeta.getSerie().getDirImg() != "") {
-                
-                Bitmap bm = new Bitmap(carpeta.getSerie().getDirImg());
 
-                IntPtr hBitmap = bm.GetHbitmap();
-                System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                Img2.Source = WpfBitmap;
+                ImageBrush ib = new ImageBrush(new BitmapImage(new Uri(@carpeta.getSerie().getDirImg(), UriKind.Absolute)));
+                ImgBorde.Background = ib;
             }
 
         }

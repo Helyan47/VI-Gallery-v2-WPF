@@ -6,45 +6,54 @@
              xmlns:local="clr-namespace:ProyectoWPF"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="250">
-    <Grid>
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseLeftButtonUp="MouseClick">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.020*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="0.020*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.025*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="0.025*"/>
-                <RowDefinition Height="0.25*"/>
-                <RowDefinition Height="0.025*"/>
-            </Grid.RowDefinitions>
-            <Border x:Name="borde" BorderBrush="White" BorderThickness="4" Grid.RowSpan="4" Grid.ColumnSpan="3" Visibility="Hidden"/>
-            <Label x:Name="descripcion" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.RowSpan="2" Content="Descripcion" Background="#FF212121" Foreground="#FFF9F9F9" Visibility="Hidden" MouseLeave="descripcion_MouseLeave" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+    <Border CornerRadius="10" Background="White" ClipToBounds="True">
+        <Grid>
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseLeftButtonUp="MouseClick">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.020*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.020*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.025*"/>
+                    <RowDefinition Height="0.25*"/>
+                    <RowDefinition Height="0.025*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.025*"/>
+                </Grid.RowDefinitions>
+                <Border CornerRadius="10" x:Name="borde" BorderBrush="White" BorderThickness="4" Grid.RowSpan="4" Grid.ColumnSpan="3" Visibility="Hidden"/>
+                <Border x:Name="bordeDesc" CornerRadius="10" Background="#FF212121" ClipToBounds="True" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" MouseLeave="bordeDesc_MouseLeave">
+                    <Label x:Name="descripcion" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2" Content="Descripcion" Background="{x:Null}" Foreground="#FFF9F9F9" Visibility="Hidden" MouseLeave="descripcion_MouseLeave" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                </Border>
+                
+                <Viewbox x:Name="Img" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2" MouseEnter="img_MouseEnter" >
+                    <Border CornerRadius="10" Background="#FF212121" ClipToBounds="True">
+                        <Canvas x:Name="canvasFolder" Width="210" Height="300">
+                            <Canvas.RenderTransform>
+                                <TranslateTransform X="0" Y="0"/>
+                            </Canvas.RenderTransform>
+                            <Canvas.Resources/>
+                            <!--Unknown tag: sodipodi:namedview-->
+                            <!--Unknown tag: metadata-->
+                            <Canvas Name="layer1" Height="300" Width="210">
+                                <Path x:Name="ColorPath" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="7.875" Canvas.Top="5.25" Fill="White" >
+                                    <Path.Data>
+                                        <PathGeometry Figures="m 54.147296 247.46357 c 0 -61.12934 -0.668027 -103.25674 -1.637377 -103.25674 -2.262521 0 -7.8483 -4.18297 -9.732755 -7.28847 -5.806217 -9.5684 -6.112227 -13.79857 -5.234268 -72.356365 l 0.730272 -48.707356 1.800655 -4.104055 c 2.52343 -5.7513848 6.797018 -8.3171316 13.853269 -8.3171316 3.937937 0 147.802708 30.8254296 148.720278 31.8657976 0.0689 0.07803 -0.0494 52.527176 -0.26279 116.55354 l -0.38798 116.41161 -2.38454 0.40074 c -1.31149 0.22042 -34.20411 5.23624 -73.09472 11.14627 -38.8906 5.91004 -70.80977 11.01518 -70.931495 11.34477 -1.18427 3.20658 -1.438549 -4.51653 -1.438549 -43.69261 z M 19.290168 270.0789 C 14.665093 266.68887 12.09087 261.3467 11.01466 252.90503 9.5373509 241.3172 10.175238 45.665787 11.702776 41.8476 14.673513 34.422047 20.051308 29.805699 25.750627 29.788765 l 2.476787 -0.0065 0.178994 53.357561 0.178994 53.357554 2.647917 4.35872 c 1.594813 2.62525 4.525102 5.93281 7.367901 8.31649 6.596179 5.53094 6.250842 1.82651 6.250842 67.05293 v 54.45236 h -5.873508 c -3.230432 0 -8.533694 0.1939 -11.78503 0.4309 -5.12716 0.37372 -6.175804 0.23718 -7.903356 -1.02905 z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                </Path>
+                            </Canvas>
+                        </Canvas>
+                    </Border>
+                </Viewbox>
+                
+                <Border x:Name="ImgBorde" CornerRadius="10" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" MouseEnter="img_MouseEnter"/>
 
-            <Viewbox x:Name="Img" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.RowSpan="2" MouseEnter="img_MouseEnter" >
-                <Canvas x:Name="canvasFolder" Width="210" Height="297">
-                    <Canvas.RenderTransform>
-                        <TranslateTransform X="0" Y="0"/>
-                    </Canvas.RenderTransform>
-                    <Canvas.Resources/>
-                    <!--Unknown tag: sodipodi:namedview-->
-                    <!--Unknown tag: metadata-->
-                    <Canvas Name="layer1" Height="297" Width="210">
-                        <Path x:Name="ColorPath" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="7.875" Canvas.Top="5.25" Fill="White" >
-                            <Path.Data>
-                                <PathGeometry Figures="m 54.147296 247.46357 c 0 -61.12934 -0.668027 -103.25674 -1.637377 -103.25674 -2.262521 0 -7.8483 -4.18297 -9.732755 -7.28847 -5.806217 -9.5684 -6.112227 -13.79857 -5.234268 -72.356365 l 0.730272 -48.707356 1.800655 -4.104055 c 2.52343 -5.7513848 6.797018 -8.3171316 13.853269 -8.3171316 3.937937 0 147.802708 30.8254296 148.720278 31.8657976 0.0689 0.07803 -0.0494 52.527176 -0.26279 116.55354 l -0.38798 116.41161 -2.38454 0.40074 c -1.31149 0.22042 -34.20411 5.23624 -73.09472 11.14627 -38.8906 5.91004 -70.80977 11.01518 -70.931495 11.34477 -1.18427 3.20658 -1.438549 -4.51653 -1.438549 -43.69261 z M 19.290168 270.0789 C 14.665093 266.68887 12.09087 261.3467 11.01466 252.90503 9.5373509 241.3172 10.175238 45.665787 11.702776 41.8476 14.673513 34.422047 20.051308 29.805699 25.750627 29.788765 l 2.476787 -0.0065 0.178994 53.357561 0.178994 53.357554 2.647917 4.35872 c 1.594813 2.62525 4.525102 5.93281 7.367901 8.31649 6.596179 5.53094 6.250842 1.82651 6.250842 67.05293 v 54.45236 h -5.873508 c -3.230432 0 -8.533694 0.1939 -11.78503 0.4309 -5.12716 0.37372 -6.175804 0.23718 -7.903356 -1.02905 z" FillRule="NonZero"/>
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                </Canvas>
-            </Viewbox>
-            <Image x:Name="Img2" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.RowSpan="2" Stretch="Uniform" MouseEnter="img_MouseEnter"/>
+                <Label Grid.Column="1" Grid.Row="1" FontSize="24" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Foreground="Black">
+                    <TextBlock x:Name="Title" TextTrimming="CharacterEllipsis">Serie</TextBlock>
+                </Label>
+            </Grid>
 
-            <Label x:Name="Title" Content="Serie" Grid.Column="1" Grid.Row="4" FontSize="24" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Foreground="White"/>
         </Grid>
-
-    </Grid>
+    </Border>
 </UserControl>
