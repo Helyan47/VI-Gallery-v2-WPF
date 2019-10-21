@@ -24,9 +24,10 @@ namespace ProyectoWPF
         private System.Windows.Media.Color colorGridPadre;
         private Carpeta carpeta;
         private SubCarpeta subcarpeta;
-        public String nombre = "luis";
+        public String tipo = "";
         private Grid gridCarpeta;
         private Button ButtonPrincipal;
+        private int mode = 0;
 
         public WrapPanelPrincipal()
         {
@@ -91,6 +92,14 @@ namespace ProyectoWPF
 
         public void setSubcarpeta(SubCarpeta p) {
             subcarpeta = p;
+        }
+
+        public int getMode() {
+            return mode;
+        }
+
+        public void setMode(int mode) {
+            this.mode = mode;
         }
 
     }

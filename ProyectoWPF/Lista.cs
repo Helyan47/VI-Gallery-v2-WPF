@@ -228,5 +228,61 @@ namespace ProyectoWPF {
                 wp.Visibility = System.Windows.Visibility.Hidden;
             }
         }
+
+        public void changeMode(Button b) {
+
+            WrapPanelPrincipal visible= getWrapFromButton(b);
+            if (visible != null) {
+                int actualMode = visible.getMode();
+                if (actualMode == 0) {
+                    int newMode = 1;
+                    visible.setMode(newMode);
+                    Console.WriteLine("Entrado Modo");
+                    modifyMode(visible.Name, newMode);
+
+                } else if (actualMode == 1) {
+                    int newMode = 0;
+                    visible.setMode(newMode);
+                    modifyMode(visible.Name, newMode);
+                }
+            }
+        }
+
+        public void modifyMode(string tipo,int mode) {
+            foreach(Carpeta p in carpetas) {
+                Console.WriteLine(p.getSerie().getTipo() + " | " + tipo);
+                if (p.getSerie().getTipo().Equals(tipo)) {
+                    p.changeMode(mode);
+                    Console.WriteLine("Modo cambiado");
+                }
+                
+            }
+
+            foreach(SubCarpeta p in subCarpetas) {
+                if (p.getSerie().getTipo().Equals(tipo)) {
+                    p.changeMode(mode);
+                }
+            }
+        }
+
+        public WrapPanelPrincipal getWrapFromButton(Button b) {
+            int comp = 0;
+            int cont = 0;
+            foreach (Button bt in buttons) {
+                if (bt == b) {
+                    comp = cont;
+                }
+                cont++;
+            }
+            cont = 0;
+            foreach (WrapPanelPrincipal wp in wrapsPrincipales) {
+                if (comp == cont) {
+                    return wp;
+                }
+                cont++;
+            }
+            Console.WriteLine("No se ha encontrado el boton");
+            return null;
+        }
     }
 }

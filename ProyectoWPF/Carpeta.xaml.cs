@@ -27,6 +27,7 @@ namespace ProyectoWPF {
         private string ruta;
         private MainWindow ventanaMain;
         private Canvas defaultCanvas;
+        private int mode = 0;
 
         public Carpeta(MainWindow ventana) {
             InitializeComponent();
@@ -74,12 +75,7 @@ namespace ProyectoWPF {
             Img.Visibility = Visibility.Visible;
             ImgBorde.Visibility = Visibility.Visible;
             descripcion.Visibility = Visibility.Hidden;
-        }
-
-        private void descripcion_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e) {
-            bordeDesc.Visibility = Visibility.Hidden;
-            Img.Visibility = Visibility.Visible;
-            //borde.Visibility = Visibility.Hidden;
+            restartMode();
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e) {
@@ -251,6 +247,45 @@ namespace ProyectoWPF {
             return (string)Title.Text;
         }
 
-        
+        public void changeMode(int mode) {
+            this.mode = mode;
+            if (mode == 0) {
+                Grid.SetRow(ImgBorde, 3);
+                Grid.SetRowSpan(ImgBorde, 2);
+                Grid.SetRow(Img, 3);
+                Grid.SetRowSpan(Img, 2);
+                Grid.SetRow(bordeDesc, 3);
+                Grid.SetRowSpan(bordeDesc, 2);
+                lbTitle.Visibility = Visibility.Visible;
+            } else if (mode == 1) {
+                Grid.SetRow(ImgBorde, 1);
+                Grid.SetRowSpan(ImgBorde,4);
+                Grid.SetRow(Img, 1);
+                Grid.SetRowSpan(Img, 4);
+                Grid.SetRow(bordeDesc, 1);
+                Grid.SetRowSpan(bordeDesc, 4);
+                lbTitle.Visibility = Visibility.Hidden;
+            }
+        }
+
+        public void restartMode() {
+            if (mode == 0) {
+                Grid.SetRow(ImgBorde, 3);
+                Grid.SetRowSpan(ImgBorde, 2);
+                Grid.SetRow(Img, 3);
+                Grid.SetRowSpan(Img, 2);
+                Grid.SetRow(bordeDesc, 3);
+                Grid.SetRowSpan(bordeDesc, 2);
+                lbTitle.Visibility = Visibility.Visible;
+            } else if (mode == 1) {
+                Grid.SetRow(ImgBorde, 1);
+                Grid.SetRowSpan(ImgBorde, 4);
+                Grid.SetRow(Img, 1);
+                Grid.SetRowSpan(Img, 4);
+                Grid.SetRow(bordeDesc, 1);
+                Grid.SetRowSpan(bordeDesc, 4);
+                lbTitle.Visibility = Visibility.Hidden;
+            }
+        }
     }
 }

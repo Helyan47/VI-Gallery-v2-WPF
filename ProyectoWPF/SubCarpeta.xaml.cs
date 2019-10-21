@@ -181,5 +181,21 @@ namespace ProyectoWPF {
         public void chageFontSize(int size) {
             Title.FontSize = size;
         }
+
+        public void changeMode(int mode) {
+            if (mode == 0) {
+                Grid.SetRow(ImgBorde, 3);
+                Grid.SetRowSpan(ImgBorde, 2);
+                Grid.SetRow(Img, 3);
+                Grid.SetRowSpan(Img, 2);
+                lbTitle.Visibility = Visibility.Visible;
+            } else if (mode == 1) {
+                Grid.SetRow(ImgBorde, 1);
+                Grid.SetRowSpan(ImgBorde, 4);
+                Grid.SetRow(Img, 1);
+                Grid.SetRowSpan(Img, 4);
+                lbTitle.Visibility = Visibility.Hidden;
+            }
+        }
     }
 }

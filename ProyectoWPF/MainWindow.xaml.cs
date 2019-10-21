@@ -433,8 +433,8 @@ namespace ProyectoWPF {
             this.WindowState = WindowState.Minimized;
         }
 
-        public void setMode() {
-            
+        public void ChangeMode(object sender,RoutedEventArgs e) {
+            lista.changeMode(activatedButton);
         }
     }
 }
