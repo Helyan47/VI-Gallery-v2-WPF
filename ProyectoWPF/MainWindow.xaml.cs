@@ -414,5 +414,27 @@ namespace ProyectoWPF {
                 Return.Visibility = Visibility.Hidden;
             }
         }
+
+        public void CerrarApp(object sender, RoutedEventArgs e) {
+            this.Close();
+        }
+        public void MaximizeApp(object sender, RoutedEventArgs e) {
+            if (this.WindowState == WindowState.Normal) {
+                this.WindowState = WindowState.Maximized;
+            }else if (this.WindowState == WindowState.Maximized) {
+                this.WindowState = WindowState.Normal;
+                this.Width = 1000;
+                this.Height = 700;
+            }
+            
+        }
+
+        public void MinimizeApp(object sender, RoutedEventArgs e) {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        public void setMode() {
+            
+        }
     }
 }

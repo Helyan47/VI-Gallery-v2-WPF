@@ -61,22 +61,38 @@ namespace ProyectoWPF.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-        ///&lt;!--This file is NOT compatible with Silverlight--&gt;
-        ///&lt;Viewbox xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot; Stretch=&quot;Uniform&quot;&gt;
-        ///  &lt;Canvas Name=&quot;svg3745&quot; Width=&quot;210&quot; Height=&quot;297&quot;&gt;
-        ///    &lt;Canvas.RenderTransform&gt;
-        ///      &lt;TranslateTransform X=&quot;0&quot; Y=&quot;0&quot;/&gt;
-        ///    &lt;/Canvas.RenderTransform&gt;
+        ///   Busca una cadena traducida similar a &lt;ResourceDictionary xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+        ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        ///                    xmlns:local=&quot;clr-namespace:ProyectoWPF.Assets&quot;&gt;
+        ///    &lt;Canvas x:Key=&quot;Folder&quot; Name=&quot;svg3745&quot; Width=&quot;210&quot; Height=&quot;297&quot;&gt;
+        ///        &lt;Canvas.RenderTransform&gt;
+        ///            &lt;TranslateTransform X=&quot;0&quot; Y=&quot;0&quot;/&gt;
+        ///        &lt;/Canvas.RenderTransform&gt;
         ///        &lt;Canvas.Resources/&gt;
         ///        &lt;!--Unknown tag: sodipodi:namedview--&gt;
-        ///    &lt;!--Unknown tag: metadata--&gt;
-        ///    &lt;Canvas Name=&quot;layer1&quot;&gt;
-        ///      &lt;Path xmlns:x=&quot;http://schemas.micros [resto de la cadena truncado]&quot;;.
+        ///        &lt;!--Unknown tag:  [resto de la cadena truncado]&quot;;.
         /// </summary>
-        internal static string folder_xaml1 {
+        internal static string Folder {
             get {
-                return ResourceManager.GetString("folder_xaml1", resourceCulture);
+                return ResourceManager.GetString("Folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a &lt;ResourceDictionary xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+        ///                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        ///                    xmlns:local=&quot;clr-namespace:ProyectoWPF.Assets&quot;&gt;
+        ///    &lt;Canvas x:Key=&quot;multiFolder&quot; Width=&quot;132.29166&quot; Height=&quot;132.29167&quot;&gt;
+        ///        &lt;Canvas.RenderTransform&gt;
+        ///            &lt;TranslateTransform X=&quot;0&quot; Y=&quot;0&quot;/&gt;
+        ///        &lt;/Canvas.RenderTransform&gt;
+        ///        &lt;Canvas.Resources/&gt;
+        ///        &lt;!--Unknown tag: sodipodi:namedview--&gt;
+        ///        &lt;!--Unknown ta [resto de la cadena truncado]&quot;;.
+        /// </summary>
+        internal static string MultiFolderIcon {
+            get {
+                return ResourceManager.GetString("MultiFolderIcon", resourceCulture);
             }
         }
         

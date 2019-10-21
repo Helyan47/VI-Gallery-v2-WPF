@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProyectoWPF"
         mc:Ignorable="d"
-        Title="VI-Gallery" Width="1920" Height="1080" WindowStartupLocation="CenterScreen" Background="{x:Null}" WindowState="Maximized" WindowStyle="None">
+        Title="VI-Gallery" Width="1920" Height="1080" MinWidth="500" MinHeight="500" WindowStartupLocation="CenterScreen" Background="{x:Null}" WindowState="Maximized" WindowStyle="None">
     <Grid>
+        
         <DockPanel Background="#FF121212">
             <Grid Height="28" DockPanel.Dock="Top" VerticalAlignment="Top" Background="#FF121212">
                 <Grid.ColumnDefinitions>
@@ -15,9 +16,9 @@
                     <ColumnDefinition Width="0.075*"/>
                     <ColumnDefinition Width="0.075*"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Button" Grid.Column="1" Background="#00DDDDDD" Foreground="White" FontWeight="Bold" BorderThickness="0" />
-                <Button Content="Button" Grid.Column="2" Background="#00DDDDDD" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
-                <Button Content="Button" Grid.Column="3" Background="#00DDDDDD" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
+                <Button Content="_" Grid.Column="1" Background="#00DDDDDD" Foreground="White" FontWeight="ExtraBold" BorderThickness="0" Click="MinimizeApp" />
+                <Button Content="[ ]" Grid.Column="2" Background="#00DDDDDD" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="MaximizeApp"/>
+                <Button Content="X" Grid.Column="3" Background="#00DDDDDD" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="CerrarApp"/>
             </Grid>
 
             <Grid Width="280" HorizontalAlignment="Left" Background="#FF121212">
@@ -73,10 +74,15 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
-                                <Button Content="Button" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                                <Button Content="Button" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" />
-                                <Button Content="AddFolder" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_MouseLeftButtonUp"/>
-                                <Button x:Name="addButton" Content="Add" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_AddCarpeta"/>
+                                <Button Content="Button" Style="{StaticResource CustomButtonStyle}"  BorderThickness="0" Foreground="White" Margin="2"/>
+                                <Button Content="Button" Style="{StaticResource CustomButtonStyle}" Padding="1" BorderThickness="0" Foreground="White" Margin="2"/>
+                                <Viewbox Width="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
+                                    <Button Content="{StaticResource multiFolder}" Style="{StaticResource ImageButtonStyle}" BorderThickness="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="Button_MouseLeftButtonUp" Margin="40"/>
+                                </Viewbox>
+                                <!--<Button Content="{StaticResource multiFolder}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_MouseLeftButtonUp"/>-->
+                                <Viewbox Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                                    <Button x:Name="addButton" Content="{StaticResource Folder}" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="Button_AddCarpeta"/>
+                                </Viewbox>
                             </StackPanel>
                             <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
                         </Grid>
