@@ -24,7 +24,7 @@
                 </Grid.RowDefinitions>
                 <Border CornerRadius="10" x:Name="borde" BorderBrush="White" BorderThickness="4" Grid.RowSpan="4" Grid.ColumnSpan="3" Visibility="Hidden"/>
                 <Border x:Name="Img" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2" CornerRadius="10" Background="#FF212121" ClipToBounds="True" >
-                    <Viewbox>
+                    <Viewbox Stretch="None">
                         <Canvas x:Name="canvasFolder" Width="210" Height="297">
                             <Canvas.RenderTransform>
                                 <TranslateTransform X="0" Y="0"/>
@@ -45,9 +45,23 @@
 
                 <Border x:Name="ImgBorde" CornerRadius="10" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1"/>
 
-                <Label x:Name="lbTitle" Grid.Column="1" Grid.Row="1" FontSize="24" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Foreground="Black">
-                    <TextBlock x:Name="Title" TextTrimming="CharacterEllipsis">Serie</TextBlock>
-                </Label>
+                <Border CornerRadius="10,10,0,0" Grid.Row="1" Grid.Column="1" Panel.ZIndex="5">
+                    <Rectangle x:Name="Rectangle">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush x:Name="gradienteRectangulo" EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="#00000000" Offset="0"/>
+                                <GradientStop x:Name="LastColor2" Color="White" Offset="1" />
+                                <GradientStop x:Name="AfterLast2" Offset="0.782"/>
+                                <GradientStop x:Name="AfterLast"  Color="#99FFFFFF" Offset="0.85"/>
+                                <GradientStop x:Name="LastColor" Color="White" Offset="0.935"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Border>
+                <Border x:Name="lbTitle" CornerRadius="10,10,0,0" Grid.Row="1" Grid.Column="1" Panel.ZIndex="4">
+                    <Label x:Name="Title" FontSize="20" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="8">Serieeeeeeeeeeeeeeeeee</Label>
+                </Border>
+
             </Grid>
 
         </Grid>

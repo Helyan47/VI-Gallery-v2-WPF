@@ -32,7 +32,7 @@ namespace ProyectoWPF {
         public Carpeta(MainWindow ventana) {
             InitializeComponent();
             numSubcarpetas = 0;
-            Title.Text = "";
+            Title.Content = "";
             ventanaMain = ventana;
             defaultCanvas = canvasFolder;
         }
@@ -109,7 +109,7 @@ namespace ProyectoWPF {
         }
 
         public void setTitle(string title) {
-            Title.Text = title;
+            Title.Content = title;
         }
 
         public void AddSubCarpetas() {
@@ -159,7 +159,7 @@ namespace ProyectoWPF {
             if (serie.getTitle().Equals("")) {
 
             } else {
-                Title.Text = serie.getTitle();
+                Title.Content = serie.getTitle();
                 if (serie.getDirImg() != "") {
                     Bitmap bm = new Bitmap(serie.getDirImg());
 
@@ -246,11 +246,11 @@ namespace ProyectoWPF {
         }
 
         public void changeTitle(String titulo) {
-            Title.Text = titulo;
+            Title.Content = titulo;
         }
 
         public string getTitle() {
-            return (string)Title.Text;
+            return (string)Title.Content;
         }
 
         public void changeMode(int mode) {
@@ -271,7 +271,11 @@ namespace ProyectoWPF {
                 Grid.SetRowSpan(Img, 4);
                 Grid.SetRow(bordeDesc, 1);
                 Grid.SetRowSpan(bordeDesc, 4);
-                lbTitle.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(50,255,255,255));
+                SolidColorBrush sb = Img.Background as SolidColorBrush;
+                LastColor.Color = System.Windows.Media.Color.FromArgb(sb.Color.A,sb.Color.R, sb.Color.G, sb.Color.B);
+                LastColor2.Color = System.Windows.Media.Color.FromArgb(sb.Color.A, sb.Color.R, sb.Color.G, sb.Color.B);
+                AfterLast.Color = System.Windows.Media.Color.FromArgb(153, sb.Color.R, sb.Color.G, sb.Color.B);
+                AfterLast2.Color = System.Windows.Media.Color.FromArgb(0, sb.Color.R, sb.Color.G, sb.Color.B);
             }
         }
     }

@@ -168,7 +168,7 @@ namespace ProyectoWPF {
 
         public void setTitle(String titulo) {
             nombre = titulo;
-            Title.Text = titulo;
+            Title.Content = titulo;
         }
 
         public string getTitle() {
