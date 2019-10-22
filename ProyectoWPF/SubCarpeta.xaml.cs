@@ -24,6 +24,7 @@ namespace ProyectoWPF {
         private Menu menuCarpeta;
         private string ruta;
         private Canvas defaultCanvas;
+        private int mode;
         public SubCarpeta() {
             InitializeComponent();
             numSubCarpetas = 0;
@@ -130,7 +131,7 @@ namespace ProyectoWPF {
             //flowCarpPropia.Dock = DockStyle.Fill;
             wrapCarpPropia.Visibility = System.Windows.Visibility.Hidden;
             wrapCarpPropia.setSubcarpeta(this);
-
+            wrapCarpPropia.setMode(this.mode);
 
         }
 
@@ -183,6 +184,7 @@ namespace ProyectoWPF {
         }
 
         public void changeMode(int mode) {
+            this.mode = mode;
             if (mode == 0) {
                 Grid.SetRow(ImgBorde, 3);
                 Grid.SetRowSpan(ImgBorde, 2);

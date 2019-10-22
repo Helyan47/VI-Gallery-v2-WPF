@@ -23,9 +23,8 @@
                     <RowDefinition Height="0.025*"/>
                 </Grid.RowDefinitions>
                 <Border CornerRadius="10" x:Name="borde" BorderBrush="White" BorderThickness="4" Grid.RowSpan="4" Grid.ColumnSpan="3" Visibility="Hidden"/>
-                
-                <Viewbox x:Name="Img" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2">
-                    <Border CornerRadius="10" Background="#FF0F0F0F" ClipToBounds="True">
+                <Border x:Name="Img" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2" CornerRadius="10" Background="#FF212121" ClipToBounds="True" >
+                    <Viewbox>
                         <Canvas x:Name="canvasFolder" Width="210" Height="297">
                             <Canvas.RenderTransform>
                                 <TranslateTransform X="0" Y="0"/>
@@ -41,8 +40,8 @@
                                 </Path>
                             </Canvas>
                         </Canvas>
-                    </Border>
-                </Viewbox>
+                    </Viewbox>
+                </Border>
 
                 <Border x:Name="ImgBorde" CornerRadius="10" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1"/>
 

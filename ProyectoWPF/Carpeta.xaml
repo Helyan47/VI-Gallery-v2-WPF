@@ -26,9 +26,8 @@
                 <Border x:Name="bordeDesc" CornerRadius="10" Background="#FF212121" ClipToBounds="True" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" MouseLeave="bordeDesc_MouseLeave" Visibility="Hidden">
                     <Label x:Name="descripcion" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2" Content="Descripcion" Background="{x:Null}" Foreground="#FFF9F9F9" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
                 </Border>
-                
-                <Viewbox x:Name="Img" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2" MouseEnter="img_MouseEnter" Stretch="Fill" >
-                    <Border CornerRadius="10" Background="#FF212121" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Border x:Name="Img" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2" CornerRadius="10" Background="#FF212121" ClipToBounds="True" MouseEnter="img_MouseEnter" >
+                    <Viewbox>
                         <Canvas x:Name="canvasFolder" Width="210" Height="300">
                             <Canvas.RenderTransform>
                                 <TranslateTransform X="0" Y="0"/>
@@ -44,9 +43,8 @@
                                 </Path>
                             </Canvas>
                         </Canvas>
-                    </Border>
-                </Viewbox>
-                
+                    </Viewbox>
+                </Border>
                 <Border x:Name="ImgBorde" CornerRadius="10" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" MouseEnter="img_MouseEnter" />
 
                 <Label x:Name="lbTitle" Grid.Column="1" Grid.Row="1" FontSize="24" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Foreground="Black" >

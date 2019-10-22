@@ -49,7 +49,7 @@ namespace ProyectoWPF {
                         cadena += " | ";
                     }
                 }
-                Generos.Content = cadena;
+                listaGeneros.Content = cadena;
             } else {
                 Generos.Visibility = Visibility.Hidden;
                 listaGeneros.Visibility = Visibility.Hidden;
@@ -58,7 +58,9 @@ namespace ProyectoWPF {
             if (carpeta.getSerie().getDirImg() != "") {
 
                 ImageBrush ib = new ImageBrush(new BitmapImage(new Uri(@carpeta.getSerie().getDirImg(), UriKind.Absolute)));
-                ImgBorde.Background = ib;
+                Img.Background = ib;
+                Img.Visibility = Visibility.Visible;
+                ImgBorde.Visibility = Visibility.Hidden;
             }
 
         }
