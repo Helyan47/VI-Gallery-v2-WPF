@@ -100,6 +100,7 @@ namespace ProyectoWPF
 
         public void setMode(int mode) {
             this.mode = mode;
+            
         }
 
     }

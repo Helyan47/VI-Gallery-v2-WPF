@@ -22,13 +22,13 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="0.025*"/>
                 </Grid.RowDefinitions>
-                <Border CornerRadius="10" x:Name="borde" BorderBrush="White" BorderThickness="4" Grid.RowSpan="4" Grid.ColumnSpan="3" Visibility="Hidden"/>
-                <Border x:Name="bordeDesc" CornerRadius="10" Background="#FF212121" ClipToBounds="True" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" MouseLeave="bordeDesc_MouseLeave">
-                    <Label x:Name="descripcion" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2" Content="Descripcion" Background="{x:Null}" Foreground="#FFF9F9F9" Visibility="Hidden" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <Border CornerRadius="10" x:Name="borde" BorderBrush="White" BorderThickness="4" Grid.RowSpan="4" Grid.ColumnSpan="3"/>
+                <Border x:Name="bordeDesc" CornerRadius="10" Background="#FF212121" ClipToBounds="True" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" MouseLeave="bordeDesc_MouseLeave" Visibility="Hidden">
+                    <Label x:Name="descripcion" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2" Content="Descripcion" Background="{x:Null}" Foreground="#FFF9F9F9" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
                 </Border>
                 
-                <Viewbox x:Name="Img" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2" MouseEnter="img_MouseEnter" >
-                    <Border CornerRadius="10" Background="#FF212121" ClipToBounds="True">
+                <Viewbox x:Name="Img" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Stretch" Grid.RowSpan="2" MouseEnter="img_MouseEnter" Stretch="Fill" >
+                    <Border CornerRadius="10" Background="#FF212121" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Canvas x:Name="canvasFolder" Width="210" Height="300">
                             <Canvas.RenderTransform>
                                 <TranslateTransform X="0" Y="0"/>
@@ -47,9 +47,9 @@
                     </Border>
                 </Viewbox>
                 
-                <Border x:Name="ImgBorde" CornerRadius="10" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" MouseEnter="img_MouseEnter"/>
+                <Border x:Name="ImgBorde" CornerRadius="10" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" MouseEnter="img_MouseEnter" />
 
-                <Label x:Name="lbTitle" Grid.Column="1" Grid.Row="1" FontSize="24" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Foreground="Black">
+                <Label x:Name="lbTitle" Grid.Column="1" Grid.Row="1" FontSize="24" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0" Foreground="Black" >
                     <TextBlock x:Name="Title" TextTrimming="CharacterEllipsis">Serie</TextBlock>
                 </Label>
             </Grid>

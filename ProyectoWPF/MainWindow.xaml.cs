@@ -124,6 +124,8 @@ namespace ProyectoWPF {
                         c.setRuta(p.getSubCarpeta().getRuta() + "/" + c.getTitle());
                         sv.saveData(c.getRuta(), name);
 
+                        c.changeMode(lista.actualiceMode(activatedButton));
+
                     } else {
 
                         c.setDatos(p.getCarpeta().getSerie(), p,
@@ -138,6 +140,8 @@ namespace ProyectoWPF {
                         c.getSerie().setTipo(name);
                         c.setRuta(p.getCarpeta().getRuta() + "/" + c.getTitle());
                         sv.saveData(c.getRuta(), name);
+
+                        c.changeMode(lista.actualiceMode(activatedButton));
 
                     }
 
@@ -176,6 +180,8 @@ namespace ProyectoWPF {
                     c.setRuta(nombre);
                     sv.saveData(c.getRuta(), name);
 
+                    c.changeMode(lista.actualiceMode(activatedButton));
+
                 } else {
 
                     c.setDatos(p.getCarpeta().getSerie(), p,
@@ -190,6 +196,8 @@ namespace ProyectoWPF {
                     c.getSerie().setTipo(name);
                     c.setRuta(nombre);
                     sv.saveData(c.getRuta(), name);
+
+                    c.changeMode(lista.actualiceMode(activatedButton));
 
                 }
 
@@ -228,6 +236,7 @@ namespace ProyectoWPF {
                     c.setRuta(nombre);
                     sv.saveData(c.getRuta(), name);
 
+                    c.changeMode(lista.actualiceMode(activatedButton));
 
                 } else {
 
@@ -244,6 +253,7 @@ namespace ProyectoWPF {
                     c.setRuta(p.getCarpeta().getRuta()+"/"+ c.getTitle());
                     sv.saveData(c.getRuta(), name);
 
+                    c.changeMode(lista.actualiceMode(activatedButton));
 
                 }
 
@@ -310,10 +320,12 @@ namespace ProyectoWPF {
             newSerie.ShowDialog();
             if (!p1.getSerie().getTitle().Equals("")) {
                 WrapPanelPrincipal aux = lista.getWrapVisible();
+
                 
 
-
                 p1.actualizar();
+
+                p1.changeMode(lista.actualiceMode(activatedButton));
 
                 string name = activatedButton.Name;
                 p1.getSerie().setTipo(name);
@@ -339,7 +351,7 @@ namespace ProyectoWPF {
 
             WrapPanelPrincipal aux = lista.getWrapVisible();
 
-
+            p1.changeMode(lista.actualiceMode(activatedButton));
 
             SerieClass s = new SerieClass(System.IO.Path.GetFileNameWithoutExtension(filename), "");
             p1.setSerie(s);

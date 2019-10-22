@@ -247,10 +247,18 @@ namespace ProyectoWPF {
                 }
             }
         }
+        public int actualiceMode(Button b) {
+
+            WrapPanelPrincipal visible = getWrapFromButton(b);
+            if (visible != null) {
+                int actualMode = visible.getMode();
+                return actualMode;
+            }
+            return 0;
+        }
 
         public void modifyMode(string tipo,int mode) {
             foreach(Carpeta p in carpetas) {
-                Console.WriteLine(p.getSerie().getTipo() + " | " + tipo);
                 if (p.getSerie().getTipo().Equals(tipo)) {
                     p.changeMode(mode);
                     Console.WriteLine("Modo cambiado");
