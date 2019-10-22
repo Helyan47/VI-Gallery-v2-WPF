@@ -271,7 +271,7 @@ namespace ProyectoWPF {
                 Grid.SetRowSpan(Img, 4);
                 Grid.SetRow(bordeDesc, 1);
                 Grid.SetRowSpan(bordeDesc, 4);
-                lbTitle.Visibility = Visibility.Hidden;
+                lbTitle.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(50,255,255,255));
             }
         }
     }
