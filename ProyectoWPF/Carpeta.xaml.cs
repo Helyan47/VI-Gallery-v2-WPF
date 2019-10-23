@@ -42,6 +42,7 @@ namespace ProyectoWPF {
             ImageBrush ib = new ImageBrush(new BitmapImage(
         new Uri(@serie.getDirImg(), UriKind.Absolute)));
             ImgBorde.Background = ib;
+            Img.Visibility = Visibility.Hidden;
         }
 
 
@@ -263,7 +264,11 @@ namespace ProyectoWPF {
                 Grid.SetRowSpan(Img, 2);
                 Grid.SetRow(bordeDesc, 3);
                 Grid.SetRowSpan(bordeDesc, 2);
-                lbTitle.Visibility = Visibility.Visible;
+                
+                Title.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));                
+                Sombra.Visibility = Visibility.Hidden;
+                Title.VerticalContentAlignment = VerticalAlignment.Center;
+                gridLabel.Height = new GridLength(0.25, GridUnitType.Star);
             } else if (mode == 1) {
                 Grid.SetRow(ImgBorde, 1);
                 Grid.SetRowSpan(ImgBorde,4);
@@ -271,11 +276,10 @@ namespace ProyectoWPF {
                 Grid.SetRowSpan(Img, 4);
                 Grid.SetRow(bordeDesc, 1);
                 Grid.SetRowSpan(bordeDesc, 4);
-                SolidColorBrush sb = Img.Background as SolidColorBrush;
-                LastColor.Color = System.Windows.Media.Color.FromArgb(sb.Color.A,sb.Color.R, sb.Color.G, sb.Color.B);
-                LastColor2.Color = System.Windows.Media.Color.FromArgb(sb.Color.A, sb.Color.R, sb.Color.G, sb.Color.B);
-                AfterLast.Color = System.Windows.Media.Color.FromArgb(153, sb.Color.R, sb.Color.G, sb.Color.B);
-                AfterLast2.Color = System.Windows.Media.Color.FromArgb(0, sb.Color.R, sb.Color.G, sb.Color.B);
+                Title.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255,255,255));
+                Title.VerticalContentAlignment = VerticalAlignment.Top;
+                Sombra.Visibility = Visibility.Visible;
+                gridLabel.Height = new GridLength(0.45,GridUnitType.Star);
             }
         }
     }

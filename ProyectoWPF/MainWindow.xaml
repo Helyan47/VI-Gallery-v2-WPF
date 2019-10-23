@@ -31,13 +31,13 @@
                 </Grid.RowDefinitions>
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                     <StackPanel x:Name="buttonStack" Grid.Row="1" CanVerticallyScroll="True" >
-                        <Button x:Name="Peliculas" Content="Peliculas" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
-                        <Button x:Name="Series" Content="Series" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
-                        <Button x:Name="Anime" Content="Anime" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
-                        <Button x:Name="Manga" Content="Manga" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
-                        <Button x:Name="Galeria" Content="Galería" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
-                        <Button Content="Button1" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
-                        <Button Content="Button2" Height="100" FontSize="40" Background="{x:Null}" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button x:Name="Peliculas" Style="{StaticResource CustomButtonStyle}" Content="Peliculas" Height="100" FontSize="40" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button x:Name="Series" Style="{StaticResource CustomButtonStyle}" Content="Series" Height="100" FontSize="40" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button x:Name="Anime" Style="{StaticResource CustomButtonStyle}" Content="Anime" Height="100" FontSize="40" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button x:Name="Manga" Style="{StaticResource CustomButtonStyle}" Content="Manga" Height="100" FontSize="40" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button x:Name="Galeria" Style="{StaticResource CustomButtonStyle}" Content="Galería" Height="100" FontSize="40" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button Content="Button1" Style="{StaticResource CustomButtonStyle}" Height="100" FontSize="40" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
+                        <Button Content="Button2" Style="{StaticResource CustomButtonStyle}" Height="100" FontSize="40" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>
                     </StackPanel>
                 </ScrollViewer>
 

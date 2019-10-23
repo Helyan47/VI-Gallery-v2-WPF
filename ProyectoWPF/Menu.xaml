@@ -23,7 +23,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.01*" />
-                    <ColumnDefinition Width="0.1*" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="0.01*" />
 
@@ -52,7 +52,7 @@
                 </Border>
                 <Border x:Name="Img" CornerRadius="10" BorderThickness="5" BorderBrush="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Visibility="Hidden"/>
                 
-                <Label x:Name="Title" Content="Carpeta" Grid.Column="2" HorizontalAlignment="Left" Margin="10" Grid.Row="1" VerticalAlignment="Top" FontSize="48" FontWeight="Bold" Foreground="White"/>
+                <Label x:Name="Title" Content="Carpeta" Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="10" Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Top" FontSize="30" FontWeight="Bold" Foreground="White"/>
                 <Label x:Name="Descripcion" Content="Descripcion" Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="2" VerticalAlignment="Stretch" FontSize="12" Margin="10,0,0,0" Foreground="White"/>
                 <Label x:Name="Generos" Content="Generos" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="White" Margin="10,0,0,0" VerticalContentAlignment="Center"/>
                 <Label x:Name="listaGeneros" Content="ListaGeneros" Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="4" VerticalAlignment="Stretch" FontSize="12" Foreground="White" Margin="10,0,0,0"/>

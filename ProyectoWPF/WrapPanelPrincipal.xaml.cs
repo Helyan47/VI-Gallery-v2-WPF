@@ -76,7 +76,7 @@ namespace ProyectoWPF
         public void addSubCarpeta(SubCarpeta p) {
             p.Width = 250;
             p.Height = 400;
-            p.chageFontSize(14);
+            p.chageFontSize(24);
             p.Margin = new Thickness(20, 20, 20, 20);
             if (!p.getSerie().getDirImg().Equals("")) {
                 p.setImg();

@@ -190,13 +190,19 @@ namespace ProyectoWPF {
                 Grid.SetRowSpan(ImgBorde, 2);
                 Grid.SetRow(Img, 3);
                 Grid.SetRowSpan(Img, 2);
-                lbTitle.Visibility = Visibility.Visible;
+                Title.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                Sombra.Visibility = Visibility.Hidden;
+                Title.VerticalContentAlignment = VerticalAlignment.Center;
+                gridLabel.Height = new GridLength(0.25, GridUnitType.Star);
             } else if (mode == 1) {
                 Grid.SetRow(ImgBorde, 1);
                 Grid.SetRowSpan(ImgBorde, 4);
                 Grid.SetRow(Img, 1);
                 Grid.SetRowSpan(Img, 4);
-                lbTitle.Visibility = Visibility.Hidden;
+                Title.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
+                Sombra.Visibility = Visibility.Visible;
+                Title.VerticalContentAlignment = VerticalAlignment.Top;
+                gridLabel.Height = new GridLength(0.45, GridUnitType.Star);
             }
         }
     }
