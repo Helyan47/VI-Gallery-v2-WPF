@@ -32,7 +32,7 @@ namespace ProyectoWPF {
         public Carpeta(MainWindow ventana) {
             InitializeComponent();
             numSubcarpetas = 0;
-            Title.Content = "";
+            Title2.SetText("");
             ventanaMain = ventana;
             defaultCanvas = canvasFolder;
         }
@@ -110,7 +110,7 @@ namespace ProyectoWPF {
         }
 
         public void setTitle(string title) {
-            Title.Content = title;
+            Title2.SetText(title);
         }
 
         public void AddSubCarpetas() {
@@ -160,7 +160,7 @@ namespace ProyectoWPF {
             if (serie.getTitle().Equals("")) {
 
             } else {
-                Title.Content = serie.getTitle();
+                Title2.SetText(serie.getTitle());
                 if (serie.getDirImg() != "") {
                     Bitmap bm = new Bitmap(serie.getDirImg());
 
@@ -247,11 +247,11 @@ namespace ProyectoWPF {
         }
 
         public void changeTitle(String titulo) {
-            Title.Content = titulo;
+            Title2.SetText(titulo);
         }
 
         public string getTitle() {
-            return (string)Title.Content;
+            return (string)Title2.GetText();
         }
 
         public void changeMode(int mode) {
@@ -265,9 +265,9 @@ namespace ProyectoWPF {
                 Grid.SetRow(bordeDesc, 3);
                 Grid.SetRowSpan(bordeDesc, 2);
                 
-                Title.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));                
-                Sombra.Visibility = Visibility.Hidden;
-                Title.VerticalContentAlignment = VerticalAlignment.Center;
+                Title2.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                Title2.SetSombraVisible(false);
+                //Title2.VerticalContentAlignment = VerticalAlignment.Center;
                 gridLabel.Height = new GridLength(0.25, GridUnitType.Star);
             } else if (mode == 1) {
                 Grid.SetRow(ImgBorde, 1);
@@ -276,9 +276,9 @@ namespace ProyectoWPF {
                 Grid.SetRowSpan(Img, 4);
                 Grid.SetRow(bordeDesc, 1);
                 Grid.SetRowSpan(bordeDesc, 4);
-                Title.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255,255,255));
-                Title.VerticalContentAlignment = VerticalAlignment.Top;
-                Sombra.Visibility = Visibility.Visible;
+                Title2.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(255,255,255));
+                //Title.VerticalContentAlignment = VerticalAlignment.Top;
+                Title2.SetSombraVisible(true);
                 gridLabel.Height = new GridLength(0.45,GridUnitType.Star);
             }
         }

@@ -237,7 +237,6 @@ namespace ProyectoWPF {
                 if (actualMode == 0) {
                     int newMode = 1;
                     visible.setMode(newMode);
-                    Console.WriteLine("Entrado Modo");
                     modifyMode(visible.Name, newMode);
 
                 } else if (actualMode == 1) {
@@ -261,7 +260,6 @@ namespace ProyectoWPF {
             foreach(Carpeta p in carpetas) {
                 if (p.getSerie().getTipo().Equals(tipo)) {
                     p.changeMode(mode);
-                    Console.WriteLine("Modo cambiado");
                 }
                 
             }
@@ -289,7 +287,6 @@ namespace ProyectoWPF {
                 }
                 cont++;
             }
-            Console.WriteLine("No se ha encontrado el boton");
             return null;
         }
     }

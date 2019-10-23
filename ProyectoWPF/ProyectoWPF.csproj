@@ -71,6 +71,9 @@
     <Compile Include="Carpeta.xaml.cs">
       <DependentUpon>Carpeta.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LabelDeslizable.xaml.cs">
+      <DependentUpon>LabelDeslizable.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Lista.cs" />
     <Compile Include="Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
@@ -120,6 +123,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Carpeta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LabelDeslizable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
