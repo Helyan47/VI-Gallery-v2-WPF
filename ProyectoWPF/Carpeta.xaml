@@ -61,16 +61,17 @@
                     </Border.OpacityMask>
                 </Border>
 
-                <Border x:Name="lbTitle" CornerRadius="10,10,0,0" Grid.Row="1" Grid.Column="1" Panel.ZIndex="4">
+                <Border x:Name="lbTitle" CornerRadius="10,10,0,0" Grid.Row="1" Grid.Column="1" Panel.ZIndex="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                     <Border.OpacityMask>
                         <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                             <GradientStop Color="Black" Offset="0"/>
-                            <GradientStop Color="#02FFFFFF" Offset="1"/>
-                            <GradientStop Color="Black" Offset="0.807"/>
+                            <GradientStop Color="#02FFFFFF" Offset="0.935"/>
+                            <GradientStop Color="Black" Offset="0.765"/>
+                            <GradientStop Color="#4C737373" Offset="0.871"/>
                         </LinearGradientBrush>
                     </Border.OpacityMask>
-                    <Label x:Name="Title" FontSize="20" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="{x:Null}">
-                        Serieeeeeeeeeeeeeeeeee
+                    <Label x:Name="Title" FontSize="20" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                        Serie
                     </Label>
                 </Border>
 
