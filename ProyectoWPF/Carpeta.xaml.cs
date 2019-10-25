@@ -82,7 +82,7 @@ namespace ProyectoWPF {
             }
             bordeDesc.Visibility = Visibility.Hidden;
             descripcion.Visibility = Visibility.Hidden;
-            if (mode != 2) {
+            if (mode != 3) {
                 Title2.Visibility = Visibility.Visible;
             }
             
@@ -276,33 +276,49 @@ namespace ProyectoWPF {
 
                 Title2.Visibility = Visibility.Visible;
                 borde.BorderThickness = new Thickness(5);
+                borde2.BorderThickness = new Thickness(5);
+                Title2.Width = 239;
+                Title2.Margin = new Thickness(0,0,5,0);
+                Title2.SetRadius(new CornerRadius(0,0,10,10));
                 backgroundGrid.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255,255,255));
-                //Title2.VerticalContentAlignment = VerticalAlignment.Center;
-                //gridLabel.Height = new GridLength(0.25, GridUnitType.Star);
+                Grid.SetRowSpan(Title2, 1);
+                ImgBorde.CornerRadius = new CornerRadius(15);
+
             } else if (mode == 1) {
                 Grid.SetRowSpan(ImgBorde, 4);
                 Grid.SetRowSpan(Img, 4);
                 Grid.SetRowSpan(bordeDesc, 4);
                 Grid.SetRowSpan(borde, 5);
                 Title2.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(255,255,255));
-                //Title.VerticalContentAlignment = VerticalAlignment.Top;
                 Title2.SetSombraVisible(true);
                 this.Height = 352;
-
-                Title2.Visibility = Visibility.Visible;
-                borde.BorderThickness = new Thickness(5);
-                backgroundGrid.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
-                //gridLabel.Height = new GridLength(0.45,GridUnitType.Star);
             } else if (mode == 2) {
                 Grid.SetRowSpan(ImgBorde, 4);
                 Grid.SetRowSpan(Img, 4);
                 Grid.SetRowSpan(bordeDesc, 4);
-                Grid.SetRowSpan(borde, 5);
+
+                Title2.SetSombraVisible(true);
+                this.Height = 352;
+                Title2.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(255, 255, 255));
+
+                borde.BorderThickness = new Thickness(0);
+                borde2.BorderThickness = new Thickness(0);
+                Title2.Width = 250;
+                Title2.Margin = new Thickness(0,1,0,0);
+                ImgBorde.CornerRadius = new CornerRadius(10);
+                Grid.SetRowSpan(Title2,2);
+                backgroundGrid.Background= new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#00000000"));
+            } else if (mode == 3) {
+                Grid.SetRowSpan(ImgBorde, 4);
+                Grid.SetRowSpan(Img, 4);
+                Grid.SetRowSpan(bordeDesc, 4);
                 this.Height = 352;
 
                 Title2.Visibility = Visibility.Hidden;
                 borde.BorderThickness = new Thickness(0);
-                backgroundGrid.Background= new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#00000000"));
+                borde2.BorderThickness = new Thickness(0);
+                ImgBorde.CornerRadius = new CornerRadius(10);
+                backgroundGrid.Background = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#00000000"));
             }
         }
     }

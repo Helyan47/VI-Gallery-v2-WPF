@@ -30,10 +30,7 @@ namespace ProyectoWPF {
         private DispatcherTimer tm;
         private Thickness normalMargin;
         private int margin;
-        private int widthUserControl;
-        private int numLetras;
-        private double intervalo;
-        private int aux;
+        private int widthLabel;
         public LabelDeslizable() {
             InitializeComponent();
             defaultColorShadow = shadowColor.Color;
@@ -42,7 +39,6 @@ namespace ProyectoWPF {
             secondaryColor = Color.FromRgb(255, 255, 255);
             normalMargin = new Thickness(0);
             margin = 0;
-            widthUserControl = (int)Sombra.Width;
         }
 
         public void ChangeShadowColor(Color c) {
@@ -73,15 +69,12 @@ namespace ProyectoWPF {
         }
 
         private void Title_MouseEnter(object sender, MouseEventArgs e) {
-            Console.WriteLine("mouseenter");
             tm = new DispatcherTimer();
             tm.Tick += Tm_Tick;
             tm.Interval = new TimeSpan(0, 0, 0, 0, 10);
-            widthUserControl = (int)Title.ActualWidth;
-            numLetras = Title.Content.ToString().Length;
             FormattedText fm=new FormattedText(Title.Content.ToString(),CultureInfo.CurrentCulture,FlowDirection.LeftToRight,new Typeface(Title.FontFamily, Title.FontStyle, Title.FontWeight, Title.FontStretch),
         Title.FontSize,Brushes.Black,new NumberSubstitution(),1);
-            aux = (int) (fm.Width-225);
+            widthLabel = (int) (fm.Width-225);
 
             Color c = limiteColor.Color;
             c.A = 255;
@@ -92,7 +85,7 @@ namespace ProyectoWPF {
             c = limiteColor3.Color;
             c.A = 255;
             limiteColor3.Color = c;
-            if (aux > 10) {
+            if (widthLabel > 10) {
                 tm.Start();
             }
             
@@ -110,7 +103,7 @@ namespace ProyectoWPF {
                 limiteColor3.Offset += 0.0005;
             }
 
-            if (cont > aux) {
+            if (cont > widthLabel) {
                 borde.Margin = normalMargin;
                 margin = 0;
                 limiteColor.Offset = 0.765;
@@ -137,9 +130,6 @@ namespace ProyectoWPF {
         public void SetBorderCorners(CornerRadius cn) {
             borde.CornerRadius = cn;
         }
-        public void SetWidth(int Width) {
-            widthUserControl = Width;
-        }
 
         public void SetSombraVisible(bool flag) {
             if (!flag) {
@@ -147,6 +137,10 @@ namespace ProyectoWPF {
             } else {
                 Sombra.Visibility = Visibility.Visible;
             }
+        }
+
+        public void SetRadius(CornerRadius rs) {
+            Sombra.CornerRadius = rs;
         }
     }
 }

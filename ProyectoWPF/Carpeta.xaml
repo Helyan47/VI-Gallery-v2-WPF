@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:ProyectoWPF"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="250">
+    <UserControl.Effect>
+        <DropShadowEffect Direction="0" ShadowDepth="0" BlurRadius="20" />
+    </UserControl.Effect>
     <Border x:Name="backgroundGrid" CornerRadius="10" Background="White" ClipToBounds="True">
         <Grid>
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseLeftButtonUp="MouseClick">
@@ -17,7 +20,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="0.025*"/>
                     <RowDefinition Height="0.25*"/>
-                    <RowDefinition Height="0.025*"/>
+                    <RowDefinition x:Name="lastRow" Height="0.025*"/>
                 </Grid.RowDefinitions>
 
 
@@ -25,11 +28,14 @@
                     <Label x:Name="descripcion" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Descripcion" Foreground="#FFF9F9F9" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
                 </Border>
 
-                <Border x:Name="ImgBorde" CornerRadius="10"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" MouseEnter="img_MouseEnter" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <Border x:Name="ImgBorde" CornerRadius="15"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" MouseEnter="img_MouseEnter" RenderOptions.BitmapScalingMode="HighQuality"/>
+
 
                 <Border x:Name="borde" BorderThickness="5" Grid.Row="0" CornerRadius="10" Grid.RowSpan="3" BorderBrush="White" Panel.ZIndex="11"/>
 
-                <Border x:Name="Img" HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF212121" Grid.RowSpan="2" CornerRadius="10" ClipToBounds="True" MouseEnter="img_MouseEnter">
+                <Border x:Name="borde2" BorderThickness="5" Grid.Row="0" CornerRadius="10" Grid.RowSpan="5" BorderBrush="White" Panel.ZIndex="11"/>
+
+                <Border x:Name="Img"  CornerRadius="15" HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF212121" Grid.RowSpan="2" ClipToBounds="True" MouseEnter="img_MouseEnter">
                     <Viewbox Stretch="None">
                         <Canvas x:Name="canvasFolder" Width="210" Height="300">
                             <Canvas.RenderTransform>
@@ -48,31 +54,7 @@
                         </Canvas>
                     </Viewbox>
                 </Border>
-                <local:LabelDeslizable x:Name="Title2" HorizontalAlignment="Right" Height="43" Grid.Row="3" VerticalAlignment="Top" Width="239" Margin="0,0,5,0"/>
-                <!--<Border x:Name="Sombra" CornerRadius="10,10,0,0" Grid.Row="1" Grid.Column="1" Panel.ZIndex="3" Visibility="Hidden" Background="Black">
-                    <Border.OpacityMask>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Black" Offset="0"/>
-                            <GradientStop Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.OpacityMask>
-                </Border>
-
-                <Border x:Name="lbTitle" CornerRadius="10,10,0,0" Grid.Row="1" Grid.Column="1" Panel.ZIndex="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <Border.OpacityMask>
-                        <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                            <GradientStop Color="Black" Offset="0"/>
-                            <GradientStop Color="#02FFFFFF" Offset="0.935"/>
-                            <GradientStop Color="Black" Offset="0.765"/>
-                            <GradientStop Color="#4C737373" Offset="0.871"/>
-                        </LinearGradientBrush>
-                    </Border.OpacityMask>
-                    <Label x:Name="Title" FontSize="20" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-                        Serie
-                    </Label>
-                </Border>
-                -->
-
+                <local:LabelDeslizable x:Name="Title2"  Grid.Row="3"  VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="0,0,5,0" Width="239" />
 
             </Grid>
 

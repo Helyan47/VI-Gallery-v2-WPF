@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using System.Windows.Media;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -24,10 +24,11 @@ namespace ProyectoWPF {
         private SubCarpeta aux2;
         List<string> rutas = new List<string>();
         SaveData sv = new SaveData("ArchivoData.txt");
+        private UIElementCollection botones;
         private Button activatedButton;
         public MainWindow() {
             InitializeComponent();
-            UIElementCollection botones = buttonStack.Children;
+            botones = buttonStack.Children;
             wrapsPrincipales = new List<WrapPanelPrincipal>();
             botonesMenu = new List<Button>();
             int cont = 0;
@@ -40,12 +41,12 @@ namespace ProyectoWPF {
                 gridPrincipal.Children.Add(wp);
                 if (cont == 0) {
                     wp.Visibility = Visibility.Visible;
-                    cont++;
                     activatedButton = b;
                 } else {
                     wp.Visibility = Visibility.Hidden;
                 }
-                
+                cont++;
+
                 wrapsPrincipales.Add(wp);
             }
             lista = new Lista(wrapsPrincipales, botonesMenu);
@@ -63,7 +64,11 @@ namespace ProyectoWPF {
                 lista.showWrapFromButton(b);
 
             }
+            foreach(Button h in botones) {
+                h.ClearValue(Button.BackgroundProperty);
+            }
             activatedButton = b;
+            b.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
         }
 
 
@@ -124,7 +129,6 @@ namespace ProyectoWPF {
                         c.setRuta(p.getSubCarpeta().getRuta() + "/" + c.getTitle());
                         sv.saveData(c.getRuta(), name);
 
-                        c.changeMode(lista.actualiceMode(activatedButton));
 
                     } else {
 
@@ -141,7 +145,7 @@ namespace ProyectoWPF {
                         c.setRuta(p.getCarpeta().getRuta() + "/" + c.getTitle());
                         sv.saveData(c.getRuta(), name);
 
-                        c.changeMode(lista.actualiceMode(activatedButton));
+                        
 
                     }
 
@@ -149,7 +153,7 @@ namespace ProyectoWPF {
 
 
                 c.actualizar();
-
+                c.changeMode(lista.actualiceMode(activatedButton));
                 c.Visibility = Visibility.Visible;
             } else {
                 //c.Controls.Remove(c);

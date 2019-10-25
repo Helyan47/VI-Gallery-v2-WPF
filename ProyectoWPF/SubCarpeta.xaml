@@ -19,11 +19,14 @@
                     <RowDefinition Height="0.25*"/>
                     <RowDefinition Height="0.025*"/>
                 </Grid.RowDefinitions>
-                <Border x:Name="ImgBorde" CornerRadius="10"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <Border x:Name="ImgBorde" CornerRadius="15"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" RenderOptions.BitmapScalingMode="HighQuality"/>
+
 
                 <Border x:Name="borde" BorderThickness="5" Grid.Row="0" CornerRadius="10" Grid.RowSpan="3" BorderBrush="White" Panel.ZIndex="11"/>
 
-                <Border x:Name="Img" HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF212121" Grid.RowSpan="2" CornerRadius="10" ClipToBounds="True">
+                <Border x:Name="borde2" BorderThickness="5" Grid.Row="0" CornerRadius="10" Grid.RowSpan="5" BorderBrush="White" Panel.ZIndex="11"/>
+
+                <Border x:Name="Img" CornerRadius="15"  HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF212121" Grid.RowSpan="2" ClipToBounds="True">
                     <Viewbox Stretch="None">
                         <Canvas x:Name="canvasFolder" Width="210" Height="300">
                             <Canvas.RenderTransform>
@@ -42,7 +45,7 @@
                         </Canvas>
                     </Viewbox>
                 </Border>
-                <local:LabelDeslizable x:Name="Title" HorizontalAlignment="Right" Height="43" Grid.Row="3" VerticalAlignment="Top" Width="239" Margin="0,0,5,0"/>
+                <local:LabelDeslizable x:Name="Title"  Grid.Row="3"  VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="0,0,5,0" Width="239" />
             </Grid>
 
         </Grid>
