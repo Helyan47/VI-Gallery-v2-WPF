@@ -275,13 +275,7 @@ namespace ProyectoWPF {
                 if (files == folders) {
                     aux = addCarpetaCompleta(files[i]);
 
-                    if (aux.getListaCarpetas() == null) {
-                        MessageBox.Show("es null");
-                    }
                 } else {
-                    if (aux.getListaCarpetas() == null) {
-                        MessageBox.Show("es null");
-                    }
 
                     aux2 = lista.searchRuta(Directory.GetParent(files[i]).FullName);
                     if (!checkString(files[i])) {
@@ -325,7 +319,7 @@ namespace ProyectoWPF {
 
                 p1.actualizar();
 
-                p1.changeMode(lista.actualiceMode(activatedButton));
+                
 
                 string name = activatedButton.Name;
                 p1.getSerie().setTipo(name);
@@ -336,6 +330,7 @@ namespace ProyectoWPF {
                 aux.addCarpeta(p1);
                 p1.setPadreSerie(aux);
                 p1.SetGridsOpciones(GridPrincipal, GridSecundario);
+                p1.changeMode(lista.actualiceMode(activatedButton));
 
             } else {
                 //p1.Controls.Remove(p1);
@@ -351,7 +346,7 @@ namespace ProyectoWPF {
 
             WrapPanelPrincipal aux = lista.getWrapVisible();
 
-            p1.changeMode(lista.actualiceMode(activatedButton));
+            
 
             SerieClass s = new SerieClass(System.IO.Path.GetFileNameWithoutExtension(filename), "");
             p1.setSerie(s);
@@ -361,7 +356,7 @@ namespace ProyectoWPF {
             p1.getSerie().setTipo(name);
             p1.setRuta(filename);
             sv.saveData(p1.getRuta(), name);
-
+            p1.changeMode(lista.actualiceMode(activatedButton));
 
 
             aux.addCarpeta(p1);
@@ -369,6 +364,7 @@ namespace ProyectoWPF {
             p1.SetGridsOpciones(GridPrincipal, GridSecundario);
             p1.setPadreSerie(aux);
             p1.SetGridPadre(gridPrincipal);
+            
 
             return p1;
         }

@@ -168,7 +168,7 @@ namespace ProyectoWPF {
 
         public void setTitle(String titulo) {
             nombre = titulo;
-            Title.Content = titulo;
+            Title.SetText(titulo);
         }
 
         public string getTitle() {
@@ -179,30 +179,45 @@ namespace ProyectoWPF {
             click();
         }
 
-        public void chageFontSize(int size) {
-            Title.FontSize = size;
-        }
-
         public void changeMode(int mode) {
             this.mode = mode;
+
             if (mode == 0) {
-                Grid.SetRow(ImgBorde, 3);
                 Grid.SetRowSpan(ImgBorde, 2);
-                Grid.SetRow(Img, 3);
                 Grid.SetRowSpan(Img, 2);
-                Title.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
-                Sombra.Visibility = Visibility.Hidden;
-                Title.VerticalContentAlignment = VerticalAlignment.Center;
-                gridLabel.Height = new GridLength(0.25, GridUnitType.Star);
+                Grid.SetRowSpan(borde, 3);
+
+                Title.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                Title.SetSombraVisible(false);
+                this.Height = 400;
+
+                Title.Visibility = Visibility.Visible;
+                borde.BorderThickness = new Thickness(5);
+                backgroundGrid.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
+                //Title2.VerticalContentAlignment = VerticalAlignment.Center;
+                //gridLabel.Height = new GridLength(0.25, GridUnitType.Star);
             } else if (mode == 1) {
-                Grid.SetRow(ImgBorde, 1);
                 Grid.SetRowSpan(ImgBorde, 4);
-                Grid.SetRow(Img, 1);
                 Grid.SetRowSpan(Img, 4);
-                Title.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
-                Sombra.Visibility = Visibility.Visible;
-                Title.VerticalContentAlignment = VerticalAlignment.Top;
-                gridLabel.Height = new GridLength(0.45, GridUnitType.Star);
+                Grid.SetRowSpan(borde, 5);
+                Title.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(255, 255, 255));
+                //Title.VerticalContentAlignment = VerticalAlignment.Top;
+                Title.SetSombraVisible(true);
+                this.Height = 352;
+
+                Title.Visibility = Visibility.Visible;
+                borde.BorderThickness = new Thickness(5);
+                backgroundGrid.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                //gridLabel.Height = new GridLength(0.45,GridUnitType.Star);
+            } else if (mode == 2) {
+                Grid.SetRowSpan(ImgBorde, 4);
+                Grid.SetRowSpan(Img, 4);
+                Grid.SetRowSpan(borde, 5);
+                this.Height = 352;
+
+                Title.Visibility = Visibility.Hidden;
+                borde.BorderThickness = new Thickness(0);
+                backgroundGrid.Background = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#00000000"));
             }
         }
     }

@@ -6,19 +6,19 @@
              xmlns:local="clr-namespace:ProyectoWPF"
              mc:Ignorable="d" Height="34.987" Width="181.099">
     <Grid>
-        <Border x:Name="Sombra" CornerRadius="10,10,0,0" Grid.Row="1" Grid.Column="1" Panel.ZIndex="3" Visibility="Hidden" Background="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Border x:Name="Sombra" CornerRadius="0,0,10,10" Grid.Row="1" Grid.Column="1" Panel.ZIndex="3" Visibility="Hidden" Background="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Border.OpacityMask>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop x:Name="shadowColor" Color="Black" Offset="0"/>
-                    <GradientStop Offset="1"/>
+                    <GradientStop x:Name="shadowColor" Color="Black" Offset="1"/>
+                    <GradientStop/>
                 </LinearGradientBrush>
             </Border.OpacityMask>
         </Border>
         <Border x:Name="SecondBorder" />
-        <Border x:Name="borde" MouseEnter="Title_MouseEnter" MouseLeave="Title_MouseLeave" Panel.ZIndex="3">
+        <Border x:Name="borde" MouseEnter="Title_MouseEnter" MouseLeave="Title_MouseLeave" Panel.ZIndex="3" Padding="3,0,0,3">
             <Border.OpacityMask>
                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop x:Name="StartColor"  Color="Black" Offset="0"/>
                     <GradientStop x:Name="limiteColor3" Color="#02FFFFFF" Offset="0.935"/>
                     <GradientStop x:Name="limiteColor" Color="Black" Offset="0.765"/>
                     <GradientStop x:Name="limiteColor2" Color="#4C737373" Offset="0.871"/>

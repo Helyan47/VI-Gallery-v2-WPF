@@ -78,11 +78,27 @@ namespace ProyectoWPF {
             widthUserControl = (int)Title.ActualWidth;
             numLetras = Title.Content.ToString().Length;
             if (numLetras >= 18){
-                intervalo = (numLetras * 7.5) / ((-(numLetras / 18) * 80)+450);
+                if(numLetras <= 22) {
+                    intervalo = (numLetras * 7.5) / ((-(numLetras / 18) * 82.5) + 1000);
+                } else if(numLetras<=40){
+                    intervalo = (numLetras * 7.5) / ((-(numLetras / 18) * 82.5) + 450);
+                } else {
+                    intervalo = (numLetras * 7.5) / ((-(numLetras / 18) * 82.5) + 400);
+                }
+                
             } else {
                 intervalo = 0;
             }
-            
+
+            Color c = limiteColor.Color;
+            c.A = 255;
+            limiteColor.Color = c;
+            c = limiteColor2.Color;
+            c.A = 255;
+            limiteColor2.Color = c;
+            c = limiteColor3.Color;
+            c.A = 255;
+            limiteColor3.Color = c;
             //if (numLetras <= 17) {
             //    intervalo = 0;
             //} else if(numLetras >=50){
@@ -92,17 +108,18 @@ namespace ProyectoWPF {
             //} else {
             //    intervalo = (numLetras * 7.5) / 350;
             //}
-            
+
             tm.Start();
         }
 
         private void Tm_Tick(object sender, EventArgs e) {
             margin--;
-            Console.WriteLine(margin + " | " + widthUserControl * intervalo);
             borde.Margin = new Thickness(margin, 0, 0, 0);
             int cont = margin * -1;
+
             if (cont % 7 == 0) {
                 limiteColor.Offset += 0.0016667;
+                
                 limiteColor2.Offset += 0.00083;
                 limiteColor3.Offset += 0.0005;
             }
@@ -121,6 +138,12 @@ namespace ProyectoWPF {
                 tm.Stop();
                 borde.Margin = normalMargin;
                 margin = 0;
+                Color c = (Color)ColorConverter.ConvertFromString("#FF000000");
+                limiteColor.Color = c;
+                c = (Color)ColorConverter.ConvertFromString("#4C737373");
+                limiteColor2.Color = c;
+                c = (Color)ColorConverter.ConvertFromString("#02FFFFFF");
+                limiteColor3.Color = c;
             }
 
         }

@@ -240,6 +240,10 @@ namespace ProyectoWPF {
                     modifyMode(visible.Name, newMode);
 
                 } else if (actualMode == 1) {
+                    int newMode = 2;
+                    visible.setMode(newMode);
+                    modifyMode(visible.Name, newMode);
+                }else if(actualMode == 2) {
                     int newMode = 0;
                     visible.setMode(newMode);
                     modifyMode(visible.Name, newMode);
