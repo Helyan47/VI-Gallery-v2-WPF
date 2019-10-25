@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,7 @@ namespace ProyectoWPF {
         private int widthUserControl;
         private int numLetras;
         private double intervalo;
+        private int aux;
         public LabelDeslizable() {
             InitializeComponent();
             defaultColorShadow = shadowColor.Color;
@@ -77,18 +79,9 @@ namespace ProyectoWPF {
             tm.Interval = new TimeSpan(0, 0, 0, 0, 10);
             widthUserControl = (int)Title.ActualWidth;
             numLetras = Title.Content.ToString().Length;
-            if (numLetras >= 18){
-                if(numLetras <= 22) {
-                    intervalo = (numLetras * 7.5) / ((-(numLetras / 18) * 82.5) + 1000);
-                } else if(numLetras<=40){
-                    intervalo = (numLetras * 7.5) / ((-(numLetras / 18) * 82.5) + 450);
-                } else {
-                    intervalo = (numLetras * 7.5) / ((-(numLetras / 18) * 82.5) + 400);
-                }
-                
-            } else {
-                intervalo = 0;
-            }
+            FormattedText fm=new FormattedText(Title.Content.ToString(),CultureInfo.CurrentCulture,FlowDirection.LeftToRight,new Typeface(Title.FontFamily, Title.FontStyle, Title.FontWeight, Title.FontStretch),
+        Title.FontSize,Brushes.Black,new NumberSubstitution(),1);
+            aux = (int) (fm.Width-225);
 
             Color c = limiteColor.Color;
             c.A = 255;
@@ -99,17 +92,10 @@ namespace ProyectoWPF {
             c = limiteColor3.Color;
             c.A = 255;
             limiteColor3.Color = c;
-            //if (numLetras <= 17) {
-            //    intervalo = 0;
-            //} else if(numLetras >=50){
-            //    intervalo = (numLetras * 7.5) / 200;
-            //} else if(numLetras >=30){
-            //    intervalo = (numLetras * 7.5) / 250;
-            //} else {
-            //    intervalo = (numLetras * 7.5) / 350;
-            //}
-
-            tm.Start();
+            if (aux > 10) {
+                tm.Start();
+            }
+            
         }
 
         private void Tm_Tick(object sender, EventArgs e) {
@@ -124,7 +110,7 @@ namespace ProyectoWPF {
                 limiteColor3.Offset += 0.0005;
             }
 
-            if (cont > (widthUserControl * intervalo)) {
+            if (cont > aux) {
                 borde.Margin = normalMargin;
                 margin = 0;
                 limiteColor.Offset = 0.765;

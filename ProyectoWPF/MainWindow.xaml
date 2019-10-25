@@ -95,10 +95,12 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
-                                <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                                <Button Content="Button" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                                <Button Content="addArchivo" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White"/>
-                                <Button x:Name="addSubCarp" Content="SubCarp" Width="50" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="NewTemp_Click"/>
+                                <Button Content="Button" Padding="1" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White"/>
+                                <Button Content="Button" Padding="1" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="ChangeMode"/>
+                                <Button Content="addArchivo" Padding="1" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White"/>
+                                <Viewbox Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <Button x:Name="addSubCarp" Content="{StaticResource Folder}" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="NewTemp_Click" Margin="20"/>
+                                </Viewbox>
                             </StackPanel>
                             <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
                         </Grid>
