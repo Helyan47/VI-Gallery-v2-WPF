@@ -47,6 +47,10 @@ namespace ProyectoWPF {
             return false;
         }
 
+        public void addWrapPrincipal(WrapPanelPrincipal wp) {
+            wrapsPrincipales.Add(wp);
+        }
+
         public void addSubWrap(WrapPanelPrincipal wp) {
             wrapsSecundarios.Add(wp);
         }
@@ -203,7 +207,7 @@ namespace ProyectoWPF {
 
         public SubCarpeta searchRuta(string s) {
             foreach (SubCarpeta p in subCarpetas) {
-                if (p.getRuta().Equals(s)) {
+                if (p.getRutaDirectorio().Equals(s)) {
                     return p;
                 }
             }
@@ -296,6 +300,31 @@ namespace ProyectoWPF {
                 cont++;
             }
             return null;
+        }
+
+        public object getFolderRuta(string rutaPrograma) {
+            object c = new object();
+            string[] splits = rutaPrograma.Split('/');
+            string namePadre = "";
+            for (int i = 0; i < (splits.Length - 1); i++) {
+                if (i == (splits.Length - 2)) {
+                    namePadre += splits[i];
+                } else {
+                    namePadre += splits[i] + "/";
+                }
+            }
+            Console.WriteLine("ruta padre"+namePadre);
+            foreach(Carpeta p in carpetas) {
+                if (p.getRutaPrograma().Equals(namePadre)) {
+                    c = p;
+                }
+            }
+            foreach(SubCarpeta p in subCarpetas) {
+                if (p.getRutaPrograma().Equals(namePadre)) {
+                    c = p;
+                }
+            }
+            return c;
         }
     }
 }

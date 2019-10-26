@@ -12,6 +12,9 @@ namespace ProyectoWPF {
     /// <summary>
     /// Lógica de interacción para Carpeta.xaml
     /// </summary>
+    /// 
+
+    [Serializable]
     public partial class Carpeta : UserControl {
 
         private DispatcherTimer dispatcherTimer;
@@ -24,10 +27,12 @@ namespace ProyectoWPF {
         private WrapPanelPrincipal wrapCarpetaPropia;
         private Menu menuCarpeta;
         private Grid gridPadre;
-        private string ruta;
+        private string rutaDirectorio;
+        private string rutaPrograma;
         private MainWindow ventanaMain;
         private Canvas defaultCanvas;
         private int mode = 0;
+        private string descripcionText;
 
         public Carpeta(MainWindow ventana) {
             InitializeComponent();
@@ -35,6 +40,7 @@ namespace ProyectoWPF {
             Title2.SetText("");
             ventanaMain = ventana;
             defaultCanvas = canvasFolder;
+            descripcionText = "";
         }
 
 
@@ -101,6 +107,7 @@ namespace ProyectoWPF {
             wrapPanelAnterior = wrapPadre;
         }
 
+
         public void SetGridPadre(Grid p) {
             gridPadre = p;
         }
@@ -108,12 +115,26 @@ namespace ProyectoWPF {
             return gridPadre;
         }
 
-        public void setRuta(string s) {
-            ruta = s;
+        public void setDescripcion(string d) {
+            this.descripcionText = d;
         }
 
-        public string getRuta() {
-            return ruta;
+        public string getDescripcion() {
+            return descripcionText;
+        }
+        public void setRutaDirectorio(string s) {
+            rutaDirectorio = s;
+        }
+
+        public string getRutaDirectorio() {
+            return rutaDirectorio;
+        }
+        public void setRutaPrograma(string s) {
+            rutaPrograma = s;
+        }
+
+        public string getRutaPrograma() {
+            return rutaPrograma;
         }
 
         public void setTitle(string title) {

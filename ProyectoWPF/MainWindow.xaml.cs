@@ -29,27 +29,40 @@ namespace ProyectoWPF {
         public MainWindow() {
             InitializeComponent();
             botones = buttonStack.Children;
-            wrapsPrincipales = new List<WrapPanelPrincipal>();
             botonesMenu = new List<Button>();
-            int cont = 0;
-            foreach (Button b in botones) {
+            wrapsPrincipales = new List<WrapPanelPrincipal>();
+            lista = new Lista();
+            bool check=loadData();
+            if (check == true) {
+
+            } else {
+
+                Button b = new Button();
+                b.Height = 100;
+                b.FontSize = 40;
+                b.BorderThickness = new System.Windows.Thickness(0);
+                b.FontWeight = FontWeights.Bold;
+                b.Foreground = Brushes.White;
+                b.Visibility = Visibility.Visible;
+                b.Content = "Serie";
+                b.Name = "Serie";
+                b.Style = (Style)Application.Current.Resources["CustomButtonStyle"];
+                b.Click += onClickButtonMenu;
+
+                botonesMenu.Add(b);
+                buttonStack.Children.Add(b);
+                int cont = 0;
                 botonesMenu.Add(b);
                 string name = b.Content.ToString();
                 aux = new Carpeta(this);
                 WrapPanelPrincipal wp = new WrapPanelPrincipal();
                 wp.Name = name;
                 gridPrincipal.Children.Add(wp);
-                if (cont == 0) {
-                    wp.Visibility = Visibility.Visible;
-                    activatedButton = b;
-                } else {
-                    wp.Visibility = Visibility.Hidden;
-                }
-                cont++;
-
+                wp.Visibility = Visibility.Visible;
+                activatedButton = b;
                 wrapsPrincipales.Add(wp);
+                lista = new Lista(wrapsPrincipales, botonesMenu);
             }
-            lista = new Lista(wrapsPrincipales, botonesMenu);
         }
 
 
@@ -122,12 +135,11 @@ namespace ProyectoWPF {
                         p.getSubCarpeta().AddSubCarpetas();
                         //c.setIdHijo(p.getSubCarpeta().getNumSubCarp());
                         c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
-                        c.setRuta(p.getSubCarpeta().getRuta() + "/" + c.getTitle());
 
                         string name = activatedButton.Name;
                         c.getSerie().setTipo(name);
-                        c.setRuta(p.getSubCarpeta().getRuta() + "/" + c.getTitle());
-                        sv.saveData(c.getRuta(), name);
+                        c.setRutaPrograma(p.getSubCarpeta().getRutaPrograma() + "/" + c.getTitle());
+                        //sv.saveData(c.getRutaPrograma(), name);
 
 
                     } else {
@@ -138,18 +150,18 @@ namespace ProyectoWPF {
                         p.getCarpeta().AddSubCarpetas();
                         //c.setIdHijo(p.getCarpeta().getNumSubCarp());
                         c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
-                        c.setRuta(p.getCarpeta().getRuta() + "/" + c.getTitle());
 
                         string name = activatedButton.Name;
                         c.getSerie().setTipo(name);
-                        c.setRuta(p.getCarpeta().getRuta() + "/" + c.getTitle());
-                        sv.saveData(c.getRuta(), name);
-
-                        
+                        c.setRutaPrograma(p.getCarpeta().getRutaPrograma() + "/" + c.getTitle());
+                        //sv.saveData(c.getRutaPrograma(), name);
 
                     }
 
+                    sv.saveSubFolder(c);
+
                 }
+
 
 
                 c.actualizar();
@@ -168,7 +180,7 @@ namespace ProyectoWPF {
             p1.clickEspecial();
             //FlowCarpeta p = listaSeries.getFlowCarpVisible();
             WrapPanelPrincipal p = p1.GetWrapCarpPrincipal();
-            c.setRuta(nombre);
+            c.setRutaDirectorio(nombre);
             if (p != null) {
                 if (p.getCarpeta() == null) {
                     c.setDatos(p.getSubCarpeta().getSerie(), p,
@@ -181,8 +193,11 @@ namespace ProyectoWPF {
                     
                     string name = activatedButton.Name;
                     c.getSerie().setTipo(name);
-                    c.setRuta(nombre);
-                    sv.saveData(c.getRuta(), name);
+                    c.setRutaDirectorio(nombre);
+                    c.setRutaPrograma(p.getSubCarpeta().getRutaPrograma() + "/" + c.getTitle());
+
+                    sv.saveSubFolder(c);
+                    //sv.saveData(c.getRutaPrograma(), name);
 
                     c.changeMode(lista.actualiceMode(activatedButton));
 
@@ -198,8 +213,11 @@ namespace ProyectoWPF {
 
                     string name = activatedButton.Name;
                     c.getSerie().setTipo(name);
-                    c.setRuta(nombre);
-                    sv.saveData(c.getRuta(), name);
+                    c.setRutaDirectorio(nombre);
+                    c.setRutaPrograma(p.getCarpeta().getRutaPrograma() + "/" + c.getTitle());
+
+                    sv.saveSubFolder(c);
+                    //sv.saveData(c.getRutaPrograma(), name);
 
                     c.changeMode(lista.actualiceMode(activatedButton));
 
@@ -224,7 +242,7 @@ namespace ProyectoWPF {
             sp1.click();
             //FlowCarpeta p = listaSeries.getFlowCarpVisible();
             WrapPanelPrincipal p = sp1.getWrapCarpPrincipal();
-            c.setRuta(nombre);
+            c.setRutaDirectorio(nombre);
             if (p != null) {
                 if (p.getCarpeta() == null) {
                     c.setDatos(p.getSubCarpeta().getSerie(), p,
@@ -237,8 +255,11 @@ namespace ProyectoWPF {
 
                     string name = activatedButton.Name;
                     c.getSerie().setTipo(name);
-                    c.setRuta(nombre);
-                    sv.saveData(c.getRuta(), name);
+                    c.setRutaDirectorio(nombre);
+                    c.setRutaPrograma(p.getSubCarpeta().getRutaPrograma() + "/" + c.getTitle());
+
+                    sv.saveSubFolder(c);
+                    //sv.saveData(c.getRutaPrograma(), name);
 
                     c.changeMode(lista.actualiceMode(activatedButton));
 
@@ -254,8 +275,11 @@ namespace ProyectoWPF {
 
                     string name = activatedButton.Name;
                     c.getSerie().setTipo(name);
-                    c.setRuta(p.getCarpeta().getRuta()+"/"+ c.getTitle());
-                    sv.saveData(c.getRuta(), name);
+                    c.setRutaDirectorio(p.getCarpeta().getRutaDirectorio()+"/"+ c.getTitle());
+                    c.setRutaPrograma(p.getCarpeta().getRutaPrograma()+"/"+c.getTitle());
+
+                    sv.saveSubFolder(c);
+                    //sv.saveData(c.getRutaPrograma(), name);
 
                     c.changeMode(lista.actualiceMode(activatedButton));
 
@@ -319,21 +343,20 @@ namespace ProyectoWPF {
             if (!p1.getSerie().getTitle().Equals("")) {
                 WrapPanelPrincipal aux = lista.getWrapVisible();
 
-                
-
                 p1.actualizar();
-
-                
 
                 string name = activatedButton.Name;
                 p1.getSerie().setTipo(name);
-                p1.setRuta("C/"+name+"/" + p1.getSerie().getTitle());
-                sv.saveData(p1.getRuta(),name);
+                p1.setRutaPrograma("C/"+name+"/" + p1.getSerie().getTitle());
+
+                sv.saveFolder(p1);
+                //sv.saveData(p1.getRutaPrograma(),name);
 
                 p1.SetGridPadre(gridPrincipal);
                 aux.addCarpeta(p1);
                 p1.setPadreSerie(aux);
                 p1.SetGridsOpciones(GridPrincipal, GridSecundario);
+
                 p1.changeMode(lista.actualiceMode(activatedButton));
 
             } else {
@@ -345,7 +368,7 @@ namespace ProyectoWPF {
         private Carpeta addCarpetaCompleta(string filename) {
             Carpeta p1 = new Carpeta(this);
             p1.setListaCarpetas(this.lista);
-            p1.setRuta(filename);
+            p1.setRutaDirectorio(filename);
             lista.addCarpeta(p1);
 
             WrapPanelPrincipal aux = lista.getWrapVisible();
@@ -358,9 +381,10 @@ namespace ProyectoWPF {
 
             string name = activatedButton.Name;
             p1.getSerie().setTipo(name);
-            p1.setRuta(filename);
-            sv.saveData(p1.getRuta(), name);
-            p1.changeMode(lista.actualiceMode(activatedButton));
+            p1.setRutaPrograma("C/" + name + "/" + p1.getSerie().getTitle());
+
+            sv.saveFolder(p1);
+            
 
 
             aux.addCarpeta(p1);
@@ -368,9 +392,99 @@ namespace ProyectoWPF {
             p1.SetGridsOpciones(GridPrincipal, GridSecundario);
             p1.setPadreSerie(aux);
             p1.SetGridPadre(gridPrincipal);
-            
+
+            p1.changeMode(lista.actualiceMode(activatedButton));
 
             return p1;
+        }
+
+        private Carpeta loadCarpeta(SaveCarpeta sc) {
+            Carpeta p1 = new Carpeta(this);
+            p1.setListaCarpetas(this.lista);
+            lista.addCarpeta(p1);
+
+            WrapPanelPrincipal aux = lista.getWrapVisible();
+
+            SerieClass s = new SerieClass(sc.getName(),sc.getDesc());
+            p1.setSerie(s);
+            p1.getSerie().setDirImge(sc.getDirImg());
+            p1.actualizar();
+
+            string name = activatedButton.Name;
+            p1.getSerie().setTipo(name);
+            p1.setRutaPrograma(sc.getRutaPrograma());
+
+
+
+
+            aux.addCarpeta(p1);
+
+            p1.SetGridsOpciones(GridPrincipal, GridSecundario);
+            p1.setPadreSerie(aux);
+            p1.SetGridPadre(gridPrincipal);
+
+            p1.changeMode(lista.actualiceMode(activatedButton));
+
+            p1.clickEspecial();
+
+            return p1;
+        }
+
+        private SubCarpeta loadSubCarpeta(SaveCarpeta sc) {
+            SubCarpeta c = new SubCarpeta();
+            lista.addSubCarpeta(c);
+            c.setRutaPrograma(sc.getRutaPrograma());
+            object obj = lista.getFolderRuta(sc.getRutaPrograma());
+            WrapPanelPrincipal p=null;
+            if (typeof(Carpeta).IsInstanceOfType(obj)) {
+                Carpeta aux = (Carpeta)obj;
+                p = aux.GetWrapCarpPrincipal();
+            } else if (typeof(SubCarpeta).IsInstanceOfType(obj)) {
+                SubCarpeta aux = (SubCarpeta)obj;
+                p = aux.getWrapCarpPrincipal();
+            }
+            //FlowCarpeta p = listaSeries.getFlowCarpVisible();
+             
+            if (p != null) {
+                if (p.getCarpeta() == null) {
+                    c.setDatos(p.getSubCarpeta().getSerie(), p,
+                    p.getSubCarpeta().GetListaCarpetas(), p.getSubCarpeta().GetGridCarpeta());
+                    p.addSubCarpeta(c);
+                    p.getSubCarpeta().AddSubCarpetas();
+                    c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
+                    c.setTitle(sc.getName());
+
+                    string name = activatedButton.Name;
+                    c.getSerie().setTipo(name);
+                    
+
+
+                    c.changeMode(lista.actualiceMode(activatedButton));
+
+                } else {
+
+                    c.setDatos(p.getCarpeta().getSerie(), p,
+                    p.getCarpeta().getListaCarpetas(), p.GetGridSubCarpetas());
+                    p.addSubCarpeta(c);
+                    p.getCarpeta().AddSubCarpetas();
+                    c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
+                    c.setTitle(sc.getName());
+
+                    string name = activatedButton.Name;
+                    c.getSerie().setTipo(name);
+
+                    c.changeMode(lista.actualiceMode(activatedButton));
+
+                }
+
+            }
+
+
+            c.actualizar();
+
+
+            c.Visibility = Visibility.Visible;
+            return c;
         }
 
         private void Return_MouseLeftButtonUp(object sender, RoutedEventArgs e) {
@@ -386,28 +500,55 @@ namespace ProyectoWPF {
             
         }
 
-        private void Form1_Resize(object sender, EventArgs e) {
+        public bool loadData() {
+            bool check;
+            if (File.Exists("ArchivoData.txt")) {
+                check = true;
+                ICollection<SaveCarpeta> folders = sv.loadFolders();
+                ICollection<Button> ib = sv.loadButtons(folders);
+                ICollection<SaveCarpeta> subFolders = sv.loadSubFolders();
+                int cont = 0;
+                foreach (Button b in ib) {
+                    b.Click += onClickButtonMenu;
+                    
+                    botonesMenu.Add(b);
+                    buttonStack.Children.Add(b);
+                    
+                    string name = b.Content.ToString();
+                    aux = new Carpeta(this);
+                    WrapPanelPrincipal wp = new WrapPanelPrincipal();
+                    wp.Name = name;
+                    gridPrincipal.Children.Add(wp);
+                    
+                    if (cont == 0) {
+                        wp.Visibility = Visibility.Visible;
+                        activatedButton = b;
+                        b.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    } else {
+                        wp.Visibility = Visibility.Hidden;
+                    }
+                    cont++;
 
-            //for(int i = 0; i < fl.Length; i++){
+                    wrapsPrincipales.Add(wp);
+                }
+                lista = new Lista(wrapsPrincipales, botonesMenu);
 
-            //    int anch = fl[i].Width;
-            //    double capacidad = anch % panelAux.Width;
-            //    if ((capacidad <= panelAux.Width) && (capacidad >= panelAux.Width - 1)){
+                foreach (SaveCarpeta sc in folders){
+                    loadCarpeta(sc);
+                }
 
-            //        int padd = (int)(capacidad+1 / 2);
-            //        Padding pd = new Padding(padd - 30, 50, padd - 30, 50);
-            //        fl[i].Padding = pd;
-            //    }else{
+                foreach(SaveCarpeta sc in subFolders) {
+                    loadSubCarpeta(sc);
+                }
 
-            //        int padd = (int)(capacidad + 50 / 2);
-            //        Padding pd = new Padding(padd - 30, 50, padd - 30, 50);
-            //        fl[i].Padding = pd;
-            //    }
+                
+                return check;
+            } else {
+                check = false;
+                return check;
+            }
 
-            //}
         }
-
-        
 
         public bool checkString(string s) {
             foreach (string h in rutas) {

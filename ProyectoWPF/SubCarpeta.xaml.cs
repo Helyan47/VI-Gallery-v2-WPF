@@ -11,7 +11,7 @@ namespace ProyectoWPF {
     /// Lógica de interacción para SubCarpeta.xaml
     /// </summary>
     /// 
-
+    [Serializable]
     public partial class SubCarpeta : UserControl {
 
         private String nombre;
@@ -22,9 +22,11 @@ namespace ProyectoWPF {
         private WrapPanelPrincipal wrapCarpPropia;
         private Grid gridPadre;
         private Menu menuCarpeta;
-        private string ruta;
+        private string rutaDirectorio;
+        private string rutaPrograma;
         private Canvas defaultCanvas;
         private int mode;
+        private string dirImg;
         public SubCarpeta() {
             InitializeComponent();
             numSubCarpetas = 0;
@@ -38,18 +40,27 @@ namespace ProyectoWPF {
         }
 
         public void setImg() {
+            dirImg = serie.getDirImg();
             ImageBrush ib = new ImageBrush(new BitmapImage(
         new Uri(@serie.getDirImg(), UriKind.Absolute)));
             ImgBorde.Background = ib;
             Img.Visibility = Visibility.Hidden;
         }
 
-        public void setRuta(string s) {
-            ruta = s;
+        public void setRutaDirectorio(string s) {
+            rutaDirectorio = s;
         }
 
-        public string getRuta() {
-            return ruta;
+        public string getRutaDirectorio() {
+            return rutaDirectorio;
+        }
+
+        public void setRutaPrograma(string s) {
+            rutaPrograma = s;
+        }
+
+        public string getRutaPrograma() {
+            return rutaPrograma;
         }
         public void AddSubCarpetas() {
             numSubCarpetas++;
@@ -57,6 +68,10 @@ namespace ProyectoWPF {
 
         public int getNumSubCarp() {
             return numSubCarpetas;
+        }
+
+        public string getDirImg() {
+            return dirImg;
         }
 
         public Grid GetGridCarpeta() {
