@@ -14,119 +14,126 @@ namespace ProyectoWPF {
     [Serializable]
     public partial class SubCarpeta : UserControl {
 
-        private String nombre;
-        private SerieClass serie;
-        private WrapPanelPrincipal wrapCarpAnterior;
-        private Lista listas;
-        private int numSubCarpetas;
-        private WrapPanelPrincipal wrapCarpPropia;
-        private Grid gridPadre;
-        private Menu menuCarpeta;
-        private string rutaDirectorio;
-        private string rutaPrograma;
-        private Canvas defaultCanvas;
-        private int mode;
-        private string dirImg;
+        private String _nombre;
+        private SerieClass _serie;
+        private WrapPanelPrincipal _wrapCarpAnterior;
+        private Lista _listas;
+        private int _numSubCarpetas;
+        private WrapPanelPrincipal _wrapCarpPropia;
+        private Grid _gridPadre;
+        private Menu _menuCarpeta;
+        private string _rutaDirectorio;
+        private string _rutaPrograma;
+        private Canvas _defaultCanvas;
+        private int _mode = 0;
+        private string _dirImg;
         public SubCarpeta() {
             InitializeComponent();
-            numSubCarpetas = 0;
-            defaultCanvas = canvasFolder;
+            _numSubCarpetas = 0;
+            _defaultCanvas = canvasFolder;
         }
 
+        #region get/set
+
         public void setDefaultSource() {
-            canvasFolder = defaultCanvas;
+            canvasFolder = _defaultCanvas;
             ImgBorde.Visibility = Visibility.Hidden;
             Img.Visibility = Visibility.Visible;
         }
 
         public void setImg() {
-            dirImg = serie.getDirImg();
+            _dirImg = _serie.getDirImg();
             ImageBrush ib = new ImageBrush(new BitmapImage(
-        new Uri(@serie.getDirImg(), UriKind.Absolute)));
+        new Uri(_serie.getDirImg(), UriKind.Absolute)));
             ImgBorde.Background = ib;
             Img.Visibility = Visibility.Hidden;
         }
 
         public void setRutaDirectorio(string s) {
-            rutaDirectorio = s;
+            _rutaDirectorio = s;
         }
 
         public string getRutaDirectorio() {
-            return rutaDirectorio;
+            return _rutaDirectorio;
         }
 
         public void setRutaPrograma(string s) {
-            rutaPrograma = s;
+            _rutaPrograma = s;
         }
 
         public string getRutaPrograma() {
-            return rutaPrograma;
+            return _rutaPrograma;
         }
         public void AddSubCarpetas() {
-            numSubCarpetas++;
+            _numSubCarpetas++;
         }
 
         public int getNumSubCarp() {
-            return numSubCarpetas;
+            return _numSubCarpetas;
         }
 
         public string getDirImg() {
-            return dirImg;
+            return _dirImg;
         }
 
         public Grid GetGridCarpeta() {
-            return gridPadre;
+            return _gridPadre;
         }
 
         public WrapPanelPrincipal getPadreSerie() {
-            return wrapCarpAnterior;
+            return _wrapCarpAnterior;
         }
 
         public void SetGridPadre(Grid p) {
-            gridPadre = p;
-            p.Children.Add(wrapCarpPropia);
+            _gridPadre = p;
+            p.Children.Add(_wrapCarpPropia);
         }
 
-        public void setSerie(SerieClass newSerie) {
-
-            serie = newSerie;
+        public void setSerie(SerieClass newSerie) { 
+            _serie = newSerie;
         }
 
         public Lista GetListaCarpetas() {
-            return listas;
+            return _listas;
         }
 
         public void SetListaCarpetas(Lista listaSeries) {
-            this.listas = listaSeries;
+            this._listas = listaSeries;
         }
 
         public void setMenuCarpeta(Menu m) {
-            menuCarpeta = m;
+            _menuCarpeta = m;
         }
 
         public Menu GetMenuCarpeta() {
-            return menuCarpeta;
+            return _menuCarpeta;
         }
 
         public SerieClass getSerie() {
 
-            return serie;
+            return _serie;
         }
 
         public WrapPanelPrincipal getWrapCarpPrincipal() {
-            return wrapCarpPropia;
+            return _wrapCarpPropia;
         }
 
 
         public Grid GetGridPadre() {
-            return gridPadre;
+            return _gridPadre;
         }
 
+        public string getTitle() {
+            return _nombre;
+        }
+
+        #endregion
+
         public void actualizar() {
-            if (serie.getTitle().Equals("")) {
+            if (_serie.getTitle().Equals("")) {
 
             } else {
-                if (serie.getDirImg() != "") {
+                if (_serie.getDirImg() != "") {
                     setImg();
                 }
             }
@@ -134,46 +141,46 @@ namespace ProyectoWPF {
         }
 
         public void setDatos(SerieClass ser, WrapPanelPrincipal flowPadre, Lista listas, Grid gridP) {
-            wrapCarpPropia = new WrapPanelPrincipal();
+            _wrapCarpPropia = new WrapPanelPrincipal();
 
-            serie = ser;
-            wrapCarpAnterior = flowPadre;
+            _serie = ser;
+            _wrapCarpAnterior = flowPadre;
 
 
-            this.listas = listas;
-            this.listas.addSubWrap(wrapCarpPropia);
-            gridPadre = gridP;
-            gridPadre.Children.Add(wrapCarpPropia);
+            this._listas = listas;
+            this._listas.addSubWrap(_wrapCarpPropia);
+            _gridPadre = gridP;
+            _gridPadre.Children.Add(_wrapCarpPropia);
             //flowCarpPropia.Dock = DockStyle.Fill;
-            wrapCarpPropia.Visibility = System.Windows.Visibility.Hidden;
-            wrapCarpPropia.setSubcarpeta(this);
-            wrapCarpPropia.setMode(this.mode);
+            _wrapCarpPropia.Visibility = System.Windows.Visibility.Hidden;
+            _wrapCarpPropia.setSubcarpeta(this);
+            _wrapCarpPropia.setMode(this._mode);
 
         }
 
         public void click() {
 
-            menuCarpeta.actualizar();
-            menuCarpeta.changeTitle(nombre);
-            wrapCarpAnterior.Visibility = System.Windows.Visibility.Hidden;
-            wrapCarpPropia.Visibility = System.Windows.Visibility.Visible;
+            _menuCarpeta.actualizar();
+            _menuCarpeta.changeTitle(_nombre);
+            _wrapCarpAnterior.Visibility = System.Windows.Visibility.Hidden;
+            _wrapCarpPropia.Visibility = System.Windows.Visibility.Visible;
         }
 
         public void clickEspecial() {
 
-            menuCarpeta.actualizar();
-            menuCarpeta.changeTitle(nombre);
+            _menuCarpeta.actualizar();
+            _menuCarpeta.changeTitle(_nombre);
 
         }
 
         public void clickInverso() {
-            wrapCarpAnterior.Visibility = System.Windows.Visibility.Visible;
-            wrapCarpPropia.Visibility = System.Windows.Visibility.Hidden;
+            _wrapCarpAnterior.Visibility = System.Windows.Visibility.Visible;
+            _wrapCarpPropia.Visibility = System.Windows.Visibility.Hidden;
 
-            if (wrapCarpAnterior.getSubCarpeta() != null) {
-                menuCarpeta.Title.Content = wrapCarpAnterior.getSubCarpeta().getTitle();
-            } else if (wrapCarpAnterior.getCarpeta() != null) {
-                menuCarpeta.Title.Content = wrapCarpAnterior.getCarpeta().getTitle();
+            if (_wrapCarpAnterior.getSubCarpeta() != null) {
+                _menuCarpeta.Title.Content = _wrapCarpAnterior.getSubCarpeta().getTitle();
+            } else if (_wrapCarpAnterior.getCarpeta() != null) {
+                _menuCarpeta.Title.Content = _wrapCarpAnterior.getCarpeta().getTitle();
             }
         }
 
@@ -183,20 +190,18 @@ namespace ProyectoWPF {
 
 
         public void setTitle(String titulo) {
-            nombre = titulo;
+            _nombre = titulo;
             Title.SetText(titulo);
         }
 
-        public string getTitle() {
-            return nombre;
-        }
+        
 
         private void SubCarpeta_MouseClick(object sender, MouseEventArgs e) {
             click();
         }
 
         public void changeMode(int mode) {
-            this.mode = mode;
+            this._mode = mode;
 
             if (mode == 0) {
                 Grid.SetRowSpan(ImgBorde, 2);

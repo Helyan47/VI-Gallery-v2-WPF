@@ -11,13 +11,13 @@ using System.Windows.Media;
 namespace ProyectoWPF {
     class SaveData {
 
-        string archivoData;
+        private  string _archivoData;
         public SaveData(string archivoData) {
-            this.archivoData = archivoData;
+            this._archivoData = archivoData;
         }
 
         public void saveData(string s,string name) {
-            StreamWriter sw = new StreamWriter(archivoData, true);
+            StreamWriter sw = new StreamWriter(_archivoData, true);
             sw.WriteLine(s);
             sw.Close();
         }
@@ -115,7 +115,6 @@ namespace ProyectoWPF {
             }
             foreach(string s in items) {
                 Button b = new Button();
-                //Height="100" FontSize="40" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"
                 b.Height = 100;
                 b.FontSize = 40;
                 b.BorderThickness = new System.Windows.Thickness(0);
@@ -129,48 +128,6 @@ namespace ProyectoWPF {
             }
 
             return botones;
-        }
-
-        public void saveFile() {
-
-        }
-
-        public string getButton(string linea) {
-            string name = "";
-            string[] names=linea.Split('/');
-            name=names[2];
-            return name;
-        }
-
-        public string getNameFolder(string linea) {
-            string name = "";
-            string[] names = linea.Split('/');
-            string lastName = names[names.Length - 1];
-            if (!lastName.Contains("^")) {
-                name = lastName;
-            } else {
-                string[] nameAndFile = lastName.Split('^');
-                name = nameAndFile[0];
-            }
-            return name;
-        }
-
-        public bool isCarpeta(string linea) {
-            bool comp= false;
-            string[] names = linea.Split('/');
-            if (names.Length == 3) {
-                comp = true;
-            }
-            return comp;
-        }
-
-        public string getNameCarpeta(string linea) {
-            string name = "";
-            string[] names = linea.Split('/');
-            if (names.Length == 3) {
-                name = names[3];
-            }
-            return name;
         }
         
     }
