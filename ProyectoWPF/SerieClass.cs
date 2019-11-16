@@ -102,7 +102,7 @@ namespace ProyectoWPF {
             return this.tipo;
         }
 
-        public void setDirImge(String dir) {
+        public void setDirImg(String dir) {
 
             this.dirImg = dir;
         }

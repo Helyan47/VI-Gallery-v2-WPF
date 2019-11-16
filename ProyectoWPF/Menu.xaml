@@ -8,7 +8,7 @@
              d:DesignHeight="1020" d:DesignWidth="1650">
     <Grid Background="#FF0E0E0E">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="0.4*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Border CornerRadius="10" Background="#FF1B1B1B" Grid.Row="0" Margin="10,10,10,0">
@@ -29,11 +29,11 @@
 
                 </Grid.ColumnDefinitions>
 
-
-
-                <Border x:Name="ImgBorde" CornerRadius="10" BorderThickness="5" BorderBrush="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4">
-                    <Viewbox>
-                        <Canvas x:Name="canvasFolder" Width="210" Height="300">
+                <Border x:Name="Img" CornerRadius="15" BorderThickness="5" BorderBrush="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Visibility="Hidden" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <Border x:Name="borde" BorderThickness="5" Grid.Row="1" CornerRadius="15" Grid.Column="1" Grid.RowSpan="4" BorderBrush="White" Panel.ZIndex="11"/>
+                <Border x:Name="ImgBorde" CornerRadius="15" BorderThickness="5" BorderBrush="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" RenderOptions.BitmapScalingMode="HighQuality">
+                    <Viewbox RenderOptions.BitmapScalingMode="HighQuality">
+                        <Canvas x:Name="canvasFolder" Width="210" Height="300" RenderOptions.BitmapScalingMode="HighQuality">
                             <Canvas.RenderTransform>
                                 <TranslateTransform X="0" Y="0"/>
                             </Canvas.RenderTransform>
@@ -50,8 +50,8 @@
                         </Canvas>
                     </Viewbox>
                 </Border>
-                <Border x:Name="Img" CornerRadius="10" BorderThickness="5" BorderBrush="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Visibility="Hidden"/>
                 
+
                 <Label x:Name="Title" Content="Carpeta" Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="10" Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Top" FontSize="30" FontWeight="Bold" Foreground="White"/>
                 <Label x:Name="Descripcion" Content="Descripcion" Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="2" VerticalAlignment="Stretch" FontSize="12" Margin="10,0,0,0" Foreground="White"/>
                 <Label x:Name="Generos" Content="Generos" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="White" Margin="10,0,0,0" VerticalContentAlignment="Center"/>

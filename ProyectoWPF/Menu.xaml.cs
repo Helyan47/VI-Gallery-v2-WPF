@@ -25,13 +25,21 @@ namespace ProyectoWPF {
         Grid gridButtonPrincipal;
         Grid gridButtonBSecundario;
         WrapPanelPrincipal wrapCarpPrincipal;
+        private Canvas _defaultCanvas;
         public Menu(Carpeta carpPrincipal) {
             InitializeComponent();
+            _defaultCanvas = canvasFolder;
             carpeta = carpPrincipal;
         }
 
         public Carpeta getSerie() {
             return carpeta;
+        }
+
+        public void setDefaultSource() {
+            canvasFolder = _defaultCanvas;
+            ImgBorde.Visibility = Visibility.Visible;
+            Img.Visibility = Visibility.Hidden;
         }
 
         public void actualizar() {
@@ -56,11 +64,19 @@ namespace ProyectoWPF {
             }
 
             if (carpeta.getSerie().getDirImg() != "") {
-
-                ImageBrush ib = new ImageBrush(new BitmapImage(new Uri(@carpeta.getSerie().getDirImg(), UriKind.Absolute)));
-                Img.Background = ib;
-                Img.Visibility = Visibility.Visible;
-                ImgBorde.Visibility = Visibility.Hidden;
+                try {
+                    BitmapImage bm = new BitmapImage(new Uri(@carpeta.getSerie().getDirImg(), UriKind.Absolute));
+                    ImageBrush ib = new ImageBrush(bm);
+                    if (bm.Width > bm.Height) {
+                        ib.Stretch = Stretch.UniformToFill;
+                    }
+                    Img.Background = ib;
+                    Img.Visibility = Visibility.Visible;
+                    ImgBorde.Visibility = Visibility.Hidden;
+                }catch(ArgumentException e) {
+                    setDefaultSource();
+                    Console.WriteLine(e.Message);
+                }
             }
 
         }

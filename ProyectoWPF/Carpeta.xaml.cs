@@ -46,10 +46,20 @@ namespace ProyectoWPF {
         #region get/set
 
         public void setImg() {
-            BitmapImage bm = new BitmapImage(new Uri(_serie.getDirImg(), UriKind.Absolute));
-            ImageBrush ib = new ImageBrush(bm);
-            ImgBorde.Background = ib;
-            Img.Visibility = Visibility.Hidden;
+            try {
+                BitmapImage bm = new BitmapImage(new Uri(_serie.getDirImg(), UriKind.RelativeOrAbsolute));
+                ImageBrush ib = new ImageBrush(bm);
+                if (bm.Width > bm.Height) {
+                    ib.Stretch = Stretch.UniformToFill;
+                }
+                
+                ImgBorde.Background = ib;
+                Img.Visibility = Visibility.Hidden;
+            }catch (ArgumentException e) {
+                setDefaultSource();
+                _serie.setDirImg("");
+                Console.WriteLine(e.Message);
+            }
         }
 
 
@@ -205,11 +215,13 @@ namespace ProyectoWPF {
             } else {
                 Title2.SetText(_serie.getTitle());
                 if (_serie.getDirImg() != "") {
+                    setImg();
+                    /*
                     Bitmap bm = new Bitmap(_serie.getDirImg());
-
+                    
                     IntPtr hBitmap = bm.GetHbitmap();
                     System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
+                    */
                     //Img.Source = WpfBitmap;
                 }
 

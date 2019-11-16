@@ -32,7 +32,7 @@ namespace ProyectoWPF {
         }
 
         public void saveSubFolder(SubCarpeta c) {
-            SaveCarpeta carpetaData = new SaveCarpeta(c.getSerie().getTitle(), true, true, c.getRutaPrograma(), c.getSerie().getTipo(),c.getDirImg());
+            SaveCarpeta carpetaData = new SaveCarpeta(c.getTitle(), true, true, c.getRutaPrograma(), c.getSerie().getTipo(),c.getDirImg());
             IFormatter formatter = new BinaryFormatter();
             using (FileStream stream = new FileStream("ArchivoData.txt", FileMode.OpenOrCreate, FileAccess.Write)) {
                 stream.Seek(stream.Length, SeekOrigin.Begin);

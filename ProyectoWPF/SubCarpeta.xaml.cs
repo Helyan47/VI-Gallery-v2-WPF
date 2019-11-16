@@ -42,11 +42,19 @@ namespace ProyectoWPF {
         }
 
         public void setImg() {
-            _dirImg = _serie.getDirImg();
-            ImageBrush ib = new ImageBrush(new BitmapImage(
-        new Uri(_serie.getDirImg(), UriKind.Absolute)));
-            ImgBorde.Background = ib;
-            Img.Visibility = Visibility.Hidden;
+            try {
+                _dirImg = _serie.getDirImg();
+                BitmapImage bm = new BitmapImage(new Uri(_serie.getDirImg(), UriKind.Absolute));
+                ImageBrush ib = new ImageBrush(bm);
+                if (bm.Width > bm.Height) {
+                    ib.Stretch = Stretch.UniformToFill;
+                }
+                ImgBorde.Background = ib;
+                Img.Visibility = Visibility.Hidden;
+            }catch(ArgumentException e) {
+                setDefaultSource();
+                Console.WriteLine(e.Message);
+            }
         }
 
         public void setRutaDirectorio(string s) {

@@ -24,6 +24,7 @@ namespace ProyectoWPF {
         SaveData _saveData = new SaveData("ArchivoData.txt");
         private UIElementCollection _botones;
         private Button _activatedButton;
+        public int firstFolder = 0;
         public MainWindow() {
             InitializeComponent();
             _botones = buttonStack.Children;
@@ -92,6 +93,7 @@ namespace ProyectoWPF {
             using (var folderDialog = new CommonOpenFileDialog()) {
 
                 folderDialog.IsFolderPicker = true;
+                firstFolder = 0;
                 if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
                     _folders = Directory.GetDirectories(folderDialog.FileName);
 
@@ -349,6 +351,9 @@ namespace ProyectoWPF {
             p1.getSerie().setTipo(name);
             p1.setRutaPrograma("C/" + name + "/" + p1.getSerie().getTitle());
 
+            string[] files = System.IO.Directory.GetFiles(filename, "cover.*");
+            p1.getSerie().setDirImg(files[0]);
+
             _saveData.saveFolder(p1);
 
             aux.addCarpeta(p1);
@@ -371,7 +376,7 @@ namespace ProyectoWPF {
 
             SerieClass s = new SerieClass(sc.getName(),sc.getDesc());
             p1.setSerie(s);
-            p1.getSerie().setDirImge(sc.getDirImg());
+            p1.getSerie().setDirImg(sc.getDirImg());
             p1.actualizar();
 
             string name = _activatedButton.Name;

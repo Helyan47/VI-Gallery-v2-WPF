@@ -26,7 +26,7 @@
 
                 <Border x:Name="borde2" BorderThickness="5" Grid.Row="0" CornerRadius="10" Grid.RowSpan="5" BorderBrush="White" Panel.ZIndex="11"/>
 
-                <Border x:Name="Img" CornerRadius="15"  HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF212121" Grid.RowSpan="2" ClipToBounds="True">
+                <Border x:Name="Img" CornerRadius="15"  HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF212121" Grid.RowSpan="2" ClipToBounds="True" RenderOptions.BitmapScalingMode="HighQuality">
                     <Viewbox Stretch="None">
                         <Canvas x:Name="canvasFolder" Width="210" Height="300">
                             <Canvas.RenderTransform>
