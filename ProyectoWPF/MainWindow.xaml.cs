@@ -531,6 +531,7 @@ namespace ProyectoWPF {
         public void CerrarApp(object sender, RoutedEventArgs e) {
             this.Close();
         }
+
         public void MaximizeApp(object sender, RoutedEventArgs e) {
             if (this.WindowState == WindowState.Normal) {
                 this.WindowState = WindowState.Maximized;

@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProyectoWPF", "ProyectoWPF\ProyectoWPF.csproj", "{46337B68-8BC0-4EE1-84B7-D92EF2793034}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Login", "Login\Login.csproj", "{268EFC0E-2D48-480F-A034-903B106751E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{46337B68-8BC0-4EE1-84B7-D92EF2793034}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46337B68-8BC0-4EE1-84B7-D92EF2793034}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46337B68-8BC0-4EE1-84B7-D92EF2793034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{268EFC0E-2D48-480F-A034-903B106751E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{268EFC0E-2D48-480F-A034-903B106751E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{268EFC0E-2D48-480F-A034-903B106751E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{268EFC0E-2D48-480F-A034-903B106751E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

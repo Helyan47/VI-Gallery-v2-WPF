@@ -65,13 +65,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddCarpeta.xaml.cs">
+    <Compile Include="NewFolders\AddCarpeta.xaml.cs">
       <DependentUpon>AddCarpeta.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Carpeta.xaml.cs">
+    <Compile Include="Components\Carpeta.xaml.cs">
       <DependentUpon>Carpeta.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LabelDeslizable.xaml.cs">
+    <Compile Include="Components\LabelDeslizable.xaml.cs">
       <DependentUpon>LabelDeslizable.xaml</DependentUpon>
     </Compile>
     <Compile Include="Lista.cs" />
@@ -81,10 +81,10 @@
     <Compile Include="LoginCharge.xaml.cs">
       <DependentUpon>LoginCharge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Menu.xaml.cs">
+    <Compile Include="Components\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewSubCarpeta.xaml.cs">
+    <Compile Include="NewFolders\NewSubCarpeta.xaml.cs">
       <DependentUpon>NewSubCarpeta.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -92,16 +92,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SaveCarpeta.cs" />
-    <Compile Include="SaveData.cs" />
-    <Compile Include="SerieClass.cs" />
-    <Compile Include="SubCarpeta.xaml.cs">
+    <Compile Include="Data\SaveCarpeta.cs" />
+    <Compile Include="Data\SaveData.cs" />
+    <Compile Include="Data\SerieClass.cs" />
+    <Compile Include="Components\SubCarpeta.xaml.cs">
       <DependentUpon>SubCarpeta.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WrapPanelPrincipal.xaml.cs">
+    <Compile Include="Components\WrapPanelPrincipal.xaml.cs">
       <DependentUpon>WrapPanelPrincipal.xaml</DependentUpon>
     </Compile>
-    <Page Include="AddCarpeta.xaml">
+    <Page Include="NewFolders\AddCarpeta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,11 +129,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Carpeta.xaml">
+    <Page Include="Components\Carpeta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LabelDeslizable.xaml">
+    <Page Include="Components\LabelDeslizable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -157,19 +157,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Menu.xaml">
+    <Page Include="Components\Menu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewSubCarpeta.xaml">
+    <Page Include="NewFolders\NewSubCarpeta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SubCarpeta.xaml">
+    <Page Include="Components\SubCarpeta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WrapPanelPrincipal.xaml">
+    <Page Include="Components\WrapPanelPrincipal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
