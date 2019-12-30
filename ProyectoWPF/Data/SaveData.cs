@@ -23,7 +23,7 @@ namespace ProyectoWPF {
         }
 
         public void saveFolder(Carpeta c) {
-            SaveCarpeta carpetaData = new SaveCarpeta(c.getSerie().getTitle(), true, c.getDescripcion(), c.getRutaPrograma(), c.getSerie().getTipo(),c.getSerie().getDirImg());
+            SaveDataType carpetaData = new SaveDataType(c.getSerie().getTitle(), true, c.getDescripcion(), c.getRutaPrograma(), c.getSerie().getTipo(),c.getSerie().getDirImg());
             IFormatter formatter=new BinaryFormatter();
             using (FileStream stream = new FileStream("ArchivoData.txt", FileMode.OpenOrCreate, FileAccess.Write)) {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
@@ -32,27 +32,28 @@ namespace ProyectoWPF {
         }
 
         public void saveSubFolder(SubCarpeta c) {
-            SaveCarpeta carpetaData = new SaveCarpeta(c.getTitle(), true, true, c.getRutaPrograma(), c.getSerie().getTipo(),c.getDirImg());
+            SaveDataType carpetaData = new SaveDataType(c.getTitle(), false, true, c.getRutaPrograma(), c.getSerie().getTipo(),c.getDirImg());
             IFormatter formatter = new BinaryFormatter();
+            Console.WriteLine(carpetaData.getRutaPrograma());
             using (FileStream stream = new FileStream("ArchivoData.txt", FileMode.OpenOrCreate, FileAccess.Write)) {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
                 formatter.Serialize(stream, carpetaData);
             }
         }
 
-        public ICollection<SaveCarpeta> loadFolders() {
-            ICollection<SaveCarpeta> ic = new List<SaveCarpeta>();
-            ICollection<SaveCarpeta> objects = new List<SaveCarpeta>();
+        public ICollection<SaveDataType> loadFolders() {
+            ICollection<SaveDataType> ic = new List<SaveDataType>();
+            ICollection<SaveDataType> objects = new List<SaveDataType>();
             IFormatter formatter = new BinaryFormatter();
             if (File.Exists("ArchivoData.txt")) {
                 using (FileStream stream = new FileStream("ArchivoData.txt", FileMode.Open, FileAccess.Read, FileShare.None)) {
                     while (stream.Position < stream.Length) {
-                        SaveCarpeta aux = (SaveCarpeta)formatter.Deserialize(stream);
+                        SaveDataType aux = (SaveDataType)formatter.Deserialize(stream);
                         objects.Add(aux);
                     }
                 }
 
-                foreach (SaveCarpeta c in objects) {
+                foreach (SaveDataType c in objects) {
                     if (c.isCarpeta()) {
                         if (!c.isSubCarpeta()) {
                             ic.Add(c);
@@ -66,24 +67,22 @@ namespace ProyectoWPF {
             return ic;
         }
 
-        public ICollection<SaveCarpeta> loadSubFolders() {
-            ICollection<SaveCarpeta> ic = new List<SaveCarpeta>();
-            ICollection<SaveCarpeta> objects = new List<SaveCarpeta>();
+        public ICollection<SaveDataType> loadSubFolders() {
+            ICollection<SaveDataType> ic = new List<SaveDataType>();
+            ICollection<SaveDataType> objects = new List<SaveDataType>();
             IFormatter formatter = new BinaryFormatter();
             if (File.Exists("ArchivoData.txt")) {
                 using (FileStream stream = new FileStream("ArchivoData.txt", FileMode.Open, FileAccess.Read, FileShare.None)) {
                     while (stream.Position < stream.Length) {
-                        SaveCarpeta aux = (SaveCarpeta)formatter.Deserialize(stream);
+                        SaveDataType aux = (SaveDataType)formatter.Deserialize(stream);
                         objects.Add(aux);
                     }
                 }
 
-                foreach (SaveCarpeta c in objects) {
-                    if (c.isCarpeta()) {
-                        if (c.isSubCarpeta()) {
-                            ic.Add(c);
-                            Console.WriteLine(c.getRutaPrograma());
-                        }
+                foreach (SaveDataType c in objects) {
+                    if (c.isSubCarpeta()) {
+                        ic.Add(c);
+                        Console.WriteLine(c.getRutaPrograma());
                     }
 
                 }
@@ -92,11 +91,11 @@ namespace ProyectoWPF {
             return ic;
         }
 
-        public ICollection<Button> loadButtons(ICollection<SaveCarpeta> ic) {
+        public ICollection<Button> loadButtons(ICollection<SaveDataType> ic) {
             ICollection<Button> botones = new List<Button>();
             ICollection<string> items = new List<string>();
 
-            foreach (SaveCarpeta c in ic) {
+            foreach (SaveDataType c in ic) {
                 if (c.isCarpeta()) {
                     if (!c.isSubCarpeta()) {
                         string tipo = c.getTipo();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using ProyectoWPF.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using MySql.Data.MySqlClient;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -163,6 +165,7 @@ namespace ProyectoWPF {
                 c.actualizar();
                 c.changeMode(_lista.actualiceMode(_activatedButton));
                 c.Visibility = Visibility.Visible;
+                Conexion.uploadFolder(c);
             } else {
                 c = null;
             }
@@ -218,7 +221,7 @@ namespace ProyectoWPF {
 
             c.actualizar();
 
-
+            Conexion.uploadFolder(c);
             c.Visibility = Visibility.Visible;
             return c;
         }
@@ -272,7 +275,7 @@ namespace ProyectoWPF {
 
             c.actualizar();
 
-
+            Conexion.uploadFolder(c);
             c.Visibility = Visibility.Visible;
             return c;
         }
@@ -330,7 +333,7 @@ namespace ProyectoWPF {
                 p1.SetGridsOpciones(GridPrincipal, GridSecundario);
 
                 p1.changeMode(_lista.actualiceMode(_activatedButton));
-
+                Conexion.uploadFolder(p1);
             }
 
         }
@@ -352,7 +355,10 @@ namespace ProyectoWPF {
             p1.setRutaPrograma("C/" + name + "/" + p1.getSerie().getTitle());
 
             string[] files = System.IO.Directory.GetFiles(filename, "cover.*");
-            p1.getSerie().setDirImg(files[0]);
+            if (files.Length > 0) {
+                p1.getSerie().setDirImg(files[0]);
+            }
+            
 
             _saveData.saveFolder(p1);
 
@@ -363,11 +369,12 @@ namespace ProyectoWPF {
             p1.SetGridPadre(gridPrincipal);
 
             p1.changeMode(_lista.actualiceMode(_activatedButton));
+            Conexion.uploadFolder(p1);
 
             return p1;
         }
 
-        private void loadCarpeta(SaveCarpeta sc) {
+        private void loadCarpeta(SaveDataType sc) {
             Carpeta p1 = new Carpeta(this);
             p1.setListaCarpetas(this._lista);
             _lista.addCarpeta(p1);
@@ -394,7 +401,7 @@ namespace ProyectoWPF {
             p1.clickEspecial();
         }
 
-        private void loadSubCarpeta(SaveCarpeta sc) {
+        private void loadSubCarpeta(SaveDataType sc) {
             SubCarpeta c = new SubCarpeta();
             _lista.addSubCarpeta(c);
             c.setRutaPrograma(sc.getRutaPrograma());
@@ -465,9 +472,9 @@ namespace ProyectoWPF {
             bool check;
             if (File.Exists("ArchivoData.txt")) {
                 check = true;
-                ICollection<SaveCarpeta> folders = _saveData.loadFolders();
+                ICollection<SaveDataType> folders = _saveData.loadFolders();
                 ICollection<Button> ib = _saveData.loadButtons(folders);
-                ICollection<SaveCarpeta> subFolders = _saveData.loadSubFolders();
+                ICollection<SaveDataType> subFolders = _saveData.loadSubFolders();
                 int cont = 0;
                 foreach (Button b in ib) {
                     b.Click += onClickButtonMenu;
@@ -494,11 +501,11 @@ namespace ProyectoWPF {
                 }
                 _lista = new Lista(_wrapsPrincipales, _botonesMenu);
 
-                foreach (SaveCarpeta sc in folders){
+                foreach (SaveDataType sc in folders){
                     loadCarpeta(sc);
                 }
 
-                foreach(SaveCarpeta sc in subFolders) {
+                foreach(SaveDataType sc in subFolders) {
                     loadSubCarpeta(sc);
                 }
 

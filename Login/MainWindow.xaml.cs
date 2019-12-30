@@ -28,6 +28,35 @@ namespace Login {
             inputPass.changeMode("password");
             inputPass.invertColors("black");
             inputPass.lostFocus();
+            
+        }
+
+        private void LoginClick(object sender, EventArgs e) {
+            
+            if (inputUser.getText().CompareTo("") != 0) {
+                
+                if (inputPass.getText().CompareTo("") != 0) {
+                    bool connected = Conexion.checkUserPass(inputUser.getText(), inputPass.getText());
+                    if (connected) {
+                        MessageBox.Show("Conectado");
+                    } else {
+                        inputUser.setError();
+                        inputPass.setError();
+                        passError.Content = "El usuario o la contraseña son incorrectos";
+                        passError.Visibility = Visibility.Visible;
+                        //MessageBox.Show("Usuario o contraseña incorrectos");
+                    }
+                } else {
+                    inputPass.setError();
+                    passError.Content = "La contraseña debe contener al menos un carácter";
+                    passError.Visibility = Visibility.Visible;
+                }
+                
+            } else {
+                inputUser.setError();
+                userError.Content = "El usuario debe contener al menos un carácter";
+                userError.Visibility = Visibility.Visible;
+            }
         }
 
         public void MinimizeApp(object sender, RoutedEventArgs e) {
@@ -43,18 +72,18 @@ namespace Login {
                 this.WindowState = WindowState.Maximized;
             } else if (this.WindowState == WindowState.Maximized) {
                 this.WindowState = WindowState.Normal;
-                this.Width = 1000;
-                this.Height = 700;
+                this.Width = 600;
+                this.Height = 800;
             }
 
         }
 
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e) {
-            Console.WriteLine("Hola");
-            
-        }
-
         private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e) {
+            if(this.WindowState == WindowState.Maximized) {
+                this.WindowState = WindowState.Normal;
+                this.Left = Mouse.GetPosition(this).X - 100;
+                this.Top = Mouse.GetPosition(this).Y - 10;
+            }
             this.DragMove();
         }
 
@@ -88,8 +117,10 @@ namespace Login {
             Point p = Mouse.GetPosition(inputUser);
             Point h = Mouse.GetPosition(inputPass);
             if((p.X >= 0 && p.X <= inputUser.ActualWidth) && (p.Y >= 0 && p.Y <= inputUser.ActualHeight)){
+                userError.Visibility = Visibility.Hidden;
                 inputPass.lostFocus();
             } else if ((h.X >= 0 && h.X <= inputPass.ActualWidth) && (h.Y >= 0 && h.Y <= inputPass.ActualHeight)) {
+                passError.Visibility = Visibility.Hidden;
                 inputUser.lostFocus();
             } else {
                 inputUser.lostFocus();

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace ProyectoWPF {
     public class SerieClass {
         private int idSerie;
-        private String title;
+        private string title;
         private int numCapitulos;
-        private String desc;
-        private String tipo;
-        private String dirImg;
-        private ICollection<String> generos;
+        private string desc;
+        private string tipo;
+        private string dirImg;
+        private ICollection<string> generos;
 
         public SerieClass() {
 

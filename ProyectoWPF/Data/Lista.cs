@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using MySql.Data.MySqlClient;
+using ProyectoWPF.Data;
 
 namespace ProyectoWPF {
     public class Lista {

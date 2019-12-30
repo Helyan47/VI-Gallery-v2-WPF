@@ -6,25 +6,30 @@ using System.Threading.Tasks;
 
 namespace ProyectoWPF {
     [Serializable]
-    class SaveCarpeta {
+    class SaveDataType {
         private string name;
         private bool isFolder;
         private bool isSubFolder;
+        private bool isFile;
         private string descripcion;
         private string rutaPrograma;
         private string rutaArchivo;
         private string tipo;
         private string img;
 
-        public SaveCarpeta(string name,bool isFolder,string descripcion,string rutaPrograma,string tipo, string dirImg) {
+        public SaveDataType(string name,bool isFolder,string descripcion,string rutaPrograma,string tipo, string dirImg) {
             this.name = name;
             this.isFolder = isFolder;
+            if (isFolder == true) {
+                this.isSubFolder = false;
+                this.isFile = false;
+            }
             this.descripcion = descripcion;
             this.rutaPrograma = rutaPrograma;
             this.tipo = tipo;
             this.img = dirImg;
         }
-        public SaveCarpeta(string name, bool isFolder,bool isSubFolder, string rutaPrograma, string tipo, string img) {
+        public SaveDataType(string name, bool isFolder,bool isSubFolder, string rutaPrograma, string tipo, string img) {
             this.name = name;
             this.isFolder = isFolder;
             this.isSubFolder = isSubFolder;
@@ -32,9 +37,14 @@ namespace ProyectoWPF {
             this.tipo = tipo;
             this.img = img;
         }
-        public SaveCarpeta(string name, string rutaArchivo, bool isFolder, string rutaPrograma, string tipo) {
+
+        public SaveDataType(string name, string rutaArchivo, string rutaPrograma, string tipo, string img, bool isFile) {
             this.name = name;
-            this.isFolder = isFolder;
+            this.isFile = isFile;
+            if (isFile) {
+                this.isFolder = false;
+                this.isSubFolder = false;
+            }
             this.rutaArchivo = rutaArchivo;
             this.rutaPrograma = rutaPrograma;
             this.tipo = tipo;
