@@ -108,7 +108,7 @@ namespace ProyectoWPF {
         }
 
         private void BReturn_Click(object sender, EventArgs e) {
-            WrapPanelPrincipal p = carpeta.getListaCarpetas().getWrapCarptVisible();
+            WrapPanelPrincipal p = Lista.getWrapCarptVisible();
             if (p.getCarpeta() == null) {
                 SubCarpeta c = p.getSubCarpeta();
                 //c.getPadreSerie().Visible = true;

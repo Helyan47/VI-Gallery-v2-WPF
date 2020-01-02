@@ -17,7 +17,6 @@ namespace ProyectoWPF {
         private String _nombre;
         private SerieClass _serie;
         private WrapPanelPrincipal _wrapCarpAnterior;
-        private Lista _listas;
         private int _numSubCarpetas;
         private WrapPanelPrincipal _wrapCarpPropia;
         private Grid _gridPadre;
@@ -101,14 +100,6 @@ namespace ProyectoWPF {
             _serie = newSerie;
         }
 
-        public Lista GetListaCarpetas() {
-            return _listas;
-        }
-
-        public void SetListaCarpetas(Lista listaSeries) {
-            this._listas = listaSeries;
-        }
-
         public void setMenuCarpeta(Menu m) {
             _menuCarpeta = m;
         }
@@ -148,15 +139,13 @@ namespace ProyectoWPF {
 
         }
 
-        public void setDatos(SerieClass ser, WrapPanelPrincipal flowPadre, Lista listas, Grid gridP) {
+        public void setDatos(SerieClass ser, WrapPanelPrincipal flowPadre, Grid gridP) {
             _wrapCarpPropia = new WrapPanelPrincipal();
 
             _serie = ser;
             _wrapCarpAnterior = flowPadre;
 
-
-            this._listas = listas;
-            this._listas.addSubWrap(_wrapCarpPropia);
+            Lista.addSubWrap(_wrapCarpPropia);
             _gridPadre = gridP;
             _gridPadre.Children.Add(_wrapCarpPropia);
             //flowCarpPropia.Dock = DockStyle.Fill;

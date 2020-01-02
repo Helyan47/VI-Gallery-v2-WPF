@@ -8,18 +8,18 @@ using MySql.Data.MySqlClient;
 using ProyectoWPF.Data;
 
 namespace ProyectoWPF {
-    public class Lista {
+    public static class Lista {
 
-        private ICollection<WrapPanelPrincipal> _wrapsSecundarios;
-        private ICollection<WrapPanelPrincipal> _wrapsPrincipales;
-        private ICollection<Menu> _menus;
-        private ICollection<Button> _buttons;
-        private ICollection<Carpeta> _carpetas;
-        private ICollection<SerieClass> _seriesClase;
-        private ICollection<SubCarpeta> _subCarpetas;
+        private static ICollection<WrapPanelPrincipal> _wrapsSecundarios = new List<WrapPanelPrincipal>();
+        private static ICollection<WrapPanelPrincipal> _wrapsPrincipales = new List<WrapPanelPrincipal>();
+        private static ICollection<Menu> _menus = new List<Menu>();
+        private static ICollection<Button> _buttons = new List<Button>();
+        private static ICollection<Carpeta> _carpetas = new List<Carpeta>();
+        private static ICollection<SerieClass> _seriesClase = new List<SerieClass>();
+        private static ICollection<SubCarpeta> _subCarpetas = new List<SubCarpeta>();
 
-
-        public Lista(ICollection<WrapPanelPrincipal> wraps, ICollection<Button> buttons) {
+        /*
+        public static Lista(ICollection<WrapPanelPrincipal> wraps,ICollection<Button> buttons) {
             this._wrapsPrincipales = wraps;
             this._buttons = buttons;
             this._menus = new List<Menu>();
@@ -37,10 +37,10 @@ namespace ProyectoWPF {
             this._carpetas = new List<Carpeta>();
             this._subCarpetas = new List<SubCarpeta>();
             this._wrapsSecundarios = new List<WrapPanelPrincipal>();
-        }
+        }*/
 
 
-        public bool buttonInButtons(Button b) {
+        public static bool buttonInButtons(Button b) {
             foreach(Button bt in _buttons) {
                 if (bt == b) {
                     return true;
@@ -49,15 +49,19 @@ namespace ProyectoWPF {
             return false;
         }
 
-        public void addWrapPrincipal(WrapPanelPrincipal wp) {
+        public static void addButton(Button b) {
+            _buttons.Add(b);
+        }
+
+        public static void addWrapPrincipal(WrapPanelPrincipal wp) {
             _wrapsPrincipales.Add(wp);
         }
 
-        public void addSubWrap(WrapPanelPrincipal wp) {
+        public static void addSubWrap(WrapPanelPrincipal wp) {
             _wrapsSecundarios.Add(wp);
         }
 
-        public WrapPanelPrincipal getSubWrapsVisibles() {
+        public static WrapPanelPrincipal getSubWrapsVisibles() {
             foreach (WrapPanelPrincipal wp in _wrapsSecundarios) {
                 if (wp.Visibility == System.Windows.Visibility.Visible) {
                     return wp;
@@ -66,7 +70,7 @@ namespace ProyectoWPF {
             return null;
         }
 
-        public void showWrapFromButton(Button b) {
+        public static void showWrapFromButton(Button b) {
             int comp = 0;
             int cont = 0;
             foreach (Button bt in _buttons) {
@@ -86,13 +90,13 @@ namespace ProyectoWPF {
             }
         }
 
-        public void hideAllWraps() {
+        public static void hideAllWraps() {
             foreach (WrapPanelPrincipal wp in _wrapsPrincipales) {
                 wp.Visibility = System.Windows.Visibility.Hidden;
             }
         }
 
-        public WrapPanelPrincipal getWrapVisible() {
+        public static WrapPanelPrincipal getWrapVisible() {
             foreach(WrapPanelPrincipal wp in _wrapsPrincipales) {
                 if (wp.Visibility == System.Windows.Visibility.Visible) {
                     return wp;
@@ -100,49 +104,49 @@ namespace ProyectoWPF {
             }
             return null;
         }
-        public void addSeriesClase(SerieClass serie) {
-            this._seriesClase.Add(serie);
-            serie.setIdSerie(this._seriesClase.Count);
+        public static void addSeriesClase(SerieClass serie) {
+            _seriesClase.Add(serie);
+            serie.setIdSerie(_seriesClase.Count);
         }
 
-        public void removeSeriesClase(SerieClass serie) {
-            this._seriesClase.Remove(serie);
+        public static void removeSeriesClase(SerieClass serie) {
+            _seriesClase.Remove(serie);
         }
 
-        public void addMenu(Menu m) {
-            this._menus.Add(m);
+        public static void addMenu(Menu m) {
+            _menus.Add(m);
         }
 
-        public void removeMenu(Menu m) {
+        public static void removeMenu(Menu m) {
 
-            this._menus.Remove(m);
+            _menus.Remove(m);
         }
 
-        public void addCarpeta(Carpeta m) {
+        public static void addCarpeta(Carpeta m) {
             _carpetas.Add(m);
         }
 
-        public void removeCarpeta(Carpeta m) {
+        public static void removeCarpeta(Carpeta m) {
             _carpetas.Remove(m);
         }
 
-        public void addWrapCarpeta(WrapPanelPrincipal p) {
+        public static void addWrapCarpeta(WrapPanelPrincipal p) {
             _wrapsPrincipales.Add(p);
         }
 
-        public void removeWrapCarpeta(WrapPanelPrincipal p) {
+        public static void removeWrapCarpeta(WrapPanelPrincipal p) {
             _wrapsPrincipales.Remove(p);
         }
 
-        public void addSubCarpeta(SubCarpeta m) {
+        public static void addSubCarpeta(SubCarpeta m) {
             _subCarpetas.Add(m);
         }
 
-        public void removeSubCarpeta(SubCarpeta m) {
+        public static void removeSubCarpeta(SubCarpeta m) {
             _subCarpetas.Remove(m);
         }
 
-        public Menu getMenuVisible() {
+        public static Menu getMenuVisible() {
             foreach (Menu m in _menus) {
                 if (m.Visibility == System.Windows.Visibility.Visible) {
                     return m;
@@ -152,7 +156,7 @@ namespace ProyectoWPF {
             return null;
         }
 
-        public Carpeta getCarpetaVisible() {
+        public static Carpeta getCarpetaVisible() {
             foreach (Carpeta c in _carpetas) {
                 if (c.Visibility == System.Windows.Visibility.Visible) {
                     return c;
@@ -161,7 +165,7 @@ namespace ProyectoWPF {
             return null;
         }
 
-        public WrapPanelPrincipal getWrapCarptVisible() {
+        public static WrapPanelPrincipal getWrapCarptVisible() {
             foreach (WrapPanelPrincipal c in _wrapsPrincipales) {
                 if (c.Visibility == System.Windows.Visibility.Visible) {
                     return c;
@@ -170,7 +174,7 @@ namespace ProyectoWPF {
             return null;
         }
 
-        public SubCarpeta getSubCarpetaVisible() {
+        public static SubCarpeta getSubCarpetaVisible() {
             foreach (SubCarpeta c in _subCarpetas) {
                 if (c.Visibility == System.Windows.Visibility.Visible) {
                     return c;
@@ -180,7 +184,7 @@ namespace ProyectoWPF {
         }
 
 
-        public Menu searchMenu(Carpeta p) {
+        public static Menu searchMenu(Carpeta p) {
             foreach (Menu m in _menus) {
                 if (m.getCarpeta() == p) {
                     return m;
@@ -190,7 +194,7 @@ namespace ProyectoWPF {
             return null;
         }
 
-        public void ocultarWrapsPrincipales() {
+        public static void ocultarWrapsPrincipales() {
             foreach (WrapPanelPrincipal f in _wrapsPrincipales) {
                 f.Visibility = System.Windows.Visibility.Hidden;
             }
@@ -207,7 +211,7 @@ namespace ProyectoWPF {
         //}
 
 
-        public SubCarpeta searchRuta(string s) {
+        public static SubCarpeta searchRuta(string s) {
             foreach (SubCarpeta p in _subCarpetas) {
                 if (p.getRutaDirectorio().Equals(s)) {
                     return p;
@@ -216,7 +220,7 @@ namespace ProyectoWPF {
             return null;
         }
 
-        public void hideAll() {
+        public static void hideAll() {
             foreach (Menu m in _menus) {
                 m.Visibility = System.Windows.Visibility.Hidden;
             }
@@ -226,7 +230,7 @@ namespace ProyectoWPF {
             ocultarWrapsPrincipales();
         }
 
-        public void hideAllExceptPrinc() {
+        public static void hideAllExceptPrinc() {
             foreach (Menu m in _menus) {
                 m.Visibility = System.Windows.Visibility.Hidden;
             }
@@ -235,7 +239,7 @@ namespace ProyectoWPF {
             }
         }
 
-        public void changeMode(Button b) {
+        public static void changeMode(Button b) {
 
             WrapPanelPrincipal visible= getWrapFromButton(b);
             if (visible != null) {
@@ -260,7 +264,7 @@ namespace ProyectoWPF {
                 }
             }
         }
-        public int actualiceMode(Button b) {
+        public static int actualiceMode(Button b) {
 
             WrapPanelPrincipal visible = getWrapFromButton(b);
             if (visible != null) {
@@ -270,7 +274,7 @@ namespace ProyectoWPF {
             return 0;
         }
 
-        public void modifyMode(string tipo,int mode) {
+        public static void modifyMode(string tipo,int mode) {
             foreach(Carpeta p in _carpetas) {
                 if (p.getSerie().getTipo().Equals(tipo)) {
                     p.changeMode(mode);
@@ -285,7 +289,7 @@ namespace ProyectoWPF {
             }
         }
 
-        public WrapPanelPrincipal getWrapFromButton(Button b) {
+        public static WrapPanelPrincipal getWrapFromButton(Button b) {
             int comp = 0;
             int cont = 0;
             foreach (Button bt in _buttons) {
@@ -304,7 +308,7 @@ namespace ProyectoWPF {
             return null;
         }
 
-        public object getFolderRuta(string rutaPrograma) {
+        public static object getFolderRuta(string rutaPrograma) {
             object c = new object();
             string[] splits = rutaPrograma.Split('/');
             string namePadre = "";
@@ -315,7 +319,6 @@ namespace ProyectoWPF {
                     namePadre += splits[i] + "/";
                 }
             }
-            Console.WriteLine("ruta padre"+namePadre);
             foreach(Carpeta p in _carpetas) {
                 if (p.getRutaPrograma().Equals(namePadre)) {
                     c = p;
@@ -327,6 +330,19 @@ namespace ProyectoWPF {
                 }
             }
             return c;
+        }
+
+        public static string getRutaPadre(string rutaPrograma) {
+            string[] splits = rutaPrograma.Split('/');
+            string namePadre = "";
+            for (int i = 0; i < (splits.Length - 1); i++) {
+                if (i == (splits.Length - 2)) {
+                    namePadre += splits[i];
+                } else {
+                    namePadre += splits[i] + "/";
+                }
+            }
+            return namePadre;
         }
     }
 }

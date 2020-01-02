@@ -11,7 +11,6 @@ namespace Login {
 
         public static bool checkUserPass(string user, string pass) {
             MySqlConnection conexion = getConnection();
-            Console.WriteLine("Hola");
             conexion.Open();
 
             MySqlCommand comando = new MySqlCommand("SELECT nick,pass FROM Usuario WHERE nick=@val1 AND pass=@val2", conexion);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProyectoWPF.Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -29,16 +30,18 @@ namespace ProyectoWPF {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
                 formatter.Serialize(stream, carpetaData);
             }
+
+            Conexion.uploadFolder(c);
         }
 
         public void saveSubFolder(SubCarpeta c) {
             SaveDataType carpetaData = new SaveDataType(c.getTitle(), false, true, c.getRutaPrograma(), c.getSerie().getTipo(),c.getDirImg());
             IFormatter formatter = new BinaryFormatter();
-            Console.WriteLine(carpetaData.getRutaPrograma());
             using (FileStream stream = new FileStream("ArchivoData.txt", FileMode.OpenOrCreate, FileAccess.Write)) {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
                 formatter.Serialize(stream, carpetaData);
             }
+            Conexion.uploadSubFolder(c);
         }
 
         public ICollection<SaveDataType> loadFolders() {

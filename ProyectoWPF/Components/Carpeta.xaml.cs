@@ -22,7 +22,6 @@ namespace ProyectoWPF {
         private WrapPanelPrincipal _wrapPanelAnterior;
         private Grid _gridPrincipal;
         private Grid _gridSecundario;
-        private Lista _listas;
         private int _numSubcarpetas;
         private WrapPanelPrincipal _wrapCarpetaPropia;
         private Menu _menuCarpeta;
@@ -165,14 +164,6 @@ namespace ProyectoWPF {
             _serie = newSerie;
         }
 
-        public Lista getListaCarpetas() {
-            return _listas;
-        }
-
-        public void setListaCarpetas(Lista listaSeries) {
-            this._listas = listaSeries;
-        }
-
         public WrapPanelPrincipal GetWrapCarpPrincipal() {
             return _wrapCarpetaPropia;
         }
@@ -232,9 +223,9 @@ namespace ProyectoWPF {
         public void click() {
             if (_menuCarpeta == null) {
                 _menuCarpeta = new Menu(this);
-                _listas.addMenu(_menuCarpeta);
+                Lista.addMenu(_menuCarpeta);
                 _wrapCarpetaPropia = new WrapPanelPrincipal();
-                _listas.addSubWrap(_wrapCarpetaPropia);
+                Lista.addSubWrap(_wrapCarpetaPropia);
                 _wrapCarpetaPropia.setCarpeta(this);
                 _wrapCarpetaPropia.setSubcarpeta(null);
                 _gridPadre.Children.Add(_menuCarpeta);
@@ -263,9 +254,9 @@ namespace ProyectoWPF {
         public void clickEspecial() {
             if (_menuCarpeta == null) {
                 _menuCarpeta = new Menu(this);
-                _listas.addMenu(_menuCarpeta);
+                Lista.addMenu(_menuCarpeta);
                 _wrapCarpetaPropia = new WrapPanelPrincipal();
-                _listas.addSubWrap(_wrapCarpetaPropia);
+                Lista.addSubWrap(_wrapCarpetaPropia);
                 _wrapCarpetaPropia.setCarpeta(this);
                 _wrapCarpetaPropia.setSubcarpeta(null);
                 _gridPadre.Children.Add(_menuCarpeta);

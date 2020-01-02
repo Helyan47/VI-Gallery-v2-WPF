@@ -21,12 +21,13 @@ namespace ProyectoWPF {
 
         private SerieClass serie;
         private Carpeta padre;
-        private Lista listaSeries;
-        public AddCarpeta(Carpeta p) {
+        private Button button;
+        public AddCarpeta(Carpeta p,Button b) {
             InitializeComponent();
             padre = p;
             serie = new SerieClass("", "");
             padre.setSerie(serie);
+            button = b;
         }
 
         private void BAceptar_Click(object sender, EventArgs e) {
@@ -58,9 +59,9 @@ namespace ProyectoWPF {
 
 
 
-
+            serie.setRuta("Serie/"+button.Content+"/"+ padre.getTitle());
             padre.setSerie(serie);
-            padre.getListaCarpetas().addSeriesClase(serie);
+            Lista.addSeriesClase(serie);
             this.Close();
 
         }

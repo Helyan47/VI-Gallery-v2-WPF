@@ -12,6 +12,7 @@ namespace ProyectoWPF {
         private string desc;
         private string tipo;
         private string dirImg;
+        public string rutaSerie;
         private ICollection<string> generos;
 
         public SerieClass() {
@@ -131,6 +132,14 @@ namespace ProyectoWPF {
         public ICollection<String> getGeneros() {
 
             return generos;
+        }
+
+        public string getRuta() {
+            return rutaSerie;
+        }
+
+        public void setRuta(string ruta) {
+            this.rutaSerie = ruta;
         }
     }
 }
