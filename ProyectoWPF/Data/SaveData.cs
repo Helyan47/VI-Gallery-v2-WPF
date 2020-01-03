@@ -30,7 +30,7 @@ namespace ProyectoWPF {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
                 formatter.Serialize(stream, carpetaData);
             }
-
+            Conexion.uploadSerie(c.getSerie());
             Conexion.uploadFolder(c);
         }
 
@@ -85,7 +85,6 @@ namespace ProyectoWPF {
                 foreach (SaveDataType c in objects) {
                     if (c.isSubCarpeta()) {
                         ic.Add(c);
-                        Console.WriteLine(c.getRutaPrograma());
                     }
 
                 }
@@ -101,15 +100,15 @@ namespace ProyectoWPF {
             foreach (SaveDataType c in ic) {
                 if (c.isCarpeta()) {
                     if (!c.isSubCarpeta()) {
-                        string tipo = c.getTipo();
+                        string name = getName(c.getRutaPrograma());
                         bool exist = false;
                         foreach(string s in items) {
-                            if (s.Equals(tipo)) {
+                            if (s.Equals(name)) {
                                 exist = true;
                             }
                         }
                         if (!exist) {
-                            items.Add(tipo);
+                            items.Add(name);
                         }
                     }
                 }
@@ -131,6 +130,13 @@ namespace ProyectoWPF {
 
             return botones;
         }
+
+        public string getName(string ruta) {
+            string[] splitted = ruta.Split('/');
+
+            return splitted[1];
+        }
+
         
     }
 }

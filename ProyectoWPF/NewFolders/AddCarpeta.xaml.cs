@@ -22,6 +22,7 @@ namespace ProyectoWPF {
         private SerieClass serie;
         private Carpeta padre;
         private Button button;
+        private bool created = false;
         public AddCarpeta(Carpeta p,Button b) {
             InitializeComponent();
             padre = p;
@@ -32,37 +33,44 @@ namespace ProyectoWPF {
 
         private void BAceptar_Click(object sender, EventArgs e) {
 
-            ICollection<String> col = new List<String>();
+            if (Title.Text.CompareTo("") != 0) {
+                if(!Lista.Contains("C/" + button.Content + "/" + Title.Text)) {
+                    ICollection<String> col = new List<String>();
 
-            UIElementCollection coleccion = ListGeneros.Children;
-            bool isCheked = false;
-            foreach (CheckBox cb in coleccion) {
+                    UIElementCollection coleccion = ListGeneros.Children;
+                    bool isCheked = false;
+                    foreach (CheckBox cb in coleccion) {
 
-                if (cb.IsChecked==true) {
-                    col.Add((String)cb.Content);
-                    isCheked = true;
+                        if (cb.IsChecked == true) {
+                            col.Add((String)cb.Content);
+                            isCheked = true;
+                        }
+                    }
+
+                    if (isCheked) {
+
+                        if (!dirImg.Equals("")) {
+                            serie = new SerieClass(Title.Text, DescBox.Text, dirImg.Text, col);
+                        }
+                    } else {
+                        if (!dirImg.Equals("")) {
+                            serie = new SerieClass(Title.Text, DescBox.Text, dirImg.Text);
+                        }
+                    }
+
+                    serie.setRuta("Serie/" + button.Content + "/" + padre.getTitle());
+                    padre.setSerie(serie);
+                    Lista.addSeriesClase(serie);
+                    created = true;
+                    this.Close();
+                } else {
+                    MessageBox.Show("Ya existe la carpeta. Introduce otro nombre");
                 }
-                
 
-            }
 
-            if (isCheked) {
-                
-                if (!dirImg.Equals("")) {
-                    serie = new SerieClass(Title.Text, DescBox.Text, dirImg.Text, col);
-                }
             } else {
-                if (!dirImg.Equals("")) {
-                    serie = new SerieClass(Title.Text, DescBox.Text, dirImg.Text);
-                }
+                MessageBox.Show("No has introducido ningun nombre");
             }
-
-
-
-            serie.setRuta("Serie/"+button.Content+"/"+ padre.getTitle());
-            padre.setSerie(serie);
-            Lista.addSeriesClase(serie);
-            this.Close();
 
         }
 
@@ -82,6 +90,10 @@ namespace ProyectoWPF {
         public void setPadre(Carpeta padre1) {
 
             padre = padre1;
+        }
+
+        public bool createdSerie() {
+            return created;
         }
     }
 }

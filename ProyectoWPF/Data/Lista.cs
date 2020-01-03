@@ -213,9 +213,12 @@ namespace ProyectoWPF {
 
         public static SubCarpeta searchRuta(string s) {
             foreach (SubCarpeta p in _subCarpetas) {
-                if (p.getRutaDirectorio().Equals(s)) {
-                    return p;
+                if (p.getRutaDirectorio() != null) {
+                    if (p.getRutaDirectorio().Equals(s)) {
+                        return p;
+                    }
                 }
+                
             }
             return null;
         }
@@ -343,6 +346,26 @@ namespace ProyectoWPF {
                 }
             }
             return namePadre;
+        }
+
+        public static Button getButtonFromFolder(string s) {
+            string[] splits = s.Split('/');
+            foreach(Button b in _buttons) {
+                if (b.Name.CompareTo(splits[1]) == 0) {
+                    return b;
+                }
+            }
+            return null;
+        }
+
+        public static bool Contains(string ruta) {
+            foreach(Carpeta carpeta in _carpetas) {
+                Console.WriteLine(carpeta.getRutaPrograma());
+                if (carpeta.getRutaPrograma().CompareTo(ruta) == 0) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

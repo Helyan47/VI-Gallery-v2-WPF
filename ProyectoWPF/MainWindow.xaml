@@ -30,10 +30,17 @@
                     <RowDefinition Height="0.25*"/>
                 </Grid.RowDefinitions>
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
-                    <StackPanel x:Name="buttonStack" Grid.Row="1" CanVerticallyScroll="True" >
+                    <StackPanel x:Name="buttonStack" CanVerticallyScroll="True" >
                         <!--<Button x:Name="Peliculas" Style="{StaticResource CustomButtonStyle}" Content="Peliculas" Height="100" FontSize="40" BorderThickness="0" FontWeight="Bold" Foreground="White" Click="onClickButtonMenu" BorderBrush="#FF252525"/>-->
                     </StackPanel>
                 </ScrollViewer>
+                <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <StackPanel x:Name="addButtonStack" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="+" Padding="0" Background="{x:Null}" Style="{StaticResource CustomButtonStyle}" Foreground="White" FontSize="30" BorderThickness="0" Margin="0" Width="50" Click="addButtonClick"/>
+                        <Button Content="-" Padding="0" Background="{x:Null}" Style="{StaticResource CustomButtonStyle}" Foreground="White" FontSize="30" BorderThickness="0" Margin="0" Width="50" Click="removeButtonClick"/>
+
+                    </StackPanel>
+                </Grid>
 
                 <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
                 <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>

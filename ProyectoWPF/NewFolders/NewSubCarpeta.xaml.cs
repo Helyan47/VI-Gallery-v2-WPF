@@ -19,12 +19,25 @@ namespace ProyectoWPF {
     public partial class NewSubCarpeta : Window {
 
         private SubCarpeta p;
-        public NewSubCarpeta() {
+        private string rutaPadre;
+        public NewSubCarpeta(string s) {
             InitializeComponent();
+            rutaPadre = s;
         }
 
         private void BAceptar_Click(object sender, EventArgs e) {
-            p.setTitle(newName.Text);
+            if (newName.Text.CompareTo("") != 0) {
+                if (!Lista.Contains(rutaPadre + "/" + newName.Text)) {
+                    p.setTitle(newName.Text);
+                } else {
+                    MessageBox.Show("La subcarpeta ya existe");
+                }
+                    
+            } else {
+                MessageBox.Show("No has introducido ningun titulo para la carpeta");
+            }
+            
+            
             this.Close();
         }
 
