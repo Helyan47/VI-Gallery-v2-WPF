@@ -26,30 +26,33 @@ namespace Login {
             InitializeComponent();
             inputUser.changeMode("username");
             inputUser.invertColors("black");
-            inputUser.lostFocus();
+            inputUser.lostFocus(true);
             textUserBox = inputUser.getUsernameInput();
-            inputUser.GotFocus += gotFocusInput;
-            textUserBox.GotFocus += gotFocusInput;
             inputPass.changeMode("password");
             inputPass.invertColors("black");
-            inputPass.lostFocus();
+            inputPass.lostFocus(true);
             textPassBox = inputPass.getPaswwordBox();
-            inputUser.GotFocus += gotFocusInput;
-            textPassBox.GotFocus += gotFocusInput;
 
+            inputUser.getInvButton().Click += clickedUser;
+            inputPass.getInvButton().Click += clickedPass;
         }
 
-        private void gotFocusInput(object sender, RoutedEventArgs e) {
+        public void clickedUser(object sender, RoutedEventArgs e) {
+            inputPass.lostFocus(false);
             userError.Visibility = Visibility.Hidden;
+        }
+
+        public void clickedPass(object sender, RoutedEventArgs e) {
+            inputUser.lostFocus(false);
             passError.Visibility = Visibility.Hidden;
         }
 
         private void LoginClick(object sender, EventArgs e) {
-            
+
             if (inputUser.getText().CompareTo("") != 0) {
-                
+
                 if (inputPass.getText().CompareTo("") != 0) {
-                    bool connected = Conexion.checkUserPass(inputUser.getText(), inputPass.getText());
+                    bool connected = false;//Conexion.checkUserPass(inputUser.getText(), inputPass.getText());
                     if (connected) {
                         MessageBox.Show("Conectado");
                     } else {
@@ -64,7 +67,7 @@ namespace Login {
                     passError.Content = "La contraseña debe contener al menos un carácter";
                     passError.Visibility = Visibility.Visible;
                 }
-                
+
             } else {
                 inputUser.setError();
                 userError.Content = "El usuario debe contener al menos un carácter";
@@ -92,7 +95,7 @@ namespace Login {
         }
 
         private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e) {
-            if(this.WindowState == WindowState.Maximized) {
+            if (this.WindowState == WindowState.Maximized) {
                 this.WindowState = WindowState.Normal;
                 this.Left = Mouse.GetPosition(this).X - 100;
                 this.Top = Mouse.GetPosition(this).Y - 10;
@@ -129,17 +132,19 @@ namespace Login {
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e) {
             Point p = Mouse.GetPosition(inputUser);
             Point h = Mouse.GetPosition(inputPass);
-            if((p.X >= 0 && p.X <= inputUser.ActualWidth) && (p.Y >= 0 && p.Y <= inputUser.ActualHeight)){
+            //Console.WriteLine(p.X + " || "+p.Y + " |||||| " + inputUser.ActualWidth + " || " + inputUser.ActualHeight);
+            //Console.WriteLine(h.X + " || "+h.Y + " |||||| " + inputPass.ActualWidth + " || " + inputPass.ActualHeight);
+            if ((p.X >= 0 && p.X <= inputUser.ActualWidth) && (p.Y >= 0 && p.Y <= inputUser.ActualHeight)) {
                 userError.Visibility = Visibility.Hidden;
-                inputPass.lostFocus();
+                //inputPass.lostFocus();
             } else if ((h.X >= 0 && h.X <= inputPass.ActualWidth) && (h.Y >= 0 && h.Y <= inputPass.ActualHeight)) {
                 passError.Visibility = Visibility.Hidden;
-                inputUser.lostFocus();
+                //inputUser.lostFocus();
             } else {
-                inputUser.lostFocus();
-                inputPass.lostFocus();
+                inputUser.lostFocus(true);
+                inputPass.lostFocus(true);
             }
-               
+
         }
     }
 }
