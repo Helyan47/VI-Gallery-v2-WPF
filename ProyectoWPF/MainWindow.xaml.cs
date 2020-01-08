@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using MySql.Data.MySqlClient;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -29,15 +28,22 @@ namespace ProyectoWPF {
         public int firstFolder = 0;
         public static string userNick = "Helyan";
         public static int idUsuario = 1;
+        //Establece si se ha iniciado con conexion o sin conexion
+        public static bool conexionMode = false;
         public MainWindow() {
             InitializeComponent();
+            bool conexion = true;
+            conexionMode = conexion;
             _botones = buttonStack.Children;
             _botonesMenu = new List<Button>();
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
-            bool check=loadData();
-            if (check == true) {
+            if (!conexionMode) {
+                bool check = loadData();
+                if (check != true) {
 
+                }
             }
+            
         }
 
 
@@ -135,7 +141,11 @@ namespace ProyectoWPF {
 
                     }
 
-                    _saveData.saveSubFolder(c);
+                    if (conexionMode) {
+                        Conexion.uploadSubFolder(c);
+                    } else {
+                        _saveData.saveSubFolder(c);
+                    }
 
                     c.actualizar();
                     c.changeMode(Lista.actualiceMode(_activatedButton));
@@ -204,7 +214,14 @@ namespace ProyectoWPF {
                         string name = _activatedButton.Name;
                         c.getSerie().setTipo(name);
                         c.setRutaDirectorio(nombre);
-                        _saveData.saveSubFolder(c);
+
+                        if (conexionMode) {
+                            Conexion.uploadSubFolder(c);
+                        } else {
+                            _saveData.saveSubFolder(c);
+                        }
+
+                        
 
                         c.changeMode(Lista.actualiceMode(_activatedButton));
                         c.actualizar();
@@ -285,8 +302,6 @@ namespace ProyectoWPF {
                 }
 
             }
-
-
             
             return c;
         }
@@ -340,7 +355,12 @@ namespace ProyectoWPF {
                 p1.getSerie().setTipo(name);
                 p1.setRutaPrograma("C/" + name + "/" + p1.getSerie().getTitle());
 
-                _saveData.saveFolder(p1);
+                if (conexionMode) {
+                    Conexion.uploadSerie(p1.getSerie());
+                    Conexion.uploadFolder(p1);
+                } else {
+                    _saveData.saveFolder(p1);
+                }
 
                 p1.SetGridPadre(gridPrincipal);
                 aux.addCarpeta(p1);
@@ -380,7 +400,12 @@ namespace ProyectoWPF {
                 }
 
 
-                _saveData.saveFolder(p1);
+                if (conexionMode) {
+                    Conexion.uploadSerie(p1.getSerie());
+                    Conexion.uploadFolder(p1);
+                } else {
+                    _saveData.saveFolder(p1);
+                }
 
                 aux.addCarpeta(p1);
 

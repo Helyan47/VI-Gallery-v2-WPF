@@ -19,16 +19,29 @@ namespace Login {
     /// Lógica de interacción para MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+        TextBox textUserBox;
+        PasswordBox textPassBox;
 
         public MainWindow() {
             InitializeComponent();
             inputUser.changeMode("username");
             inputUser.invertColors("black");
             inputUser.lostFocus();
+            textUserBox = inputUser.getUsernameInput();
+            inputUser.GotFocus += gotFocusInput;
+            textUserBox.GotFocus += gotFocusInput;
             inputPass.changeMode("password");
             inputPass.invertColors("black");
             inputPass.lostFocus();
-            
+            textPassBox = inputPass.getPaswwordBox();
+            inputUser.GotFocus += gotFocusInput;
+            textPassBox.GotFocus += gotFocusInput;
+
+        }
+
+        private void gotFocusInput(object sender, RoutedEventArgs e) {
+            userError.Visibility = Visibility.Hidden;
+            passError.Visibility = Visibility.Hidden;
         }
 
         private void LoginClick(object sender, EventArgs e) {

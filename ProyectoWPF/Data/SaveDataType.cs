@@ -16,6 +16,7 @@ namespace ProyectoWPF {
         private string rutaArchivo;
         private string tipo;
         private string img;
+        private string profile;
 
         public SaveDataType(string name,bool isFolder,string descripcion,string rutaPrograma,string tipo, string dirImg) {
             this.name = name;

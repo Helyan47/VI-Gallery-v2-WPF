@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using MySql.Data.MySqlClient;
 
 namespace Login {
@@ -11,21 +12,29 @@ namespace Login {
 
         public static bool checkUserPass(string user, string pass) {
             MySqlConnection conexion = getConnection();
-            conexion.Open();
+            try {
+                conexion.Open();
 
-            MySqlCommand comando = new MySqlCommand("SELECT nick,pass FROM Usuario WHERE nick=@val1 AND pass=@val2", conexion);
-            comando.Parameters.AddWithValue("@val1", user);
-            comando.Parameters.AddWithValue("@val2", pass);
-            MySqlDataReader reader = comando.ExecuteReader();
+                MySqlCommand comando = new MySqlCommand("SELECT nick,pass FROM Usuario WHERE nick=@val1 AND pass=@val2", conexion);
+                comando.Parameters.AddWithValue("@val1", user);
+                comando.Parameters.AddWithValue("@val2", pass);
+                MySqlDataReader reader = comando.ExecuteReader();
 
-            if (reader.HasRows) {
-                conexion.Close();
-                return true;
-            } else {
-                conexion.Close();
-                return false;
+                if (reader.HasRows) {
+                    conexion.Close();
+                    return true;
+                } else {
+                    conexion.Close();
+                    return false;
+                }
+            }catch (MySqlException e) {
+                MessageBox.Show("No se ha podido establecer conexión con el servidor. Comprueba tu conexión");
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
             }
-            
+            return false;
             
         }
     }
