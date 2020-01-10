@@ -23,18 +23,26 @@ namespace SelectProfile {
             InitializeComponent();
             List<string> profiles = SaveData.getProfiles();
             foreach(string s in profiles) {
+                
                 Button b = new Button();
                 b.Content = s;
                 b.HorizontalAlignment = HorizontalAlignment.Stretch;
                 b.VerticalAlignment = VerticalAlignment.Stretch;
                 b.VerticalContentAlignment = VerticalAlignment.Center;
                 b.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-                b.FontSize = 50;
+                b.FontSize = 40;
                 b.Padding = new Thickness(0);
                 b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
                 //b.Style = this.FindResource("CustomButtonStyle") as Style;
                 b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
+                b.Click += onClick;
                 perfiles.Children.Add(b);
+                Rectangle rect = new Rectangle();
+                rect.HorizontalAlignment = HorizontalAlignment.Stretch;
+                rect.Height = 2;
+                rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
+                perfiles.Children.Add(rect);
+
             }
         }
 
@@ -67,7 +75,11 @@ namespace SelectProfile {
         }
 
         private void onClick(object sender, RoutedEventArgs e) {
-
+            Button aux=(Button) sender;
+            VIGallery vi = new VIGallery(aux.Content.ToString());
+            this.Hide();
+            vi.Show();
+            this.Close();
         }
     }
 }

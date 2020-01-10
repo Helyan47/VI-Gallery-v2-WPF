@@ -12,7 +12,7 @@ using System.Windows.Media;
 namespace ProyectoWPF {
     public class SaveData {
 
-        private static string _archivoData= "../../../ProyectoWPF/bin/Debug/ArchivoData.txt";
+        public static string _archivoData= "../../../ProyectoWPF/bin/Debug/ArchivoData.txt";
 
         public SaveData() {
 
@@ -25,7 +25,7 @@ namespace ProyectoWPF {
         }
 
         public void saveFolder(Carpeta c) {
-            SaveDataType carpetaData = new SaveDataType(c.getSerie().getTitle(), true, c.getDescripcion(), c.getRutaPrograma(), c.getSerie().getTipo(),c.getSerie().getDirImg());
+            SaveDataType carpetaData = new SaveDataType(c.getSerie().getTitle(), true, c.getDescripcion(), c.getRutaPrograma(), c.getSerie().getTipo(),c.getSerie().getDirImg(), c._profile);
             IFormatter formatter=new BinaryFormatter();
             using (FileStream stream = new FileStream(_archivoData, FileMode.OpenOrCreate, FileAccess.Write)) {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
@@ -34,7 +34,7 @@ namespace ProyectoWPF {
         }
 
         public void saveSubFolder(SubCarpeta c) {
-            SaveDataType carpetaData = new SaveDataType(c.getTitle(), false, true, c.getRutaPrograma(), c.getSerie().getTipo(),c.getDirImg());
+            SaveDataType carpetaData = new SaveDataType(c.getTitle(), false, true, c.getRutaPrograma(), c.getSerie().getTipo(),c.getDirImg(),c._profile);
             IFormatter formatter = new BinaryFormatter();
             using (FileStream stream = new FileStream(_archivoData, FileMode.OpenOrCreate, FileAccess.Write)) {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
@@ -46,7 +46,7 @@ namespace ProyectoWPF {
             ICollection<SaveDataType> ic = new List<SaveDataType>();
             ICollection<SaveDataType> objects = new List<SaveDataType>();
             IFormatter formatter = new BinaryFormatter();
-            if (File.Exists("ArchivoData.txt")) {
+            if (File.Exists(_archivoData)) {
                 using (FileStream stream = new FileStream(_archivoData, FileMode.Open, FileAccess.Read, FileShare.None)) {
                     while (stream.Position < stream.Length) {
                         SaveDataType aux = (SaveDataType)formatter.Deserialize(stream);
@@ -55,9 +55,11 @@ namespace ProyectoWPF {
                 }
 
                 foreach (SaveDataType c in objects) {
-                    if (c.isCarpeta()) {
-                        if (!c.isSubCarpeta()) {
-                            ic.Add(c);
+                    if (c.getProfile().CompareTo(VIGallery._profile) == 0) {
+                        if (c.isCarpeta()) {
+                            if (!c.isSubCarpeta()) {
+                                ic.Add(c);
+                            }
                         }
                     }
                     
@@ -70,7 +72,7 @@ namespace ProyectoWPF {
 
         public ICollection<SaveDataType> loadSubFolders() {
             
-            if (File.Exists("ArchivoData.txt")) {
+            if (File.Exists(_archivoData)) {
                 ICollection<SaveDataType> ic = new List<SaveDataType>();
                 ICollection<SaveDataType> objects = new List<SaveDataType>();
                 IFormatter formatter = new BinaryFormatter();
@@ -82,8 +84,10 @@ namespace ProyectoWPF {
                 }
 
                 foreach (SaveDataType c in objects) {
-                    if (c.isSubCarpeta()) {
-                        ic.Add(c);
+                    if (c.getProfile().CompareTo(VIGallery._profile) == 0) {
+                        if (c.isSubCarpeta()) {
+                            ic.Add(c);
+                        }
                     }
 
                 }
@@ -98,17 +102,19 @@ namespace ProyectoWPF {
             ICollection<string> items = new List<string>();
 
             foreach (SaveDataType c in ic) {
-                if (c.isCarpeta()) {
-                    if (!c.isSubCarpeta()) {
-                        string name = getName(c.getRutaPrograma());
-                        bool exist = false;
-                        foreach(string s in items) {
-                            if (s.Equals(name)) {
-                                exist = true;
+                if (c.getProfile().CompareTo(VIGallery._profile) == 0) {
+                    if (c.isCarpeta()) {
+                        if (!c.isSubCarpeta()) {
+                            string name = getName(c.getRutaPrograma());
+                            bool exist = false;
+                            foreach (string s in items) {
+                                if (s.Equals(name)) {
+                                    exist = true;
+                                }
                             }
-                        }
-                        if (!exist) {
-                            items.Add(name);
+                            if (!exist) {
+                                items.Add(name);
+                            }
                         }
                     }
                 }
@@ -140,7 +146,6 @@ namespace ProyectoWPF {
         public static List<string> getProfiles() {
             if (File.Exists(_archivoData)) {
                 List<string> lista = new List<string>();
-                Console.WriteLine("Hola");
                 ICollection<SaveDataType> objects = new List<SaveDataType>();
                 IFormatter formatter = new BinaryFormatter();
                 using (FileStream stream = new FileStream(_archivoData, FileMode.Open, FileAccess.Read, FileShare.None)) {
@@ -149,9 +154,8 @@ namespace ProyectoWPF {
                         objects.Add(aux);
                     }
                     foreach (SaveDataType c in objects) {
-                        if (!lista.Contains(getProfile(c.getRutaPrograma()))) {
-                            Console.WriteLine(c.getRutaPrograma() + " || " + getProfile(c.getRutaPrograma()));
-                            lista.Add(getProfile(c.getRutaPrograma()));
+                        if (!lista.Contains(c.getProfile())) {
+                            lista.Add(c.getProfile());
                         }
 
                     }
@@ -164,9 +168,11 @@ namespace ProyectoWPF {
             return null;
         }
 
-        private static  string getProfile(string s) {
-            string[] splits = s.Split('|');
-            return splits[0];
+        public static bool profileExists(string s) {
+            if (getProfiles().Contains(s)) {
+                return true;
+            }
+            return false;
         }
     }
 }

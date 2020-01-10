@@ -26,10 +26,12 @@ namespace ProyectoWPF {
         private Canvas _defaultCanvas;
         private int _mode = 0;
         private string _dirImg;
+        public string _profile { get; set; }
         public SubCarpeta() {
             InitializeComponent();
             _numSubCarpetas = 0;
             _defaultCanvas = canvasFolder;
+            _profile = VIGallery._profile;
         }
 
         #region get/set

@@ -18,7 +18,7 @@ namespace ProyectoWPF {
         private string img;
         private string profile;
 
-        public SaveDataType(string name,bool isFolder,string descripcion,string rutaPrograma,string tipo, string dirImg) {
+        public SaveDataType(string name,bool isFolder,string descripcion,string rutaPrograma,string tipo, string dirImg,string profile) {
             this.name = name;
             this.isFolder = isFolder;
             if (isFolder == true) {
@@ -29,17 +29,19 @@ namespace ProyectoWPF {
             this.rutaPrograma = rutaPrograma;
             this.tipo = tipo;
             this.img = dirImg;
+            this.profile = profile;
         }
-        public SaveDataType(string name, bool isFolder,bool isSubFolder, string rutaPrograma, string tipo, string img) {
+        public SaveDataType(string name, bool isFolder,bool isSubFolder, string rutaPrograma, string tipo, string img, string profile) {
             this.name = name;
             this.isFolder = isFolder;
             this.isSubFolder = isSubFolder;
             this.rutaPrograma = rutaPrograma;
             this.tipo = tipo;
             this.img = img;
+            this.profile = profile;
         }
 
-        public SaveDataType(string name, string rutaArchivo, string rutaPrograma, string tipo, string img, bool isFile) {
+        public SaveDataType(string name, string rutaArchivo, string rutaPrograma, string tipo, string img, bool isFile, string profile) {
             this.name = name;
             this.isFile = isFile;
             if (isFile) {
@@ -49,6 +51,7 @@ namespace ProyectoWPF {
             this.rutaArchivo = rutaArchivo;
             this.rutaPrograma = rutaPrograma;
             this.tipo = tipo;
+            this.profile = profile;
         }
 
         public string getName() {
@@ -77,6 +80,14 @@ namespace ProyectoWPF {
 
         public string getDirImg() {
             return img;
+        }
+
+        public string getProfile() {
+            return profile;
+        }
+
+        public void setProfile(string prof) {
+            this.profile = prof;
         }
 
     }

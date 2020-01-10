@@ -32,6 +32,7 @@ namespace ProyectoWPF {
         private Canvas _defaultCanvas;
         private int _mode = 0;
         private string _descripcionText;
+        public string _profile { get; set; }
 
         public Carpeta(VIGallery ventana) {
             InitializeComponent();
@@ -40,6 +41,7 @@ namespace ProyectoWPF {
             _ventanaMain = ventana;
             _defaultCanvas = canvasFolder;
             _descripcionText = "";
+            _profile = VIGallery._profile;
         }
 
         #region get/set

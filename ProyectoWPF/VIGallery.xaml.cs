@@ -30,11 +30,12 @@ namespace ProyectoWPF {
         public static int idUsuario = 1;
         //Establece si se ha iniciado con conexion o sin conexion
         public static bool conexionMode = false;
-        public static string profile = "Profile1";
-        public VIGallery() {
+        public static string _profile = "Profile1";
+        public VIGallery(string profile) {
             InitializeComponent();
             bool conexion = false;
             conexionMode = conexion;
+            _profile = profile;
             _botones = buttonStack.Children;
             _botonesMenu = new List<Button>();
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
@@ -99,7 +100,7 @@ namespace ProyectoWPF {
                 Lista.hideAllExceptPrinc();
             } else {
                 menuButtons.BorderThickness = new Thickness(5);
-                MessageBox.Show("No has creado ninguno menú");
+                MessageBox.Show("No has creado ningún menú");
                 menuButtons.BorderThickness = new Thickness(0);
             }
 
@@ -381,7 +382,7 @@ namespace ProyectoWPF {
 
                 string name = _activatedButton.Name;
                 p1.getSerie().setTipo(name);
-                p1.setRutaPrograma(profile + "|C/" + name + "/" + p1.getSerie().getTitle());
+                p1.setRutaPrograma(_profile + "|C/" + name + "/" + p1.getSerie().getTitle());
 
                 if (conexionMode) {
                     Conexion.uploadSerie(p1.getSerie());
@@ -417,7 +418,7 @@ namespace ProyectoWPF {
 
             string name = _activatedButton.Name;
             p1.getSerie().setTipo(name);
-            p1.setRutaPrograma(profile+"|C/" + name + "/" + p1.getSerie().getTitle());
+            p1.setRutaPrograma(_profile+"|C/" + name + "/" + p1.getSerie().getTitle());
             bool checkIfExists = Lista.Contains(p1.getRutaPrograma());
             if (!checkIfExists) {
                 Lista.addCarpeta(p1);
@@ -541,56 +542,59 @@ namespace ProyectoWPF {
         }
 
         public bool loadData() {
-            bool check;
-            if (File.Exists("ArchivoData.txt")) {
-                check = true;
-                ICollection<SaveDataType> folders = _saveData.loadFolders();
-                ICollection<Button> ib = _saveData.loadButtons(folders);
-                ICollection<SaveDataType> subFolders = _saveData.loadSubFolders();
-                int cont = 0;
-                foreach (Button b in ib) {
-                    b.Click += onClickButtonMenu;
-                    
-                    _botonesMenu.Add(b);
-                    Lista.addButton(b);
-                    buttonStack.Children.Add(b);
-                    
-                    string name = b.Content.ToString();
-                    _aux = new Carpeta(this);
-                    WrapPanelPrincipal wp = new WrapPanelPrincipal();
-                    wp.Name = name;
-                    gridPrincipal.Children.Add(wp);
-                    
-                    if (cont == 0) {
-                        wp.Visibility = Visibility.Visible;
-                        _activatedButton = b;
-                        b.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                    } else {
-                        wp.Visibility = Visibility.Hidden;
+            if (File.Exists(SaveData._archivoData)) {
+                if (SaveData.profileExists(_profile)) {
+                    ICollection<SaveDataType> folders = _saveData.loadFolders();
+                    ICollection<Button> ib = _saveData.loadButtons(folders);
+                    ICollection<SaveDataType> subFolders = _saveData.loadSubFolders();
+                    int cont = 0;
+                    foreach (Button b in ib) {
+                        b.Click += onClickButtonMenu;
+
+                        _botonesMenu.Add(b);
+                        Lista.addButton(b);
+                        buttonStack.Children.Add(b);
+
+                        string name = b.Content.ToString();
+                        _aux = new Carpeta(this);
+                        WrapPanelPrincipal wp = new WrapPanelPrincipal();
+                        wp.Name = name;
+                        gridPrincipal.Children.Add(wp);
+
+                        if (cont == 0) {
+                            wp.Visibility = Visibility.Visible;
+                            _activatedButton = b;
+                            b.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        } else {
+                            wp.Visibility = Visibility.Hidden;
+                        }
+                        cont++;
+                        Lista.addWrapPrincipal(wp);
+                        _wrapsPrincipales.Add(wp);
                     }
-                    cont++;
-                    Lista.addWrapPrincipal(wp);
-                    _wrapsPrincipales.Add(wp);
-                }
 
-                foreach (SaveDataType sc in folders){
-                    Lista.getButtonFromFolder(sc.getRutaPrograma()).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                    loadCarpeta(sc);
-                }
+                    foreach (SaveDataType sc in folders) {
+                        Lista.getButtonFromFolder(sc.getRutaPrograma()).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        loadCarpeta(sc);
+                    }
 
-                foreach(SaveDataType sc in subFolders) {
-                    Lista.getButtonFromFolder(sc.getRutaPrograma()).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                    loadSubCarpeta(sc);
-                }
+                    foreach (SaveDataType sc in subFolders) {
+                        Lista.getButtonFromFolder(sc.getRutaPrograma()).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        loadSubCarpeta(sc);
+                    }
 
-                if (Lista.getFirstButton() != null) {
-                    Lista.getFirstButton().RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    if (Lista.getFirstButton() != null) {
+                        Lista.getFirstButton().RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    }
+
+                    return true;
+                } else {
+                    Console.WriteLine("No existe el perfil");
+                    return false;
                 }
-                
-                return check;
             } else {
-                check = false;
-                return check;
+                Console.WriteLine("No existe el archivo");
+                return false;
             }
 
         }
