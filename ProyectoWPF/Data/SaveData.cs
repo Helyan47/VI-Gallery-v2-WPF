@@ -10,11 +10,12 @@ using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace ProyectoWPF {
-    class SaveData {
+    public class SaveData {
 
-        private  string _archivoData;
-        public SaveData(string archivoData) {
-            this._archivoData = archivoData;
+        private static string _archivoData= "../../../ProyectoWPF/bin/Debug/ArchivoData.txt";
+
+        public SaveData() {
+
         }
 
         public void saveData(string s,string name) {
@@ -26,22 +27,19 @@ namespace ProyectoWPF {
         public void saveFolder(Carpeta c) {
             SaveDataType carpetaData = new SaveDataType(c.getSerie().getTitle(), true, c.getDescripcion(), c.getRutaPrograma(), c.getSerie().getTipo(),c.getSerie().getDirImg());
             IFormatter formatter=new BinaryFormatter();
-            using (FileStream stream = new FileStream("ArchivoData.txt", FileMode.OpenOrCreate, FileAccess.Write)) {
+            using (FileStream stream = new FileStream(_archivoData, FileMode.OpenOrCreate, FileAccess.Write)) {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
                 formatter.Serialize(stream, carpetaData);
             }
-            Conexion.uploadSerie(c.getSerie());
-            Conexion.uploadFolder(c);
         }
 
         public void saveSubFolder(SubCarpeta c) {
             SaveDataType carpetaData = new SaveDataType(c.getTitle(), false, true, c.getRutaPrograma(), c.getSerie().getTipo(),c.getDirImg());
             IFormatter formatter = new BinaryFormatter();
-            using (FileStream stream = new FileStream("ArchivoData.txt", FileMode.OpenOrCreate, FileAccess.Write)) {
+            using (FileStream stream = new FileStream(_archivoData, FileMode.OpenOrCreate, FileAccess.Write)) {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
                 formatter.Serialize(stream, carpetaData);
             }
-            Conexion.uploadSubFolder(c);
         }
 
         public ICollection<SaveDataType> loadFolders() {
@@ -49,7 +47,7 @@ namespace ProyectoWPF {
             ICollection<SaveDataType> objects = new List<SaveDataType>();
             IFormatter formatter = new BinaryFormatter();
             if (File.Exists("ArchivoData.txt")) {
-                using (FileStream stream = new FileStream("ArchivoData.txt", FileMode.Open, FileAccess.Read, FileShare.None)) {
+                using (FileStream stream = new FileStream(_archivoData, FileMode.Open, FileAccess.Read, FileShare.None)) {
                     while (stream.Position < stream.Length) {
                         SaveDataType aux = (SaveDataType)formatter.Deserialize(stream);
                         objects.Add(aux);
@@ -71,11 +69,12 @@ namespace ProyectoWPF {
         }
 
         public ICollection<SaveDataType> loadSubFolders() {
-            ICollection<SaveDataType> ic = new List<SaveDataType>();
-            ICollection<SaveDataType> objects = new List<SaveDataType>();
-            IFormatter formatter = new BinaryFormatter();
+            
             if (File.Exists("ArchivoData.txt")) {
-                using (FileStream stream = new FileStream("ArchivoData.txt", FileMode.Open, FileAccess.Read, FileShare.None)) {
+                ICollection<SaveDataType> ic = new List<SaveDataType>();
+                ICollection<SaveDataType> objects = new List<SaveDataType>();
+                IFormatter formatter = new BinaryFormatter();
+                using (FileStream stream = new FileStream(_archivoData, FileMode.Open, FileAccess.Read, FileShare.None)) {
                     while (stream.Position < stream.Length) {
                         SaveDataType aux = (SaveDataType)formatter.Deserialize(stream);
                         objects.Add(aux);
@@ -88,9 +87,10 @@ namespace ProyectoWPF {
                     }
 
                 }
+                return ic;
             }
 
-            return ic;
+            return null;
         }
 
         public ICollection<Button> loadButtons(ICollection<SaveDataType> ic) {
@@ -137,6 +137,36 @@ namespace ProyectoWPF {
             return splitted[1];
         }
 
-        
+        public static List<string> getProfiles() {
+            if (File.Exists(_archivoData)) {
+                List<string> lista = new List<string>();
+                Console.WriteLine("Hola");
+                ICollection<SaveDataType> objects = new List<SaveDataType>();
+                IFormatter formatter = new BinaryFormatter();
+                using (FileStream stream = new FileStream(_archivoData, FileMode.Open, FileAccess.Read, FileShare.None)) {
+                    while (stream.Position < stream.Length) {
+                        SaveDataType aux = (SaveDataType)formatter.Deserialize(stream);
+                        objects.Add(aux);
+                    }
+                    foreach (SaveDataType c in objects) {
+                        if (!lista.Contains(getProfile(c.getRutaPrograma()))) {
+                            Console.WriteLine(c.getRutaPrograma() + " || " + getProfile(c.getRutaPrograma()));
+                            lista.Add(getProfile(c.getRutaPrograma()));
+                        }
+
+                    }
+                }
+                return lista;
+            } else {
+                MessageBox.Show("No se ha encontrado el archivo");
+            }
+
+            return null;
+        }
+
+        private static  string getProfile(string s) {
+            string[] splits = s.Split('|');
+            return splits[0];
+        }
     }
 }

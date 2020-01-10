@@ -12,9 +12,9 @@ using System.Windows.Media;
 
 namespace ProyectoWPF {
     /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
+    /// Lógica de interacción para VIGallery.xaml
     /// </summary>
-    public partial class MainWindow : Window {
+    public partial class VIGallery : Window {
 
         private ICollection<WrapPanelPrincipal> _wrapsPrincipales;
         private ICollection<Button> _botonesMenu;
@@ -22,7 +22,7 @@ namespace ProyectoWPF {
         private Carpeta _aux;
         private SubCarpeta _aux2;
         List<string> _rutas = new List<string>();
-        SaveData _saveData = new SaveData("ArchivoData.txt");
+        SaveData _saveData = new SaveData();
         private UIElementCollection _botones;
         private Button _activatedButton;
         public int firstFolder = 0;
@@ -30,9 +30,10 @@ namespace ProyectoWPF {
         public static int idUsuario = 1;
         //Establece si se ha iniciado con conexion o sin conexion
         public static bool conexionMode = false;
-        public MainWindow() {
+        public static string profile = "Profile1";
+        public VIGallery() {
             InitializeComponent();
-            bool conexion = true;
+            bool conexion = false;
             conexionMode = conexion;
             _botones = buttonStack.Children;
             _botonesMenu = new List<Button>();
@@ -71,32 +72,38 @@ namespace ProyectoWPF {
         }
 
         private void Button_MouseLeftButtonUp(object sender, RoutedEventArgs e) {
-            string[] files = new string[0];
-            using (var folderDialog = new CommonOpenFileDialog()) {
+            if (_activatedButton != null) {
+                string[] files = new string[0];
+                using (var folderDialog = new CommonOpenFileDialog()) {
 
-                folderDialog.IsFolderPicker = true;
-                firstFolder = 0;
-                if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
-                    _folders = Directory.GetDirectories(folderDialog.FileName);
+                    folderDialog.IsFolderPicker = true;
+                    firstFolder = 0;
+                    if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
+                        _folders = Directory.GetDirectories(folderDialog.FileName);
 
-                    for (int i = 0; i < _folders.Length; i++) {
-                        _rutas.Add(_folders[i]);
+                        for (int i = 0; i < _folders.Length; i++) {
+                            _rutas.Add(_folders[i]);
 
-                        string[] aux = Directory.GetDirectories(_folders[i]);
-                        for (int j = 0; j < aux.Length; j++) {
-                            _rutas.Add(aux[j]);
+                            string[] aux = Directory.GetDirectories(_folders[i]);
+                            for (int j = 0; j < aux.Length; j++) {
+                                _rutas.Add(aux[j]);
+                            }
                         }
-                    }
-                    if (_folders != null) {
-                        addText(_folders);
-                    }
+                        if (_folders != null) {
+                            addText(_folders);
+                        }
 
 
+                    }
                 }
+                Lista.hideAllExceptPrinc();
+            } else {
+                menuButtons.BorderThickness = new Thickness(5);
+                MessageBox.Show("No has creado ninguno menú");
+                menuButtons.BorderThickness = new Thickness(0);
             }
-            Lista.hideAllExceptPrinc();
-            
-        }
+
+}
 
         private void addSubCarpeta() {
             SubCarpeta c = new SubCarpeta();
@@ -186,7 +193,12 @@ namespace ProyectoWPF {
                         string name = _activatedButton.Name;
                         c.getSerie().setTipo(name);
                         c.setRutaDirectorio(nombre);
-                        _saveData.saveSubFolder(c);
+
+                        if (conexionMode) {
+                            Conexion.uploadSubFolder(c);
+                        } else {
+                            _saveData.saveSubFolder(c);
+                        }
 
                         c.changeMode(Lista.actualiceMode(_activatedButton));
                         c.actualizar();
@@ -261,7 +273,12 @@ namespace ProyectoWPF {
                         string name = _activatedButton.Name;
                         c.getSerie().setTipo(name);
                         c.setRutaDirectorio(nombre);
-                        _saveData.saveSubFolder(c);
+
+                        if (conexionMode) {
+                            Conexion.uploadSubFolder(c);
+                        } else {
+                            _saveData.saveSubFolder(c);
+                        }
 
                         c.changeMode(Lista.actualiceMode(_activatedButton));
                         c.actualizar();
@@ -287,7 +304,12 @@ namespace ProyectoWPF {
                         string name = _activatedButton.Name;
                         c.getSerie().setTipo(name);
                         c.setRutaDirectorio(p.getCarpeta().getRutaDirectorio() + "/" + c.getTitle());
-                        _saveData.saveSubFolder(c);
+
+                        if (conexionMode) {
+                            Conexion.uploadSubFolder(c);
+                        } else {
+                            _saveData.saveSubFolder(c);
+                        }
 
                         c.changeMode(Lista.actualiceMode(_activatedButton));
                         c.actualizar();
@@ -336,7 +358,13 @@ namespace ProyectoWPF {
         }
 
         private void Button_AddCarpeta(object sender, EventArgs e) {
-            addCarpeta();
+            if (_activatedButton != null) {
+                addCarpeta();
+            } else {
+                menuButtons.BorderThickness = new Thickness(5);
+                MessageBox.Show("No has creado ninguno menú");
+                menuButtons.BorderThickness = new Thickness(0);
+            }
         }
 
         private void addCarpeta() {
@@ -353,7 +381,7 @@ namespace ProyectoWPF {
 
                 string name = _activatedButton.Name;
                 p1.getSerie().setTipo(name);
-                p1.setRutaPrograma("C/" + name + "/" + p1.getSerie().getTitle());
+                p1.setRutaPrograma(profile + "|C/" + name + "/" + p1.getSerie().getTitle());
 
                 if (conexionMode) {
                     Conexion.uploadSerie(p1.getSerie());
@@ -389,7 +417,7 @@ namespace ProyectoWPF {
 
             string name = _activatedButton.Name;
             p1.getSerie().setTipo(name);
-            p1.setRutaPrograma("C/" + name + "/" + p1.getSerie().getTitle());
+            p1.setRutaPrograma(profile+"|C/" + name + "/" + p1.getSerie().getTitle());
             bool checkIfExists = Lista.Contains(p1.getRutaPrograma());
             if (!checkIfExists) {
                 Lista.addCarpeta(p1);
@@ -555,6 +583,9 @@ namespace ProyectoWPF {
                     loadSubCarpeta(sc);
                 }
 
+                if (Lista.getFirstButton() != null) {
+                    Lista.getFirstButton().RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                }
                 
                 return check;
             } else {

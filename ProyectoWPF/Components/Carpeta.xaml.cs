@@ -28,12 +28,12 @@ namespace ProyectoWPF {
         private Grid _gridPadre;
         private string _rutaDirectorio;
         private string _rutaPrograma;
-        private MainWindow _ventanaMain;
+        private VIGallery _ventanaMain;
         private Canvas _defaultCanvas;
         private int _mode = 0;
         private string _descripcionText;
 
-        public Carpeta(MainWindow ventana) {
+        public Carpeta(VIGallery ventana) {
             InitializeComponent();
             _numSubcarpetas = 0;
             Title2.SetText("");

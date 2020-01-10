@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoWPF {
     [Serializable]
-    class SaveDataType {
+    public class SaveDataType {
         private string name;
         private bool isFolder;
         private bool isSubFolder;

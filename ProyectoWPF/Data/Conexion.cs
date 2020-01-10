@@ -32,7 +32,7 @@ namespace ProyectoWPF.Data {
                     comando.Parameters.AddWithValue("@nombre", b.Content.ToString());
                     comando.Parameters.AddWithValue("@tipo", tipo);
                     comando.Parameters.AddWithValue("@numCarp", 0);
-                    comando.Parameters.AddWithValue("@idUsuario", MainWindow.idUsuario);
+                    comando.Parameters.AddWithValue("@idUsuario", VIGallery.idUsuario);
                     comando.ExecuteNonQuery();
                     myTrans.Commit();
 
@@ -72,7 +72,7 @@ namespace ProyectoWPF.Data {
                     comando.Parameters.AddWithValue("@desc", s.getDesc());
                     comando.Parameters.AddWithValue("@tipo", s.getTipo());
                     comando.Parameters.AddWithValue("@generos", "");
-                    comando.Parameters.AddWithValue("@idUsuario", MainWindow.idUsuario);
+                    comando.Parameters.AddWithValue("@idUsuario", VIGallery.idUsuario);
                     comando.ExecuteNonQuery();
                     myTrans.Commit();
 
@@ -125,7 +125,7 @@ namespace ProyectoWPF.Data {
                         comando.Parameters.AddWithValue("@ruta", p.getRutaPrograma());
                         comando.Parameters.AddWithValue("@img", p.getSerie().getDirImg());
                         comando.Parameters.AddWithValue("@isFolder", true);
-                        comando.Parameters.AddWithValue("@idUsuario", MainWindow.idUsuario);
+                        comando.Parameters.AddWithValue("@idUsuario", VIGallery.idUsuario);
                         comando.ExecuteNonQuery();
 
                         myTrans.Commit();
@@ -186,7 +186,7 @@ namespace ProyectoWPF.Data {
                             comando.Parameters.AddWithValue("@ruta", p.getRutaPrograma());
                             comando.Parameters.AddWithValue("@img", p.getSerie().getDirImg());
                             comando.Parameters.AddWithValue("@isFolder", 0);
-                            comando.Parameters.AddWithValue("@idUsuario", MainWindow.idUsuario);
+                            comando.Parameters.AddWithValue("@idUsuario", VIGallery.idUsuario);
                             comando.ExecuteNonQuery();
                             myTrans.Commit();
                             Console.WriteLine("Ejecutado guardado de subcarpeta");

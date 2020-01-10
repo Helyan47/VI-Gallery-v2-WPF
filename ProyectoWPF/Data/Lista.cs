@@ -49,6 +49,16 @@ namespace ProyectoWPF {
             return false;
         }
 
+        public static Button getFirstButton() {
+            int cont = 0;
+            foreach(Button b in _buttons) {
+                if (cont == 0) {
+                    return b;
+                }
+            }
+            return null;
+        }
+
         public static void addButton(Button b) {
             _buttons.Add(b);
         }
