@@ -19,6 +19,8 @@ namespace SelectProfile {
     /// Lógica de interacción para MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+
+        public static string loadNewProfile = "";
         public MainWindow() {
             InitializeComponent();
             List<string> profiles = SaveData.getProfiles();
@@ -78,7 +80,13 @@ namespace SelectProfile {
             Button aux=(Button) sender;
             VIGallery vi = new VIGallery(aux.Content.ToString());
             this.Hide();
-            vi.Show();
+            vi.ShowDialog();
+            while (VIGallery.changedProfile) {
+                Console.WriteLine(vi.ToString());
+                vi = new VIGallery(VIGallery._profile);
+                loadNewProfile = "";
+                vi.ShowDialog();
+            }
             this.Close();
         }
     }

@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -22,7 +23,6 @@ namespace ProyectoWPF {
         private Carpeta _aux;
         private SubCarpeta _aux2;
         List<string> _rutas = new List<string>();
-        SaveData _saveData = new SaveData();
         private UIElementCollection _botones;
         private Button _activatedButton;
         public int firstFolder = 0;
@@ -31,13 +31,18 @@ namespace ProyectoWPF {
         //Establece si se ha iniciado con conexion o sin conexion
         public static bool conexionMode = false;
         public static string _profile = "Profile1";
+        private static string _newSelectedProfile = "Profile1";
+        public static bool changedProfile = false;
         public VIGallery(string profile) {
             InitializeComponent();
             bool conexion = false;
             conexionMode = conexion;
             _profile = profile;
+            Lista.clearListas();
+            Console.WriteLine("El perfil seleccionado es " + _profile);
             _botones = buttonStack.Children;
             _botonesMenu = new List<Button>();
+            changedProfile = false;
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
             if (!conexionMode) {
                 bool check = loadData();
@@ -152,7 +157,7 @@ namespace ProyectoWPF {
                     if (conexionMode) {
                         Conexion.uploadSubFolder(c);
                     } else {
-                        _saveData.saveSubFolder(c);
+                        SaveData.saveSubFolder(c);
                     }
 
                     c.actualizar();
@@ -198,7 +203,7 @@ namespace ProyectoWPF {
                         if (conexionMode) {
                             Conexion.uploadSubFolder(c);
                         } else {
-                            _saveData.saveSubFolder(c);
+                            SaveData.saveSubFolder(c);
                         }
 
                         c.changeMode(Lista.actualiceMode(_activatedButton));
@@ -231,7 +236,7 @@ namespace ProyectoWPF {
                         if (conexionMode) {
                             Conexion.uploadSubFolder(c);
                         } else {
-                            _saveData.saveSubFolder(c);
+                            SaveData.saveSubFolder(c);
                         }
 
                         
@@ -278,7 +283,7 @@ namespace ProyectoWPF {
                         if (conexionMode) {
                             Conexion.uploadSubFolder(c);
                         } else {
-                            _saveData.saveSubFolder(c);
+                            SaveData.saveSubFolder(c);
                         }
 
                         c.changeMode(Lista.actualiceMode(_activatedButton));
@@ -309,7 +314,7 @@ namespace ProyectoWPF {
                         if (conexionMode) {
                             Conexion.uploadSubFolder(c);
                         } else {
-                            _saveData.saveSubFolder(c);
+                            SaveData.saveSubFolder(c);
                         }
 
                         c.changeMode(Lista.actualiceMode(_activatedButton));
@@ -388,7 +393,7 @@ namespace ProyectoWPF {
                     Conexion.uploadSerie(p1.getSerie());
                     Conexion.uploadFolder(p1);
                 } else {
-                    _saveData.saveFolder(p1);
+                    SaveData.saveFolder(p1);
                 }
 
                 p1.SetGridPadre(gridPrincipal);
@@ -433,7 +438,7 @@ namespace ProyectoWPF {
                     Conexion.uploadSerie(p1.getSerie());
                     Conexion.uploadFolder(p1);
                 } else {
-                    _saveData.saveFolder(p1);
+                    SaveData.saveFolder(p1);
                 }
 
                 aux.addCarpeta(p1);
@@ -543,10 +548,12 @@ namespace ProyectoWPF {
 
         public bool loadData() {
             if (File.Exists(SaveData._archivoData)) {
-                if (SaveData.profileExists(_profile)) {
-                    ICollection<SaveDataType> folders = _saveData.loadFolders();
-                    ICollection<Button> ib = _saveData.loadButtons(folders);
-                    ICollection<SaveDataType> subFolders = _saveData.loadSubFolders();
+                SaveData.loadProfiles();
+                addProfilesOptions();
+                if (Lista.profileExists(_profile)) {
+                    ICollection<SaveDataType> folders = SaveData.loadFolders();
+                    ICollection<Button> ib = SaveData.loadButtons(folders);
+                    ICollection<SaveDataType> subFolders = SaveData.loadSubFolders();
                     int cont = 0;
                     foreach (Button b in ib) {
                         b.Click += onClickButtonMenu;
@@ -586,14 +593,19 @@ namespace ProyectoWPF {
                     if (Lista.getFirstButton() != null) {
                         Lista.getFirstButton().RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                     }
+                    Console.WriteLine("Cargado perfil");
+                    Lista.getCarpetas();
 
                     return true;
                 } else {
-                    Console.WriteLine("No existe el perfil");
+                    Console.WriteLine("No existe el perfil "+_profile);
                     return false;
                 }
             } else {
                 Console.WriteLine("No existe el archivo");
+                Lista.addProfile(_profile);
+                _newSelectedProfile = _profile;
+                SaveData.addProfile(_profile);
                 return false;
             }
 
@@ -678,6 +690,91 @@ namespace ProyectoWPF {
 
         public void ChangeMode(object sender,RoutedEventArgs e) {
             Lista.changeMode(_activatedButton);
+        }
+
+        private void showOptions(object sender, RoutedEventArgs e) {
+            optionPanel.Visibility = Visibility.Visible;
+        }
+
+        private void showMain(object sender, RoutedEventArgs e) {
+            optionPanel.Visibility = Visibility.Hidden;
+        }
+
+        private void addProfilesOptions() {
+            foreach(string s in Lista.getProfiles()) {
+                Button b = new Button();
+                b.Content = s;
+                b.HorizontalAlignment = HorizontalAlignment.Stretch;
+                b.VerticalAlignment = VerticalAlignment.Stretch;
+                b.VerticalContentAlignment = VerticalAlignment.Center;
+                b.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                b.FontSize = 40;
+                b.Padding = new Thickness(0);
+                b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
+                b.Click += selectProfile;
+                Lista.addButtonProfile(b);
+                perfiles.Children.Add(b);
+                Rectangle rect = new Rectangle();
+                rect.HorizontalAlignment = HorizontalAlignment.Stretch;
+                rect.Height = 2;
+                rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
+                perfiles.Children.Add(rect);
+            }
+        }
+
+        private void selectProfile(object sender,RoutedEventArgs e) {
+            Button aux = (Button)sender;
+            if (_newSelectedProfile.CompareTo(aux.Content.ToString()) != 0) {
+                _newSelectedProfile = aux.Content.ToString();
+                Lista.clearBackProfile();
+                aux.Background = new SolidColorBrush(Color.FromRgb(37, 37, 37));
+            }
+        }
+
+        private void changeProfile(object sender, RoutedEventArgs e) {
+            if (_profile.CompareTo(_newSelectedProfile) != 0) {
+                _profile = _newSelectedProfile;
+                changedProfile = true;
+                this.Close();
+            } else {
+                MessageBox.Show("El perfil ya está seleccionado");
+            }
+
+        }
+
+        private void addProfile(object sender, RoutedEventArgs e) {
+            NewProfile newProf = new NewProfile();
+            newProf.ShowDialog();
+            if (newProf.isAdded()) {
+                Button b = new Button();
+                b.Content = newProf.getName();
+                b.HorizontalAlignment = HorizontalAlignment.Stretch;
+                b.VerticalAlignment = VerticalAlignment.Stretch;
+                b.VerticalContentAlignment = VerticalAlignment.Center;
+                b.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                b.FontSize = 40;
+                b.Padding = new Thickness(0);
+                b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
+                b.Click += selectProfile;
+                Lista.addButtonProfile(b);
+                perfiles.Children.Add(b);
+                Rectangle rect = new Rectangle();
+                rect.HorizontalAlignment = HorizontalAlignment.Stretch;
+                rect.Height = 2;
+                rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
+                perfiles.Children.Add(rect);
+                MessageBox.Show("El perfil ha sido creado. Cambia al perfil desde el panel de opciones pulsando \"Cambiar Perfil\"");
+                SaveData.addProfile(newProf.getName());
+            } else {
+                MessageBox.Show("No se ha podido crear el perfil");
+            }
+            
+        }
+
+        private void removeProfile(object sender,RoutedEventArgs e) {
+
         }
     }
 }

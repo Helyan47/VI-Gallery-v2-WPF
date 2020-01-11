@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 using MySql.Data.MySqlClient;
 using ProyectoWPF.Data;
 
@@ -17,6 +18,8 @@ namespace ProyectoWPF {
         private static ICollection<Carpeta> _carpetas = new List<Carpeta>();
         private static ICollection<SerieClass> _seriesClase = new List<SerieClass>();
         private static ICollection<SubCarpeta> _subCarpetas = new List<SubCarpeta>();
+        private static List<string> _perfiles = new List<string>();
+        private static List<Button> _bPerfiles = new List<Button>();
 
         /*
         public static Lista(ICollection<WrapPanelPrincipal> wraps,ICollection<Button> buttons) {
@@ -38,7 +41,37 @@ namespace ProyectoWPF {
             this._subCarpetas = new List<SubCarpeta>();
             this._wrapsSecundarios = new List<WrapPanelPrincipal>();
         }*/
+        public static void clearListas() {
+            _wrapsSecundarios = new List<WrapPanelPrincipal>();
+            _wrapsPrincipales = new List<WrapPanelPrincipal>();
+            _menus = new List<Menu>();
+            _buttons = new List<Button>();
+            _carpetas = new List<Carpeta>();
+            _seriesClase = new List<SerieClass>();
+            _subCarpetas = new List<SubCarpeta>();
+            _perfiles = new List<string>();
+            _bPerfiles = new List<Button>();
+        }
 
+        public static ICollection<Carpeta> getCarpetas() {
+            return _carpetas;
+        }
+
+        public static void addProfile(string s) {
+            if (!_perfiles.Contains(s)) {
+                _perfiles.Add(s);
+            }
+        }
+
+        public static void addButtonProfile(Button b) {
+            if (!_bPerfiles.Contains(b)) {
+                _bPerfiles.Add(b);
+            }
+        }
+
+        public static List<string> getProfiles() {
+            return _perfiles;
+        }
 
         public static bool buttonInButtons(Button b) {
             foreach(Button bt in _buttons) {
@@ -376,6 +409,19 @@ namespace ProyectoWPF {
                 }
             }
             return false;
+        }
+
+        public static bool profileExists(string s) {
+            if (_perfiles.Contains(s)) {
+                return true;
+            }
+            return false;
+        }
+
+        public static void clearBackProfile() {
+            foreach(Button b in _bPerfiles) {
+                b.Background = new SolidColorBrush(Colors.Transparent);
+            }
         }
     }
 }

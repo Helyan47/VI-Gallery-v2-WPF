@@ -54,6 +54,12 @@ namespace ProyectoWPF {
             this.profile = profile;
         }
 
+        public SaveDataType(string profile) {
+            this.isFolder = false;
+            this.isSubFolder = false;
+            this.profile = profile;
+        }
+
         public string getName() {
             return name;
         }

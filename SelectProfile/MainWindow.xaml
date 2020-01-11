@@ -40,7 +40,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="10px"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Elige un Perfil" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50"/>
+            <Label Content="Elige un Perfil" HorizontalAlignment="Stretch" Grid.Row="1" FontWeight="Bold" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50"/>
             <Border BorderThickness="2" BorderBrush="LightGray" Grid.Row="3" Grid.Column="1" VerticalAlignment="Stretch">
                 <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Hidden">
                     <StackPanel x:Name="perfiles" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></StackPanel>
