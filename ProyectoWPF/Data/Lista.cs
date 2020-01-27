@@ -403,7 +403,6 @@ namespace ProyectoWPF {
 
         public static bool Contains(string ruta) {
             foreach(Carpeta carpeta in _carpetas) {
-                Console.WriteLine(carpeta.getRutaPrograma());
                 if (carpeta.getRutaPrograma().CompareTo(ruta) == 0) {
                     return true;
                 }

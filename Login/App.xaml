@@ -4,11 +4,6 @@
              xmlns:local="clr-namespace:Login"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary x:Name="ButtonStyle" Source="Assets/ButtonStyle.xaml"/>
-                <ResourceDictionary x:Name="ButtonClose" Source="Assets/ButtonClose.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+         
     </Application.Resources>
 </Application>

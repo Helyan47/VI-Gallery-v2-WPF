@@ -33,9 +33,8 @@ namespace ProyectoWPF {
         public static string _profile = "Profile1";
         private static string _newSelectedProfile = "Profile1";
         public static bool changedProfile = false;
-        public VIGallery(string profile) {
+        public VIGallery(string profile,bool conexion) {
             InitializeComponent();
-            bool conexion = false;
             conexionMode = conexion;
             _profile = profile;
             Lista.clearListas();
@@ -194,7 +193,7 @@ namespace ProyectoWPF {
                         p.addSubCarpeta(c);
                         p.getSubCarpeta().AddSubCarpetas();
                         c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
-                        c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
+                        c.setTitle(System.IO.Path.GetFileName(nombre));
 
                         string name = _activatedButton.Name;
                         c.getSerie().setTipo(name);
@@ -227,7 +226,7 @@ namespace ProyectoWPF {
                         p.addSubCarpeta(c);
                         p.getCarpeta().AddSubCarpetas();
                         c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
-                        c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
+                        c.setTitle(System.IO.Path.GetFileName(nombre));
 
                         string name = _activatedButton.Name;
                         c.getSerie().setTipo(name);
@@ -274,7 +273,7 @@ namespace ProyectoWPF {
                         p.addSubCarpeta(c);
                         p.getSubCarpeta().AddSubCarpetas();
                         c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
-                        c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
+                        c.setTitle(System.IO.Path.GetFileName(nombre));
 
                         string name = _activatedButton.Name;
                         c.getSerie().setTipo(name);
@@ -305,7 +304,7 @@ namespace ProyectoWPF {
                         p.addSubCarpeta(c);
                         p.getCarpeta().AddSubCarpetas();
                         c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
-                        c.setTitle(System.IO.Path.GetFileNameWithoutExtension(nombre));
+                        c.setTitle(System.IO.Path.GetFileName(nombre));
 
                         string name = _activatedButton.Name;
                         c.getSerie().setTipo(name);
@@ -415,8 +414,7 @@ namespace ProyectoWPF {
             
 
             WrapPanelPrincipal aux = Lista.getWrapVisible();
-
-            SerieClass s = new SerieClass(System.IO.Path.GetFileNameWithoutExtension(filename), "");
+            SerieClass s = new SerieClass(System.IO.Path.GetFileName(filename), "");
             s.setRuta("Serie/" + _activatedButton.Content + "/" + s.getTitle());
             p1.setSerie(s);
             p1.actualizar();

@@ -56,7 +56,7 @@ namespace ProyectoWPF {
                 
                 ImgBorde.Background = ib;
                 Img.Visibility = Visibility.Hidden;
-            }catch (ArgumentException e) {
+            }catch (Exception e) {
                 setDefaultSource();
                 _serie.setDirImg("");
                 Console.WriteLine(e.Message);

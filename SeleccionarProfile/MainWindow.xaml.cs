@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SelectProfile {
+namespace SeleccionarProfile {
     /// <summary>
     /// Lógica de interacción para MainWindow.xaml
     /// </summary>
@@ -26,8 +26,8 @@ namespace SelectProfile {
             InitializeComponent();
             conexion = connection;
             List<string> profiles = SaveData.getProfiles();
-            foreach(string s in profiles) {
-                
+            foreach (string s in profiles) {
+
                 Button b = new Button();
                 b.Content = s;
                 b.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -79,8 +79,8 @@ namespace SelectProfile {
         }
 
         private void onClick(object sender, RoutedEventArgs e) {
-            Button aux=(Button) sender;
-            VIGallery vi = new VIGallery(aux.Content.ToString(),conexion);
+            Button aux = (Button)sender;
+            VIGallery vi = new VIGallery(aux.Content.ToString(), conexion);
             this.Hide();
             vi.ShowDialog();
             while (VIGallery.changedProfile) {
