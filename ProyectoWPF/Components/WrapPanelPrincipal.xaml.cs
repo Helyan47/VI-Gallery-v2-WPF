@@ -28,6 +28,7 @@ namespace ProyectoWPF
         private Grid gridCarpeta;
         private Button ButtonPrincipal;
         private int mode = 0;
+        public long menu { get; set; }
 
         public WrapPanelPrincipal()
         {
@@ -38,7 +39,7 @@ namespace ProyectoWPF
             c.Width = 250;
             c.Height = 400;
             c.Margin = new Thickness(40, 40, 40, 40);
-            if (!c.getSerie().getDirImg().Equals("")) {
+            if (!c.getClass().img.Equals("")) {
                 c.setImg();
             } else {
                 c.setDefaultSource();
@@ -77,7 +78,7 @@ namespace ProyectoWPF
             p.Width = 250;
             p.Height = 400;
             p.Margin = new Thickness(20, 20, 20, 20);
-            if (!p.getSerie().getDirImg().Equals("")) {
+            if (!p.getClass().img.Equals("")) {
                 p.setImg();
             } else {
                 p.setDefaultSource();

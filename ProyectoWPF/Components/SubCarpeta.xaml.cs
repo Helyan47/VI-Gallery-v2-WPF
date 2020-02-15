@@ -15,7 +15,7 @@ namespace ProyectoWPF {
     public partial class SubCarpeta : UserControl {
 
         private String _nombre;
-        private SerieClass _serie;
+        private CarpetaClass _carpeta;
         private WrapPanelPrincipal _wrapCarpAnterior;
         private int _numSubCarpetas;
         private WrapPanelPrincipal _wrapCarpPropia;
@@ -25,7 +25,6 @@ namespace ProyectoWPF {
         private string _rutaPrograma;
         private Canvas _defaultCanvas;
         private int _mode = 0;
-        private string _dirImg;
         public string _profile { get; set; }
         public SubCarpeta() {
             InitializeComponent();
@@ -44,8 +43,7 @@ namespace ProyectoWPF {
 
         public void setImg() {
             try {
-                _dirImg = _serie.getDirImg();
-                BitmapImage bm = new BitmapImage(new Uri(_serie.getDirImg(), UriKind.Absolute));
+                BitmapImage bm = new BitmapImage(new Uri(_carpeta.img, UriKind.Absolute));
                 ImageBrush ib = new ImageBrush(bm);
                 if (bm.Width > bm.Height) {
                     ib.Stretch = Stretch.UniformToFill;
@@ -82,7 +80,7 @@ namespace ProyectoWPF {
         }
 
         public string getDirImg() {
-            return _dirImg;
+            return _carpeta.img;
         }
 
         public Grid GetGridCarpeta() {
@@ -98,8 +96,8 @@ namespace ProyectoWPF {
             p.Children.Add(_wrapCarpPropia);
         }
 
-        public void setSerie(SerieClass newSerie) { 
-            _serie = newSerie;
+        public void setSerie(CarpetaClass newSerie) { 
+            _carpeta = newSerie;
         }
 
         public void setMenuCarpeta(Menu m) {
@@ -110,9 +108,9 @@ namespace ProyectoWPF {
             return _menuCarpeta;
         }
 
-        public SerieClass getSerie() {
+        public CarpetaClass getClass() {
 
-            return _serie;
+            return _carpeta;
         }
 
         public WrapPanelPrincipal getWrapCarpPrincipal() {
@@ -131,20 +129,20 @@ namespace ProyectoWPF {
         #endregion
 
         public void actualizar() {
-            if (_serie.getTitle().Equals("")) {
+            if (_carpeta.img.Equals("")) {
 
             } else {
-                if (_serie.getDirImg() != "") {
+                if (_carpeta.img != "") {
                     setImg();
                 }
             }
 
         }
 
-        public void setDatos(SerieClass ser, WrapPanelPrincipal flowPadre, Grid gridP) {
+        public void setDatos(CarpetaClass carpetaClass, WrapPanelPrincipal flowPadre, Grid gridP) {
             _wrapCarpPropia = new WrapPanelPrincipal();
 
-            _serie = ser;
+            _carpeta = carpetaClass;
             _wrapCarpAnterior = flowPadre;
 
             Lista.addSubWrap(_wrapCarpPropia);

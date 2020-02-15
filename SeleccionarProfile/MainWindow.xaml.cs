@@ -21,32 +21,36 @@ namespace SeleccionarProfile {
     public partial class MainWindow : Window {
 
         public static string loadNewProfile = "";
-        public static bool conexion;
+        public static bool conn;
         public MainWindow(bool connection) {
             InitializeComponent();
-            conexion = connection;
-            List<string> profiles = SaveData.getProfiles();
-            foreach (string s in profiles) {
+            conn = connection;
+            if (conn) {
+                List<ProyectoWPF.Data.PerfilOnline> perfiles = ProyectoWPF.Data.Conexion.loadPerfiles(1);
+            } else {
+                List<string> profiles = SaveData.getProfiles();
+                foreach (string s in profiles) {
 
-                Button b = new Button();
-                b.Content = s;
-                b.HorizontalAlignment = HorizontalAlignment.Stretch;
-                b.VerticalAlignment = VerticalAlignment.Stretch;
-                b.VerticalContentAlignment = VerticalAlignment.Center;
-                b.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-                b.FontSize = 40;
-                b.Padding = new Thickness(0);
-                b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                //b.Style = this.FindResource("CustomButtonStyle") as Style;
-                b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
-                b.Click += onClick;
-                perfiles.Children.Add(b);
-                Rectangle rect = new Rectangle();
-                rect.HorizontalAlignment = HorizontalAlignment.Stretch;
-                rect.Height = 2;
-                rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
-                perfiles.Children.Add(rect);
+                    Button b = new Button();
+                    b.Content = s;
+                    b.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    b.VerticalAlignment = VerticalAlignment.Stretch;
+                    b.VerticalContentAlignment = VerticalAlignment.Center;
+                    b.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                    b.FontSize = 40;
+                    b.Padding = new Thickness(0);
+                    b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                    //b.Style = this.FindResource("CustomButtonStyle") as Style;
+                    b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
+                    b.Click += onClick;
+                    perfiles.Children.Add(b);
+                    Rectangle rect = new Rectangle();
+                    rect.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    rect.Height = 2;
+                    rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
+                    perfiles.Children.Add(rect);
 
+                }
             }
         }
 
@@ -80,14 +84,8 @@ namespace SeleccionarProfile {
 
         private void onClick(object sender, RoutedEventArgs e) {
             Button aux = (Button)sender;
-            VIGallery vi = new VIGallery(aux.Content.ToString(), conexion);
-            this.Hide();
-            vi.ShowDialog();
-            while (VIGallery.changedProfile) {
-                vi = new VIGallery(VIGallery._profile, conexion);
-                loadNewProfile = "";
-                vi.ShowDialog();
-            }
+            VIGallery vi = new VIGallery(aux.Content.ToString(), conn);
+            vi.Show();
             this.Close();
         }
     }

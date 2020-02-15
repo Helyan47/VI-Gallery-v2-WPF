@@ -21,30 +21,36 @@ namespace ProyectoWPF {
         }
 
         public static void saveFolder(Carpeta c) {
-            SaveDataType carpetaData = new SaveDataType(c.getSerie().getTitle(), true, c.getDescripcion(), c.getRutaPrograma(), c.getSerie().getTipo(),c.getSerie().getDirImg(), c._profile);
+            /*
+            SaveDataType carpetaData = new SaveDataType(c.getClass().nombre, true, c.getClass().desc, c.getClass().rutaPrograma, c.getClass().getTipo(),c.getClass().getDirImg(), c._profile);
             IFormatter formatter=new BinaryFormatter();
             using (FileStream stream = new FileStream(_archivoData, FileMode.OpenOrCreate, FileAccess.Write)) {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
                 formatter.Serialize(stream, carpetaData);
             }
+            */
         }
 
         public static void saveSubFolder(SubCarpeta c) {
+            /*
             SaveDataType carpetaData = new SaveDataType(c.getTitle(), false, true, c.getRutaPrograma(), c.getSerie().getTipo(),c.getDirImg(),c._profile);
             IFormatter formatter = new BinaryFormatter();
             using (FileStream stream = new FileStream(_archivoData, FileMode.OpenOrCreate, FileAccess.Write)) {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
                 formatter.Serialize(stream, carpetaData);
             }
+            */
         }
 
         public static void addProfile(string s) {
+            /*
             SaveDataType carpetaData = new SaveDataType(s);
             IFormatter formatter = new BinaryFormatter();
             using (FileStream stream = new FileStream(_archivoData, FileMode.OpenOrCreate, FileAccess.Write)) {
                 stream.Seek(stream.Length, SeekOrigin.Begin);
                 formatter.Serialize(stream, carpetaData);
             }
+            */
         }
 
         public static ICollection<SaveDataType> loadFolders() {
@@ -158,7 +164,7 @@ namespace ProyectoWPF {
                         objects.Add(aux);
                     }
                     foreach (SaveDataType c in objects) {
-                        Lista.addProfile(c.getProfile());
+                        //Lista.addProfile(c.getProfile());
 
                     }
                 }
@@ -167,7 +173,7 @@ namespace ProyectoWPF {
             }
         }
 
-        public static List<string> getProfiles() {
+        public static List<PerfilClass> getProfiles() {
             if (File.Exists(_archivoData)) {
                 ICollection<SaveDataType> objects = new List<SaveDataType>();
                 IFormatter formatter = new BinaryFormatter();
@@ -177,7 +183,7 @@ namespace ProyectoWPF {
                         objects.Add(aux);
                     }
                     foreach (SaveDataType c in objects) {
-                            Lista.addProfile(c.getProfile());
+                            //Lista.addProfile(c.getProfile());
 
                     }
                 }

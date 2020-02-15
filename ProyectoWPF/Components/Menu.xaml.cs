@@ -43,10 +43,10 @@ namespace ProyectoWPF {
         }
 
         public void actualizar() {
-            Title.Content = carpeta.getSerie().getTitle();
-            Descripcion.Content = carpeta.getSerie().getDesc();
+            Title.Content = carpeta.getClass().nombre;
+            Descripcion.Content = carpeta.getClass().desc;
             String cadena = "";
-            ICollection<String> generosAux = carpeta.getSerie().getGeneros();
+            ICollection<String> generosAux = carpeta.getClass().generos;
             if (generosAux.Count != 0) {
                 for (int i = 0; i < generosAux.Count; i++) {
 
@@ -63,9 +63,9 @@ namespace ProyectoWPF {
                 listaGeneros.Visibility = Visibility.Hidden;
             }
 
-            if (carpeta.getSerie().getDirImg() != "") {
+            if (carpeta.getClass().img != "") {
                 try {
-                    BitmapImage bm = new BitmapImage(new Uri(@carpeta.getSerie().getDirImg(), UriKind.Absolute));
+                    BitmapImage bm = new BitmapImage(new Uri(@carpeta.getClass().img, UriKind.Absolute));
                     ImageBrush ib = new ImageBrush(bm);
                     if (bm.Width > bm.Height) {
                         ib.Stretch = Stretch.UniformToFill;

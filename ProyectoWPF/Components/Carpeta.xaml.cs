@@ -18,29 +18,24 @@ namespace ProyectoWPF {
     public partial class Carpeta : UserControl {
 
         private DispatcherTimer _dispatcherTimer;
-        private SerieClass _serie;
         private WrapPanelPrincipal _wrapPanelAnterior;
         private Grid _gridPrincipal;
         private Grid _gridSecundario;
-        private int _numSubcarpetas;
         private WrapPanelPrincipal _wrapCarpetaPropia;
         private Menu _menuCarpeta;
         private Grid _gridPadre;
+        private CarpetaClass _carpeta;
         private string _rutaDirectorio;
-        private string _rutaPrograma;
         private VIGallery _ventanaMain;
         private Canvas _defaultCanvas;
         private int _mode = 0;
-        private string _descripcionText;
         public string _profile { get; set; }
 
         public Carpeta(VIGallery ventana) {
             InitializeComponent();
-            _numSubcarpetas = 0;
-            Title2.SetText("");
+            Title.SetText("");
             _ventanaMain = ventana;
             _defaultCanvas = canvasFolder;
-            _descripcionText = "";
             _profile = VIGallery._profile;
         }
 
@@ -48,7 +43,7 @@ namespace ProyectoWPF {
 
         public void setImg() {
             try {
-                BitmapImage bm = new BitmapImage(new Uri(_serie.getDirImg(), UriKind.RelativeOrAbsolute));
+                BitmapImage bm = new BitmapImage(new Uri(_carpeta.img, UriKind.RelativeOrAbsolute));
                 ImageBrush ib = new ImageBrush(bm);
                 if (bm.Width > bm.Height) {
                     ib.Stretch = Stretch.UniformToFill;
@@ -58,7 +53,7 @@ namespace ProyectoWPF {
                 Img.Visibility = Visibility.Hidden;
             }catch (Exception e) {
                 setDefaultSource();
-                _serie.setDirImg("");
+                //carpeta.img="";
                 Console.WriteLine(e.Message);
             }
         }
@@ -87,13 +82,13 @@ namespace ProyectoWPF {
             _dispatcherTimer.Start();
             descripcion.Visibility = Visibility.Visible;
             if (_mode != 0) {
-                Title2.Visibility = Visibility.Hidden;
+                Title.Visibility = Visibility.Hidden;
             }
             
         }
 
         private void bordeDesc_MouseLeave(object sender, MouseEventArgs e) {
-            if (_serie.getDirImg().Equals("")) {
+            if (_carpeta.img.Equals("")) {
                 Img.Visibility = Visibility.Visible;
             } else {
                 ImgBorde.Visibility = Visibility.Visible;
@@ -101,7 +96,7 @@ namespace ProyectoWPF {
             bordeDesc.Visibility = Visibility.Hidden;
             descripcion.Visibility = Visibility.Hidden;
             if (_mode != 3) {
-                Title2.Visibility = Visibility.Visible;
+                Title.Visibility = Visibility.Visible;
             }
             
         }
@@ -128,12 +123,9 @@ namespace ProyectoWPF {
         }
 
         public void setDescripcion(string d) {
-            this._descripcionText = d;
+            _carpeta.desc= d;
         }
 
-        public string getDescripcion() {
-            return _descripcionText;
-        }
         public void setRutaDirectorio(string s) {
             _rutaDirectorio = s;
         }
@@ -141,29 +133,18 @@ namespace ProyectoWPF {
         public string getRutaDirectorio() {
             return _rutaDirectorio;
         }
+
         public void setRutaPrograma(string s) {
-            _rutaPrograma = s;
-        }
-
-        public string getRutaPrograma() {
-            return _rutaPrograma;
-        }
-
-        public void setTitle(string title) {
-            Title2.SetText(title);
+            _carpeta.rutaPrograma = s;
         }
 
         public void AddSubCarpetas() {
-            _numSubcarpetas++;
+            _carpeta.increaseSubCarpetas();
         }
 
-        public int getNumSubCarp() {
-            return _numSubcarpetas;
-        }
+        public void setClass(CarpetaClass newCarpeta) {
 
-        public void setSerie(SerieClass newSerie) {
-
-            _serie = newSerie;
+            _carpeta = newCarpeta;
         }
 
         public WrapPanelPrincipal GetWrapCarpPrincipal() {
@@ -183,17 +164,18 @@ namespace ProyectoWPF {
             _gridSecundario = secundario;
         }
 
-        public SerieClass getSerie() {
+        public CarpetaClass getClass() {
 
-            return _serie;
+            return _carpeta;
         }
 
         public void changeTitle(String titulo) {
-            Title2.SetText(titulo);
+            Title.SetText(titulo);
+            _carpeta.nombre = titulo;
         }
 
         public string getTitle() {
-            return (string)Title2.GetText();
+            return (string)Title.GetText();
         }
 
         public Menu GetMenuCarpeta() {
@@ -203,19 +185,12 @@ namespace ProyectoWPF {
 #endregion
 
         public void actualizar() {
-            if (_serie.getTitle().Equals("")) {
+            if (_carpeta.nombre.Equals("")) {
 
             } else {
-                Title2.SetText(_serie.getTitle());
-                if (_serie.getDirImg() != "") {
+                Title.SetText(_carpeta.nombre);
+                if (_carpeta.nombre.CompareTo("")!=0) {
                     setImg();
-                    /*
-                    Bitmap bm = new Bitmap(_serie.getDirImg());
-                    
-                    IntPtr hBitmap = bm.GetHbitmap();
-                    System.Windows.Media.ImageSource WpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                    */
-                    //Img.Source = WpfBitmap;
                 }
 
             }
@@ -300,18 +275,18 @@ namespace ProyectoWPF {
                 Grid.SetRowSpan(bordeDesc, 2);
                 Grid.SetRowSpan(borde, 3);
                 
-                Title2.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(0, 0, 0));
-                Title2.SetSombraVisible(false);
+                Title.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                Title.SetSombraVisible(false);
                 this.Height = 400;
 
-                Title2.Visibility = Visibility.Visible;
+                Title.Visibility = Visibility.Visible;
                 borde.BorderThickness = new Thickness(5);
                 borde2.BorderThickness = new Thickness(5);
-                Title2.Width = 239;
-                Title2.Margin = new Thickness(0,0,5,0);
-                Title2.SetRadius(new CornerRadius(0,0,10,10));
+                Title.Width = 239;
+                Title.Margin = new Thickness(0,0,5,0);
+                Title.SetRadius(new CornerRadius(0,0,10,10));
                 backgroundGrid.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255,255,255));
-                Grid.SetRowSpan(Title2, 1);
+                Grid.SetRowSpan(Title, 1);
                 ImgBorde.CornerRadius = new CornerRadius(15);
 
             } else if (mode == 1) {
@@ -319,24 +294,24 @@ namespace ProyectoWPF {
                 Grid.SetRowSpan(Img, 4);
                 Grid.SetRowSpan(bordeDesc, 4);
                 Grid.SetRowSpan(borde, 5);
-                Title2.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(255,255,255));
-                Title2.SetSombraVisible(true);
+                Title.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(255,255,255));
+                Title.SetSombraVisible(true);
                 this.Height = 352;
             } else if (mode == 2) {
                 Grid.SetRowSpan(ImgBorde, 4);
                 Grid.SetRowSpan(Img, 4);
                 Grid.SetRowSpan(bordeDesc, 4);
 
-                Title2.SetSombraVisible(true);
+                Title.SetSombraVisible(true);
                 this.Height = 352;
-                Title2.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(255, 255, 255));
+                Title.ChangeForegroundColor(System.Windows.Media.Color.FromRgb(255, 255, 255));
 
                 borde.BorderThickness = new Thickness(0);
                 borde2.BorderThickness = new Thickness(0);
-                Title2.Width = 250;
-                Title2.Margin = new Thickness(0,1,0,0);
+                Title.Width = 250;
+                Title.Margin = new Thickness(0,1,0,0);
                 ImgBorde.CornerRadius = new CornerRadius(10);
-                Grid.SetRowSpan(Title2,2);
+                Grid.SetRowSpan(Title,2);
                 backgroundGrid.Background= new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#00000000"));
             } else if (mode == 3) {
                 Grid.SetRowSpan(ImgBorde, 4);
@@ -344,7 +319,7 @@ namespace ProyectoWPF {
                 Grid.SetRowSpan(bordeDesc, 4);
                 this.Height = 352;
 
-                Title2.Visibility = Visibility.Hidden;
+                Title.Visibility = Visibility.Hidden;
                 borde.BorderThickness = new Thickness(0);
                 borde2.BorderThickness = new Thickness(0);
                 ImgBorde.CornerRadius = new CornerRadius(10);

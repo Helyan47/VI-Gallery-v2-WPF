@@ -54,7 +54,7 @@
                         </Canvas>
                     </Viewbox>
                 </Border>
-                <local:LabelDeslizable x:Name="Title2"  Grid.Row="3"  VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="0,0,5,0" Width="239" />
+                <local:LabelDeslizable x:Name="Title"  Grid.Row="3"  VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="0,0,5,0" Width="239" />
 
             </Grid>
 

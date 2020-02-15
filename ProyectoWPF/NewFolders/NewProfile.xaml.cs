@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProyectoWPF.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,8 +27,9 @@ namespace ProyectoWPF.NewFolders {
 
         public void onAceptar(object sender, RoutedEventArgs e) {
             if (newProfileText.Text.CompareTo("") != 0) {
-                if (!Lista.getProfiles().Contains(newProfileText.Text)) {
-                    Lista.addProfile(newProfileText.Text);
+                if (!Lista.checkProfile(newProfileText.Text)) {
+                    PerfilClass p = new PerfilClass(newProfileText.Text.ToString());
+                    Lista.addProfile(p);
                     name = newProfileText.Text;
                     addedProfile = true;
                     this.Close();

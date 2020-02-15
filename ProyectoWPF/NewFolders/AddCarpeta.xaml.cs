@@ -19,15 +19,15 @@ namespace ProyectoWPF {
     /// </summary>
     public partial class AddCarpeta : Window {
 
-        private SerieClass serie;
+        private CarpetaClass carpeta;
         private Carpeta padre;
         private Button button;
         private bool created = false;
         public AddCarpeta(Carpeta p,Button b) {
             InitializeComponent();
             padre = p;
-            serie = new SerieClass("", "");
-            padre.setSerie(serie);
+            carpeta = new CarpetaClass("", "");
+            padre.setClass(carpeta);
             button = b;
         }
 
@@ -50,17 +50,17 @@ namespace ProyectoWPF {
                     if (isCheked) {
 
                         if (!dirImg.Equals("")) {
-                            serie = new SerieClass(Title.Text, DescBox.Text, dirImg.Text, col);
+                            carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, col);
                         }
                     } else {
                         if (!dirImg.Equals("")) {
-                            serie = new SerieClass(Title.Text, DescBox.Text, dirImg.Text);
+                            carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text);
                         }
                     }
 
-                    serie.setRuta("Serie/" + button.Content + "/" + padre.getTitle());
-                    padre.setSerie(serie);
-                    Lista.addSeriesClase(serie);
+                    carpeta.rutaPrograma = "Serie/" + button.Content + "/" + padre.getTitle();
+                    padre.setClass(carpeta);
+                    Lista.addCarpetaClass(carpeta);
                     created = true;
                     this.Close();
                 } else {
@@ -83,8 +83,8 @@ namespace ProyectoWPF {
             }
         }
 
-        public SerieClass GetSerie() {
-            return this.serie;
+        public CarpetaClass GetSerie() {
+            return this.carpeta;
         }
 
         public void setPadre(Carpeta padre1) {

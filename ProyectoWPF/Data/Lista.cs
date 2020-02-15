@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
-using MySql.Data.MySqlClient;
 using ProyectoWPF.Data;
 
 namespace ProyectoWPF {
@@ -14,11 +13,11 @@ namespace ProyectoWPF {
         private static ICollection<WrapPanelPrincipal> _wrapsSecundarios = new List<WrapPanelPrincipal>();
         private static ICollection<WrapPanelPrincipal> _wrapsPrincipales = new List<WrapPanelPrincipal>();
         private static ICollection<Menu> _menus = new List<Menu>();
-        private static ICollection<Button> _buttons = new List<Button>();
+        private static ICollection<MenuClass> _menusClass = new List<MenuClass>();
         private static ICollection<Carpeta> _carpetas = new List<Carpeta>();
-        private static ICollection<SerieClass> _seriesClase = new List<SerieClass>();
+        private static ICollection<CarpetaClass> _carpetasClase = new List<CarpetaClass>();
         private static ICollection<SubCarpeta> _subCarpetas = new List<SubCarpeta>();
-        private static List<string> _perfiles = new List<string>();
+        private static List<PerfilClass> _perfiles = new List<PerfilClass>();
         private static List<Button> _bPerfiles = new List<Button>();
 
         /*
@@ -45,11 +44,11 @@ namespace ProyectoWPF {
             _wrapsSecundarios = new List<WrapPanelPrincipal>();
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
             _menus = new List<Menu>();
-            _buttons = new List<Button>();
+            _menusClass = new List<MenuClass>();
             _carpetas = new List<Carpeta>();
-            _seriesClase = new List<SerieClass>();
+            _carpetasClase = new List<CarpetaClass>();
             _subCarpetas = new List<SubCarpeta>();
-            _perfiles = new List<string>();
+            _perfiles = new List<PerfilClass>();
             _bPerfiles = new List<Button>();
         }
 
@@ -57,9 +56,9 @@ namespace ProyectoWPF {
             return _carpetas;
         }
 
-        public static void addProfile(string s) {
-            if (!_perfiles.Contains(s)) {
-                _perfiles.Add(s);
+        public static void addProfile(PerfilClass p) {
+            if (!_perfiles.Contains(p)) {
+                _perfiles.Add(p);
             }
         }
 
@@ -69,31 +68,50 @@ namespace ProyectoWPF {
             }
         }
 
-        public static List<string> getProfiles() {
+        public static List<PerfilClass> getProfiles() {
             return _perfiles;
         }
 
-        public static bool buttonInButtons(Button b) {
-            foreach(Button bt in _buttons) {
-                if (bt == b) {
+        public static bool checkProfile(string s) {
+            foreach(PerfilClass p in _perfiles) {
+                if (p.nombre.CompareTo(s) == 0) {
                     return true;
                 }
             }
             return false;
         }
 
-        public static Button getFirstButton() {
-            int cont = 0;
-            foreach(Button b in _buttons) {
-                if (cont == 0) {
-                    return b;
+        public static bool buttonInButtons(MenuClass m) {
+            foreach(MenuClass mc in _menusClass) {
+                if (mc == m) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static MenuClass getMenuFromButton(Button b) {
+            string s = b.Content.ToString();
+            foreach(MenuClass m in _menusClass) {
+                if (m.nombre.CompareTo(s) == 0) {
+                    return m;
                 }
             }
             return null;
         }
 
-        public static void addButton(Button b) {
-            _buttons.Add(b);
+        public static MenuClass getFirstMenu() {
+            int cont = 0;
+            foreach(MenuClass m in _menusClass) {
+                if (cont == 0) {
+                    return m;
+                }
+            }
+            return null;
+        }
+
+        public static void addMenu(MenuClass m) {
+            _menusClass.Add(m);
         }
 
         public static void addWrapPrincipal(WrapPanelPrincipal wp) {
@@ -113,11 +131,11 @@ namespace ProyectoWPF {
             return null;
         }
 
-        public static void showWrapFromButton(Button b) {
+        public static void showWrapFromMenu(MenuClass m) {
             int comp = 0;
             int cont = 0;
-            foreach (Button bt in _buttons) {
-                if (bt == b) {
+            foreach (MenuClass mc in _menusClass) {
+                if (mc == m) {
                     comp = cont;
                 }
                 cont++;
@@ -147,13 +165,12 @@ namespace ProyectoWPF {
             }
             return null;
         }
-        public static void addSeriesClase(SerieClass serie) {
-            _seriesClase.Add(serie);
-            serie.setIdSerie(_seriesClase.Count);
+        public static void addCarpetaClass(CarpetaClass carpeta) {
+            _carpetasClase.Add(carpeta);
         }
 
-        public static void removeSeriesClase(SerieClass serie) {
-            _seriesClase.Remove(serie);
+        public static void removeSeriesClase(CarpetaClass serie) {
+            _carpetasClase.Remove(serie);
         }
 
         public static void addMenu(Menu m) {
@@ -286,33 +303,33 @@ namespace ProyectoWPF {
         }
 
         public static void changeMode(Button b) {
-
-            WrapPanelPrincipal visible= getWrapFromButton(b);
+            MenuClass m = getMenuFromButton(b);
+            WrapPanelPrincipal visible= getWrapFromMenu(m);
             if (visible != null) {
                 int actualMode = visible.getMode();
                 if (actualMode == 0) {
                     int newMode = 1;
                     visible.setMode(newMode);
-                    modifyMode(visible.Name, newMode);
+                    modifyMode(visible.menu, newMode);
 
                 } else if (actualMode == 1) {
                     int newMode = 2;
                     visible.setMode(newMode);
-                    modifyMode(visible.Name, newMode);
+                    modifyMode(visible.menu, newMode);
                 }else if(actualMode == 2) {
                     int newMode = 3;
                     visible.setMode(newMode);
-                    modifyMode(visible.Name, newMode);
+                    modifyMode(visible.menu, newMode);
                 }else if (actualMode == 3) {
                     int newMode = 0;
                     visible.setMode(newMode);
-                    modifyMode(visible.Name, newMode);
+                    modifyMode(visible.menu, newMode);
                 }
             }
         }
         public static int actualiceMode(Button b) {
-
-            WrapPanelPrincipal visible = getWrapFromButton(b);
+            MenuClass m = getMenuFromButton(b);
+            WrapPanelPrincipal visible = getWrapFromMenu(m);
             if (visible != null) {
                 int actualMode = visible.getMode();
                 return actualMode;
@@ -320,26 +337,26 @@ namespace ProyectoWPF {
             return 0;
         }
 
-        public static void modifyMode(string tipo,int mode) {
+        public static void modifyMode(long menu,int mode) {
             foreach(Carpeta p in _carpetas) {
-                if (p.getSerie().getTipo().Equals(tipo)) {
+                if (p.getClass().menu == menu) {
                     p.changeMode(mode);
                 }
                 
             }
 
             foreach(SubCarpeta p in _subCarpetas) {
-                if (p.getSerie().getTipo().Equals(tipo)) {
+                if (p.getClass().menu == menu) {
                     p.changeMode(mode);
                 }
             }
         }
 
-        public static WrapPanelPrincipal getWrapFromButton(Button b) {
+        public static WrapPanelPrincipal getWrapFromMenu(MenuClass m) {
             int comp = 0;
             int cont = 0;
-            foreach (Button bt in _buttons) {
-                if (bt == b) {
+            foreach (MenuClass mc in _menusClass) {
+                if (mc == m) {
                     comp = cont;
                 }
                 cont++;
@@ -366,7 +383,7 @@ namespace ProyectoWPF {
                 }
             }
             foreach(Carpeta p in _carpetas) {
-                if (p.getRutaPrograma().Equals(namePadre)) {
+                if (p.getClass().rutaPrograma.Equals(namePadre)) {
                     c = p;
                 }
             }
@@ -391,11 +408,11 @@ namespace ProyectoWPF {
             return namePadre;
         }
 
-        public static Button getButtonFromFolder(string s) {
+        public static MenuClass getMenuFromFolder(string s) {
             string[] splits = s.Split('/');
-            foreach(Button b in _buttons) {
-                if (b.Name.CompareTo(splits[1]) == 0) {
-                    return b;
+            foreach(MenuClass m in _menusClass) {
+                if (m.nombre.CompareTo(splits[1]) == 0) {
+                    return m;
                 }
             }
             return null;
@@ -403,7 +420,7 @@ namespace ProyectoWPF {
 
         public static bool Contains(string ruta) {
             foreach(Carpeta carpeta in _carpetas) {
-                if (carpeta.getRutaPrograma().CompareTo(ruta) == 0) {
+                if (carpeta.getClass().rutaPrograma.CompareTo(ruta) == 0) {
                     return true;
                 }
             }
@@ -411,8 +428,10 @@ namespace ProyectoWPF {
         }
 
         public static bool profileExists(string s) {
-            if (_perfiles.Contains(s)) {
-                return true;
+            foreach(PerfilClass p in _perfiles) {
+                if (p.nombre.CompareTo(s) != 0) {
+                    return true;
+                }
             }
             return false;
         }

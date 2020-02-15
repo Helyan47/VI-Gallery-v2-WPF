@@ -1,0 +1,94 @@
+﻿<Window x:Class="LoginUser.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LoginUser"
+        xmlns:InputTextLoL="clr-namespace:InputTextLoL;assembly=InputTextLoL"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="600" WindowStyle="None" ResizeMode="NoResize" FontWeight="Bold" WindowStartupLocation="CenterScreen">
+    <Grid Background="#FF121212">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35px"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="150px"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.Column="0" MouseDown="Rectangle_MouseDown" Fill="Black" Opacity="0"/>
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Content="-" Style="{StaticResource CustomButtonStyle}" Grid.Column="0" Padding="0" Foreground="White" BorderThickness="0" Click="MinimizeApp" FontSize="22" Margin="0" />
+            <Button Content="[ ]" Style="{StaticResource CustomButtonStyle}" Grid.Column="1" Padding="0" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="MaximizeApp"/>
+            <Button Content="X" Style="{StaticResource ButtonClose}" Grid.Column="2" Padding="0" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="CerrarApp"/>
+        </Grid>
+        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="#FF121212" MouseUp="Grid_MouseUp">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="0.6*"/>
+                <RowDefinition Height="0.25*"/>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="0.25*"/>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="0.15*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <InputTextLoL:InputTextlol x:Name="inputUser" Margin="0" Grid.Column="1" Grid.Row="2"/>
+            <InputTextLoL:InputTextlol x:Name="inputPass" Grid.Column="1" Margin="0" Grid.Row="4"/>
+            <Label Content="SIGN IN" Grid.Column="1" Grid.Row="1"  Margin="0" FontSize="50" VerticalContentAlignment="Center" Foreground="White" FontFamily="Segoe UI Black"/>
+            <CheckBox Content="Stay signed in"  Margin="4,0,0,0" Grid.Column="1" Grid.Row="6" VerticalContentAlignment="Center" Padding="4,0,0,0" Foreground="#FFEDEDED" BorderBrush="{x:Null}" Background="#FFE2E2E2" FontWeight="Bold" Panel.ZIndex="99"/>
+            <Grid Grid.Column="1" Grid.Row="7">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100px"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="100px"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Border x:Name="borderEnter" CornerRadius="30" BorderThickness="3" Grid.Column="1" Grid.Row="1" BorderBrush="#FF3C3C3C">
+                    
+                    <Viewbox x:Name="viewBoxImg" Stretch="None" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Canvas x:Name="canvasFolder" Width="94" Height="97">
+                            <Canvas.RenderTransform>
+                                <TranslateTransform X="0" Y="0"/>
+                            </Canvas.RenderTransform>
+                            <Canvas.Resources/>
+                            <!--Unknown tag: sodipodi:namedview-->
+                            <!--Unknown tag: metadata-->
+                            <Canvas Name="layer1" Height="97" Width="97">
+                                <Path x:Name="ColorPath" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="21.5" Canvas.Top="20" Fill="#FF3C3C3C" Width="50" Height="50" >
+                                    <Path.Data>
+                                        <PathGeometry Figures="m 0.18792389 290.1747 0.002953 1.03943 H 10.25154 10.511399 l -4.2758563 4.27586 0.6850819 0.68508 5.5869604 -5.58696 -5.610584 -5.61059 -0.8504462 0.85045 4.4648442 4.46484 z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                </Path>
+                            </Canvas>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+                <Button Content="" Grid.Column="1" Grid.Row="1"  Margin="0" BorderThickness="0" Background="Black" BorderBrush="{x:Null}" Foreground="#FFEDEDED" Opacity="0" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Click="LoginClick"/>
+                <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Bottom" Margin="0,0,0,10">
+                    <Label x:Name="create" Content="Create account" Foreground="#FFD2D2D2" MouseEnter="create_MouseEnter" MouseLeave="create_MouseLeave" HorizontalAlignment="Left"/>
+                    <Label x:Name="forgotPass" Content="Can't sign in?" Foreground="#FFD2D2D2" FontWeight="Bold" MouseEnter="forgotPass_MouseEnter" MouseLeave="forgotPass_MouseLeave" HorizontalAlignment="Left"/>
+
+                </StackPanel>
+            </Grid>
+            <Label x:Name="userError" Content="El usuario debe contener al menos un carácter" Visibility="Hidden" Grid.Column="1" Margin="0" Grid.Row="3" Padding="-9,0,0,0" Background="{x:Null}" Foreground="#FFE0100C"/>
+            <Label x:Name="passError" Content="La contraseña debe contener al menos un carácter" Visibility="Hidden" Grid.Column="1" Margin="0" Grid.Row="5" Padding="-9,0,0,0" Background="{x:Null}" Foreground="#FFE0100C"/>
+
+        </Grid>
+    </Grid>
+</Window>
