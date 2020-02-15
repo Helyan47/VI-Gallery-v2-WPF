@@ -14,6 +14,7 @@ namespace ProyectoWPF {
         private static ICollection<WrapPanelPrincipal> _wrapsPrincipales = new List<WrapPanelPrincipal>();
         private static ICollection<Menu> _menus = new List<Menu>();
         private static ICollection<MenuClass> _menusClass = new List<MenuClass>();
+        private static ICollection<Button> _buttonsMenu = new List<Button>();
         private static ICollection<Carpeta> _carpetas = new List<Carpeta>();
         private static ICollection<CarpetaClass> _carpetasClase = new List<CarpetaClass>();
         private static ICollection<SubCarpeta> _subCarpetas = new List<SubCarpeta>();
@@ -52,6 +53,10 @@ namespace ProyectoWPF {
             _bPerfiles = new List<Button>();
         }
 
+        public static void addButtonMenu(Button b) {
+            _buttonsMenu.Add(b);
+        }
+
         public static ICollection<Carpeta> getCarpetas() {
             return _carpetas;
         }
@@ -79,6 +84,15 @@ namespace ProyectoWPF {
                 }
             }
             return false;
+        }
+
+        public static PerfilClass getProfile(string s) {
+            foreach(PerfilClass p in _perfiles) {
+                if (p.nombre.CompareTo(s) == 0) {
+                    return p;
+                }
+            }
+            return null;
         }
 
         public static bool buttonInButtons(MenuClass m) {
@@ -306,49 +320,30 @@ namespace ProyectoWPF {
             MenuClass m = getMenuFromButton(b);
             WrapPanelPrincipal visible= getWrapFromMenu(m);
             if (visible != null) {
-                int actualMode = visible.getMode();
+                long actualMode = VIGallery._profile.mode;
                 if (actualMode == 0) {
                     int newMode = 1;
-                    visible.setMode(newMode);
-                    modifyMode(visible.menu, newMode);
-
+                    modifyMode(newMode);
                 } else if (actualMode == 1) {
                     int newMode = 2;
-                    visible.setMode(newMode);
-                    modifyMode(visible.menu, newMode);
+                    modifyMode(newMode);
                 }else if(actualMode == 2) {
                     int newMode = 3;
-                    visible.setMode(newMode);
-                    modifyMode(visible.menu, newMode);
+                    modifyMode(newMode);
                 }else if (actualMode == 3) {
                     int newMode = 0;
-                    visible.setMode(newMode);
-                    modifyMode(visible.menu, newMode);
+                    modifyMode( newMode);
                 }
             }
-        }
-        public static int actualiceMode(Button b) {
-            MenuClass m = getMenuFromButton(b);
-            WrapPanelPrincipal visible = getWrapFromMenu(m);
-            if (visible != null) {
-                int actualMode = visible.getMode();
-                return actualMode;
-            }
-            return 0;
         }
 
-        public static void modifyMode(long menu,int mode) {
+        public static void modifyMode(int mode) {
             foreach(Carpeta p in _carpetas) {
-                if (p.getClass().menu == menu) {
-                    p.changeMode(mode);
-                }
-                
+                p.changeMode(mode);               
             }
 
             foreach(SubCarpeta p in _subCarpetas) {
-                if (p.getClass().menu == menu) {
-                    p.changeMode(mode);
-                }
+                p.changeMode(mode);
             }
         }
 
@@ -388,7 +383,7 @@ namespace ProyectoWPF {
                 }
             }
             foreach(SubCarpeta p in _subCarpetas) {
-                if (p.getRutaPrograma().Equals(namePadre)) {
+                if (p.getClass().rutaPrograma.Equals(namePadre)) {
                     c = p;
                 }
             }

@@ -18,7 +18,7 @@
             <RowDefinition Height="*"/>
 
         </Grid.RowDefinitions>
-        <Label Content="Nombre Carpeta: " Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" Foreground="White" FontSize="14" Height="29" Margin="0,9"/>
+        <Label Content="Nombre Menú: " Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" Foreground="White" FontSize="14" Height="29" Margin="0,9"/>
         <TextBox x:Name="Title"  Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="18" Height="25" Margin="10,0,10,0"/>
         <Button Content="Aceptar" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Height="20" Grid.Row="3" IsDefault="True" Click="onClickAccept"/>
         <Button Content="Cancelar" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,95,10" VerticalAlignment="Bottom" Width="75" Height="20" Grid.Row="3" IsCancel="True" Click="onClickCancel"/>

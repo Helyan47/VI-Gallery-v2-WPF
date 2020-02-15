@@ -9,15 +9,30 @@ namespace ProyectoWPF {
     public class CarpetaClass {
         public long id { get; set; }
         public string nombre { get; set; }
+        public int numSubCarpetas { get; set; }
+        public int numArchivos { get; set; }
         public string rutaPrograma { get; set; }
         public string rutaPadre { get; set; }
         public string desc { get; set; }
+        public ICollection<string> generos { get; set; }
         public string img { get; set; }
+        
         public bool esCarpeta { get; set; }
         public long menu { get; set; }
-        public ICollection<string> generos { get; set; }
-        public int numSubCarpetas { get; set; }
-        public int numArchivos { get; set; }
+
+        public CarpetaClass(long id, string nombre, int numSubCarpetas, int numArchivos, string rutaPrograma, string rutaPadre, string desc, ICollection<string> generos, string img, bool esCarpeta, long menu) {
+            this.id = id;
+            this.nombre = nombre;
+            this.numSubCarpetas = numSubCarpetas;
+            this.numArchivos = numArchivos;
+            this.rutaPrograma = rutaPrograma;
+            this.rutaPadre = rutaPadre;
+            this.desc = desc;
+            this.img = img;
+            this.generos = generos;
+            this.esCarpeta = esCarpeta;
+            this.menu = menu;
+        }
 
         public CarpetaClass(string title, string desc, string dirImg, ICollection<string> generos) {
 

@@ -26,7 +26,6 @@ namespace ProyectoWPF.NewFolders {
         private void onClickAccept(object sender, EventArgs e) {
             if (Title.Text.CompareTo("") != 0) {
                 aux.Content = Title.Text;
-                aux.Name = Title.Text;
                 this.Close();
             } else {
                 MessageBox.Show("No has introducido un titulo");

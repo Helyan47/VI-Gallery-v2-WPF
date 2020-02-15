@@ -6,12 +6,6 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary x:Name="FolderIcon" Source="Assets/Folder.xaml"/>
-                <ResourceDictionary x:Name="MultiFolderIcon" Source="Assets/MultiFolderIcon.xaml"/>
-                <ResourceDictionary x:Name="ButtonStyle" Source="Assets/ButtonStyle.xaml"/>
-                <ResourceDictionary x:Name="ButtonImageStyle" Source="Assets/ButtonImageStyle.xaml"/>
-                <ResourceDictionary x:Name="ButtonClose" Source="Assets/ButtonClose.xaml"/>
-                <ResourceDictionary x:Name="PropertieButton" Source="Assets/ButtonStyleProperties.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

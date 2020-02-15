@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProyectoWPF.Data;
+using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,15 +29,17 @@ namespace ProyectoWPF {
         private string _rutaDirectorio;
         private VIGallery _ventanaMain;
         private Canvas _defaultCanvas;
-        private int _mode = 0;
-        public string _profile { get; set; }
+        private long _mode = 0;
+        public PerfilClass _profile { get; set; }
 
         public Carpeta(VIGallery ventana) {
             InitializeComponent();
             Title.SetText("");
+            
             _ventanaMain = ventana;
             _defaultCanvas = canvasFolder;
             _profile = VIGallery._profile;
+            changeMode(_profile.mode);
         }
 
         #region get/set
@@ -145,6 +148,8 @@ namespace ProyectoWPF {
         public void setClass(CarpetaClass newCarpeta) {
 
             _carpeta = newCarpeta;
+            Title.SetText(_carpeta.nombre);
+            descripcion.Content = _carpeta.desc;
         }
 
         public WrapPanelPrincipal GetWrapCarpPrincipal() {
@@ -213,7 +218,6 @@ namespace ProyectoWPF {
                 _menuCarpeta.SetFlowCarpPrincipal(_wrapCarpetaPropia);
                 _wrapCarpetaPropia.Visibility = Visibility.Hidden;
                 _menuCarpeta.Visibility = Visibility.Hidden;
-                _wrapCarpetaPropia.setMode(this._mode);
             }
             _menuCarpeta.actualizar();
             _wrapPanelAnterior.Visibility = Visibility.Hidden;
@@ -244,7 +248,6 @@ namespace ProyectoWPF {
                 _menuCarpeta.SetFlowCarpPrincipal(_wrapCarpetaPropia);
                 _wrapCarpetaPropia.Visibility = Visibility.Hidden;
                 _menuCarpeta.Visibility = Visibility.Hidden;
-                _wrapCarpetaPropia.setMode(this._mode);
             }
             _menuCarpeta.actualizar();
             
@@ -266,7 +269,7 @@ namespace ProyectoWPF {
         }
 
 
-        public void changeMode(int mode) {
+        public void changeMode(long mode) {
             this._mode = mode;
             
             if (mode == 0) {

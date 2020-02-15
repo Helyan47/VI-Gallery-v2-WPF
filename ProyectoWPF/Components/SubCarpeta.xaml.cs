@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProyectoWPF.Data;
+using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +26,7 @@ namespace ProyectoWPF {
         private string _rutaPrograma;
         private Canvas _defaultCanvas;
         private int _mode = 0;
-        public string _profile { get; set; }
+        public PerfilClass _profile { get; set; }
         public SubCarpeta() {
             InitializeComponent();
             _numSubCarpetas = 0;
@@ -68,9 +69,6 @@ namespace ProyectoWPF {
             _rutaPrograma = s;
         }
 
-        public string getRutaPrograma() {
-            return _rutaPrograma;
-        }
         public void AddSubCarpetas() {
             _numSubCarpetas++;
         }
@@ -96,8 +94,9 @@ namespace ProyectoWPF {
             p.Children.Add(_wrapCarpPropia);
         }
 
-        public void setSerie(CarpetaClass newSerie) { 
+        public void setClass(CarpetaClass newSerie) { 
             _carpeta = newSerie;
+            Title.SetText(_carpeta.nombre);
         }
 
         public void setMenuCarpeta(Menu m) {
@@ -151,7 +150,6 @@ namespace ProyectoWPF {
             //flowCarpPropia.Dock = DockStyle.Fill;
             _wrapCarpPropia.Visibility = System.Windows.Visibility.Hidden;
             _wrapCarpPropia.setSubcarpeta(this);
-            _wrapCarpPropia.setMode(this._mode);
 
         }
 

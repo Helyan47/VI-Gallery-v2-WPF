@@ -12,7 +12,7 @@ namespace ProyectoWPF.Data {
             return conexion;
         }
 
-        public static void addMenu(MenuClass m) {
+        public static MenuClass addMenu(MenuClass m) {
             MySqlConnection conexion = null;
             try {
                 conexion = getConnection();
@@ -32,13 +32,24 @@ namespace ProyectoWPF.Data {
                     comando.Transaction = myTrans;
 
                     comando.Parameters.AddWithValue("@nombreMenu", m.nombre);
-                    comando.Parameters.AddWithValue("@numCarp", 0);
                     comando.Parameters.AddWithValue("@fkPerfil", m.idPerfil);
                     comando.ExecuteNonQuery();
                     myTrans.Commit();
 
                     comando.Parameters.Clear();
                     reader.Close();
+                    comando = new MySqlCommand("SELECT id FROM Menu WHERE nombre=@nombre and fk_Perfil=@perfil", conexion);
+                    comando.Parameters.AddWithValue("@nombre", m.nombre);
+                    comando.Parameters.AddWithValue("@perfil", m.idPerfil);
+                    reader = comando.ExecuteReader();
+                    if (reader.HasRows) {
+                        reader.Read();
+                        Int32 id = (Int32)reader["id"];
+                        m.id = id;
+                        return m;
+                    }
+
+                    return m;
                 }
 
             } catch (MySqlException e) {
@@ -48,6 +59,7 @@ namespace ProyectoWPF.Data {
                     conexion.Close();
                 }
             }
+            return null;
         }
 
         public static void uploadFolder(Carpeta p) {
@@ -65,12 +77,13 @@ namespace ProyectoWPF.Data {
                     comando.Parameters.Clear();
                     reader.Close();
 
-                    comando = new MySqlCommand("INSERT INTO Carpeta VALUES (null,@nombre,0,0,@ruta,@rutaPadre,@descripcion,@img,@isFolder,@idMenu)", conexion);
+                    comando = new MySqlCommand("CALL insertCarpeta(@nombre,0,0,@ruta,@rutaPadre,@descripcion,@generos,@img,@isFolder,@idMenu)", conexion);
                     comando.Transaction = myTrans;
                     comando.Parameters.AddWithValue("@nombre", p.getTitle());
                     comando.Parameters.AddWithValue("@ruta", p.getClass().rutaPrograma);
-                    comando.Parameters.AddWithValue("@ruta", p.getClass().rutaPadre);
+                    comando.Parameters.AddWithValue("@rutaPadre", p.getClass().rutaPadre);
                     comando.Parameters.AddWithValue("@descripcion", p.getClass().desc);
+                    comando.Parameters.AddWithValue("@generos", p.getClass().generos.ToString());
                     comando.Parameters.AddWithValue("@img", p.getClass().img);
                     comando.Parameters.AddWithValue("@isFolder", true);
                     comando.Parameters.AddWithValue("@idMenu", p.getClass().menu);
@@ -106,20 +119,21 @@ namespace ProyectoWPF.Data {
                     reader.Close();
 
                     comando = new MySqlCommand("SELECT ruta FROM Carpeta WHERE ruta=@val1",conexion);
-                    comando.Parameters.AddWithValue("@val1", p.getRutaPrograma());
+                    comando.Parameters.AddWithValue("@val1", p.getClass().rutaPrograma);
                     reader = comando.ExecuteReader();
                     if (!reader.HasRows) {
                         reader.Close();
                         comando.Parameters.Clear();
 
-                        comando = new MySqlCommand("INSERT INTO Carpeta VALUES (null,@nombre,0,0,@ruta,@rutaPadre,@descripcion,@img,@isFolder,@idMenu)", conexion);
+                        comando = new MySqlCommand("CALL insertCarpeta(@nombre,0,0,@ruta,@rutaPadre,@descripcion,@generos,@img,@isFolder,@idMenu)", conexion);
                         comando.Transaction = myTrans;
                         comando.Parameters.AddWithValue("@nombre", p.getTitle());
                         comando.Parameters.AddWithValue("@ruta", p.getClass().rutaPrograma);
-                        comando.Parameters.AddWithValue("@ruta", p.getClass().rutaPadre);
+                        comando.Parameters.AddWithValue("@rutaPadre", p.getClass().rutaPadre);
                         comando.Parameters.AddWithValue("@descripcion", p.getClass().desc);
+                        comando.Parameters.AddWithValue("@generos", p.getClass().generos.ToString());
                         comando.Parameters.AddWithValue("@img", p.getClass().img);
-                        comando.Parameters.AddWithValue("@isFolder", true);
+                        comando.Parameters.AddWithValue("@isFolder", false);
                         comando.Parameters.AddWithValue("@idMenu", p.getClass().menu);
                         comando.ExecuteNonQuery();
                         myTrans.Commit();
@@ -127,7 +141,7 @@ namespace ProyectoWPF.Data {
                     }
                 }
             } catch (MySqlException e) {
-                Console.WriteLine(e);
+                Console.WriteLine("ERROR SUBCARPETA",e);
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -139,8 +153,8 @@ namespace ProyectoWPF.Data {
             
         }
 
-        public static List<PerfilOnline> loadPerfiles(long id) {
-            List<PerfilOnline> perfiles = new List<PerfilOnline>();
+        public static List<PerfilClass> loadPerfiles(long id) {
+            List<PerfilClass> perfiles = new List<PerfilClass>();
             MySqlConnection conexion = null;
             try {
                 conexion = getConnection();
@@ -148,18 +162,133 @@ namespace ProyectoWPF.Data {
 
                 MySqlTransaction myTrans = conexion.BeginTransaction();
 
-                MySqlCommand comando = new MySqlCommand("SELECT id,nombre,numMenus,fk_Usuario FROM Perfil WHERE fk_Usuario=@idUsuario", conexion);
+                MySqlCommand comando = new MySqlCommand("SELECT id,nombre,numMenus,mode FROM Perfil WHERE fk_Usuario=@idUsuario", conexion);
                 comando.Parameters.AddWithValue("@idUsuario", id);
                 MySqlDataReader reader = comando.ExecuteReader();
 
-                if (!reader.HasRows) {
+                if (reader.HasRows) {
                     while (reader.Read()) {
-                        PerfilOnline perfil = new PerfilOnline((long)reader["id"], reader["nombre"].ToString(), (long)reader["numMenus"],(long)reader["fk_Usuario"]);
+                        Int32 idPerfil = (Int32)reader["id"];
+                        Int32 numMenus = (Int32)reader["numMenus"];
+                        Int32 mode = (Int32)reader["mode"];
+                        PerfilOnline perfil = new PerfilOnline((long)idPerfil, reader["nombre"].ToString(), (long)numMenus, mode, id);
                         perfiles.Add(perfil);
                     }
                     reader.Close();
                     conexion.Close();
                     return perfiles;
+                }
+
+            } catch (MySqlException e) {
+                Console.WriteLine("Boton  \n" + e);
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+            return null;
+        }
+
+        public static List<MenuClass> loadMenus(long id) {
+            List<MenuClass> menus = new List<MenuClass>();
+            MySqlConnection conexion = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                MySqlTransaction myTrans = conexion.BeginTransaction();
+
+                MySqlCommand comando = new MySqlCommand("SELECT id,nombre,numCarps FROM Menu WHERE fk_Perfil=@fkPerfil", conexion);
+                comando.Parameters.AddWithValue("@fkPerfil", id);
+                MySqlDataReader reader = comando.ExecuteReader();
+
+                if (reader.HasRows) {
+                    while (reader.Read()) {
+                        Int32 idMenu = (Int32)reader["id"];
+                        Int32 numCarp = (Int32)reader["numCarps"];
+                        MenuClass menu = new MenuClass((long)idMenu, reader["nombre"].ToString(), (long)numCarp, id);
+                        menus.Add(menu);
+                    }
+                    reader.Close();
+                    conexion.Close();
+                    return menus;
+                }
+
+            } catch (MySqlException e) {
+                Console.WriteLine("Boton  \n" + e);
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+            return null;
+        }
+
+        public static List<CarpetaClass> loadCarpetasFromMenu(long id) {
+            List<CarpetaClass> carpetas = new List<CarpetaClass>();
+            MySqlConnection conexion = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                MySqlTransaction myTrans = conexion.BeginTransaction();
+
+                MySqlCommand comando = new MySqlCommand("SELECT id,nombre,numSubCarps,numArchivos,ruta,rutaPadre,descripcion,generos,img FROM Carpeta WHERE fk_Menu=@fkMenu and esCarpeta=true", conexion);
+                comando.Parameters.AddWithValue("@fkMenu", id);
+                MySqlDataReader reader = comando.ExecuteReader();
+
+                if (reader.HasRows) {
+                    while (reader.Read()) {
+                        Int32 idCarpeta = (Int32)reader["id"];
+                        Int32 numSubCarp = (Int32)reader["numSubCarps"];
+                        Int32 numArchivos = (Int32)reader["numArchivos"];
+                        ICollection<string> generos = new List<string>();
+                        CarpetaClass carpeta = new CarpetaClass((long)idCarpeta, reader["nombre"].ToString(),numSubCarp,numArchivos, reader["ruta"].ToString(), reader["rutaPadre"].ToString(),
+                            reader["descripcion"].ToString(),generos, reader["img"].ToString(), true, id);
+                        carpetas.Add(carpeta);
+                    }
+                    reader.Close();
+                    conexion.Close();
+                    return carpetas;
+                }
+
+            } catch (MySqlException e) {
+                Console.WriteLine("Boton  \n" + e);
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+            return null;
+        }
+
+        public static List<CarpetaClass> loadSubCarpetasFromCarpeta(string ruta,long id) {
+            List<CarpetaClass> carpetas = new List<CarpetaClass>();
+            MySqlConnection conexion = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                MySqlTransaction myTrans = conexion.BeginTransaction();
+
+                MySqlCommand comando = new MySqlCommand("SELECT id,nombre,numSubCarps,numArchivos,ruta,rutaPadre,descripcion,generos,img FROM Carpeta WHERE fk_Menu=@fkMenu and rutaPadre=@rutaPadre", conexion);
+                comando.Parameters.AddWithValue("@fkMenu", id);
+                comando.Parameters.AddWithValue("@rutaPadre", ruta);
+                MySqlDataReader reader = comando.ExecuteReader();
+
+                if (reader.HasRows) {
+                    while (reader.Read()) {
+                        Int32 idCarpeta = (Int32)reader["id"];
+                        Int32 numSubCarp = (Int32)reader["numSubCarps"];
+                        Int32 numArchivos = (Int32)reader["numArchivos"];
+                        ICollection<string> generos = new List<string>();
+                        CarpetaClass carpeta = new CarpetaClass((long)idCarpeta, reader["nombre"].ToString(), numSubCarp, numArchivos, reader["ruta"].ToString(), reader["rutaPadre"].ToString(),
+                            reader["descripcion"].ToString(), generos, reader["img"].ToString(), true, id);
+                        carpetas.Add(carpeta);
+                    }
+                    reader.Close();
+                    conexion.Close();
+                    return carpetas;
                 }
 
             } catch (MySqlException e) {
@@ -186,8 +315,10 @@ namespace ProyectoWPF.Data {
                 comando.Parameters.AddWithValue("@pass", pass);
                 MySqlDataReader reader = comando.ExecuteReader();
 
-                if (!reader.HasRows) {
-                    user = new UsuarioClass((long)reader["id"], reader["nombre"].ToString(), reader["apellidos"].ToString(), reader["nick"].ToString(), reader["email"].ToString());
+                if (reader.HasRows) {
+                    reader.Read();
+                    Int32 id = (Int32)reader["id"];
+                    user = new UsuarioClass((long)id, reader["nombre"].ToString(), reader["apellidos"].ToString(), reader["nick"].ToString(), reader["email"].ToString());
                     reader.Close();
                 }
                 conexion.Close();

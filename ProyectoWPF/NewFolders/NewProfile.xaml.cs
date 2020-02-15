@@ -28,7 +28,7 @@ namespace ProyectoWPF.NewFolders {
         public void onAceptar(object sender, RoutedEventArgs e) {
             if (newProfileText.Text.CompareTo("") != 0) {
                 if (!Lista.checkProfile(newProfileText.Text)) {
-                    PerfilClass p = new PerfilClass(newProfileText.Text.ToString());
+                    PerfilClass p = new PerfilClass(newProfileText.Text.ToString(),VIGallery._profile.mode);
                     Lista.addProfile(p);
                     name = newProfileText.Text;
                     addedProfile = true;

@@ -25,5 +25,12 @@ namespace ProyectoWPF.Data {
             this.idPerfil = idPerfil;
             this.numCarps = 0;
         }
+
+        public MenuClass(long id, string nombre, long numCarps, long idPerfil) {
+            this.id = id;
+            this.nombre = nombre;
+            this.idPerfil = idPerfil;
+            this.numCarps = numCarps;
+        }
     }
 }

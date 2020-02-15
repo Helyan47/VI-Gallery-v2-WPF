@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProyectoWPF.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,11 +54,14 @@ namespace LoginUser {
             if (inputUser.getText().CompareTo("") != 0) {
 
                 if (inputPass.getText().CompareTo("") != 0) {
-                    bool connected = false;//Conexion.checkUserPass(inputUser.getText(), inputPass.getText());
-                    if (connected) {
+                    UsuarioClass user = Conexion.checkUser(inputUser.getText(),inputPass.getText());
+                    
+                    if (user!=null) {
                         MessageBox.Show("Conectado");
-                        //SeleccionarProfile.MainWindow selectProf = new SeleccionarProfile.MainWindow(true);
+                        SeleccionarProfile.MainWindow selectProf = new SeleccionarProfile.MainWindow(true,user);
                         this.Hide();
+                        selectProf.Show();
+                        this.Close();
                     } else {
                         inputUser.setError();
                         inputPass.setError();

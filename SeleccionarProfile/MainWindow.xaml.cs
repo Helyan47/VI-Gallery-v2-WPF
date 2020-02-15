@@ -1,4 +1,5 @@
 ﻿using ProyectoWPF;
+using ProyectoWPF.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,17 +23,42 @@ namespace SeleccionarProfile {
 
         public static string loadNewProfile = "";
         public static bool conn;
-        public MainWindow(bool connection) {
+        public List<PerfilClass> profiles = null;
+        public static UsuarioClass usuario = null;
+        public MainWindow(bool connection,UsuarioClass user) {
             InitializeComponent();
             conn = connection;
+            usuario = user;
             if (conn) {
-                List<ProyectoWPF.Data.PerfilOnline> perfiles = ProyectoWPF.Data.Conexion.loadPerfiles(1);
+                profiles = Conexion.loadPerfiles(user.id);
+                if (profiles != null) {
+                    foreach (PerfilOnline p in profiles) {
+                        Button b = new Button();
+                        b.Content = p.nombre;
+                        b.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        b.VerticalAlignment = VerticalAlignment.Stretch;
+                        b.VerticalContentAlignment = VerticalAlignment.Center;
+                        b.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                        b.FontSize = 40;
+                        b.Padding = new Thickness(0);
+                        b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                        //b.Style = this.FindResource("CustomButtonStyle") as Style;
+                        b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
+                        b.Click += onClick;
+                        perfiles.Children.Add(b);
+                        Rectangle rect = new Rectangle();
+                        rect.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        rect.Height = 2;
+                        rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
+                        perfiles.Children.Add(rect);
+                    }
+                }
             } else {
-                List<string> profiles = SaveData.getProfiles();
-                foreach (string s in profiles) {
+                profiles = SaveData.getProfiles();
+                foreach (PerfilClass s in profiles) {
 
                     Button b = new Button();
-                    b.Content = s;
+                    b.Content = s.nombre;
                     b.HorizontalAlignment = HorizontalAlignment.Stretch;
                     b.VerticalAlignment = VerticalAlignment.Stretch;
                     b.VerticalContentAlignment = VerticalAlignment.Center;
@@ -84,9 +110,25 @@ namespace SeleccionarProfile {
 
         private void onClick(object sender, RoutedEventArgs e) {
             Button aux = (Button)sender;
-            VIGallery vi = new VIGallery(aux.Content.ToString(), conn);
-            vi.Show();
-            this.Close();
+            PerfilClass p = getProfile(aux.Content.ToString());
+            if (p != null) {
+                VIGallery vi = new VIGallery(p, usuario, conn);
+                vi.loadDataConexion(p.id);
+                this.Hide();
+                vi.Show();
+                this.Close();
+            } else {
+                MessageBox.Show("No se ha podido seleccionar el perfil");
+            }
+        }
+
+        private PerfilClass getProfile(string s) {
+            foreach(PerfilClass p in profiles) {
+                if (p.nombre.CompareTo(s) == 0) {
+                    return p;
+                }
+            }
+            return null;
         }
     }
 }

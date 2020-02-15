@@ -27,7 +27,7 @@ namespace ProyectoWPF
         public String tipo = "";
         private Grid gridCarpeta;
         private Button ButtonPrincipal;
-        private int mode = 0;
+        public string name { get; set; }
         public long menu { get; set; }
 
         public WrapPanelPrincipal()
@@ -92,15 +92,6 @@ namespace ProyectoWPF
 
         public void setSubcarpeta(SubCarpeta p) {
             subcarpeta = p;
-        }
-
-        public int getMode() {
-            return mode;
-        }
-
-        public void setMode(int mode) {
-            this.mode = mode;
-            
         }
 
     }

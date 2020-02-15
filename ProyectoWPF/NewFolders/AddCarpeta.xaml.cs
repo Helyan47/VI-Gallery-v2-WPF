@@ -51,13 +51,15 @@ namespace ProyectoWPF {
 
                         if (!dirImg.Equals("")) {
                             carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, col);
+                            carpeta.menu = Lista.getMenuFromButton(button).id;
                         }
                     } else {
                         if (!dirImg.Equals("")) {
                             carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text);
+                            
                         }
                     }
-
+                    carpeta.menu = Lista.getMenuFromButton(button).id;
                     carpeta.rutaPrograma = "Serie/" + button.Content + "/" + padre.getTitle();
                     padre.setClass(carpeta);
                     Lista.addCarpetaClass(carpeta);
