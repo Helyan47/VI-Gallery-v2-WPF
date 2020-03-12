@@ -26,7 +26,7 @@ namespace ProyectoWPF {
         public AddCarpeta(Carpeta p,Button b) {
             InitializeComponent();
             padre = p;
-            carpeta = new CarpetaClass("", "");
+            carpeta = new CarpetaClass("", "",true);
             padre.setClass(carpeta);
             button = b;
         }
@@ -50,12 +50,12 @@ namespace ProyectoWPF {
                     if (isCheked) {
 
                         if (!dirImg.Equals("")) {
-                            carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, col);
+                            carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, col, true);
                             carpeta.menu = Lista.getMenuFromButton(button).id;
                         }
                     } else {
                         if (!dirImg.Equals("")) {
-                            carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text);
+                            carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, true);
                             
                         }
                     }

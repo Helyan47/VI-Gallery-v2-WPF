@@ -20,17 +20,14 @@ namespace ProyectoWPF {
 
         private SubCarpeta p;
         private string rutaPadre;
-        private CarpetaClass carpeta;
-        public NewSubCarpeta(string s,CarpetaClass c) {
+        public NewSubCarpeta(string s) {
             InitializeComponent();
             rutaPadre = s;
-            carpeta = c;
         }
 
         private void BAceptar_Click(object sender, EventArgs e) {
             if (newName.Text.CompareTo("") != 0) {
                 if (!Lista.Contains(rutaPadre + "/" + newName.Text)) {
-                    p.setClass(carpeta);
                     p.setTitle(newName.Text);
                     
                 } else {

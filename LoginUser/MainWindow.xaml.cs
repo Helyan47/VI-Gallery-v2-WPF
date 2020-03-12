@@ -33,6 +33,8 @@ namespace LoginUser {
             inputPass.changeMode("password");
             inputPass.invertColors("black");
             inputPass.lostFocus(true);
+            textUserBox.KeyUp += inputUser_KeyUp;
+            textUserBox.KeyDown += inputUser_KeyUp;
             textPassBox = inputPass.getPaswwordBox();
 
             inputUser.getInvButton().Click += clickedUser;
@@ -152,6 +154,27 @@ namespace LoginUser {
                 inputPass.lostFocus(true);
             }
 
+        }
+
+        private void inputUser_KeyUp(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Tab) {
+                inputUser.lostFocus(true);
+                inputPass.gotFocus();
+            }
+        }
+
+        private void inputPass_KeyUp(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Tab) {
+                inputPass.lostFocus(true);
+                inputUser.gotFocus();
+            }
+        }
+
+        private void OfflineMode_Click(object sender, MouseButtonEventArgs e) {
+            SeleccionarProfile.MainWindow selectProf = new SeleccionarProfile.MainWindow(false, null);
+            this.Hide();
+            selectProf.Show();
+            this.Close();
         }
     }
 }

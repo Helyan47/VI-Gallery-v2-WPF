@@ -18,6 +18,7 @@ namespace ProyectoWPF.NewFolders {
     /// </summary>
     public partial class AddButton : Window {
         private Button aux;
+        private bool added = false;
         public AddButton(Button b) {
             InitializeComponent();
             aux = b;
@@ -26,6 +27,7 @@ namespace ProyectoWPF.NewFolders {
         private void onClickAccept(object sender, EventArgs e) {
             if (Title.Text.CompareTo("") != 0) {
                 aux.Content = Title.Text;
+                added = true;
                 this.Close();
             } else {
                 MessageBox.Show("No has introducido un titulo");
@@ -34,6 +36,10 @@ namespace ProyectoWPF.NewFolders {
 
         private void onClickCancel(object sender, EventArgs e) {
             this.Close();
+        }
+
+        public bool isAdded() {
+            return added;
         }
     }
 }

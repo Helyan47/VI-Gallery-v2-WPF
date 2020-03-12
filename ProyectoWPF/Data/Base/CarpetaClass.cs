@@ -34,7 +34,7 @@ namespace ProyectoWPF {
             this.menu = menu;
         }
 
-        public CarpetaClass(string title, string desc, string dirImg, ICollection<string> generos) {
+        public CarpetaClass(string title, string desc, string dirImg, ICollection<string> generos, bool esCarpeta) {
 
             this.nombre = title;
             this.desc = desc;
@@ -42,8 +42,9 @@ namespace ProyectoWPF {
             this.generos = generos;
             this.numSubCarpetas = 0;
             this.numArchivos = 0;
+            this.esCarpeta = esCarpeta;
         }
-        public CarpetaClass(string title, string desc, string dirImg) {
+        public CarpetaClass(string title, string desc, string dirImg, bool esCarpeta) {
 
             this.nombre = title;
             this.desc = desc;
@@ -51,8 +52,9 @@ namespace ProyectoWPF {
             this.generos = new List<String>();
             this.numSubCarpetas = 0;
             this.numArchivos = 0;
+            this.esCarpeta = esCarpeta;
         }
-        public CarpetaClass(string title, string desc) {
+        public CarpetaClass(string title, string desc, bool esCarpeta) {
 
             this.nombre = title;
             this.desc = desc;
@@ -60,6 +62,7 @@ namespace ProyectoWPF {
             this.generos = new List<String>();
             this.numSubCarpetas = 0;
             this.numArchivos = 0;
+            this.esCarpeta = esCarpeta;
         }
 
         public void increaseSubCarpetas() {

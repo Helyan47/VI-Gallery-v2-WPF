@@ -28,10 +28,23 @@ namespace ProyectoWPF.NewFolders {
         public void onAceptar(object sender, RoutedEventArgs e) {
             if (newProfileText.Text.CompareTo("") != 0) {
                 if (!Lista.checkProfile(newProfileText.Text)) {
-                    PerfilClass p = new PerfilClass(newProfileText.Text.ToString(),VIGallery._profile.mode);
-                    Lista.addProfile(p);
+                    
+                    if (VIGallery.conexionMode) {
+                        PerfilClassOnline pfOnline = new PerfilClassOnline(newProfileText.Text.ToString(), VIGallery.getUser().id);
+                        pfOnline = Conexion.addPerfil(pfOnline);
+                        if (pfOnline != null) {
+                            addedProfile = true;
+                            Lista.addProfile(pfOnline);
+                        }
+                    } else {
+                        PerfilClass pf = new PerfilClass(newProfileText.Text.ToString());
+                        pf = ConexionOffline.addProfile(pf);
+                        if (pf != null) {
+                            addedProfile = true;
+                            Lista.addProfile(pf);
+                        }
+                    }
                     name = newProfileText.Text;
-                    addedProfile = true;
                     this.Close();
                 }
             } else {

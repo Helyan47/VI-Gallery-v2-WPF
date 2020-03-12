@@ -29,6 +29,7 @@ namespace ProyectoWPF {
         public PerfilClass _profile { get; set; }
         public SubCarpeta() {
             InitializeComponent();
+            _carpeta = new CarpetaClass("", "", false);
             _numSubCarpetas = 0;
             _defaultCanvas = canvasFolder;
             _profile = VIGallery._profile;
@@ -50,6 +51,7 @@ namespace ProyectoWPF {
                     ib.Stretch = Stretch.UniformToFill;
                 }
                 ImgBorde.Background = ib;
+                ImgBorde.Visibility = Visibility.Visible;
                 Img.Visibility = Visibility.Hidden;
             }catch(Exception e) {
                 setDefaultSource();
@@ -65,20 +67,12 @@ namespace ProyectoWPF {
             return _rutaDirectorio;
         }
 
-        public void setRutaPrograma(string s) {
-            _rutaPrograma = s;
-        }
-
         public void AddSubCarpetas() {
             _numSubCarpetas++;
         }
 
         public int getNumSubCarp() {
             return _numSubCarpetas;
-        }
-
-        public string getDirImg() {
-            return _carpeta.img;
         }
 
         public Grid GetGridCarpeta() {
@@ -121,10 +115,6 @@ namespace ProyectoWPF {
             return _gridPadre;
         }
 
-        public string getTitle() {
-            return _nombre;
-        }
-
         #endregion
 
         public void actualizar() {
@@ -138,11 +128,10 @@ namespace ProyectoWPF {
 
         }
 
-        public void setDatos(CarpetaClass carpetaClass, WrapPanelPrincipal flowPadre, Grid gridP) {
+        public void setDatos(CarpetaClass carpeta,WrapPanelPrincipal flowPadre, Grid gridP) {
             _wrapCarpPropia = new WrapPanelPrincipal();
-
-            _carpeta = carpetaClass;
             _wrapCarpAnterior = flowPadre;
+            _carpeta = carpeta;
 
             Lista.addSubWrap(_wrapCarpPropia);
             _gridPadre = gridP;
@@ -173,7 +162,7 @@ namespace ProyectoWPF {
             _wrapCarpPropia.Visibility = System.Windows.Visibility.Hidden;
 
             if (_wrapCarpAnterior.getSubCarpeta() != null) {
-                _menuCarpeta.Title.Content = _wrapCarpAnterior.getSubCarpeta().getTitle();
+                _menuCarpeta.Title.Content = _wrapCarpAnterior.getSubCarpeta().getClass().nombre;
             } else if (_wrapCarpAnterior.getCarpeta() != null) {
                 _menuCarpeta.Title.Content = _wrapCarpAnterior.getCarpeta().getTitle();
             }
@@ -184,12 +173,16 @@ namespace ProyectoWPF {
         }
 
 
-        public void setTitle(String titulo) {
+        public void setTitle(string titulo) {
             _nombre = titulo;
+            _carpeta.nombre = titulo;
             Title.SetText(titulo);
         }
 
-        
+        public void setImg(string img) {
+            _carpeta.img = img;
+            setImg();
+        }
 
         private void SubCarpeta_MouseClick(object sender, MouseEventArgs e) {
             click();

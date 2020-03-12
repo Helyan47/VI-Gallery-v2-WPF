@@ -12,7 +12,7 @@ namespace ProyectoWPF.Data {
         public long mode { get; set; }
 
 
-        public PerfilClass(long id,string nombre,long numMenus, long mode) {
+        public PerfilClass(long id,string nombre, long mode, long numMenus) {
             this.id = id;
             this.nombre = nombre;
             this.numMenus = numMenus;
@@ -20,9 +20,15 @@ namespace ProyectoWPF.Data {
         }
 
         public PerfilClass(string nombre,long mode) {
-            this.id = -1;
             this.nombre = nombre;
+            this.numMenus = 0;
             this.mode = mode;
+        }
+
+        public PerfilClass(string nombre) {
+            this.nombre = nombre;
+            this.numMenus = 0;
+            this.mode = 0;
         }
 
     }

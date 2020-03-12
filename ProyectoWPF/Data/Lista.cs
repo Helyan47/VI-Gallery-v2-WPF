@@ -323,15 +323,19 @@ namespace ProyectoWPF {
                 long actualMode = VIGallery._profile.mode;
                 if (actualMode == 0) {
                     int newMode = 1;
+                    VIGallery.updateMode(newMode);
                     modifyMode(newMode);
                 } else if (actualMode == 1) {
                     int newMode = 2;
+                    VIGallery.updateMode(newMode);
                     modifyMode(newMode);
                 }else if(actualMode == 2) {
                     int newMode = 3;
+                    VIGallery.updateMode(newMode);
                     modifyMode(newMode);
                 }else if (actualMode == 3) {
                     int newMode = 0;
+                    VIGallery.updateMode(newMode);
                     modifyMode( newMode);
                 }
             }

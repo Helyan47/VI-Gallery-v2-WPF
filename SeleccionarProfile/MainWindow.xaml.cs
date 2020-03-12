@@ -28,56 +28,57 @@ namespace SeleccionarProfile {
         public MainWindow(bool connection,UsuarioClass user) {
             InitializeComponent();
             conn = connection;
-            usuario = user;
+            if (connection) {
+                usuario = user;
+            } else {
+                usuario = null;
+            }
             if (conn) {
                 profiles = Conexion.loadPerfiles(user.id);
                 if (profiles != null) {
                     foreach (PerfilOnline p in profiles) {
-                        Button b = new Button();
-                        b.Content = p.nombre;
-                        b.HorizontalAlignment = HorizontalAlignment.Stretch;
-                        b.VerticalAlignment = VerticalAlignment.Stretch;
-                        b.VerticalContentAlignment = VerticalAlignment.Center;
-                        b.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-                        b.FontSize = 40;
-                        b.Padding = new Thickness(0);
-                        b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                        //b.Style = this.FindResource("CustomButtonStyle") as Style;
-                        b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
-                        b.Click += onClick;
-                        perfiles.Children.Add(b);
-                        Rectangle rect = new Rectangle();
-                        rect.HorizontalAlignment = HorizontalAlignment.Stretch;
-                        rect.Height = 2;
-                        rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
-                        perfiles.Children.Add(rect);
+                        addButton(p);
                     }
                 }
             } else {
-                profiles = SaveData.getProfiles();
-                foreach (PerfilClass s in profiles) {
+                profiles = ConexionOffline.LoadProfile();
+                if (profiles.Count != 0) {
+                    foreach (PerfilClass s in profiles) {
 
-                    Button b = new Button();
-                    b.Content = s.nombre;
-                    b.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    b.VerticalAlignment = VerticalAlignment.Stretch;
-                    b.VerticalContentAlignment = VerticalAlignment.Center;
-                    b.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-                    b.FontSize = 40;
-                    b.Padding = new Thickness(0);
-                    b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    //b.Style = this.FindResource("CustomButtonStyle") as Style;
-                    b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
-                    b.Click += onClick;
-                    perfiles.Children.Add(b);
-                    Rectangle rect = new Rectangle();
-                    rect.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    rect.Height = 2;
-                    rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
-                    perfiles.Children.Add(rect);
+                        addButton(s);
 
+                    }
+                } else {
+                    ConexionOffline.addProfile(new PerfilClass("Perfil 1"));
+                    profiles = ConexionOffline.LoadProfile();
+                    foreach (PerfilClass s in profiles) {
+
+                        addButton(s);
+
+                    }
                 }
             }
+        }
+
+        public void addButton(PerfilClass s) {
+            Button b = new Button();
+            b.Content = s.nombre;
+            b.HorizontalAlignment = HorizontalAlignment.Stretch;
+            b.VerticalAlignment = VerticalAlignment.Stretch;
+            b.VerticalContentAlignment = VerticalAlignment.Center;
+            b.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            b.FontSize = 40;
+            b.Padding = new Thickness(0);
+            b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            //b.Style = this.FindResource("CustomButtonStyle") as Style;
+            b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
+            b.Click += onClick;
+            perfiles.Children.Add(b);
+            Rectangle rect = new Rectangle();
+            rect.HorizontalAlignment = HorizontalAlignment.Stretch;
+            rect.Height = 2;
+            rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
+            perfiles.Children.Add(rect);
         }
 
         public void MinimizeApp(object sender, RoutedEventArgs e) {
@@ -112,11 +113,15 @@ namespace SeleccionarProfile {
             Button aux = (Button)sender;
             PerfilClass p = getProfile(aux.Content.ToString());
             if (p != null) {
-                VIGallery vi = new VIGallery(p, usuario, conn);
-                vi.loadDataConexion(p.id);
-                this.Hide();
-                vi.Show();
-                this.Close();
+                if (conn) {
+                    VIGallery vi = new VIGallery(p, usuario, conn);
+                    vi.loadDataConexion(p.id);
+                    this.Hide();
+                    vi.Show();
+                    this.Close();
+                } else {
+
+                }
             } else {
                 MessageBox.Show("No se ha podido seleccionar el perfil");
             }
