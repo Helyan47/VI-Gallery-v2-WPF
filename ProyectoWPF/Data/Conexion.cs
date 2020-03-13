@@ -122,8 +122,8 @@ namespace ProyectoWPF.Data {
                 myTrans = conexion.BeginTransaction();
 
                 MySqlCommand comando = new MySqlCommand("SELECT id FROM Carpeta WHERE ruta=@ruta and fk_Menu=@idMenu", conexion);
-                comando.Parameters.AddWithValue("@ruta", p.getClass().rutaPrograma);
-                comando.Parameters.AddWithValue("@idMenu", p.getClass().menu);
+                comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
+                comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
                 MySqlDataReader reader = comando.ExecuteReader();
                 if (!reader.HasRows) {
                     comando.Parameters.Clear();
@@ -132,20 +132,20 @@ namespace ProyectoWPF.Data {
                     comando = new MySqlCommand("CALL insertCarpeta(@nombre,0,0,@ruta,@rutaPadre,@descripcion,@generos,@img,@isFolder,@idMenu)", conexion);
                     comando.Transaction = myTrans;
                     comando.Parameters.AddWithValue("@nombre", p.getTitle());
-                    comando.Parameters.AddWithValue("@ruta", p.getClass().rutaPrograma);
+                    comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
                     comando.Parameters.AddWithValue("@rutaPadre", p.getClass().rutaPadre);
                     comando.Parameters.AddWithValue("@descripcion", p.getClass().desc);
                     comando.Parameters.AddWithValue("@generos", p.getClass().generos.ToString());
                     comando.Parameters.AddWithValue("@img", p.getClass().img);
                     comando.Parameters.AddWithValue("@isFolder", true);
-                    comando.Parameters.AddWithValue("@idMenu", p.getClass().menu);
+                    comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
                     comando.ExecuteNonQuery();
                     myTrans.Commit();
 
                     comando.Parameters.Clear();
                     comando = new MySqlCommand("SELECT id FROM carpeta where ruta=@ruta and fk_Menu=@idMenu", conexion);
-                    comando.Parameters.AddWithValue("@ruta", p.getClass().rutaPrograma);
-                    comando.Parameters.AddWithValue("@idMenu", p.getClass().menu);
+                    comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
+                    comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
                     reader = comando.ExecuteReader();
                     if (!reader.HasRows) {
                         reader.Read();
@@ -178,7 +178,7 @@ namespace ProyectoWPF.Data {
 
                 MySqlCommand comando = new MySqlCommand("SELECT ruta FROM Carpeta WHERE ruta=@rutaPadre and fk_Menu=@idMenu", conexion);
                 comando.Parameters.AddWithValue("@rutaPadre", p.getClass().rutaPadre);
-                comando.Parameters.AddWithValue("@idMenu", p.getClass().menu);
+                comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
                 MySqlDataReader reader = comando.ExecuteReader();
 
                 
@@ -188,8 +188,8 @@ namespace ProyectoWPF.Data {
                     reader.Close();
 
                     comando = new MySqlCommand("SELECT ruta FROM Carpeta WHERE ruta=@ruta and fk_Menu=@idMenu", conexion);
-                    comando.Parameters.AddWithValue("@ruta", p.getClass().rutaPrograma);
-                    comando.Parameters.AddWithValue("@idMenu", p.getClass().menu);
+                    comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
+                    comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
                     reader = comando.ExecuteReader();
                     if (!reader.HasRows) {
                         reader.Close();
@@ -198,20 +198,20 @@ namespace ProyectoWPF.Data {
                         comando = new MySqlCommand("CALL insertCarpeta(@nombre,0,0,@ruta,@rutaPadre,@descripcion,@generos,@img,@isFolder,@idMenu)", conexion);
                         comando.Transaction = myTrans;
                         comando.Parameters.AddWithValue("@nombre", p.getClass().nombre);
-                        comando.Parameters.AddWithValue("@ruta", p.getClass().rutaPrograma);
+                        comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
                         comando.Parameters.AddWithValue("@rutaPadre", p.getClass().rutaPadre);
                         comando.Parameters.AddWithValue("@descripcion", p.getClass().desc);
                         comando.Parameters.AddWithValue("@generos", p.getClass().generos.ToString());
                         comando.Parameters.AddWithValue("@img", p.getClass().img);
                         comando.Parameters.AddWithValue("@isFolder", false);
-                        comando.Parameters.AddWithValue("@idMenu", p.getClass().menu);
+                        comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
                         comando.ExecuteNonQuery();
                         myTrans.Commit();
 
                         comando.Parameters.Clear();
                         comando = new MySqlCommand("SELECT id FROM carpeta where ruta=@ruta and fk_Menu=@idMenu", conexion);
-                        comando.Parameters.AddWithValue("@ruta", p.getClass().rutaPrograma);
-                        comando.Parameters.AddWithValue("@idMenu", p.getClass().menu);
+                        comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
+                        comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
                         reader = comando.ExecuteReader();
                         if (!reader.HasRows) {
                             reader.Read();
@@ -327,8 +327,8 @@ namespace ProyectoWPF.Data {
                         Int32 numSubCarp = (Int32)reader["numSubCarps"];
                         Int32 numArchivos = (Int32)reader["numArchivos"];
                         ICollection<string> generos = new List<string>();
-                        CarpetaClass carpeta = new CarpetaClass((long)idCarpeta, reader["nombre"].ToString(),numSubCarp,numArchivos, reader["ruta"].ToString(), reader["rutaPadre"].ToString(),
-                            reader["descripcion"].ToString(),generos, reader["img"].ToString(), true, id);
+                        CarpetaClass carpeta = new CarpetaClass((long)idCarpeta, reader["nombre"].ToString(), reader["ruta"].ToString(), reader["rutaPadre"].ToString(), numSubCarp, numArchivos,
+                            reader["descripcion"].ToString(), reader["img"].ToString(), generos.ToString(), 0, id);
                         carpetas.Add(carpeta);
                     }
                     reader.Close();
@@ -346,7 +346,7 @@ namespace ProyectoWPF.Data {
             return null;
         }
 
-        public static List<CarpetaClass> loadSubCarpetasFromCarpeta(string ruta,long id) {
+        public static List<CarpetaClass> loadSubCarpetasFromCarpeta(CarpetaClass c,long id) {
             List<CarpetaClass> carpetas = new List<CarpetaClass>();
             MySqlConnection conexion = null;
             try {
@@ -357,7 +357,7 @@ namespace ProyectoWPF.Data {
 
                 MySqlCommand comando = new MySqlCommand("SELECT id,nombre,numSubCarps,numArchivos,ruta,rutaPadre,descripcion,generos,img FROM Carpeta WHERE fk_Menu=@fkMenu and rutaPadre=@rutaPadre", conexion);
                 comando.Parameters.AddWithValue("@fkMenu", id);
-                comando.Parameters.AddWithValue("@rutaPadre", ruta);
+                comando.Parameters.AddWithValue("@rutaPadre", c.rutaPadre);
                 MySqlDataReader reader = comando.ExecuteReader();
 
                 if (reader.HasRows) {
@@ -366,8 +366,8 @@ namespace ProyectoWPF.Data {
                         Int32 numSubCarp = (Int32)reader["numSubCarps"];
                         Int32 numArchivos = (Int32)reader["numArchivos"];
                         ICollection<string> generos = new List<string>();
-                        CarpetaClass carpeta = new CarpetaClass((long)idCarpeta, reader["nombre"].ToString(), numSubCarp, numArchivos, reader["ruta"].ToString(), reader["rutaPadre"].ToString(),
-                            reader["descripcion"].ToString(), generos, reader["img"].ToString(), true, id);
+                        CarpetaClass carpeta = new CarpetaClass((long)idCarpeta, reader["nombre"].ToString(),  reader["ruta"].ToString(), reader["rutaPadre"].ToString(), numSubCarp, numArchivos,
+                            reader["descripcion"].ToString(),  reader["img"].ToString(), generos.ToString(), 1, id);
                         carpetas.Add(carpeta);
                     }
                     reader.Close();

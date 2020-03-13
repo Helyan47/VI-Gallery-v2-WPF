@@ -45,8 +45,8 @@ namespace ProyectoWPF {
         public void actualizar() {
             Title.Content = carpeta.getClass().nombre;
             Descripcion.Content = carpeta.getClass().desc;
-            String cadena = "";
-            ICollection<String> generosAux = carpeta.getClass().generos;
+            string cadena = "";
+            ICollection<string> generosAux = carpeta.getClass().generos;
             if (generosAux.Count != 0) {
                 for (int i = 0; i < generosAux.Count; i++) {
 

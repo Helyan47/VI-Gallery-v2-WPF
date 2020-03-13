@@ -111,9 +111,9 @@ namespace ProyectoWPF {
             WrapPanelPrincipal p = Lista.getSubWrapsVisibles();
             NewSubCarpeta n = null;
             if (p.getCarpeta() == null) {
-                n = new NewSubCarpeta(p.getSubCarpeta().getClass().rutaPrograma);
+                n = new NewSubCarpeta(p.getSubCarpeta().getClass().ruta);
             } else {
-                n = new NewSubCarpeta(p.getCarpeta().getClass().rutaPrograma);
+                n = new NewSubCarpeta(p.getCarpeta().getClass().ruta);
             }
             
            
@@ -123,7 +123,7 @@ namespace ProyectoWPF {
 
                 
                 Lista.addSubCarpeta(c);
-                c.getClass().menu = Lista.getMenuFromButton(_activatedButton).id;
+                c.getClass().idMenu = Lista.getMenuFromButton(_activatedButton).id;
                 if (p != null) {
                     if (p.getCarpeta() == null) {
                         c.setDatos(c.getClass(), p, p.getSubCarpeta().GetGridCarpeta());
@@ -133,8 +133,8 @@ namespace ProyectoWPF {
                         c.setImg(p.getSubCarpeta().getClass().img);
 
                         string name = _activatedButton.Content.ToString();
-                        c.getClass().rutaPrograma = p.getSubCarpeta().getClass().rutaPrograma + "/" + c.getClass().nombre;
-                        c.getClass().rutaPadre = p.getSubCarpeta().getClass().rutaPrograma;
+                        c.getClass().ruta = p.getSubCarpeta().getClass().ruta + "/" + c.getClass().nombre;
+                        c.getClass().rutaPadre = p.getSubCarpeta().getClass().ruta;
 
                     } else {
 
@@ -144,8 +144,8 @@ namespace ProyectoWPF {
                         c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
 
                         string name = _activatedButton.Content.ToString();
-                        c.getClass().rutaPrograma = p.getCarpeta().getClass().rutaPrograma + "/" + c.getClass().nombre;
-                        c.getClass().rutaPadre = p.getCarpeta().getClass().rutaPrograma;
+                        c.getClass().ruta = p.getCarpeta().getClass().ruta + "/" + c.getClass().nombre;
+                        c.getClass().rutaPadre = p.getCarpeta().getClass().ruta;
                         c.setImg(p.getCarpeta().getClass().img);
 
                     }
@@ -177,13 +177,13 @@ namespace ProyectoWPF {
             WrapPanelPrincipal p = p1.GetWrapCarpPrincipal();
             CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(nombre), "", false);
             c.setClass(s);
-            s.menu = Lista.getMenuFromButton(_activatedButton).id;
+            s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
             c.setRutaDirectorio(nombre);
             if (p != null) {
 
                 
-                s.rutaPrograma = p1.getClass().rutaPrograma + "/" + s.nombre;
-                bool checkIfExists = Lista.Contains(c.getClass().rutaPrograma);
+                s.ruta = p1.getClass().ruta + "/" + s.nombre;
+                bool checkIfExists = Lista.Contains(c.getClass().ruta);
 
                 if (!checkIfExists) {
                     Lista.addSubCarpeta(c);
@@ -193,7 +193,7 @@ namespace ProyectoWPF {
                     p.getCarpeta().AddSubCarpetas();
                     c.setMenuCarpeta(p1.GetMenuCarpeta());
                     c.setTitle(System.IO.Path.GetFileName(nombre));
-                    c.getClass().rutaPadre = p1.getClass().rutaPrograma;
+                    c.getClass().rutaPadre = p1.getClass().ruta;
 
                     c.setRutaDirectorio(nombre);
 
@@ -223,12 +223,12 @@ namespace ProyectoWPF {
             WrapPanelPrincipal p = sp1.getWrapCarpPrincipal();
             CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(nombre), "", false);
             c.setClass(s);
-            s.menu = Lista.getMenuFromButton(_activatedButton).id;
+            s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
             c.setRutaDirectorio(nombre);
             if (p != null) {
                 
-                s.rutaPrograma = sp1.getClass().rutaPrograma + "/" + s.nombre;
-                bool checkIfExists = Lista.Contains(c.getClass().rutaPrograma);
+                s.ruta = sp1.getClass().ruta + "/" + s.nombre;
+                bool checkIfExists = Lista.Contains(c.getClass().ruta);
                 if (!checkIfExists) {
                     Lista.addSubCarpeta(c);
                     c.setImg(sp1.getClass().img);
@@ -238,7 +238,7 @@ namespace ProyectoWPF {
                     c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
                     c.setTitle(System.IO.Path.GetFileName(nombre));
                     
-                    c.getClass().rutaPadre = sp1.getClass().rutaPrograma;
+                    c.getClass().rutaPadre = sp1.getClass().ruta;
 
                     c.setRutaDirectorio(nombre);
 
@@ -340,13 +340,13 @@ namespace ProyectoWPF {
             WrapPanelPrincipal aux = Lista.getWrapVisible();
             CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(filename), "", true);
             p1.setClass(s);
-            s.menu = Lista.getMenuFromButton(_activatedButton).id;
+            s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
             s.rutaPadre = "";
             p1.actualizar();
 
             string name = _activatedButton.Content.ToString();
             p1.setRutaPrograma("C/" + name + "/" + p1.getClass().nombre);
-            bool checkIfExists = Lista.Contains(p1.getClass().rutaPrograma);
+            bool checkIfExists = Lista.Contains(p1.getClass().ruta);
             if (!checkIfExists) {
                 Lista.addCarpeta(p1);
 
@@ -398,7 +398,7 @@ namespace ProyectoWPF {
             SubCarpeta c = new SubCarpeta();
             Lista.addSubCarpeta(c);
             c.setClass(cc);
-            object obj = Lista.getFolderRuta(cc.rutaPrograma);
+            object obj = Lista.getFolderRuta(cc.ruta);
             WrapPanelPrincipal p=null;
             if (obj is Carpeta) {
                 Carpeta aux = (Carpeta)obj;
@@ -449,8 +449,20 @@ namespace ProyectoWPF {
             
         }
 
-        public void LoadProfileOffline(string nombre) {
-            
+        public void LoadProfileOffline(PerfilClass perfil) {
+            List<MenuClass> menus = ConexionOffline.LoadMenus(perfil);
+
+            foreach(MenuClass m in menus) {
+                addMenuFromClass(m);
+                List<CarpetaClass> carpetas = ConexionOffline.LoadCarpetasFromMenu(m);
+                if (carpetas != null) {
+                    foreach(CarpetaClass c in carpetas) {
+                        addCarpetaFromLoad(c);
+                        loadSubCarpetasOffline(c);
+                    }
+                }
+            }
+
         }
 
         public void loadDataConexion(long id) {
@@ -471,11 +483,21 @@ namespace ProyectoWPF {
         }
 
         public void loadSubCarpetas(CarpetaClass c, long idMenu) {
-            List<CarpetaClass> carpetas = Conexion.loadSubCarpetasFromCarpeta(c.rutaPrograma, idMenu);
+            List<CarpetaClass> carpetas = Conexion.loadSubCarpetasFromCarpeta(c, idMenu);
             if (carpetas != null) {
                 foreach(CarpetaClass cc in carpetas) {
                     addSubCarpetaFromLoad(cc);
                     loadSubCarpetas(cc, idMenu);
+                }
+            }
+        }
+
+        public void loadSubCarpetasOffline(CarpetaClass c) {
+            List<CarpetaClass> carpetas = ConexionOffline.loadSubCarpetasFromCarpeta(c);
+            if (carpetas != null) {
+                foreach (CarpetaClass cc in carpetas) {
+                    addSubCarpetaFromLoad(cc);
+                    loadSubCarpetasOffline(cc);
                 }
             }
         }

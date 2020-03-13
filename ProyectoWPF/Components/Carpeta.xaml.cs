@@ -138,7 +138,7 @@ namespace ProyectoWPF {
         }
 
         public void setRutaPrograma(string s) {
-            _carpeta.rutaPrograma = s;
+            _carpeta.ruta = s;
         }
 
         public void AddSubCarpetas() {

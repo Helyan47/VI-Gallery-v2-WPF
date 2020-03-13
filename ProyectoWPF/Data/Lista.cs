@@ -382,12 +382,12 @@ namespace ProyectoWPF {
                 }
             }
             foreach(Carpeta p in _carpetas) {
-                if (p.getClass().rutaPrograma.Equals(namePadre)) {
+                if (p.getClass().ruta.Equals(namePadre)) {
                     c = p;
                 }
             }
             foreach(SubCarpeta p in _subCarpetas) {
-                if (p.getClass().rutaPrograma.Equals(namePadre)) {
+                if (p.getClass().ruta.Equals(namePadre)) {
                     c = p;
                 }
             }
@@ -419,7 +419,7 @@ namespace ProyectoWPF {
 
         public static bool Contains(string ruta) {
             foreach(Carpeta carpeta in _carpetas) {
-                if (carpeta.getClass().rutaPrograma.CompareTo(ruta) == 0) {
+                if (carpeta.getClass().ruta.CompareTo(ruta) == 0) {
                     return true;
                 }
             }

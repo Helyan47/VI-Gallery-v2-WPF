@@ -9,29 +9,32 @@ namespace ProyectoWPF {
     public class CarpetaClass {
         public long id { get; set; }
         public string nombre { get; set; }
-        public int numSubCarpetas { get; set; }
+        public int numSubCarps { get; set; }
         public int numArchivos { get; set; }
-        public string rutaPrograma { get; set; }
+        public string ruta { get; set; }
         public string rutaPadre { get; set; }
         public string desc { get; set; }
         public ICollection<string> generos { get; set; }
         public string img { get; set; }
-        
-        public bool esCarpeta { get; set; }
-        public long menu { get; set; }
+        public bool isFolder { get; set; }
+        public long idMenu { get; set; }
 
-        public CarpetaClass(long id, string nombre, int numSubCarpetas, int numArchivos, string rutaPrograma, string rutaPadre, string desc, ICollection<string> generos, string img, bool esCarpeta, long menu) {
+        public CarpetaClass(Int64 id, String nombre, String ruta, String rutaPadre, Int64 numSubCarps, Int64 numArchivos, String desc, String img, String generos, Int64 isFolder, Int64 idMenu) {
             this.id = id;
             this.nombre = nombre;
-            this.numSubCarpetas = numSubCarpetas;
-            this.numArchivos = numArchivos;
-            this.rutaPrograma = rutaPrograma;
+            this.numSubCarps = (int)numSubCarps;
+            this.numArchivos = (int)numArchivos;
+            this.ruta = ruta;
             this.rutaPadre = rutaPadre;
             this.desc = desc;
             this.img = img;
-            this.generos = generos;
-            this.esCarpeta = esCarpeta;
-            this.menu = menu;
+            this.generos = new List<string>();
+            if (isFolder == 0) {
+                this.isFolder = true;
+            } else {
+                this.isFolder = false;
+            }
+            this.idMenu = idMenu;
         }
 
         public CarpetaClass(string title, string desc, string dirImg, ICollection<string> generos, bool esCarpeta) {
@@ -40,37 +43,47 @@ namespace ProyectoWPF {
             this.desc = desc;
             this.img = dirImg;
             this.generos = generos;
-            this.numSubCarpetas = 0;
+            this.numSubCarps = 0;
             this.numArchivos = 0;
-            this.esCarpeta = esCarpeta;
+            this.isFolder = esCarpeta;
         }
         public CarpetaClass(string title, string desc, string dirImg, bool esCarpeta) {
 
             this.nombre = title;
             this.desc = desc;
             this.img = dirImg;
-            this.generos = new List<String>();
-            this.numSubCarpetas = 0;
+            this.generos = new List<string>();
+            this.numSubCarps = 0;
             this.numArchivos = 0;
-            this.esCarpeta = esCarpeta;
+            this.isFolder = esCarpeta;
         }
         public CarpetaClass(string title, string desc, bool esCarpeta) {
 
             this.nombre = title;
             this.desc = desc;
             this.img = "";
-            this.generos = new List<String>();
-            this.numSubCarpetas = 0;
+            this.generos = new List<string>();
+            this.numSubCarps = 0;
             this.numArchivos = 0;
-            this.esCarpeta = esCarpeta;
+            this.isFolder = esCarpeta;
+        }
+
+        public CarpetaClass(long idMenu) {
+            this.nombre = "";
+            this.desc = "";
+            this.img = "";
+            this.generos = new List<string>();
+            this.numSubCarps = 0;
+            this.numArchivos = 0;
+            this.isFolder = false;
         }
 
         public void increaseSubCarpetas() {
-            this.numSubCarpetas++;
+            this.numSubCarps++;
         }
 
         public void decreaseSubCarpetas() {
-            this.numSubCarpetas--;
+            this.numSubCarps--;
         }
 
         public void increaseArchivos() {

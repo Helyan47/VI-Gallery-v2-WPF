@@ -120,7 +120,11 @@ namespace SeleccionarProfile {
                     vi.Show();
                     this.Close();
                 } else {
-
+                    VIGallery vi = new VIGallery(p, usuario, conn);
+                    vi.LoadProfileOffline(p);
+                    this.Hide();
+                    vi.Show();
+                    this.Close();
                 }
             } else {
                 MessageBox.Show("No se ha podido seleccionar el perfil");
