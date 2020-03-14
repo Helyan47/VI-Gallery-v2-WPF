@@ -257,6 +257,8 @@
     <None Include="BDOffline.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Resource Include="fonts\whitney-boldsc.otf" />
+    <Resource Include="fonts\whitney-book.otf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

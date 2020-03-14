@@ -17,7 +17,7 @@ namespace ProyectoWPF.Data {
         }
 
         public PerfilClassOnline(string nombre, long idUsuario) : base(nombre) {
-            this.idUsuario = -1;
+            this.idUsuario = idUsuario;
         }
 
     }

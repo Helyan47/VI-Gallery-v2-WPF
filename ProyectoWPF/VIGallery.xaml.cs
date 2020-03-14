@@ -39,6 +39,7 @@ namespace ProyectoWPF {
             _user = user;
             Lista.clearListas();
             _botones = buttonStack.Children;
+            _newSelectedProfile = _profile;
             _botonesMenu = new List<Button>();
             changedProfile = false;
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
@@ -669,14 +670,35 @@ namespace ProyectoWPF {
 
         private void showOptions(object sender, RoutedEventArgs e) {
             optionPanel.Visibility = Visibility.Visible;
+            addProfilesOptions();
         }
 
         private void showMain(object sender, RoutedEventArgs e) {
             optionPanel.Visibility = Visibility.Hidden;
         }
 
+        private void onOptionClick(object sender, RoutedEventArgs e) {
+            Button b = (Button) sender;
+            switch (b.Content.ToString()) {
+                case "Mi cuenta":
+                    panelUSuario.Visibility = Visibility.Visible;
+                    panelPerfiles.Visibility = Visibility.Hidden;
+                    break;
+                case "Perfiles":
+                    panelUSuario.Visibility = Visibility.Hidden;
+                    panelPerfiles.Visibility = Visibility.Visible;
+                    break;
+                case "Temas":
+                    break;
+                case "Reproductor":
+                    break;
+            }
+        }
+
         private void addProfilesOptions() {
-            foreach(PerfilClass p in Lista.getProfiles()) {
+            perfiles.Children.Clear();
+            Lista.reloadProfiles();
+            foreach (PerfilClass p in Lista.getProfiles()) {
                 Button b = new Button();
                 b.Content = p.nombre;
                 b.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -688,14 +710,22 @@ namespace ProyectoWPF {
                 b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
                 b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
                 b.Click += selectProfile;
-                Lista.addButtonProfile(b);
-                perfiles.Children.Add(b);
-                Rectangle rect = new Rectangle();
-                rect.HorizontalAlignment = HorizontalAlignment.Stretch;
-                rect.Height = 2;
-                rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
-                perfiles.Children.Add(rect);
+                bool added = Lista.addButtonProfile(b);
+                if (added) {
+                    perfiles.Children.Add(b);
+                    Rectangle rect = new Rectangle();
+                    rect.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    rect.Height = 2;
+                    rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
+                    perfiles.Children.Add(rect);
+                } else {
+                    b = null;
+                }
+                if (b.Content.ToString().CompareTo(_profile.nombre) == 0) {
+                    selectProfile(b);
+                }
             }
+            
         }
 
         private void selectProfile(object sender,RoutedEventArgs e) {
@@ -705,13 +735,21 @@ namespace ProyectoWPF {
                 if (_newSelectedProfile.nombre.CompareTo(aux.Content.ToString()) != 0) {
                     _newSelectedProfile = perfilSelected;
                     Lista.clearBackProfile();
-                    aux.Background = new SolidColorBrush(Color.FromRgb(37, 37, 37));
+                    aux.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
                 }
             }
         }
 
+        private void selectProfile(Button b) {
+            PerfilClass perfilSelected = Lista.getProfile(b.Content.ToString());
+            if (perfilSelected != null) {
+                Lista.clearBackProfile();
+                b.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
+            }
+        }
+
         private void changeProfile(object sender, RoutedEventArgs e) {
-            if (_profile.nombre.CompareTo(_newSelectedProfile) != 0) {
+            if (_profile.nombre.CompareTo(_newSelectedProfile.nombre) != 0) {
                 _profile = _newSelectedProfile;
                 changedProfile = true;
                 this.Close();

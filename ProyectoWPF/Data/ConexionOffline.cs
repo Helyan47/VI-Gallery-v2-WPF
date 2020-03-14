@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoWPF.Data {
     public class ConexionOffline {
-        public static List<PerfilClass> LoadProfile() {
+        public static List<PerfilClass> LoadProfiles() {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
                 var output = cnn.Query<PerfilClass>("select * from Perfil", new DynamicParameters());
                 cnn.Close();

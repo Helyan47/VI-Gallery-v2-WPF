@@ -31,8 +31,10 @@ namespace ProyectoWPF.Data {
                     comando = new MySqlCommand("INSERT INTO Perfil VALUES (null, @nombrePerfil, @mode, @numMenus, @fkUsuario)", conexion);
                     comando.Transaction = myTrans;
 
-                    comando.Parameters.AddWithValue("@nombreMenu", p.nombre);
-                    comando.Parameters.AddWithValue("@fkPerfil", VIGallery.getUser().id);
+                    comando.Parameters.AddWithValue("@nombrePerfil", p.nombre);
+                    comando.Parameters.AddWithValue("@mode", 0);
+                    comando.Parameters.AddWithValue("@numMenus", 0);
+                    comando.Parameters.AddWithValue("@fkUsuario", VIGallery.getUser().id);
                     comando.ExecuteNonQuery();
                     myTrans.Commit();
 

@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="VI-Gallery" Width="1920" Height="1080" MinWidth="700" MinHeight="700" WindowStartupLocation="CenterScreen" Background="{x:Null}" WindowState="Maximized" WindowStyle="None">
     <Window.Resources>
+        <FontFamily x:Key="whitneyBold">/Fonts/#whitney-boldsc.otf</FontFamily>
+        <FontFamily x:Key="whitney">/Fonts/#whitney-book.otf</FontFamily>
         <Canvas x:Key="multiFolderDynamic" Width="500" Height="500">
             <Canvas.RenderTransform>
                 <TransformGroup>
@@ -48,33 +50,25 @@
             </Canvas>
         </Canvas>
         <Style x:Key="PropertieButton" TargetType="Button">
-
             <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontFamily" Value="{StaticResource whitney}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background">
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0,0.5" MappingMode="RelativeToBoundingBox" StartPoint="1,0.5">
-                                <GradientStop Color="#FF444444" Offset="0"/>
-                                <GradientStop Color="Transparent" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter Property="Background" Value="#FF595959"/>
                     <Setter Property="Foreground" Value="White"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
         <Style x:Key="CustomButtonStyle" TargetType="Button">
-
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -131,9 +125,10 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
     </Window.Resources>
     <Grid>
-        
+
         <DockPanel Background="#FF121212">
             <Grid Height="28" DockPanel.Dock="Top" VerticalAlignment="Top" Background="#FF121212">
                 <Grid.ColumnDefinitions>
@@ -172,7 +167,7 @@
                         </Grid>
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                             <StackPanel x:Name="buttonStack" CanVerticallyScroll="True" >
-                                
+
                             </StackPanel>
                         </ScrollViewer>
                         <Border x:Name="menuButtons" BorderThickness="0" BorderBrush="Red" Grid.Row="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -258,8 +253,8 @@
                         <ColumnDefinition Width="0.3*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    
-                    <Grid x:Name="panelUSuario" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+                    <Grid x:Name="panelUSuario" Visibility="Visible" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="0.3*"/>
                             <RowDefinition Height="*"/>
@@ -273,9 +268,9 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Border Background="#FF1D1D1D" Grid.Row="0" Grid.ColumnSpan="4" CornerRadius="20,0,0,0">
-                                <Border.Effect>
+                                <!--<Border.Effect>
                                     <DropShadowEffect BlurRadius="100" Direction="-90" Color="Black" ShadowDepth="20" RenderingBias="Quality"/>
-                                </Border.Effect>
+                                </Border.Effect>-->
                             </Border>
                             <Grid Grid.Row="0">
                                 <Grid.RowDefinitions>
@@ -309,7 +304,7 @@
                                 </Border>
                             </Grid>
 
-                            <Label Content="nombreUsuario" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Bold" Foreground="White" FontSize="100" Grid.Column="1"/>
+                            <Label Content="nombreUsuario" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" FontWeight="Bold" Foreground="White" FontSize="100" Grid.Column="1"/>
                         </Grid>
                         <ScrollViewer HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Background="#FF252525" Foreground="{x:Null}">
                             <StackPanel Margin="0,100,0,0">
@@ -327,7 +322,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBox Grid.Column="1" Margin="20,5,20,5"></TextBox>
                                     </Grid>
-                                    
+
                                 </Grid>
                                 <Grid Margin="0,30,0,0">
                                     <Grid.ColumnDefinitions>
@@ -361,53 +356,98 @@
                                         <Button Content="..." Width="70px" Grid.Column="2"/>
                                     </Grid>
                                 </Grid>
-                                <Grid Margin="10,30,10,10">
-                                    <Grid Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="10px"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="10px"/>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="10px"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="10px"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="10px"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="Elige un Perfil" FontWeight="Bold" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50"/>
-                                        <Border BorderThickness="2" BorderBrush="LightGray" Grid.Row="3" Grid.Column="1" VerticalAlignment="Stretch">
-                                            <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Hidden">
-                                                <StackPanel x:Name="perfiles" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></StackPanel>
-                                            </ScrollViewer>
-                                        </Border>
-                                    </Grid>
-                                </Grid>
-                                <Grid Margin="10,30,10,10">
-                                    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-                                        <Button Content="-" Style="{StaticResource CustomButtonStyle}" Padding="0" Width="50" FontWeight="Bold" Foreground="White" FontSize="25px" Click="removeProfile"/>
-                                        <Button Content="+" Style="{StaticResource CustomButtonStyle}" Padding="0" Width="50" FontWeight="Bold" Foreground="White" FontSize="25px" Click="addProfile"/>
-                                        <Button Content="Cambiar Perfil" Style="{StaticResource CustomButtonStyle}" FontWeight="Bold" Foreground="White" FontSize="25px" Click="changeProfile"/>
-                                    </StackPanel>
-                                </Grid>
                             </StackPanel>
                         </ScrollViewer>
+                    </Grid>
+                    <Border x:Name="panelPerfiles" Background="#FF1D1D1D" Grid.Column="1" Grid.ColumnSpan="4" CornerRadius="20,0,0,0" Visibility="Hidden">
+
+                        <Grid Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="0.05*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Margin="10,30,10,10">
+                                <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="10px"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="10px"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="10px"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="10px"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10px"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Elige un Perfil" FontWeight="Bold" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50"/>
+
+                                </Grid>
+                            </Grid>
+                            <Grid Margin="10,30,10,10" Grid.Row="1">
+                                <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                                    <Button Content="-" Style="{StaticResource CustomButtonStyle}" Padding="0" Width="50" FontWeight="Bold" Foreground="#FFCDCDCD" FontSize="25px" Click="removeProfile"/>
+                                    <Button Content="+" Style="{StaticResource CustomButtonStyle}" Padding="0" Width="50" FontWeight="Bold" Foreground="White" FontSize="25px" Click="addProfile"/>
+                                    <Button Content="Cambiar Perfil" Style="{StaticResource CustomButtonStyle}" FontWeight="Bold" Foreground="White" FontSize="25px" Click="changeProfile" Margin="0" Padding="1"/>
+                                </StackPanel>
+                            </Grid>
+                            <Border  Margin="20" Grid.Row="2" BorderThickness="2" BorderBrush="LightGray" Grid.Column="1" VerticalAlignment="Stretch">
+                                <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Hidden" Background="#FF151515">
+                                    <StackPanel x:Name="perfiles" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></StackPanel>
+                                </ScrollViewer>
+                            </Border>
 
 
-                    </Grid>
-                    <Grid Background="#FF121212">
-                        <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                                <Button Content="Usuario" Padding="10" FontSize="60px" FontWeight="Bold" HorizontalContentAlignment="Right" Foreground="White" Style="{DynamicResource PropertieButton}"/>
-                                <Button Content="Temas" Padding="10" FontSize="60px" FontWeight="Bold" HorizontalContentAlignment="Right" Foreground="White" Style="{DynamicResource PropertieButton}"/>
-                                <Button Content="Reproductor" Padding="10" FontSize="60px" FontWeight="Bold" HorizontalContentAlignment="Right" Foreground="White" Style="{DynamicResource PropertieButton}"/>
-                            </StackPanel>
-                        </ScrollViewer>
-                        <Button Content="Return"  Width="75px" Height="75px" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="showMain"/>
-                    </Grid>
+
+                        </Grid>
+                    </Border>
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="0,30,0,0">
+                        <Grid Background="#FF121212" Margin="30,0,20,0" HorizontalAlignment="Right" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="30px"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="30px"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="5px"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Label Content="AJUSTES DE USUARIO" Grid.Row="0" Foreground="#FFA2A2A2" FontFamily="{StaticResource whitneyBold}" FontSize="20" VerticalAlignment="Center" FontWeight="Bold"/>
+                                <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0">
+                                    <Button Content="Mi cuenta" Padding="0" FontSize="25" HorizontalContentAlignment="Left" Foreground="#FFE6E6E6" Style="{DynamicResource PropertieButton}" VerticalContentAlignment="Center" VerticalAlignment="Center" Click="onOptionClick"/>
+                                    <Button Content="Perfiles" Padding="10" FontSize="25" HorizontalContentAlignment="Right" Foreground="#FFE6E6E6" Style="{DynamicResource PropertieButton}" Click="onOptionClick"/>
+                                </StackPanel>
+                            </Grid>
+                            <Separator Grid.Row="1" VerticalAlignment="Center" Background="#7FA0A0A0"/>
+                            <Grid Grid.Row="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="5px"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Label Content="AJUSTES DE INTERFAZ" Grid.Row="0" Foreground="#FFA2A2A2" FontFamily="{StaticResource whitneyBold}" FontSize="20" VerticalAlignment="Center" FontWeight="Bold"/>
+                                <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0">
+                                    <Button Content="Temas" Padding="10" FontSize="25" HorizontalContentAlignment="Right" Foreground="#FFE6E6E6" Style="{DynamicResource PropertieButton}" Click="onOptionClick"/>
+                                    <Button Content="Reproductor" Padding="10" FontSize="25" HorizontalContentAlignment="Left" Foreground="#FFE6E6E6" Style="{DynamicResource PropertieButton}" VerticalContentAlignment="Center" Click="onOptionClick"/>
+                                </StackPanel>
+                            </Grid>
+                            <Button Content="Return" Grid.Row="4" Width="75px" Height="75px" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="showMain"/>
+
+
+
+                        </Grid>
+                    </ScrollViewer>
                 </Grid>
             </Grid>
         </DockPanel>
-        
+
     </Grid>
 </Window>

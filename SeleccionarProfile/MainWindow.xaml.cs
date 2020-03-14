@@ -38,22 +38,25 @@ namespace SeleccionarProfile {
                 if (profiles != null) {
                     foreach (PerfilClassOnline p in profiles) {
                         addButton(p);
+                        Lista.addProfile(p);
                     }
                 }
             } else {
-                profiles = ConexionOffline.LoadProfile();
+                profiles = ConexionOffline.LoadProfiles();
                 if (profiles.Count != 0) {
-                    foreach (PerfilClass s in profiles) {
+                    foreach (PerfilClass p in profiles) {
 
-                        addButton(s);
+                        addButton(p);
+                        Lista.addProfile(p);
 
                     }
                 } else {
                     ConexionOffline.addProfile(new PerfilClass("Perfil 1"));
-                    profiles = ConexionOffline.LoadProfile();
-                    foreach (PerfilClass s in profiles) {
+                    profiles = ConexionOffline.LoadProfiles();
+                    foreach (PerfilClass p in profiles) {
 
-                        addButton(s);
+                        addButton(p);
+                        Lista.addProfile(p);
 
                     }
                 }
@@ -115,6 +118,7 @@ namespace SeleccionarProfile {
             if (p != null) {
                 if (conn) {
                     VIGallery vi = new VIGallery(p, usuario, conn);
+                    
                     vi.loadDataConexion(p.id);
                     this.Hide();
                     vi.Show();

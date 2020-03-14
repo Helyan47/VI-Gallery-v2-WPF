@@ -67,14 +67,25 @@ namespace ProyectoWPF {
             }
         }
 
-        public static void addButtonProfile(Button b) {
+        public static bool addButtonProfile(Button b) {
             if (!_bPerfiles.Contains(b)) {
                 _bPerfiles.Add(b);
+                return true;
+            } else {
+                return false;
             }
         }
 
         public static List<PerfilClass> getProfiles() {
             return _perfiles;
+        }
+
+        public static void reloadProfiles() {
+            if (VIGallery.conexionMode) {
+                _perfiles = Conexion.loadPerfiles(VIGallery.getUser().id);
+            } else {
+                _perfiles = ConexionOffline.LoadProfiles();
+            }
         }
 
         public static bool checkProfile(string s) {
@@ -430,7 +441,7 @@ namespace ProyectoWPF {
 
         public static void clearBackProfile() {
             foreach(Button b in _bPerfiles) {
-                b.Background = new SolidColorBrush(Colors.Transparent);
+                b.ClearValue(Button.BackgroundProperty);
             }
         }
     }
