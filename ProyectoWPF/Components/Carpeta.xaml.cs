@@ -29,7 +29,7 @@ namespace ProyectoWPF {
         private string _rutaDirectorio;
         private VIGallery _ventanaMain;
         private Canvas _defaultCanvas;
-        private long _mode = 0;
+        private static long _mode = 0;
         public PerfilClass _profile { get; set; }
 
         public Carpeta(VIGallery ventana) {
@@ -127,6 +127,7 @@ namespace ProyectoWPF {
 
         public void setDescripcion(string d) {
             _carpeta.desc= d;
+            descripcion.Content = d;
         }
 
         public void setRutaDirectorio(string s) {
@@ -197,7 +198,9 @@ namespace ProyectoWPF {
                 if (_carpeta.nombre.CompareTo("")!=0) {
                     setImg();
                 }
-
+                if (_carpeta.desc.CompareTo("") == 0) {
+                    setDescripcion("Inserta una descripción");
+                }
             }
 
         }
@@ -270,7 +273,8 @@ namespace ProyectoWPF {
 
 
         public void changeMode(long mode) {
-            this._mode = mode;
+            _mode = mode;
+            _profile.mode = mode;
             
             if (mode == 0) {
                 Grid.SetRowSpan(ImgBorde, 2);

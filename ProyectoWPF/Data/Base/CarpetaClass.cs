@@ -19,7 +19,21 @@ namespace ProyectoWPF {
         public bool isFolder { get; set; }
         public long idMenu { get; set; }
 
-        public CarpetaClass(Int64 id, String nombre, String ruta, String rutaPadre, Int64 numSubCarps, Int64 numArchivos, String desc, String img, String generos, Int64 isFolder, Int64 idMenu) {
+        public CarpetaClass(Int64 id, string nombre, string ruta, string rutaPadre, Int64 numSubCarps, Int64 numArchivos, string desc, string img, string generos, bool isFolder, Int64 idMenu) {
+            this.id = id;
+            this.nombre = nombre;
+            this.numSubCarps = (int)numSubCarps;
+            this.numArchivos = (int)numArchivos;
+            this.ruta = ruta;
+            this.rutaPadre = rutaPadre;
+            this.desc = desc;
+            this.img = img;
+            this.generos = new List<string>();
+            this.isFolder = isFolder;
+            this.idMenu = idMenu;
+        }
+
+        public CarpetaClass(Int64 id, string nombre, string ruta, string rutaPadre, Int64 numSubCarps, Int64 numArchivos, string desc, string img, string generos, Int64 isFolder, Int64 idMenu) {
             this.id = id;
             this.nombre = nombre;
             this.numSubCarps = (int)numSubCarps;
@@ -30,9 +44,9 @@ namespace ProyectoWPF {
             this.img = img;
             this.generos = new List<string>();
             if (isFolder == 0) {
-                this.isFolder = true;
-            } else {
                 this.isFolder = false;
+            } else {
+                this.isFolder = true;
             }
             this.idMenu = idMenu;
         }

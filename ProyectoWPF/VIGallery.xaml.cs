@@ -26,8 +26,6 @@ namespace ProyectoWPF {
         private UIElementCollection _botones;
         private Button _activatedButton;
         public int firstFolder = 0;
-        public static string userNick = "Helyan";
-        public static int idUsuario = 1;
         //Establece si se ha iniciado con conexion o sin conexion
         public static bool conexionMode = false;
         public static PerfilClass _profile = null;
@@ -97,6 +95,7 @@ namespace ProyectoWPF {
 
                     }
                 }
+                Lista.modifyMode(_profile.mode);
                 Lista.hideAllExceptPrinc();
             } else {
                 menuButtons.BorderThickness = new Thickness(5);
@@ -296,6 +295,7 @@ namespace ProyectoWPF {
                 MessageBox.Show("No has creado ninguno menú");
                 menuButtons.BorderThickness = new Thickness(0);
             }
+
         }
 
         private void addCarpeta() {
@@ -462,6 +462,7 @@ namespace ProyectoWPF {
                     }
                 }
             }
+            Lista.modifyMode(_profile.mode);
 
         }
 
@@ -480,6 +481,7 @@ namespace ProyectoWPF {
                     }
                 }
             }
+            Lista.modifyMode(_profile.mode);
         }
 
         public void loadSubCarpetas(CarpetaClass c, long idMenu) {
@@ -487,6 +489,7 @@ namespace ProyectoWPF {
             if (carpetas != null) {
                 foreach(CarpetaClass cc in carpetas) {
                     addSubCarpetaFromLoad(cc);
+                    Console.WriteLine(cc.ruta);
                     loadSubCarpetas(cc, idMenu);
                 }
             }
@@ -656,10 +659,10 @@ namespace ProyectoWPF {
         }
 
         public void ChangeMode(object sender,RoutedEventArgs e) {
-            Lista.changeMode(_activatedButton);
+            Lista.changeMode();
         }
 
-        public static void updateMode(int mode) {
+        public static void updateMode(long mode) {
             _profile.mode = mode;
             Conexion.updateMode(mode,_profile);
         }

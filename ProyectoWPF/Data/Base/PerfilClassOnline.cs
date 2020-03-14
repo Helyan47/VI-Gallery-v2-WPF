@@ -8,8 +8,11 @@ namespace ProyectoWPF.Data {
     public class PerfilClassOnline : PerfilClass{
         public long idUsuario { get; set; }
 
+        public PerfilClassOnline(long id, string nombre, long mode, long numMenus, long idUsuario) : base(id, nombre, mode, numMenus) {
+            this.idUsuario = idUsuario;
+        }
 
-        public PerfilClassOnline(long id,string nombre, long mode, long numMenus, long idUsuario) : base(id, nombre, mode, numMenus) {
+        public PerfilClassOnline (string nombre, long mode, long idUsuario) : base(nombre, mode) {
             this.idUsuario = idUsuario;
         }
 

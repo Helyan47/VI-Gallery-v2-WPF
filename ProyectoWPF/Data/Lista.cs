@@ -316,33 +316,26 @@ namespace ProyectoWPF {
             }
         }
 
-        public static void changeMode(Button b) {
-            MenuClass m = getMenuFromButton(b);
-            WrapPanelPrincipal visible= getWrapFromMenu(m);
-            if (visible != null) {
-                long actualMode = VIGallery._profile.mode;
-                if (actualMode == 0) {
-                    int newMode = 1;
-                    VIGallery.updateMode(newMode);
-                    modifyMode(newMode);
-                } else if (actualMode == 1) {
-                    int newMode = 2;
-                    VIGallery.updateMode(newMode);
-                    modifyMode(newMode);
-                }else if(actualMode == 2) {
-                    int newMode = 3;
-                    VIGallery.updateMode(newMode);
-                    modifyMode(newMode);
-                }else if (actualMode == 3) {
-                    int newMode = 0;
-                    VIGallery.updateMode(newMode);
-                    modifyMode( newMode);
-                }
+        public static void changeMode() {
+            long actualMode = VIGallery._profile.mode;
+            if (actualMode == 0) {
+                int newMode = 1;
+                modifyMode(newMode);
+            } else if (actualMode == 1) {
+                int newMode = 2;
+                modifyMode(newMode);
+            } else if (actualMode == 2) {
+                int newMode = 3;
+                modifyMode(newMode);
+            } else if (actualMode == 3) {
+                int newMode = 0;
+                modifyMode(newMode);
             }
         }
 
-        public static void modifyMode(int mode) {
-            foreach(Carpeta p in _carpetas) {
+        public static void modifyMode(long mode) {
+            VIGallery.updateMode(mode);
+            foreach (Carpeta p in _carpetas) {
                 p.changeMode(mode);               
             }
 

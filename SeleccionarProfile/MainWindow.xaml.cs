@@ -36,7 +36,7 @@ namespace SeleccionarProfile {
             if (conn) {
                 profiles = Conexion.loadPerfiles(user.id);
                 if (profiles != null) {
-                    foreach (PerfilOnline p in profiles) {
+                    foreach (PerfilClassOnline p in profiles) {
                         addButton(p);
                     }
                 }

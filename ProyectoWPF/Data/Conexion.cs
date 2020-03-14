@@ -238,7 +238,7 @@ namespace ProyectoWPF.Data {
         }
 
         public static List<PerfilClass> loadPerfiles(long id) {
-            List<PerfilClass> perfiles = new List<PerfilClass>();
+            List<PerfilClass> perfiles = null;
             MySqlConnection conexion = null;
             try {
                 conexion = getConnection();
@@ -251,16 +251,15 @@ namespace ProyectoWPF.Data {
                 MySqlDataReader reader = comando.ExecuteReader();
 
                 if (reader.HasRows) {
+                    perfiles = new List<PerfilClass>();
                     while (reader.Read()) {
                         Int32 idPerfil = (Int32)reader["id"];
                         Int32 numMenus = (Int32)reader["numMenus"];
                         Int32 mode = (Int32)reader["mode"];
-                        PerfilOnline perfil = new PerfilOnline((long)idPerfil, reader["nombre"].ToString(), (long)numMenus, mode, id);
+                        PerfilClassOnline perfil = new PerfilClassOnline((long)idPerfil, reader["nombre"].ToString(), mode, (long)numMenus, id);
                         perfiles.Add(perfil);
                     }
                     reader.Close();
-                    conexion.Close();
-                    return perfiles;
                 }
 
             } catch (MySqlException e) {
@@ -270,7 +269,7 @@ namespace ProyectoWPF.Data {
                     conexion.Close();
                 }
             }
-            return null;
+            return perfiles;
         }
 
         public static List<MenuClass> loadMenus(long id) {
@@ -328,7 +327,7 @@ namespace ProyectoWPF.Data {
                         Int32 numArchivos = (Int32)reader["numArchivos"];
                         ICollection<string> generos = new List<string>();
                         CarpetaClass carpeta = new CarpetaClass((long)idCarpeta, reader["nombre"].ToString(), reader["ruta"].ToString(), reader["rutaPadre"].ToString(), numSubCarp, numArchivos,
-                            reader["descripcion"].ToString(), reader["img"].ToString(), generos.ToString(), 0, id);
+                            reader["descripcion"].ToString(), reader["img"].ToString(), generos.ToString(), true, id);
                         carpetas.Add(carpeta);
                     }
                     reader.Close();
@@ -357,7 +356,7 @@ namespace ProyectoWPF.Data {
 
                 MySqlCommand comando = new MySqlCommand("SELECT id,nombre,numSubCarps,numArchivos,ruta,rutaPadre,descripcion,generos,img FROM Carpeta WHERE fk_Menu=@fkMenu and rutaPadre=@rutaPadre", conexion);
                 comando.Parameters.AddWithValue("@fkMenu", id);
-                comando.Parameters.AddWithValue("@rutaPadre", c.rutaPadre);
+                comando.Parameters.AddWithValue("@rutaPadre", c.ruta);
                 MySqlDataReader reader = comando.ExecuteReader();
 
                 if (reader.HasRows) {
@@ -367,7 +366,7 @@ namespace ProyectoWPF.Data {
                         Int32 numArchivos = (Int32)reader["numArchivos"];
                         ICollection<string> generos = new List<string>();
                         CarpetaClass carpeta = new CarpetaClass((long)idCarpeta, reader["nombre"].ToString(),  reader["ruta"].ToString(), reader["rutaPadre"].ToString(), numSubCarp, numArchivos,
-                            reader["descripcion"].ToString(),  reader["img"].ToString(), generos.ToString(), 1, id);
+                            reader["descripcion"].ToString(),  reader["img"].ToString(), generos.ToString(), false, id);
                         carpetas.Add(carpeta);
                     }
                     reader.Close();
@@ -417,7 +416,7 @@ namespace ProyectoWPF.Data {
             return null;
         }
 
-        public static void updateMode(int mode,PerfilClass p) {
+        public static void updateMode(long mode,PerfilClass p) {
             MySqlConnection conexion = null;
             MySqlTransaction myTrans = null;
             try {

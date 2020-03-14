@@ -25,7 +25,7 @@ namespace ProyectoWPF {
         private string _rutaDirectorio;
         private string _rutaPrograma;
         private Canvas _defaultCanvas;
-        private int _mode = 0;
+        private static long _mode = 0;
         public PerfilClass _profile { get; set; }
         public SubCarpeta() {
             InitializeComponent();
@@ -33,6 +33,7 @@ namespace ProyectoWPF {
             _numSubCarpetas = 0;
             _defaultCanvas = canvasFolder;
             _profile = VIGallery._profile;
+            changeMode(_profile.mode);
         }
 
         #region get/set
@@ -188,8 +189,9 @@ namespace ProyectoWPF {
             click();
         }
 
-        public void changeMode(int mode) {
-            this._mode = mode;
+        public void changeMode(long mode) {
+            _mode = mode;
+            _profile.mode = mode;
 
             if (mode == 0) {
                 Grid.SetRowSpan(ImgBorde, 2);
