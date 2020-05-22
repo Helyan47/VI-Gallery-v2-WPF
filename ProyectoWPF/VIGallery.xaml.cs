@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using ProyectoWPF.Components;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -259,6 +260,35 @@ namespace ProyectoWPF {
             return c;
         }
 
+        private void addFileCarpeta(string fileName, Carpeta c) {
+            string ruta = "F" + c.getClass().ruta.Substring(1);
+            ArchivoClass ac = new ArchivoClass(fileName, ruta, "00:00", c.getClass().img, c.getClass().id);
+            Archivo a = new Archivo(ac);
+            
+            if (conexionMode) {
+                Conexion.saveFile(ac);
+            } else {
+                ConexionOffline.addArchivo(ac);
+            }
+            
+            _aux.GetWrapCarpPrincipal().addFile(a);
+        }
+
+        private void addFileSubCarpeta(string fileName, SubCarpeta c) {
+            string ruta = "F" + c.getClass().ruta.Substring(1);
+            ArchivoClass ac = new ArchivoClass(fileName, ruta, "00:00", c.getClass().img, c.getClass().id);
+            Archivo a = new Archivo(ac);
+
+
+            if (conexionMode) {
+                Conexion.saveFile(ac);
+            } else {
+                ConexionOffline.addArchivo(ac);
+            }
+
+            _aux.GetWrapCarpPrincipal().addFile(a);
+        }
+
 
         private void addText(string[] files) {
 
@@ -269,8 +299,15 @@ namespace ProyectoWPF {
                         if (i != files.Length - 1) {
                             i++;
                         }
-                        
+
+                    } else {
+                        _aux.clickEspecial();
+                        string[] archivos = Directory.GetFiles(files[i]);
+                        for (int j = 0; j < archivos.Length; j++) {
+                            addFileCarpeta(archivos[i],_aux);
+                        }
                     }
+                    
                 } else {
 
                     _aux2 = Lista.searchRuta(Directory.GetParent(files[i]).FullName);
@@ -281,10 +318,15 @@ namespace ProyectoWPF {
                             _aux2 = addSubCarpetaCompleta(_aux, files[i]);
                         }
                     }
+                    string[] archivos = Directory.GetFiles(files[i]);
+                    for(int j = 0; j < archivos.Length; j++) {
+                        addFileSubCarpeta(archivos[i], _aux2);
+                    }
                 }
                 if (Directory.GetDirectories(files[i]) != null) {
                     addText(Directory.GetDirectories(files[i]));
                 }
+
             }
         }
 
@@ -573,7 +615,7 @@ namespace ProyectoWPF {
 
 
                 _botonesMenu.Add(newButton);
-                MenuClass mc = new MenuClass(newButton.Content.ToString(), 1);
+                MenuClass mc = new MenuClass(newButton.Content.ToString(), _profile.id);
                 if (conexionMode) {
                     mc = Conexion.addMenu(mc);
                     if (mc != null) {
@@ -752,6 +794,9 @@ namespace ProyectoWPF {
             if (_profile.nombre.CompareTo(_newSelectedProfile.nombre) != 0) {
                 _profile = _newSelectedProfile;
                 changedProfile = true;
+                VIGallery vi = new VIGallery(_profile, _user, conexionMode);
+                vi.LoadProfileOffline(_profile);
+                vi.Show();
                 this.Close();
             } else {
                 MessageBox.Show("El perfil ya está seleccionado");

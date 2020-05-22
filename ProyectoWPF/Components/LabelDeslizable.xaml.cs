@@ -103,7 +103,7 @@ namespace ProyectoWPF {
                 limiteColor3.Offset += 0.0005;
             }
 
-            if (cont > widthLabel) {
+            if (cont - 15 > widthLabel) {
                 borde.Margin = normalMargin;
                 margin = 0;
                 limiteColor.Offset = 0.765;

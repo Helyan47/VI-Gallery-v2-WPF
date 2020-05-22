@@ -103,6 +103,10 @@ namespace ProyectoWPF {
             }
             
         }
+        public void setMenuCarpeta(Menu m) {
+            _menuCarpeta = m;
+            m.SetFlowCarpPrincipal(_menuCarpeta.getFlowCarpPrincipal());
+        }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e) {
             descripcion.Opacity+=0.04;

@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="ProyectoWPF.Components.Archivo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ProyectoWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="250">
+    <UserControl.Effect>
+        <DropShadowEffect Direction="0" ShadowDepth="0" BlurRadius="20" />
+    </UserControl.Effect>
+    <Border x:Name="backgroundGrid" CornerRadius="10" BorderThickness="20,0,20,0" ClipToBounds="True">
+        <Border.BorderBrush>
+            <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
+                <DrawingBrush.Drawing>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="Black">
+                            <GeometryDrawing.Geometry>
+                                <GeometryGroup>
+                                    <RectangleGeometry Rect="50,100,0,0" />
+                                    <RectangleGeometry Rect="0,200,50,100" />
+                                </GeometryGroup>
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                </DrawingBrush.Drawing>
+            </DrawingBrush>
+        </Border.BorderBrush>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50px"/>
+            </Grid.RowDefinitions>
+            <Border x:Name="Img" Grid.RowSpan="2" HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF212121"  ClipToBounds="True" RenderOptions.BitmapScalingMode="HighQuality">
+                <Viewbox x:Name="viewBoxImg" Stretch="None" RenderOptions.BitmapScalingMode="HighQuality">
+                    <Canvas x:Name="canvasFolder" Width="210" Height="300">
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="0" Y="0"/>
+                        </Canvas.RenderTransform>
+                        <Canvas.Resources/>
+                        <!--Unknown tag: sodipodi:namedview-->
+                        <!--Unknown tag: metadata-->
+                        <Canvas Name="layer1" Height="300" Width="210">
+                            <Path x:Name="ColorPath" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="7.875" Canvas.Top="5.25" Fill="White" >
+                                <Path.Data>
+                                    <PathGeometry Figures="m 54.147296 247.46357 c 0 -61.12934 -0.668027 -103.25674 -1.637377 -103.25674 -2.262521 0 -7.8483 -4.18297 -9.732755 -7.28847 -5.806217 -9.5684 -6.112227 -13.79857 -5.234268 -72.356365 l 0.730272 -48.707356 1.800655 -4.104055 c 2.52343 -5.7513848 6.797018 -8.3171316 13.853269 -8.3171316 3.937937 0 147.802708 30.8254296 148.720278 31.8657976 0.0689 0.07803 -0.0494 52.527176 -0.26279 116.55354 l -0.38798 116.41161 -2.38454 0.40074 c -1.31149 0.22042 -34.20411 5.23624 -73.09472 11.14627 -38.8906 5.91004 -70.80977 11.01518 -70.931495 11.34477 -1.18427 3.20658 -1.438549 -4.51653 -1.438549 -43.69261 z M 19.290168 270.0789 C 14.665093 266.68887 12.09087 261.3467 11.01466 252.90503 9.5373509 241.3172 10.175238 45.665787 11.702776 41.8476 14.673513 34.422047 20.051308 29.805699 25.750627 29.788765 l 2.476787 -0.0065 0.178994 53.357561 0.178994 53.357554 2.647917 4.35872 c 1.594813 2.62525 4.525102 5.93281 7.367901 8.31649 6.596179 5.53094 6.250842 1.82651 6.250842 67.05293 v 54.45236 h -5.873508 c -3.230432 0 -8.533694 0.1939 -11.78503 0.4309 -5.12716 0.37372 -6.175804 0.23718 -7.903356 -1.02905 z" FillRule="NonZero"/>
+                                </Path.Data>
+                            </Path>
+                        </Canvas>
+                    </Canvas>
+                </Viewbox>
+            </Border>
+            <Grid Grid.Row="2">
+                <local:LabelDeslizable x:Name="Title"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Height="Auto" />
+            </Grid>
+            
+        </Grid>
+    </Border>
+</UserControl>

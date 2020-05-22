@@ -135,7 +135,7 @@ namespace ProyectoWPF.Data {
                 var parameters = new { nombre = p.nombre};
                 var output = cnn.Query<PerfilClass>("select * from Perfil where nombre=@nombre", parameters);
                 cnn.Close();
-                if (output.ToList().Count == 0) {
+                if (output.ToList().Count != 0) {
                     PerfilClass perfil = output.ToList().First<PerfilClass>();
                     return perfil;
                 } else {
@@ -195,7 +195,7 @@ namespace ProyectoWPF.Data {
         public static void addArchivo(ArchivoClass archivo) {
             try {
                 using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                    cnn.Execute("insert into User (nombre,rutaSistema,rutaPrograma,tipoArchivo,idCarpeta) values (@nombre,@rutaSistema,@rutaPrograma,@tipoArchivo,@idCarpeta)", archivo);
+                    cnn.Execute("insert into User (nombre,rutaPrograma,tiempoActual,img,idCarpeta) values (@nombre,@rutaPrograma,@tiempoActual,@img,@idCarpeta)", archivo);
                     Console.WriteLine("Añadido Archivo");
                     cnn.Close();
                 }

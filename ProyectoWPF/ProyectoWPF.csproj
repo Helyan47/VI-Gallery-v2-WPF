@@ -121,6 +121,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\Archivo.xaml.cs">
+      <DependentUpon>Archivo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Data\Base\ArchivoClass.cs" />
     <Compile Include="Data\Base\PerfilClassOnline.cs" />
     <Compile Include="Data\Conexion.cs" />
@@ -171,6 +174,10 @@
     <Page Include="Assets\MultiFolderIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Components\Archivo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewFolders\AddButton.xaml">
       <SubType>Designer</SubType>

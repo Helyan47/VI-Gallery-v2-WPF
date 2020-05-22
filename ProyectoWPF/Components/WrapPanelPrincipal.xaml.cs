@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProyectoWPF.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -84,6 +85,14 @@ namespace ProyectoWPF
                 p.setDefaultSource();
             }
             wrapPanel.Children.Add(p);
+        }
+
+        public void addFile(Archivo a) {
+            a.Width = 250;
+            a.Height = 400;
+            a.Margin = new Thickness(20, 20, 20, 20);
+            
+            wrapPanel.Children.Add(a);
         }
 
         public SubCarpeta getSubCarpeta() {
