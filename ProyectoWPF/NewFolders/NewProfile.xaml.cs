@@ -31,7 +31,7 @@ namespace ProyectoWPF.NewFolders {
                     
                     if (VIGallery.conexionMode) {
                         PerfilClassOnline pfOnline = new PerfilClassOnline(newProfileText.Text.ToString(), VIGallery.getUser().id);
-                        pfOnline = Conexion.addPerfil(pfOnline);
+                        pfOnline = Conexion.saveProfile(pfOnline);
                         if (pfOnline != null) {
                             addedProfile = true;
                             Lista.addProfile(pfOnline);

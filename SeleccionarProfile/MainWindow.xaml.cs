@@ -24,7 +24,8 @@ namespace SeleccionarProfile {
 
         public static string loadNewProfile = "";
         public static bool conn;
-        public List<PerfilClass> profiles = null;
+        public List<PerfilClass> _profiles = null;
+        private List<Button> _buttons = new List<Button>();
         private PerfilClass _selectedProfile = null;
         public MainWindow(bool connection,UsuarioClass user) {
             InitializeComponent();
@@ -37,17 +38,17 @@ namespace SeleccionarProfile {
                 VIGallery._user = null;
             }
             if (conn) {
-                profiles = Conexion.loadPerfiles(user.id);
-                if (profiles != null) {
-                    foreach (PerfilClassOnline p in profiles) {
+                _profiles = Conexion.loadProfiles(user.id);
+                if (_profiles != null) {
+                    foreach (PerfilClassOnline p in _profiles) {
                         addButton(p);
                         Lista.addProfile(p);
                     }
                 }
             } else {
-                profiles = ConexionOffline.LoadProfiles();
-                if (profiles.Count != 0) {
-                    foreach (PerfilClass p in profiles) {
+                _profiles = ConexionOffline.LoadProfiles();
+                if (_profiles.Count != 0) {
+                    foreach (PerfilClass p in _profiles) {
 
                         addButton(p);
                         Lista.addProfile(p);
@@ -55,8 +56,8 @@ namespace SeleccionarProfile {
                     }
                 } else {
                     ConexionOffline.addProfile(new PerfilClass("Perfil 1"));
-                    profiles = ConexionOffline.LoadProfiles();
-                    foreach (PerfilClass p in profiles) {
+                    _profiles = ConexionOffline.LoadProfiles();
+                    foreach (PerfilClass p in _profiles) {
 
                         addButton(p);
                         Lista.addProfile(p);
@@ -81,11 +82,6 @@ namespace SeleccionarProfile {
             bool added = Lista.addButtonProfile(b);
             if (added) {
                 perfiles.Children.Add(b);
-                Rectangle rect = new Rectangle();
-                rect.HorizontalAlignment = HorizontalAlignment.Stretch;
-                rect.Height = 2;
-                rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
-                perfiles.Children.Add(rect);
             } else {
                 b = null;
             }
@@ -169,7 +165,7 @@ namespace SeleccionarProfile {
         }
 
         private PerfilClass getProfile(string s) {
-            foreach(PerfilClass p in profiles) {
+            foreach(PerfilClass p in _profiles) {
                 if (p.nombre.CompareTo(s) == 0) {
                     return p;
                 }
@@ -194,13 +190,8 @@ namespace SeleccionarProfile {
                 b.Click += selectProfile;
                 Lista.addButtonProfile(b);
                 perfiles.Children.Add(b);
-                Rectangle rect = new Rectangle();
-                rect.HorizontalAlignment = HorizontalAlignment.Stretch;
-                rect.Height = 2;
-                rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
-                perfiles.Children.Add(rect);
 
-                MessageBox.Show("El perfil ha sido creado. Cambia al perfil desde el panel de opciones pulsando \"Cambiar Perfil\"");
+                MessageBox.Show("El perfil se ha creado correctamente");
 
             } else {
                 MessageBox.Show("No se ha podido crear el perfil");
@@ -209,7 +200,19 @@ namespace SeleccionarProfile {
         }
 
         private void removeProfile(object sender, RoutedEventArgs e) {
-
+            if (_selectedProfile != null) {
+                if (conn) {
+                    Conexion.deleteProfile(_selectedProfile.id);
+                    Button b = Lista.getProfileButton(_selectedProfile.nombre);
+                    Lista.removeProfile(_selectedProfile.nombre);
+                    if (b != null) {
+                        perfiles.Children.Remove(b);
+                    }
+                    
+                } else {
+                }
+                
+            }
         }
     }
 }

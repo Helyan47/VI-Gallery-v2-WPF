@@ -83,7 +83,7 @@ namespace ProyectoWPF {
 
         public static void reloadProfiles() {
             if (VIGallery.conexionMode) {
-                _perfiles = Conexion.loadPerfiles(VIGallery.getUser().id);
+                _perfiles = Conexion.loadProfiles(VIGallery.getUser().id);
             } else {
                 _perfiles = ConexionOffline.LoadProfiles();
             }
@@ -462,6 +462,31 @@ namespace ProyectoWPF {
                 }
             }
             return null;
+        }
+
+        public static Button getProfileButton(string name) {
+            foreach (Button b in _bPerfiles) {
+                if (b.Content.ToString().Equals(name)) {
+                    return b;
+                }
+            }
+            return null;
+        }
+
+        public static void removeProfile(string name) {
+            foreach(Button b in _bPerfiles) {
+                if (b.Content.ToString().Equals(name)) {
+                    _bPerfiles.Remove(b);
+                    break;
+                }
+            }
+
+            foreach (PerfilClass p in _perfiles) {
+                if (p.nombre.ToString().Equals(name)) {
+                    _perfiles.Remove(p);
+                    break;
+                }
+            }
         }
     }
 }

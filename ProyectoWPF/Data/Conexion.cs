@@ -12,7 +12,7 @@ namespace ProyectoWPF.Data {
             return conexion;
         }
 
-        public static PerfilClassOnline addPerfil(PerfilClassOnline p) {
+        public static PerfilClassOnline saveProfile(PerfilClassOnline p) {
             MySqlConnection conexion = null;
             try {
                 conexion = getConnection();
@@ -64,7 +64,7 @@ namespace ProyectoWPF.Data {
             return null;
         }
 
-        public static MenuClass addMenu(MenuClass m) {
+        public static MenuClass saveMenu(MenuClass m) {
             MySqlConnection conexion = null;
             try {
                 conexion = getConnection();
@@ -282,7 +282,7 @@ namespace ProyectoWPF.Data {
             }
         }
 
-        public static List<PerfilClass> loadPerfiles(long id) {
+        public static List<PerfilClass> loadProfiles(long id) {
             List<PerfilClass> perfiles = null;
             MySqlConnection conexion = null;
             try {
@@ -352,7 +352,7 @@ namespace ProyectoWPF.Data {
             return null;
         }
 
-        public static List<CarpetaClass> loadCarpetasFromMenu(long id) {
+        public static List<CarpetaClass> loadFoldersFromMenu(long id) {
             List<CarpetaClass> carpetas = new List<CarpetaClass>();
             MySqlConnection conexion = null;
             try {
@@ -390,7 +390,7 @@ namespace ProyectoWPF.Data {
             return null;
         }
 
-        public static List<CarpetaClass> loadSubCarpetasFromCarpeta(CarpetaClass c,long id) {
+        public static List<CarpetaClass> loadSubFoldersFromCarpeta(CarpetaClass c,long id) {
             List<CarpetaClass> carpetas = new List<CarpetaClass>();
             MySqlConnection conexion = null;
             try {
@@ -429,7 +429,7 @@ namespace ProyectoWPF.Data {
             return null;
         }
 
-        public static List<ArchivoClass> loadArchivos(long idCarpeta) {
+        public static List<ArchivoClass> loadFiles(long idCarpeta) {
             List<ArchivoClass> archivos = new List<ArchivoClass>();
             MySqlConnection conexion = null;
             try {
@@ -463,6 +463,67 @@ namespace ProyectoWPF.Data {
                 }
             }
             return null;
+        }
+
+        public static void deleteProfile(long id) {
+            MySqlConnection conexion = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                MySqlCommand comando = new MySqlCommand("DELETE FROM Perfil WHERE id=@id", conexion);
+                comando.Parameters.AddWithValue("@id", id);
+                comando.ExecuteNonQuery();
+
+
+            } catch (MySqlException e) {
+                Console.WriteLine("No se ha podido borrar el perfil");
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+        }
+
+        public static void deleteMenu(long id) {
+            MySqlConnection conexion = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                MySqlCommand comando = new MySqlCommand("DELETE FROM Menu WHERE id=@id", conexion);
+                comando.Parameters.AddWithValue("@id", id);
+                comando.ExecuteNonQuery();
+
+
+            } catch (MySqlException e) {
+                Console.WriteLine("No se ha podido borrar el menu");
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+        }
+
+        public static void deleteFolder(CarpetaClass c) {
+            MySqlConnection conexion = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                MySqlCommand comando = new MySqlCommand("CALL deleteFolder(@ruta, @idMenu)", conexion);
+                comando.Parameters.AddWithValue("@ruta", c.ruta);
+                comando.Parameters.AddWithValue("@idMenu", c.idMenu);
+                comando.ExecuteNonQuery();
+
+
+            } catch (MySqlException e) {
+                Console.WriteLine("No se ha podido borrar la carpeta");
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
         }
 
         public static UsuarioClass checkUser(string nombre, string pass) {

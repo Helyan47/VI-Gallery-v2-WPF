@@ -257,7 +257,7 @@ namespace ProyectoWPF {
         }
 
         private void addFileCarpeta(string fileName, Carpeta c) {
-            string ruta = "F" + c.getClass().ruta.Substring(1) + "\\" + System.IO.Path.GetFileName(fileName);
+            string ruta = "F" + c.getClass().ruta.Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
             ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
             Archivo a = new Archivo(ac);
 
@@ -274,7 +274,7 @@ namespace ProyectoWPF {
         }
 
         private void addFileSubCarpeta(string fileName, SubCarpeta c) {
-            string ruta = "F" + c.getClass().ruta.Substring(1) + "\\" + System.IO.Path.GetFileName(fileName);
+            string ruta = "F" + c.getClass().ruta.Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
             ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
             Archivo a = new Archivo(ac);
 
@@ -523,10 +523,7 @@ namespace ProyectoWPF {
         private void loadFiles(CarpetaClass c) {
             if (c.isFolder) {
                 Carpeta carpeta = Lista.getCarpetaById(c.id);
-                List<ArchivoClass> archivos = Conexion.loadArchivos(c.id);
-                if (carpeta.getClass().nombre.Contains("Bleach")) {
-                    Console.WriteLine("HI");
-                }
+                List<ArchivoClass> archivos = Conexion.loadFiles(c.id);
                 if (archivos != null) {
                     foreach(ArchivoClass ac in archivos) {
                         Archivo a = new Archivo(ac);
@@ -537,7 +534,7 @@ namespace ProyectoWPF {
                 }
             } else {
                 SubCarpeta subcarpeta = Lista.getSubCarpetaById(c.id);
-                List<ArchivoClass> archivos = Conexion.loadArchivos(c.id);
+                List<ArchivoClass> archivos = Conexion.loadFiles(c.id);
                 if (archivos != null) {
                     foreach (ArchivoClass ac in archivos) {
                         Archivo a = new Archivo(ac);
@@ -555,7 +552,7 @@ namespace ProyectoWPF {
             if (menus != null) {
                 foreach(MenuClass m in menus) {
                     addMenuFromClass(m);
-                    List<CarpetaClass> carpetas = Conexion.loadCarpetasFromMenu(m.id);
+                    List<CarpetaClass> carpetas = Conexion.loadFoldersFromMenu(m.id);
                     if (carpetas != null) {
                         foreach(CarpetaClass c in carpetas) {
                             addCarpetaFromLoad(c);
@@ -570,7 +567,7 @@ namespace ProyectoWPF {
         }
 
         public void loadSubCarpetas(CarpetaClass c, long idMenu) {
-            List<CarpetaClass> carpetas = Conexion.loadSubCarpetasFromCarpeta(c, idMenu);
+            List<CarpetaClass> carpetas = Conexion.loadSubFoldersFromCarpeta(c, idMenu);
             if (carpetas != null) {
                 foreach(CarpetaClass cc in carpetas) {
                     addSubCarpetaFromLoad(cc);
@@ -661,7 +658,7 @@ namespace ProyectoWPF {
                 _botonesMenu.Add(newButton);
                 MenuClass mc = new MenuClass(newButton.Content.ToString(), _profile.id);
                 if (conexionMode) {
-                    mc = Conexion.addMenu(mc);
+                    mc = Conexion.saveMenu(mc);
                     if (mc != null) {
                         Lista.addMenu(mc);
                         buttonStack.Children.Add(newButton);
