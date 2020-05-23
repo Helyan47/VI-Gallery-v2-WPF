@@ -30,15 +30,19 @@ namespace ProyectoWPF.NewFolders {
                 if (!Lista.checkProfile(newProfileText.Text)) {
                     
                     if (VIGallery.conexionMode) {
+                        
                         PerfilClassOnline pfOnline = new PerfilClassOnline(newProfileText.Text.ToString(), VIGallery.getUser().id);
                         pfOnline = Conexion.saveProfile(pfOnline);
+                        
                         if (pfOnline != null) {
                             addedProfile = true;
                             Lista.addProfile(pfOnline);
                         }
                     } else {
                         PerfilClass pf = new PerfilClass(newProfileText.Text.ToString());
+                        ConexionOffline.startConnection();
                         pf = ConexionOffline.addProfile(pf);
+                        ConexionOffline.closeConnection();
                         if (pf != null) {
                             addedProfile = true;
                             Lista.addProfile(pf);

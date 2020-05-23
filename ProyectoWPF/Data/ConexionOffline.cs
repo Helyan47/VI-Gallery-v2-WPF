@@ -10,6 +10,21 @@ using System.Threading.Tasks;
 
 namespace ProyectoWPF.Data {
     public class ConexionOffline {
+
+        private static IDbConnection cnn = null;
+        public static void startConnection() {
+            cnn = new SQLiteConnection(loadConnectionString());
+        }
+
+        public static void closeConnection() {
+            if (cnn != null) {
+                try {
+                    cnn.Close();
+                }catch(Exception e) {
+                    Console.WriteLine(e);
+                }
+            }
+        }
         public static List<PerfilClass> LoadProfiles() {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
                 var output = cnn.Query<PerfilClass>("select * from Perfil", new DynamicParameters());
@@ -90,68 +105,42 @@ namespace ProyectoWPF.Data {
             }
         }
 
-        public static List<ArchivoClass> LoadArchivo() {
+        public static List<ArchivoClass> loadFiles(CarpetaClass c) {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                var output = cnn.Query<ArchivoClass>("select * from Archivo", new DynamicParameters());
+                var parameter = new { idCarpeta = c.id };
+                var output = cnn.Query<ArchivoClass>("select * from Archivo where idCarpeta=@idCarpeta", parameter);
                 cnn.Close();
                 return output.ToList();
             }
         }
 
         public static MenuClass getMenu(MenuClass mc) {
-            /*
-            using (SQLiteConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                SQLiteCommand output = new SQLiteCommand("select id from Menu where nombre=@nombre and idPerfil=@perfil",cnn);
-                output.Parameters.AddWithValue("@idPerfil", mc.idPerfil);
-                SQLiteDataReader reader = output.ExecuteReader();
-                if (reader.HasRows) {
-                    while (reader.Read()) {
-                        mc.id = (long)reader["id"];
-                        break;
-                    }
-                }
-                
-                cnn.Close();
-                return mc;
-
-            }
-            */
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                var parameters = new { nombre = mc.nombre, idPerfil = mc.idPerfil};
-                var output = cnn.Query<MenuClass>("select * from Menu where nombre=@nombre and idPerfil=@idPerfil", parameters);
-                cnn.Close();
-                if (output.ToList().Count == 0) {
-                    return null;
-                } else {
-                    return output.ToList().First();
-                }
-
+            var parameters = new { nombre = mc.nombre, idPerfil = mc.idPerfil };
+            var output = cnn.Query<MenuClass>("select * from Menu where nombre=@nombre and idPerfil=@idPerfil", parameters);
+            if (output.ToList().Count == 0) {
+                return null;
+            } else {
+                return output.ToList().First();
             }
 
         }
 
         public static PerfilClass getPerfil(PerfilClass p) {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                var parameters = new { nombre = p.nombre};
-                var output = cnn.Query<PerfilClass>("select * from Perfil where nombre=@nombre", parameters);
-                cnn.Close();
-                if (output.ToList().Count != 0) {
-                    PerfilClass perfil = output.ToList().First<PerfilClass>();
-                    return perfil;
-                } else {
-                    return null;
-                }
+            var parameters = new { nombre = p.nombre };
+            var output = cnn.Query<PerfilClass>("select * from Perfil where nombre=@nombre", parameters);
+            if (output.ToList().Count != 0) {
+                PerfilClass perfil = output.ToList().First<PerfilClass>();
+                return perfil;
+            } else {
+                return null;
             }
         }
 
         public static PerfilClass addProfile(PerfilClass profile) {
             try {
-                using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                    cnn.Execute("insert into Perfil (nombre,numMenus,mode) values (@nombre,0,@mode)", profile);
-                    Console.WriteLine("Añadido Perfil");
-                    cnn.Close();
-                    return getPerfil(profile);
-                }
+                cnn.Execute("insert into Perfil (nombre,numMenus,mode) values (@nombre,0,@mode)", profile);
+                Console.WriteLine("Añadido Perfil");
+                return getPerfil(profile);
             } catch (Exception e) {
                 Console.WriteLine("Clave Duplicada Profile");
             }
@@ -159,14 +148,10 @@ namespace ProyectoWPF.Data {
         }
         public static MenuClass addMenu(MenuClass m) {
             try {
-                using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                    cnn.Execute("insert into Menu (nombre,numCarps,idPerfil) values (@nombre,@numCarps,@idPerfil)", m);
-                    cnn.Close();
-                    Console.WriteLine("Añadido Menu");
-                    return getMenu(m);
-                    
-                    
-                }
+                cnn.Execute("insert into Menu (nombre,numCarps,idPerfil) values (@nombre,@numCarps,@idPerfil)", m);
+                return getMenu(m);
+
+
             } catch (Exception e) {
                 Console.WriteLine("Clave Duplicada Menu");
             }
@@ -174,22 +159,26 @@ namespace ProyectoWPF.Data {
         }
         public static void addCarpeta(CarpetaClass carpeta) {
             try {
-                using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                    Int64 esCarpeta = 0;
-                    if (carpeta.isFolder) {
-                        esCarpeta = 0;
-                    } else {
-                        esCarpeta = 1;
-                    }
-                    var parameters = new { nombre = carpeta.nombre, ruta = carpeta.ruta, rutaPadre = carpeta.rutaPadre, numSubCarps = carpeta.numSubCarps, numArchivos = carpeta.numArchivos, desc = carpeta.desc,
-                        img = carpeta.img, generos = carpeta.getGeneros(), isFolder = esCarpeta, idMenu = carpeta.idMenu};
-                    Console.WriteLine("--------------- " + carpeta.generos.ToString());
-                    cnn.Execute("insert into Carpeta (nombre,ruta,rutaPadre,numSubCarps,numArchivos,desc,img,generos,isFolder,idMenu) values (@nombre,@ruta,@rutaPadre,@numSubCarps,@numArchivos,@desc,@img,@generos,@isFolder,@idMenu)", parameters);
-                    Console.WriteLine("Añadido Carpeta");
-                    
-                    cnn.Close();
-                    getCarpeta(carpeta);
+                Int64 esCarpeta = 0;
+                if (carpeta.isFolder) {
+                    esCarpeta = 0;
+                } else {
+                    esCarpeta = 1;
                 }
+                var parameters = new {
+                    nombre = carpeta.nombre,
+                    ruta = carpeta.ruta,
+                    rutaPadre = carpeta.rutaPadre,
+                    numSubCarps = carpeta.numSubCarps,
+                    numArchivos = carpeta.numArchivos,
+                    desc = carpeta.desc,
+                    img = carpeta.img,
+                    generos = carpeta.getGeneros(),
+                    isFolder = esCarpeta,
+                    idMenu = carpeta.idMenu
+                };
+                cnn.Execute("insert into Carpeta (nombre,ruta,rutaPadre,numSubCarps,numArchivos,desc,img,generos,isFolder,idMenu) values (@nombre,@ruta,@rutaPadre,@numSubCarps,@numArchivos,@desc,@img,@generos,@isFolder,@idMenu)", parameters);
+                getCarpeta(carpeta);
 
             } catch (Exception e) {
                 Console.WriteLine(e);
@@ -197,28 +186,23 @@ namespace ProyectoWPF.Data {
         }
 
         public static void getCarpeta(CarpetaClass c) {
-            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                var parameters = new { ruta = c.ruta , fkMenu= c.idMenu};
-                var output = cnn.Query<CarpetaClass>("select * from Carpeta where ruta=@ruta and idMenu=@fkMenu", parameters);
-                cnn.Close();
-                if (output.ToList().Count != 0) {
-                    CarpetaClass carpeta = output.ToList().First<CarpetaClass>();
-                    c.id = carpeta.id;
-                } else {
-                    c.id = 0;
-                }
+            var parameters = new { ruta = c.ruta, fkMenu = c.idMenu };
+            var output = cnn.Query<CarpetaClass>("select * from Carpeta where ruta=@ruta and idMenu=@fkMenu", parameters);
+            if (output.ToList().Count != 0) {
+                CarpetaClass carpeta = output.ToList().First<CarpetaClass>();
+                c.id = carpeta.id;
+            } else {
+                c.id = 0;
             }
         }
 
         public static void addArchivo(ArchivoClass archivo) {
             try {
-                using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                    cnn.Execute("insert into Archivo (nombre,rutaSistema,rutaPrograma,img,idCarpeta) values (@nombre,@rutaSistema,@rutaPrograma,@img,@idCarpeta)", archivo);
-                    Console.WriteLine("Añadido Archivo");
-                    cnn.Close();
-                }
+                cnn.Execute("insert into Archivo (nombre,rutaSistema,rutaPrograma,img,idCarpeta) values (@nombre,@rutaSistema,@rutaPrograma,@img,@idCarpeta)", archivo);
+                Console.WriteLine("Añadido Archivo");
             } catch (Exception e) {
                 Console.WriteLine("Clave Duplicada Archivo");
+
             }
         }
 
@@ -226,10 +210,11 @@ namespace ProyectoWPF.Data {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
-        public static void removeProfile(int id) {
+        public static void deleteProfile(long id) {
             try {
                 using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                    cnn.Execute("delete from Profile where id=" + id);
+                    var parameter = new { idProfile = id };
+                    cnn.Execute("Delete from Perfil where id=@idProfile",parameter);
                     Console.WriteLine("Borrado Perfil");
                     cnn.Close();
                 }

@@ -86,8 +86,15 @@ namespace ProyectoWPF {
                                 _rutas.Add(aux[j]);
                             }
                         }
+                        
                         if (_folders != null) {
+                            if (!conexionMode) {
+                                ConexionOffline.startConnection();
+                            }
                             addText(_folders);
+                            if (!conexionMode) {
+                                ConexionOffline.closeConnection();
+                            }
                         }
 
 
@@ -150,7 +157,9 @@ namespace ProyectoWPF {
                     if (conexionMode) {
                         Conexion.saveSubFolder(c);
                     } else {
+                        ConexionOffline.startConnection();
                         ConexionOffline.addCarpeta(c.getClass());
+                        ConexionOffline.closeConnection();
                     }
 
                     c.actualizar();
@@ -269,8 +278,8 @@ namespace ProyectoWPF {
                 ConexionOffline.addArchivo(ac);
             }
             
-            _aux.GetWrapCarpPrincipal().addFile(a);
-            _aux.addFile(ac);
+            c.GetWrapCarpPrincipal().addFile(a);
+            c.addFile(ac);
         }
 
         private void addFileSubCarpeta(string fileName, SubCarpeta c) {
@@ -287,8 +296,8 @@ namespace ProyectoWPF {
                 ConexionOffline.addArchivo(ac);
             }
 
-            _aux.GetWrapCarpPrincipal().addFile(a);
-            _aux.addFile(ac);
+            c.getWrapCarpPrincipal().addFile(a);
+            c.addFile(ac);
         }
 
 
@@ -343,7 +352,10 @@ namespace ProyectoWPF {
 
         private void Button_AddCarpeta(object sender, EventArgs e) {
             if (_activatedButton != null) {
+                ConexionOffline.startConnection();
                 addCarpeta();
+                ConexionOffline.closeConnection();
+                
             } else {
                 menuButtons.BorderThickness = new Thickness(5);
                 MessageBox.Show("No has creado ninguno menú");
@@ -512,6 +524,7 @@ namespace ProyectoWPF {
                 if (carpetas != null) {
                     foreach(CarpetaClass c in carpetas) {
                         addCarpetaFromLoad(c);
+                        loadFilesOffline(c);
                         loadSubCarpetasOffline(c);
                     }
                 }
@@ -547,6 +560,33 @@ namespace ProyectoWPF {
             
         }
 
+        private void loadFilesOffline(CarpetaClass c) {
+            if (!c.isFolder) {
+                Carpeta carpeta = Lista.getCarpetaById(c.id);
+                List<ArchivoClass> archivos = ConexionOffline.loadFiles(c);
+                if (archivos != null) {
+                    foreach (ArchivoClass ac in archivos) {
+                        Archivo a = new Archivo(ac);
+                        carpeta.GetWrapCarpPrincipal().addFile(a);
+                        carpeta.addFile(ac);
+                        a.setCarpetaPadre(carpeta);
+                    }
+                }
+            } else {
+                SubCarpeta subcarpeta = Lista.getSubCarpetaById(c.id);
+                List<ArchivoClass> archivos = ConexionOffline.loadFiles(c);
+                if (archivos != null) {
+                    foreach (ArchivoClass ac in archivos) {
+                        Archivo a = new Archivo(ac);
+                        subcarpeta.getWrapCarpPrincipal().addFile(a);
+                        subcarpeta.addFile(ac);
+                        a.setSubCarpetaPadre(subcarpeta);
+                    }
+                }
+            }
+
+        }
+
         public void loadDataConexion(long id) {
             List<MenuClass> menus = Conexion.loadMenus(_profile.id);
             if (menus != null) {
@@ -572,7 +612,6 @@ namespace ProyectoWPF {
                 foreach(CarpetaClass cc in carpetas) {
                     addSubCarpetaFromLoad(cc);
                     loadFiles(cc);
-                    Console.WriteLine(cc.ruta);
                     loadSubCarpetas(cc, idMenu);
                 }
             }
@@ -583,7 +622,7 @@ namespace ProyectoWPF {
             if (carpetas != null) {
                 foreach (CarpetaClass cc in carpetas) {
                     addSubCarpetaFromLoad(cc);
-                    
+                    loadFilesOffline(cc);
                     loadSubCarpetasOffline(cc);
                 }
             }
@@ -679,7 +718,9 @@ namespace ProyectoWPF {
                         MessageBox.Show("No se ha podido crear el Menu");
                     }
                 } else {
+                    ConexionOffline.startConnection();
                     mc = ConexionOffline.addMenu(mc);
+                    ConexionOffline.closeConnection();
                     if (mc != null) {
                         Lista.addMenu(mc);
                         buttonStack.Children.Add(newButton);

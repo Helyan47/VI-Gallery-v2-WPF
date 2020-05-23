@@ -210,6 +210,12 @@ namespace SeleccionarProfile {
                     }
                     
                 } else {
+                    ConexionOffline.deleteProfile(_selectedProfile.id);
+                    Button b = Lista.getProfileButton(_selectedProfile.nombre);
+                    Lista.removeProfile(_selectedProfile.nombre);
+                    if (b != null) {
+                        perfiles.Children.Remove(b);
+                    }
                 }
                 
             }
