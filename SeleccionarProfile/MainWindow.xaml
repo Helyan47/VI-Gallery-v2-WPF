@@ -32,7 +32,11 @@
                 <RowDefinition Height="10px"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="10px"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10px"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="10px"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="10px"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -40,12 +44,17 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="10px"/>
             </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Row="3" Grid.Column="1">
+                <Button Content="-" Style="{StaticResource CustomButtonStyle}" Padding="0" Width="50" FontWeight="Bold" Foreground="#FFCDCDCD" FontSize="25px" Click="removeProfile"/>
+                <Button Content="+" Style="{StaticResource CustomButtonStyle}" Padding="0" Width="50" FontWeight="Bold" Foreground="White" FontSize="25px" Click="addProfile"/>
+            </StackPanel>
             <Label Content="Elige un Perfil" HorizontalAlignment="Stretch" Grid.Row="1" FontWeight="Bold" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50"/>
-            <Border BorderThickness="2" BorderBrush="LightGray" Grid.Row="3" Grid.Column="1" VerticalAlignment="Stretch">
+            <Border BorderThickness="2" BorderBrush="LightGray" Grid.Row="5" Grid.Column="1" VerticalAlignment="Stretch">
                 <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Hidden">
                     <StackPanel x:Name="perfiles" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></StackPanel>
                 </ScrollViewer>
             </Border>
+            <Button Grid.Row="7" Grid.Column="1" Content="Aceptar" Width="Auto" HorizontalAlignment="Right" Padding="10,3,10,3" FontWeight="Normal" Click="onClick" IsDefault="True"/>
 
         </Grid>
     </Grid>

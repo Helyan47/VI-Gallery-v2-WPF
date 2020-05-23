@@ -103,7 +103,7 @@ namespace ProyectoWPF {
             return WrapSubCarpetas;
         }
 
-        public void changeTitle(String nombre) {
+        public void changeTitle(string nombre) {
             Title.Content = nombre;
         }
 

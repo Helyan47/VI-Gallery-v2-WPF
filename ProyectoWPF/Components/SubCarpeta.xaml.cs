@@ -1,5 +1,6 @@
 ﻿using ProyectoWPF.Data;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,12 +26,14 @@ namespace ProyectoWPF {
         private string _rutaDirectorio;
         private string _rutaPrograma;
         private Canvas _defaultCanvas;
+        public List<ArchivoClass> _archivos;
         private static long _mode = 0;
         public PerfilClass _profile { get; set; }
         public SubCarpeta() {
             InitializeComponent();
             _carpeta = new CarpetaClass("", "", false);
             _numSubCarpetas = 0;
+            _archivos = new List<ArchivoClass>();
             _defaultCanvas = canvasFolder;
             _profile = VIGallery._profile;
             changeMode(_profile.mode);
@@ -129,6 +132,10 @@ namespace ProyectoWPF {
 
         }
 
+        public void addFile(ArchivoClass ac) {
+            _archivos.Add(ac);
+        }
+
         public void setDatos(CarpetaClass carpeta,WrapPanelPrincipal flowPadre, Grid gridP) {
             _wrapCarpPropia = new WrapPanelPrincipal();
             _wrapCarpAnterior = flowPadre;
@@ -146,7 +153,7 @@ namespace ProyectoWPF {
         public void click() {
 
             _menuCarpeta.actualizar();
-            _menuCarpeta.changeTitle(_nombre);
+            _menuCarpeta.changeTitle(_carpeta.nombre);
             _wrapCarpAnterior.Visibility = System.Windows.Visibility.Hidden;
             _wrapCarpPropia.Visibility = System.Windows.Visibility.Visible;
         }
@@ -154,7 +161,7 @@ namespace ProyectoWPF {
         public void clickEspecial() {
 
             _menuCarpeta.actualizar();
-            _menuCarpeta.changeTitle(_nombre);
+            _menuCarpeta.changeTitle(_carpeta.nombre);
 
         }
 

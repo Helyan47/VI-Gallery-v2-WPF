@@ -149,7 +149,7 @@ namespace ProyectoWPF.Data {
                     comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
                     comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
                     reader = comando.ExecuteReader();
-                    if (!reader.HasRows) {
+                    if (reader.HasRows) {
                         reader.Read();
                         Int32 id = (Int32)reader["id"];
                         p.getClass().id = id;
@@ -215,7 +215,7 @@ namespace ProyectoWPF.Data {
                         comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
                         comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
                         reader = comando.ExecuteReader();
-                        if (!reader.HasRows) {
+                        if (reader.HasRows) {
                             reader.Read();
                             Int32 id = (Int32)reader["id"];
                             p.getClass().id = id;
@@ -225,9 +225,7 @@ namespace ProyectoWPF.Data {
                     }
                 }
             } catch (MySqlException e) {
-                if (myTrans != null) {
-                    myTrans.Rollback();
-                }
+                
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -252,18 +250,18 @@ namespace ProyectoWPF.Data {
                     comando.Parameters.Clear();
                     reader.Close();
 
-                    comando = new MySqlCommand("INSERT INTO Archivo VALUES (null, @nombre, @ruta, @tiempo, @img, @idCarpeta)", conexion);
+                    comando = new MySqlCommand("INSERT INTO Archivo VALUES (null, @nombre, @ruta, @rutaPrograma, @img, @idCarpeta)", conexion);
                     comando.Transaction = myTrans;
                     comando.Parameters.AddWithValue("@nombre", ac.nombre);
-                    comando.Parameters.AddWithValue("@ruta", ac.rutaPrograma);
-                    comando.Parameters.AddWithValue("@tiempo", ac.tiempoActual.ToString());
+                    comando.Parameters.AddWithValue("@ruta", ac.rutaSistema);
+                    comando.Parameters.AddWithValue("@rutaPrograma", ac.rutaPrograma);
                     comando.Parameters.AddWithValue("@img", ac.img);
                     comando.Parameters.AddWithValue("@idCarpeta", ac.idCarpeta);
                     comando.ExecuteNonQuery();
                     myTrans.Commit();
 
                     comando.Parameters.Clear();
-                    comando = new MySqlCommand("SELECT id FROM Archivo where ruta=@ruta and fk_Carpeta=@idCarpeta", conexion);
+                    comando = new MySqlCommand("SELECT id FROM Archivo where rutaPrograma=@ruta and fk_Carpeta=@idCarpeta", conexion);
                     comando.Parameters.AddWithValue("@ruta", ac.rutaPrograma);
                     comando.Parameters.AddWithValue("@idCarpeta", ac.idCarpeta);
                     reader = comando.ExecuteReader();
@@ -276,9 +274,6 @@ namespace ProyectoWPF.Data {
                     }
                 }
             } catch (MySqlException e) {
-                if (myTrans != null) {
-                    myTrans.Rollback();
-                }
                 Console.WriteLine("Carpeta  \n" + e);
             } finally {
                 if (conexion != null) {
@@ -422,6 +417,42 @@ namespace ProyectoWPF.Data {
                     reader.Close();
                     conexion.Close();
                     return carpetas;
+                }
+
+            } catch (MySqlException e) {
+                Console.WriteLine("Boton  \n" + e);
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+            return null;
+        }
+
+        public static List<ArchivoClass> loadArchivos(long idCarpeta) {
+            List<ArchivoClass> archivos = new List<ArchivoClass>();
+            MySqlConnection conexion = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                MySqlTransaction myTrans = conexion.BeginTransaction();
+
+                MySqlCommand comando = new MySqlCommand("SELECT a.id as id,a.nombre as nombre,a.rutaSistema as rutaSistema,a.rutaPrograma as rutaPrograma, a.img as img " +
+                    "FROM Archivo a, Carpeta c WHERE c.id=a.fk_Carpeta and c.id=@fkCarpeta", conexion);
+                comando.Parameters.AddWithValue("@fkCarpeta", idCarpeta);
+                MySqlDataReader reader = comando.ExecuteReader();
+
+                if (reader.HasRows) {
+                    while (reader.Read()) {
+                        Int32 idArchivo = (Int32)reader["id"];
+                        ICollection<string> generos = new List<string>();
+                        ArchivoClass archivo = new ArchivoClass((long)idArchivo, reader["nombre"].ToString(), reader["rutaSistema"].ToString(), reader["rutaPrograma"].ToString(), reader["img"].ToString(), idCarpeta);
+                        archivos.Add(archivo);
+                    }
+                    reader.Close();
+                    conexion.Close();
+                    return archivos;
                 }
 
             } catch (MySqlException e) {

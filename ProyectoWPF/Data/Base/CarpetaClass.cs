@@ -14,8 +14,9 @@ namespace ProyectoWPF {
         public string ruta { get; set; }
         public string rutaPadre { get; set; }
         public string desc { get; set; }
-        public ICollection<string> generos { get; set; }
+        
         public string img { get; set; }
+        public ICollection<string> generos { get; set; }
         public bool isFolder { get; set; }
         public long idMenu { get; set; }
 
@@ -56,7 +57,12 @@ namespace ProyectoWPF {
             this.nombre = title;
             this.desc = desc;
             this.img = dirImg;
-            this.generos = generos;
+            if (generos == null) {
+                this.generos = new List<string>();
+            } else {
+                this.generos = generos;
+            }
+            
             this.numSubCarps = 0;
             this.numArchivos = 0;
             this.isFolder = esCarpeta;
@@ -106,6 +112,18 @@ namespace ProyectoWPF {
 
         public void decraseArchivos() {
             this.numArchivos--;
+        }
+
+        public string getGeneros() {
+            string cadena = "";
+            int cont = 0;
+            foreach(string s in generos) {
+                cadena += s;
+                if (cont <= generos.Count-1) {
+                    cadena += " | ";
+                }
+            }
+            return cadena;
         }
 
     }

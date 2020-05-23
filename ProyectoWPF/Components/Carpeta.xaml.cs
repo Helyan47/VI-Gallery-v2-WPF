@@ -1,5 +1,6 @@
 ﻿using ProyectoWPF.Data;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,13 +30,14 @@ namespace ProyectoWPF {
         private string _rutaDirectorio;
         private VIGallery _ventanaMain;
         private Canvas _defaultCanvas;
+        public List<ArchivoClass> _archivos { get; set; }
         private static long _mode = 0;
         public PerfilClass _profile { get; set; }
 
         public Carpeta(VIGallery ventana) {
             InitializeComponent();
             Title.SetText("");
-            
+            _archivos = new List<ArchivoClass>();
             _ventanaMain = ventana;
             _defaultCanvas = canvasFolder;
             _profile = VIGallery._profile;
@@ -190,6 +192,10 @@ namespace ProyectoWPF {
 
         public Menu GetMenuCarpeta() {
             return _menuCarpeta;
+        }
+
+        public void addFile(ArchivoClass ac) {
+            _archivos.Add(ac);
         }
 
 #endregion

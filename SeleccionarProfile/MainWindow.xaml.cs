@@ -1,5 +1,6 @@
 ﻿using ProyectoWPF;
 using ProyectoWPF.Data;
+using ProyectoWPF.NewFolders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,14 +25,16 @@ namespace SeleccionarProfile {
         public static string loadNewProfile = "";
         public static bool conn;
         public List<PerfilClass> profiles = null;
-        public static UsuarioClass usuario = null;
+        private PerfilClass _selectedProfile = null;
         public MainWindow(bool connection,UsuarioClass user) {
             InitializeComponent();
             conn = connection;
+            VIGallery.conexionMode = connection;
+            
             if (connection) {
-                usuario = user;
+                VIGallery._user = user;
             } else {
-                usuario = null;
+                VIGallery._user = null;
             }
             if (conn) {
                 profiles = Conexion.loadPerfiles(user.id);
@@ -73,15 +76,29 @@ namespace SeleccionarProfile {
             b.FontSize = 40;
             b.Padding = new Thickness(0);
             b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-            //b.Style = this.FindResource("CustomButtonStyle") as Style;
             b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
-            b.Click += onClick;
-            perfiles.Children.Add(b);
-            Rectangle rect = new Rectangle();
-            rect.HorizontalAlignment = HorizontalAlignment.Stretch;
-            rect.Height = 2;
-            rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
-            perfiles.Children.Add(rect);
+            b.Click += selectProfile;
+            bool added = Lista.addButtonProfile(b);
+            if (added) {
+                perfiles.Children.Add(b);
+                Rectangle rect = new Rectangle();
+                rect.HorizontalAlignment = HorizontalAlignment.Stretch;
+                rect.Height = 2;
+                rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
+                perfiles.Children.Add(rect);
+            } else {
+                b = null;
+            }
+            selectProfile(b);
+            /*
+            if (_selectedProfile != null) {
+                if (b.Content.ToString().CompareTo(_profile.nombre) == 0) {
+                    
+                }
+            } else {
+                selectProfile(b);
+            }*/
+            
         }
 
         public void MinimizeApp(object sender, RoutedEventArgs e) {
@@ -90,6 +107,24 @@ namespace SeleccionarProfile {
 
         public void CerrarApp(object sender, RoutedEventArgs e) {
             this.Close();
+        }
+
+        private void selectProfile(object sender, RoutedEventArgs e) {
+            Button aux = (Button)sender;
+            PerfilClass perfilSelected = Lista.getProfile(aux.Content.ToString());
+            if (perfilSelected != null) {
+                _selectedProfile = perfilSelected;
+                Lista.clearBackProfile();
+                aux.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
+            }
+        }
+
+        private void selectProfile(Button b) {
+            PerfilClass perfilSelected = Lista.getProfile(b.Content.ToString());
+            if (perfilSelected != null) {
+                Lista.clearBackProfile();
+                b.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
+            }
         }
 
         public void MaximizeApp(object sender, RoutedEventArgs e) {
@@ -113,25 +148,23 @@ namespace SeleccionarProfile {
         }
 
         private void onClick(object sender, RoutedEventArgs e) {
-            Button aux = (Button)sender;
-            PerfilClass p = getProfile(aux.Content.ToString());
-            if (p != null) {
+            if (_selectedProfile != null) {
                 if (conn) {
-                    VIGallery vi = new VIGallery(p, usuario, conn);
+                    VIGallery vi = new VIGallery(_selectedProfile);
                     
-                    vi.loadDataConexion(p.id);
+                    vi.loadDataConexion(_selectedProfile.id);
                     this.Hide();
                     vi.Show();
                     this.Close();
                 } else {
-                    VIGallery vi = new VIGallery(p, usuario, conn);
-                    vi.LoadProfileOffline(p);
+                    VIGallery vi = new VIGallery(_selectedProfile);
+                    vi.LoadProfileOffline(_selectedProfile);
                     this.Hide();
                     vi.Show();
                     this.Close();
                 }
             } else {
-                MessageBox.Show("No se ha podido seleccionar el perfil");
+                MessageBox.Show("No has seleccionado un perfil");
             }
         }
 
@@ -142,6 +175,41 @@ namespace SeleccionarProfile {
                 }
             }
             return null;
+        }
+
+        private void addProfile(object sender, RoutedEventArgs e) {
+            NewProfile newProf = new NewProfile();
+            newProf.ShowDialog();
+            if (newProf.isAdded()) {
+                Button b = new Button();
+                b.Content = newProf.getName();
+                b.HorizontalAlignment = HorizontalAlignment.Stretch;
+                b.VerticalAlignment = VerticalAlignment.Stretch;
+                b.VerticalContentAlignment = VerticalAlignment.Center;
+                b.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                b.FontSize = 40;
+                b.Padding = new Thickness(0);
+                b.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                b.Style = Application.Current.Resources["CustomButtonStyle"] as Style;
+                b.Click += selectProfile;
+                Lista.addButtonProfile(b);
+                perfiles.Children.Add(b);
+                Rectangle rect = new Rectangle();
+                rect.HorizontalAlignment = HorizontalAlignment.Stretch;
+                rect.Height = 2;
+                rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
+                perfiles.Children.Add(rect);
+
+                MessageBox.Show("El perfil ha sido creado. Cambia al perfil desde el panel de opciones pulsando \"Cambiar Perfil\"");
+
+            } else {
+                MessageBox.Show("No se ha podido crear el perfil");
+            }
+
+        }
+
+        private void removeProfile(object sender, RoutedEventArgs e) {
+
         }
     }
 }

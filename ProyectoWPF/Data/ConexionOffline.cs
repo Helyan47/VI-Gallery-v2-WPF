@@ -37,7 +37,7 @@ namespace ProyectoWPF.Data {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
                 CarpetaClass c = new CarpetaClass(m.id);
                 var parameters = new { idMenu = m.id };
-                var output = cnn.Query<CarpetaClass>("select * from Carpeta where idMenu=@idMenu and isFolder=1", parameters);
+                var output = cnn.Query<CarpetaClass>("select * from Carpeta where idMenu=@idMenu and isFolder=0", parameters);
                 cnn.Close();
                 if (output.ToList().Count == 0) {
                     return null;
@@ -79,7 +79,7 @@ namespace ProyectoWPF.Data {
             
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
                 var parameters = new { idMenu = c.idMenu, rutaPadre = c.ruta };
-                var output = cnn.Query<CarpetaClass>("select * from Carpeta where idMenu=@idMenu and rutaPadre=@rutaPadre and isFolder=0", parameters);
+                var output = cnn.Query<CarpetaClass>("select * from Carpeta where idMenu=@idMenu and rutaPadre=@rutaPadre and isFolder=1", parameters);
                 cnn.Close();
                 if (output.ToList().Count == 0) {
                     return null;
@@ -182,20 +182,38 @@ namespace ProyectoWPF.Data {
                         esCarpeta = 1;
                     }
                     var parameters = new { nombre = carpeta.nombre, ruta = carpeta.ruta, rutaPadre = carpeta.rutaPadre, numSubCarps = carpeta.numSubCarps, numArchivos = carpeta.numArchivos, desc = carpeta.desc,
-                        img = carpeta.img, generos = carpeta.generos.ToString(), isFolder = esCarpeta, idMenu = carpeta.idMenu};
-                    cnn.Execute("insert into Carpeta (nombre,ruta,rutaPadre,numSubCarps,numArchivos,desc,img,generos,isFolder,idMenu) values (@nombre,@ruta,@rutaPadre,@numSubCarps,@numArchivos,@desc,@img,@generos,@isFolder,@idMenu)", carpeta);
+                        img = carpeta.img, generos = carpeta.getGeneros(), isFolder = esCarpeta, idMenu = carpeta.idMenu};
+                    Console.WriteLine("--------------- " + carpeta.generos.ToString());
+                    cnn.Execute("insert into Carpeta (nombre,ruta,rutaPadre,numSubCarps,numArchivos,desc,img,generos,isFolder,idMenu) values (@nombre,@ruta,@rutaPadre,@numSubCarps,@numArchivos,@desc,@img,@generos,@isFolder,@idMenu)", parameters);
                     Console.WriteLine("Añadido Carpeta");
+                    
                     cnn.Close();
+                    getCarpeta(carpeta);
                 }
 
             } catch (Exception e) {
-                Console.WriteLine("Clave Duplicada Carpeta");
+                Console.WriteLine(e);
             }
         }
+
+        public static void getCarpeta(CarpetaClass c) {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
+                var parameters = new { ruta = c.ruta , fkMenu= c.idMenu};
+                var output = cnn.Query<CarpetaClass>("select * from Carpeta where ruta=@ruta and idMenu=@fkMenu", parameters);
+                cnn.Close();
+                if (output.ToList().Count != 0) {
+                    CarpetaClass carpeta = output.ToList().First<CarpetaClass>();
+                    c.id = carpeta.id;
+                } else {
+                    c.id = 0;
+                }
+            }
+        }
+
         public static void addArchivo(ArchivoClass archivo) {
             try {
                 using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                    cnn.Execute("insert into User (nombre,rutaPrograma,tiempoActual,img,idCarpeta) values (@nombre,@rutaPrograma,@tiempoActual,@img,@idCarpeta)", archivo);
+                    cnn.Execute("insert into Archivo (nombre,rutaSistema,rutaPrograma,img,idCarpeta) values (@nombre,@rutaSistema,@rutaPrograma,@img,@idCarpeta)", archivo);
                     Console.WriteLine("Añadido Archivo");
                     cnn.Close();
                 }
@@ -218,6 +236,14 @@ namespace ProyectoWPF.Data {
             } catch (Exception e) {
                 Console.WriteLine(e);
 
+            }
+        }
+
+        public static void updateMode(long modeFolder, PerfilClass profile) {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
+                var parameters = new { mode = modeFolder, idPerfil = profile.id };
+                var output = cnn.Query<CarpetaClass>("UPDATE perfil set mode=@mode where id=@idPerfil", parameters);
+                cnn.Close();
             }
         }
     }

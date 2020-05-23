@@ -20,6 +20,7 @@ namespace ProyectoWPF {
         private static ICollection<SubCarpeta> _subCarpetas = new List<SubCarpeta>();
         private static List<PerfilClass> _perfiles = new List<PerfilClass>();
         private static List<Button> _bPerfiles = new List<Button>();
+        public static string[] _extensiones = { ".mp4", ".avi", ".mkv", ".mpeg", ".wmv", ".flv", ".mov", ".wav" };
 
         /*
         public static Lista(ICollection<WrapPanelPrincipal> wraps,ICollection<Button> buttons) {
@@ -443,6 +444,24 @@ namespace ProyectoWPF {
             foreach(Button b in _bPerfiles) {
                 b.ClearValue(Button.BackgroundProperty);
             }
+        }
+
+        public static Carpeta getCarpetaById(long id) {
+            foreach(Carpeta c in _carpetas) {
+                if(c.getClass().id == id) {
+                    return c;
+                }
+            }
+            return null;
+        }
+
+        public static SubCarpeta getSubCarpetaById(long id) {
+            foreach (SubCarpeta c in _subCarpetas) {
+                if (c.getClass().id == id) {
+                    return c;
+                }
+            }
+            return null;
         }
     }
 }

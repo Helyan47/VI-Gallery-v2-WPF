@@ -32,20 +32,16 @@ namespace ProyectoWPF {
         public static PerfilClass _profile = null;
         private static PerfilClass _newSelectedProfile = null;
         public static bool changedProfile = false;
-        private static UsuarioClass _user;
-        public VIGallery(PerfilClass profile,UsuarioClass user, bool conexion) {
+        public static UsuarioClass _user { get; set; }
+        public VIGallery(PerfilClass profile) {
             InitializeComponent();
-            conexionMode = conexion;
             _profile = profile;
-            _user = user;
             Lista.clearListas();
             _botones = buttonStack.Children;
             _newSelectedProfile = _profile;
             _botonesMenu = new List<Button>();
             changedProfile = false;
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
-            
-            
         }
 
 
@@ -261,10 +257,12 @@ namespace ProyectoWPF {
         }
 
         private void addFileCarpeta(string fileName, Carpeta c) {
-            string ruta = "F" + c.getClass().ruta.Substring(1);
-            ArchivoClass ac = new ArchivoClass(fileName, ruta, "00:00", c.getClass().img, c.getClass().id);
+            string ruta = "F" + c.getClass().ruta.Substring(1) + "\\" + System.IO.Path.GetFileName(fileName);
+            ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
             Archivo a = new Archivo(ac);
-            
+
+            a.setCarpetaPadre(c);
+
             if (conexionMode) {
                 Conexion.saveFile(ac);
             } else {
@@ -272,12 +270,15 @@ namespace ProyectoWPF {
             }
             
             _aux.GetWrapCarpPrincipal().addFile(a);
+            _aux.addFile(ac);
         }
 
         private void addFileSubCarpeta(string fileName, SubCarpeta c) {
-            string ruta = "F" + c.getClass().ruta.Substring(1);
-            ArchivoClass ac = new ArchivoClass(fileName, ruta, "00:00", c.getClass().img, c.getClass().id);
+            string ruta = "F" + c.getClass().ruta.Substring(1) + "\\" + System.IO.Path.GetFileName(fileName);
+            ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
             Archivo a = new Archivo(ac);
+
+            a.setSubCarpetaPadre(c);
 
 
             if (conexionMode) {
@@ -287,6 +288,7 @@ namespace ProyectoWPF {
             }
 
             _aux.GetWrapCarpPrincipal().addFile(a);
+            _aux.addFile(ac);
         }
 
 
@@ -304,7 +306,11 @@ namespace ProyectoWPF {
                         _aux.clickEspecial();
                         string[] archivos = Directory.GetFiles(files[i]);
                         for (int j = 0; j < archivos.Length; j++) {
-                            addFileCarpeta(archivos[i],_aux);
+                            foreach (string s in Lista._extensiones) {
+                                if (s.CompareTo(System.IO.Path.GetExtension(archivos[j])) == 0) {
+                                    addFileCarpeta(archivos[j], _aux);
+                                }
+                            }
                         }
                     }
                     
@@ -320,7 +326,12 @@ namespace ProyectoWPF {
                     }
                     string[] archivos = Directory.GetFiles(files[i]);
                     for(int j = 0; j < archivos.Length; j++) {
-                        addFileSubCarpeta(archivos[i], _aux2);
+                        foreach (string s in Lista._extensiones) {
+                            if (s.ToLower().CompareTo(System.IO.Path.GetExtension(archivos[j]).ToLower()) == 0) {
+                                addFileSubCarpeta(archivos[j], _aux2);
+                                Console.WriteLine("Added: " + archivos[j]);
+                            }
+                        }
                     }
                 }
                 if (Directory.GetDirectories(files[i]) != null) {
@@ -509,6 +520,36 @@ namespace ProyectoWPF {
 
         }
 
+        private void loadFiles(CarpetaClass c) {
+            if (c.isFolder) {
+                Carpeta carpeta = Lista.getCarpetaById(c.id);
+                List<ArchivoClass> archivos = Conexion.loadArchivos(c.id);
+                if (carpeta.getClass().nombre.Contains("Bleach")) {
+                    Console.WriteLine("HI");
+                }
+                if (archivos != null) {
+                    foreach(ArchivoClass ac in archivos) {
+                        Archivo a = new Archivo(ac);
+                        carpeta.GetWrapCarpPrincipal().addFile(a);
+                        carpeta.addFile(ac);
+                        a.setCarpetaPadre(carpeta);
+                    }
+                }
+            } else {
+                SubCarpeta subcarpeta = Lista.getSubCarpetaById(c.id);
+                List<ArchivoClass> archivos = Conexion.loadArchivos(c.id);
+                if (archivos != null) {
+                    foreach (ArchivoClass ac in archivos) {
+                        Archivo a = new Archivo(ac);
+                        subcarpeta.getWrapCarpPrincipal().addFile(a);
+                        subcarpeta.addFile(ac);
+                        a.setSubCarpetaPadre(subcarpeta);
+                    }
+                }
+            }
+            
+        }
+
         public void loadDataConexion(long id) {
             List<MenuClass> menus = Conexion.loadMenus(_profile.id);
             if (menus != null) {
@@ -518,6 +559,7 @@ namespace ProyectoWPF {
                     if (carpetas != null) {
                         foreach(CarpetaClass c in carpetas) {
                             addCarpetaFromLoad(c);
+                            loadFiles(c);
                             //Console.WriteLine(c.rutaPrograma);
                             loadSubCarpetas(c, m.id);
                         }
@@ -532,6 +574,7 @@ namespace ProyectoWPF {
             if (carpetas != null) {
                 foreach(CarpetaClass cc in carpetas) {
                     addSubCarpetaFromLoad(cc);
+                    loadFiles(cc);
                     Console.WriteLine(cc.ruta);
                     loadSubCarpetas(cc, idMenu);
                 }
@@ -543,6 +586,7 @@ namespace ProyectoWPF {
             if (carpetas != null) {
                 foreach (CarpetaClass cc in carpetas) {
                     addSubCarpetaFromLoad(cc);
+                    
                     loadSubCarpetasOffline(cc);
                 }
             }
@@ -707,7 +751,12 @@ namespace ProyectoWPF {
 
         public static void updateMode(long mode) {
             _profile.mode = mode;
-            Conexion.updateMode(mode,_profile);
+            if (conexionMode) {
+                Conexion.updateMode(mode, _profile);
+            } else {
+                ConexionOffline.updateMode(mode, _profile);
+            }
+            
         }
 
         private void showOptions(object sender, RoutedEventArgs e) {
@@ -794,8 +843,13 @@ namespace ProyectoWPF {
             if (_profile.nombre.CompareTo(_newSelectedProfile.nombre) != 0) {
                 _profile = _newSelectedProfile;
                 changedProfile = true;
-                VIGallery vi = new VIGallery(_profile, _user, conexionMode);
-                vi.LoadProfileOffline(_profile);
+                VIGallery vi = new VIGallery(_profile);
+                if (conexionMode) {
+                    vi.loadDataConexion(_profile.id);
+                } else {
+                    vi.LoadProfileOffline(_profile);
+                }
+                
                 vi.Show();
                 this.Close();
             } else {
