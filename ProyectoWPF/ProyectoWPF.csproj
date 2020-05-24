@@ -289,6 +289,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Reproductor\Reproductor.csproj">
+      <Project>{5532c692-67db-40f2-b3ff-a1f920feb517}</Project>
+      <Name>Reproductor</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProyectoWPF"
+        xmlns:reproductor="clr-namespace:Reproductor;assembly=Reproductor"
         mc:Ignorable="d"
         Title="VI-Gallery" Width="1920" Height="1080" MinWidth="700" MinHeight="700" WindowStartupLocation="CenterScreen" Background="{x:Null}" WindowState="Maximized" WindowStyle="None">
     <Window.Resources>
@@ -448,6 +449,6 @@
                 </Grid>
             </Grid>
         </DockPanel>
-
+        <reproductor:VI_Reproductor Visibility="Hidden"/>
     </Grid>
 </Window>
