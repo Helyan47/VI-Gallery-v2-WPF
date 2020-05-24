@@ -42,7 +42,7 @@ namespace Reproductor {
                 parentUser.getButtonSpace().Height = new GridLength(120);
                 parentUser.getGridControles().SetValue(Grid.RowProperty, 1);
                 isFullscreen = false;
-
+                parentUser.getRowClose().Height = new GridLength(30,GridUnitType.Pixel);
                 /*Color aux = Color.FromArgb(255, 23, 23, 23);
                 parentUser.getMidColorStop().Color = aux;
                 aux = Color.FromArgb(255, 23, 23, 23);
@@ -51,6 +51,7 @@ namespace Reproductor {
                 parentUser.getButtonSpace().Height = new GridLength(0);
                 parentUser.getGridControles().SetValue(Grid.RowProperty, 0);
                 isFullscreen = true;
+                parentUser.getRowClose().Height = new GridLength(0, GridUnitType.Pixel);
                 /*Color aux = Color.FromArgb(74, 23, 23, 23);
                 parentUser.getMidColorStop().Color = aux;
                 aux = Color.FromArgb(0, 23, 23, 23);

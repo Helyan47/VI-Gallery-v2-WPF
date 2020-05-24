@@ -1,4 +1,5 @@
-﻿using ProyectoWPF.Data;
+﻿using ProyectoWPF.Components;
+using ProyectoWPF.Data;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -30,14 +31,14 @@ namespace ProyectoWPF {
         private string _rutaDirectorio;
         private VIGallery _ventanaMain;
         private Canvas _defaultCanvas;
-        public List<ArchivoClass> _archivos { get; set; }
+        public List<Archivo> _archivos { get; set; }
         private static long _mode = 0;
         public PerfilClass _profile { get; set; }
 
         public Carpeta(VIGallery ventana) {
             InitializeComponent();
             Title.SetText("");
-            _archivos = new List<ArchivoClass>();
+            _archivos = new List<Archivo>();
             _ventanaMain = ventana;
             _defaultCanvas = canvasFolder;
             _profile = VIGallery._profile;
@@ -194,7 +195,7 @@ namespace ProyectoWPF {
             return _menuCarpeta;
         }
 
-        public void addFile(ArchivoClass ac) {
+        public void addFile(Archivo ac) {
             _archivos.Add(ac);
         }
 
@@ -342,6 +343,19 @@ namespace ProyectoWPF {
                 ImgBorde.CornerRadius = new CornerRadius(10);
                 backgroundGrid.Background = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#00000000"));
             }
+        }
+
+        public void remove() {
+            _archivos = null;
+            _wrapPanelAnterior.removeFolder(this);
+            Lista.removeSubFolders(this);
+            _wrapCarpetaPropia.removeChildrens();
+            Lista.removeWrapPanelSecundario(_wrapCarpetaPropia);
+            _wrapCarpetaPropia = null;
+            
+            _menuCarpeta.remove();
+            _menuCarpeta = null;
+            Lista.removeCarpetaClass(_carpeta.id);
         }
     }
 }

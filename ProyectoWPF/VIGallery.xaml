@@ -128,7 +128,7 @@
         </Style>
 
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="firstPanel">
 
         <DockPanel Background="#FF121212">
             <Grid Height="28" DockPanel.Dock="Top" VerticalAlignment="Top" Background="#FF121212">
@@ -175,7 +175,7 @@
                             <Grid>
                                 <StackPanel x:Name="addButtonStack" Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Button Content="+" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="20" BorderThickness="0" Width="50" Click="addMenuClick" FontWeight="Bold"/>
-                                    <Button Content="-" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="30" BorderThickness="0" Width="50" Click="removeButtonClick" VerticalContentAlignment="Center"/>
+                                    <Button Content="-" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="30" BorderThickness="0" Width="50" Click="removeMenu" VerticalContentAlignment="Center"/>
 
                                 </StackPanel>
                             </Grid>
@@ -449,6 +449,6 @@
                 </Grid>
             </Grid>
         </DockPanel>
-        <reproductor:VI_Reproductor Visibility="Hidden"/>
+        <!--<reproductor:VI_Reproductor Visibility="Hidden"/>-->
     </Grid>
 </Window>

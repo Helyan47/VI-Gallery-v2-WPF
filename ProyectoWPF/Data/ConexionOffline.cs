@@ -214,8 +214,22 @@ namespace ProyectoWPF.Data {
             try {
                 using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
                     var parameter = new { idProfile = id };
-                    cnn.Execute("Delete from Perfil where id=@idProfile",parameter);
+                    cnn.Execute("DELETE FROM Perfil WHERE id=@idProfile", parameter);
                     Console.WriteLine("Borrado Perfil");
+                    cnn.Close();
+                }
+            } catch (Exception e) {
+                Console.WriteLine(e);
+
+            }
+        }
+
+        public static void deleteMenu(long id) {
+            try {
+                using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
+                    var parameter = new { idMenu = id };
+                    cnn.Execute("DELETE FROM Menu WHERE id=@idMenu", parameter);
+                    Console.WriteLine("Borrado Menu");
                     cnn.Close();
                 }
             } catch (Exception e) {

@@ -126,5 +126,11 @@ namespace ProyectoWPF {
             }
 
         }
+
+        public void remove() {
+            Lista.removeWrapPanelSecundario(wrapCarpPrincipal);
+            wrapCarpPrincipal.removeChildrens();
+            wrapCarpPrincipal = null;
+        }
     }
 }

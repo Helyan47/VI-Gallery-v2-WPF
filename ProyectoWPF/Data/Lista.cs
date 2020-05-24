@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using ProyectoWPF.Data;
@@ -229,7 +230,10 @@ namespace ProyectoWPF {
         }
 
         public static void removeSubCarpeta(SubCarpeta m) {
-            _subCarpetas.Remove(m);
+            if (_subCarpetas.Contains(m)) {
+                _subCarpetas.Remove(m);
+            }
+            
         }
 
         public static Menu getMenuVisible() {
@@ -357,20 +361,10 @@ namespace ProyectoWPF {
         }
 
         public static WrapPanelPrincipal getWrapFromMenu(MenuClass m) {
-            int comp = 0;
-            int cont = 0;
-            foreach (MenuClass mc in _menusClass) {
-                if (mc == m) {
-                    comp = cont;
-                }
-                cont++;
-            }
-            cont = 0;
             foreach (WrapPanelPrincipal wp in _wrapsPrincipales) {
-                if (comp == cont) {
+                if (wp.name.Equals(m.nombre)) {
                     return wp;
                 }
-                cont++;
             }
             return null;
         }
@@ -485,6 +479,102 @@ namespace ProyectoWPF {
                 if (p.nombre.ToString().Equals(name)) {
                     _perfiles.Remove(p);
                     break;
+                }
+            }
+        }
+
+        public static void removeMenu(Button b) {
+            string name = b.Content.ToString();
+            long id = 0;
+            MenuClass aux = null;
+            foreach (MenuClass m in _menusClass) {
+                if (m.nombre.Equals(name)) {
+                    id=m.id;
+                    aux = m;
+                    break;
+                }
+            }
+            if (_buttonsMenu.Contains(b)) {
+                _buttonsMenu.Remove(b);
+            }
+            if (id != 0) {
+                removeFolderByMenu(id);
+                removeWrapPanelPrincipal(getWrapFromMenu(aux));
+                _menusClass.Remove(aux);
+                Console.WriteLine("Borrado menu " + name);
+            }
+            
+        }
+
+        public static void removeFolder(Carpeta c) {
+            string name = c.getClass().ruta;
+            c.remove();
+            if (_carpetas.Contains(c)) {
+                _carpetas.Remove(c);
+                Console.WriteLine("Borrada carpeta "+name);
+            }
+            
+        }
+        public static void removeFolderByMenu(long id) {
+            try {
+                foreach (Carpeta c in _carpetas) {
+                    if (c.getClass().idMenu == id) {
+                        removeFolder(c);
+                    }
+                }
+            }catch(InvalidOperationException e) {
+                removeFolderByMenu(id);
+            }
+
+        }
+
+        public static void removeSubFolders(Carpeta c) {
+            foreach(SubCarpeta sc in _subCarpetas) {
+                if (sc.getClass().rutaPadre.Equals(c.getClass().ruta)) {
+                    sc.remove();
+                }
+            }
+        }
+
+        public static void removeSubFolders(SubCarpeta c) {
+            foreach (SubCarpeta sc in _subCarpetas) {
+                if (sc.getClass().rutaPadre.Equals(c.getClass().ruta)) {
+                    sc.remove();
+                }
+            }
+        }
+
+        public static void removeWrapPanelSecundario(WrapPanelPrincipal wp) {
+            if (_wrapsSecundarios.Contains(wp)) {
+                _wrapsSecundarios.Remove(wp);
+                Console.WriteLine("Borrado WrapPanel Secundario");
+            }
+            
+        }
+
+        public static void removeWrapPanelPrincipal(WrapPanelPrincipal wp) {
+            if (_wrapsPrincipales.Contains(wp)) {
+                _wrapsPrincipales.Remove(wp);
+                Console.WriteLine("Borrado WrapPanel Principal");
+            }
+
+        }
+
+        public static void removeCarpetaClass(long id) {
+            foreach(CarpetaClass cc in _carpetasClase) {
+                if(cc.id == id) {
+                    _carpetasClase.Remove(cc);
+                    break;
+                }
+            }
+        }
+
+        public static void orderWrapsSecundarios() {
+            foreach(WrapPanelPrincipal wp in _wrapsSecundarios) {
+                List<UIElement> hijos= OrderClass.orderChildOfWrap(wp.hijos);
+                wp.getWrapPanel().Children.Clear();
+                foreach(UIElement o in hijos) {
+                    wp.getWrapPanel().Children.Add(o);
                 }
             }
         }

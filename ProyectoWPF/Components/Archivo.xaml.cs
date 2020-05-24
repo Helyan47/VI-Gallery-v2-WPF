@@ -1,6 +1,8 @@
 ﻿using ProyectoWPF.Data;
+using Reproductor;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,11 +26,14 @@ namespace ProyectoWPF.Components {
         public Carpeta _carpetaPadre { get; set; }
         public SubCarpeta _subCarpetaPadre { get; set; }
 
+        private VIGallery main;
+
         private Canvas _defaultCanvas;
 
 
-        public Archivo(ArchivoClass archivo) {
+        public Archivo(ArchivoClass archivo,VIGallery vi) {
             InitializeComponent();
+            this.main = vi;
             _archivoClass = archivo;
             _subCarpetaPadre = null;
             _carpetaPadre = null;
@@ -112,6 +117,47 @@ namespace ProyectoWPF.Components {
         public void setDefaultSource() {
             canvasFile = _defaultCanvas;
             Img.Visibility = Visibility.Visible;
+        }
+
+        private void onClick(object sender, EventArgs e) {
+            
+            if (_carpetaPadre != null) {
+                VI_Reproductor reproductor = new VI_Reproductor();
+                main.getFirstGrid().Children.Add(reproductor);
+                List<Archivo> lista = _carpetaPadre._archivos;
+                List<FileInfo> listaArchivos = new List<FileInfo>();
+                int posicion = 0;
+                int cont = 0;
+                foreach(Archivo archivo in lista) {
+                    if (archivo.Equals(this)) {
+                        posicion = cont;
+                    }
+                    FileInfo f = new FileInfo(archivo._archivoClass.rutaSistema);
+                    listaArchivos.Add(f);
+                    cont++;
+                }
+                reproductor.setLista(listaArchivos.ToArray(),posicion);
+                reproductor.setVIGallery(main.getFirstGrid());
+            } else if (_subCarpetaPadre != null) {
+                VI_Reproductor reproductor = new VI_Reproductor();
+                main.getFirstGrid().Children.Add(reproductor);
+                List<Archivo> lista = _subCarpetaPadre._archivos;
+                List<FileInfo> listaArchivos = new List<FileInfo>();
+                int posicion = 0;
+                int cont = 0;
+                foreach (Archivo archivo in lista) {
+                    if (archivo.Equals(this)) {
+                        posicion = cont;
+                    }
+                    FileInfo f = new FileInfo(archivo._archivoClass.rutaSistema);
+                    listaArchivos.Add(f);
+                    cont++;
+                }
+                reproductor.setLista(listaArchivos.ToArray(), posicion);
+                reproductor.setVIGallery(main.getFirstGrid());
+            } else {
+                MessageBox.Show("No se ha podido abrir el archivo");
+            }
         }
     }
 }

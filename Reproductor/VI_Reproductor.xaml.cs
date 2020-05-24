@@ -25,6 +25,7 @@ namespace Reproductor
         bool hasHours { get; set; }
         bool isExpanded { get; set; }
         DispatcherTimer dp { get; set; }
+        Grid gridVIGallery { get; set; }
 
         public Window MainWindow;
         public VideoPlayerProperties videoPlayerProperties { get; set; }
@@ -37,6 +38,7 @@ namespace Reproductor
             var currentAssembly = Assembly.GetEntryAssembly();
             var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
             var libDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
+            Console.WriteLine(libDirectory.FullName);
             dp = new DispatcherTimer();
             dp.Interval = new TimeSpan(0, 0, 1);
             dp.Tick += tick;
@@ -78,7 +80,7 @@ namespace Reproductor
         public void tick(object sender, EventArgs e) {
 
             if (control.SourceProvider.MediaPlayer.IsPlaying()) {
-
+                
                 long duration;
                 string seconds;
                 string minutes;
@@ -133,7 +135,9 @@ namespace Reproductor
                 }
 
                 timeLine.Value = control.SourceProvider.MediaPlayer.Time;
-
+                if (timeLine.Value >= control.SourceProvider.MediaPlayer.Length-1000) {
+                    nextVideo();
+                }
             }
         }
 
@@ -143,6 +147,16 @@ namespace Reproductor
             if (args.Length != 0) {
                 lista = args;
                 setVideo(lista[0]);
+            }
+            control.Focus();
+        }
+
+        public void setLista(object[] args,int position) {
+            lista = args;
+            if (args.Length != 0) {
+                lista = args;
+                currentVideoPosition = position;
+                setVideo(lista[position]);
             }
             control.Focus();
         }
@@ -190,25 +204,34 @@ namespace Reproductor
             } else {
                 MessageBox.Show("Tipo de archivo no soportado");
             }
-
+            
             dp.Start();
+            setTimeLabel();
+            //resetMaximumTime();
             viewBoxPause.Visibility = Visibility.Visible;
             viewBoxPlay.Visibility = Visibility.Hidden;
         }
 
 
         public void nextVideo() {
-            if (currentVideoPosition == lista.Length - 1) {
+            dp.Stop();
+            cont = 0;
+            if (lista != null) {
+                if (currentVideoPosition == lista.Length - 1) {
 
-                currentVideoPosition = 0;
+                    currentVideoPosition = 0;
 
-            } else {
-                currentVideoPosition++;
+                } else {
+                    currentVideoPosition++;
+                }
+                setVideo(lista[currentVideoPosition]);
             }
-            setVideo(lista[currentVideoPosition]);
+            
         }
 
         public void previousVideo() {
+            dp.Stop();
+            cont = 0;
             if (currentVideoPosition == 0) {
                 currentVideoPosition = lista.Length - 1;
 
@@ -393,6 +416,20 @@ namespace Reproductor
 
         public GradientStop getLastColorStop() {
             return lastColor;
+        }
+
+        public RowDefinition getRowClose() {
+            return closeGrid;
+        }
+
+        public void setVIGallery(Grid grid) {
+            this.gridVIGallery = grid;
+        }
+
+        public void CerrarReproductor(object sender, EventArgs e) {
+            dp.Stop();
+            control.Dispose();
+            gridVIGallery.Children.Remove(this);
         }
     }
 }

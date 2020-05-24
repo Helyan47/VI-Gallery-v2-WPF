@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using ProyectoWPF.Components;
+using Reproductor;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -76,8 +77,7 @@ namespace ProyectoWPF {
                     folderDialog.IsFolderPicker = true;
                     firstFolder = 0;
                     if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
-                        _folders = Directory.GetDirectories(folderDialog.FileName);
-
+                        _folders = OrderClass.orderArrayOfString(Directory.GetDirectories(folderDialog.FileName));
                         for (int i = 0; i < _folders.Length; i++) {
                             _rutas.Add(_folders[i]);
 
@@ -101,7 +101,9 @@ namespace ProyectoWPF {
                     }
                 }
                 Lista.modifyMode(_profile.mode);
+                Lista.orderWrapsSecundarios();
                 Lista.hideAllExceptPrinc();
+
             } else {
                 menuButtons.BorderThickness = new Thickness(5);
                 MessageBox.Show("No has creado ningún menú");
@@ -268,7 +270,7 @@ namespace ProyectoWPF {
         private void addFileCarpeta(string fileName, Carpeta c) {
             string ruta = "F" + c.getClass().ruta.Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
             ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
-            Archivo a = new Archivo(ac);
+            Archivo a = new Archivo(ac, this);
 
             a.setCarpetaPadre(c);
 
@@ -279,13 +281,13 @@ namespace ProyectoWPF {
             }
             
             c.GetWrapCarpPrincipal().addFile(a);
-            c.addFile(ac);
+            c.addFile(a);
         }
 
         private void addFileSubCarpeta(string fileName, SubCarpeta c) {
             string ruta = "F" + c.getClass().ruta.Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
             ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
-            Archivo a = new Archivo(ac);
+            Archivo a = new Archivo(ac, this);
 
             a.setSubCarpetaPadre(c);
 
@@ -297,7 +299,7 @@ namespace ProyectoWPF {
             }
 
             c.getWrapCarpPrincipal().addFile(a);
-            c.addFile(ac);
+            c.addFile(a);
         }
 
 
@@ -313,7 +315,7 @@ namespace ProyectoWPF {
 
                     } else {
                         _aux.clickEspecial();
-                        string[] archivos = Directory.GetFiles(files[i]);
+                        string[] archivos = OrderClass.orderArrayOfString(Directory.GetFiles(files[i]));
                         for (int j = 0; j < archivos.Length; j++) {
                             foreach (string s in Lista._extensiones) {
                                 if (s.CompareTo(System.IO.Path.GetExtension(archivos[j])) == 0) {
@@ -333,8 +335,8 @@ namespace ProyectoWPF {
                             _aux2 = addSubCarpetaCompleta(_aux, files[i]);
                         }
                     }
-                    string[] archivos = Directory.GetFiles(files[i]);
-                    for(int j = 0; j < archivos.Length; j++) {
+                    string[] archivos = OrderClass.orderArrayOfString(Directory.GetFiles(files[i]));
+                    for (int j = 0; j < archivos.Length; j++) {
                         foreach (string s in Lista._extensiones) {
                             if (s.ToLower().CompareTo(System.IO.Path.GetExtension(archivos[j]).ToLower()) == 0) {
                                 addFileSubCarpeta(archivos[j], _aux2);
@@ -344,7 +346,8 @@ namespace ProyectoWPF {
                     }
                 }
                 if (Directory.GetDirectories(files[i]) != null) {
-                    addText(Directory.GetDirectories(files[i]));
+                    string[] directorios = OrderClass.orderArrayOfString(Directory.GetDirectories(files[i]));
+                    addText(directorios);
                 }
 
             }
@@ -530,29 +533,29 @@ namespace ProyectoWPF {
                 }
             }
             Lista.modifyMode(_profile.mode);
-
+            Lista.orderWrapsSecundarios();
         }
 
         private void loadFiles(CarpetaClass c) {
             if (c.isFolder) {
                 Carpeta carpeta = Lista.getCarpetaById(c.id);
-                List<ArchivoClass> archivos = Conexion.loadFiles(c.id);
+                List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(Conexion.loadFiles(c.id));
                 if (archivos != null) {
-                    foreach(ArchivoClass ac in archivos) {
-                        Archivo a = new Archivo(ac);
+                    foreach (ArchivoClass ac in archivos) {
+                        Archivo a = new Archivo(ac, this);
                         carpeta.GetWrapCarpPrincipal().addFile(a);
-                        carpeta.addFile(ac);
+                        carpeta.addFile(a);
                         a.setCarpetaPadre(carpeta);
                     }
                 }
             } else {
                 SubCarpeta subcarpeta = Lista.getSubCarpetaById(c.id);
-                List<ArchivoClass> archivos = Conexion.loadFiles(c.id);
+                List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(Conexion.loadFiles(c.id));
                 if (archivos != null) {
                     foreach (ArchivoClass ac in archivos) {
-                        Archivo a = new Archivo(ac);
+                        Archivo a = new Archivo(ac, this);
                         subcarpeta.getWrapCarpPrincipal().addFile(a);
-                        subcarpeta.addFile(ac);
+                        subcarpeta.addFile(a);
                         a.setSubCarpetaPadre(subcarpeta);
                     }
                 }
@@ -563,23 +566,23 @@ namespace ProyectoWPF {
         private void loadFilesOffline(CarpetaClass c) {
             if (!c.isFolder) {
                 Carpeta carpeta = Lista.getCarpetaById(c.id);
-                List<ArchivoClass> archivos = ConexionOffline.loadFiles(c);
+                List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(ConexionOffline.loadFiles(c));
                 if (archivos != null) {
                     foreach (ArchivoClass ac in archivos) {
-                        Archivo a = new Archivo(ac);
+                        Archivo a = new Archivo(ac, this);
                         carpeta.GetWrapCarpPrincipal().addFile(a);
-                        carpeta.addFile(ac);
+                        carpeta.addFile(a);
                         a.setCarpetaPadre(carpeta);
                     }
                 }
             } else {
                 SubCarpeta subcarpeta = Lista.getSubCarpetaById(c.id);
-                List<ArchivoClass> archivos = ConexionOffline.loadFiles(c);
+                List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(ConexionOffline.loadFiles(c));
                 if (archivos != null) {
                     foreach (ArchivoClass ac in archivos) {
-                        Archivo a = new Archivo(ac);
+                        Archivo a = new Archivo(ac, this);
                         subcarpeta.getWrapCarpPrincipal().addFile(a);
-                        subcarpeta.addFile(ac);
+                        subcarpeta.addFile(a);
                         a.setSubCarpetaPadre(subcarpeta);
                     }
                 }
@@ -592,7 +595,7 @@ namespace ProyectoWPF {
             if (menus != null) {
                 foreach(MenuClass m in menus) {
                     addMenuFromClass(m);
-                    List<CarpetaClass> carpetas = Conexion.loadFoldersFromMenu(m.id);
+                    List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(Conexion.loadFoldersFromMenu(m.id));
                     if (carpetas != null) {
                         foreach(CarpetaClass c in carpetas) {
                             addCarpetaFromLoad(c);
@@ -604,10 +607,11 @@ namespace ProyectoWPF {
                 }
             }
             Lista.modifyMode(_profile.mode);
+            Lista.orderWrapsSecundarios();
         }
 
         public void loadSubCarpetas(CarpetaClass c, long idMenu) {
-            List<CarpetaClass> carpetas = Conexion.loadSubFoldersFromCarpeta(c, idMenu);
+            List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(Conexion.loadSubFoldersFromCarpeta(c, idMenu));
             if (carpetas != null) {
                 foreach(CarpetaClass cc in carpetas) {
                     addSubCarpetaFromLoad(cc);
@@ -618,7 +622,7 @@ namespace ProyectoWPF {
         }
 
         public void loadSubCarpetasOffline(CarpetaClass c) {
-            List<CarpetaClass> carpetas = ConexionOffline.loadSubCarpetasFromCarpeta(c);
+            List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(ConexionOffline.loadSubCarpetasFromCarpeta(c));
             if (carpetas != null) {
                 foreach (CarpetaClass cc in carpetas) {
                     addSubCarpetaFromLoad(cc);
@@ -656,6 +660,7 @@ namespace ProyectoWPF {
             _wrapsPrincipales.Add(wp);
 
             Lista.addWrapPrincipal(wp);
+            wp.setButton(newButton);
 
             onClickButtonMenuEspecial(newButton);
         }
@@ -712,6 +717,7 @@ namespace ProyectoWPF {
                         _wrapsPrincipales.Add(wp);
 
                         Lista.addWrapPrincipal(wp);
+                        wp.setButton(newButton);
 
                         onClickButtonMenu(newButton, e);
                     } else {
@@ -735,6 +741,7 @@ namespace ProyectoWPF {
                         _wrapsPrincipales.Add(wp);
 
                         Lista.addWrapPrincipal(wp);
+                        wp.setButton(newButton);
 
                         onClickButtonMenu(newButton, e);
                     }
@@ -743,8 +750,52 @@ namespace ProyectoWPF {
 
         }
 
-        private void removeButtonClick(object sender, EventArgs e) {
+        private void removeMenu(object sender, EventArgs e) {
+            if (_activatedButton != null) {
+                if (conexionMode) {
+                    long id = Lista.getMenuFromButton(_activatedButton).id;
+                    if (id != 0) {
+                        Conexion.deleteMenu(id);
+                        Lista.removeMenu(_activatedButton);
+                        if (_botonesMenu.Contains(_activatedButton)) {
+                            _botonesMenu.Remove(_activatedButton);
+                        }
+                        if (_botones.Contains(_activatedButton)) {
+                            _botones.Remove(_activatedButton);
+                        }
+                        if (_botonesMenu.Count != 0) {
+                            foreach (Button b in _botonesMenu) {
+                                onClickButtonMenu(b, e);
+                                break;
+                            }
+                        } else {
+                            _activatedButton = null;
+                        }
+                    }
 
+                } else {
+                    long id = Lista.getMenuFromButton(_activatedButton).id;
+                    if (id != 0) {
+                        ConexionOffline.deleteMenu(id);
+                        Lista.removeMenu(_activatedButton);
+                        if (_botonesMenu.Contains(_activatedButton)) {
+                            _botonesMenu.Remove(_activatedButton);
+                        }
+                        if (_botones.Contains(_activatedButton)) {
+                            _botones.Remove(_activatedButton);
+                        }
+                        if (_botonesMenu.Count != 0) {
+                            foreach(Button b in _botonesMenu) {
+                                onClickButtonMenu(_activatedButton, e);
+                                break;
+                            }
+                        } else {
+                            _activatedButton = null;
+                        }
+                    }
+                }
+                
+            }
         }
 
         public bool checkString(string s) {
@@ -934,5 +985,10 @@ namespace ProyectoWPF {
         private void removeProfile(object sender,RoutedEventArgs e) {
 
         }
+
+        public Grid getFirstGrid() {
+            return firstPanel;
+        }
+
     }
 }

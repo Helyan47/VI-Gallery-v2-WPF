@@ -27,13 +27,15 @@ namespace ProyectoWPF
         private SubCarpeta subcarpeta;
         public String tipo = "";
         private Grid gridCarpeta;
-        private Button ButtonPrincipal;
+        private Button buttonPrincipal;
+        public List<UIElement> hijos { get; set; }
         public string name { get; set; }
         public long menu { get; set; }
 
         public WrapPanelPrincipal()
         {
             InitializeComponent();
+            hijos = new List<UIElement>();
         }
 
         public void addCarpeta(Carpeta c) {
@@ -47,6 +49,7 @@ namespace ProyectoWPF
             }
             //c.changeColor(System.Drawing.Color.Red);
             wrapPanel.Children.Add(c);
+            hijos.Add(c);
             
         }
 
@@ -85,6 +88,7 @@ namespace ProyectoWPF
                 p.setDefaultSource();
             }
             wrapPanel.Children.Add(p);
+            hijos.Add(p);
         }
 
         public void addFile(Archivo a) {
@@ -93,6 +97,7 @@ namespace ProyectoWPF
             a.Margin = new Thickness(20, 20, 20, 20);
             
             wrapPanel.Children.Add(a);
+            hijos.Add(a);
         }
 
         public SubCarpeta getSubCarpeta() {
@@ -103,5 +108,29 @@ namespace ProyectoWPF
             subcarpeta = p;
         }
 
+        public void removeChildrens() {
+            wrapPanel.Children.Clear();
+            hijos.Clear();
+        }
+
+        public void removeFolder(Carpeta c) {
+            if (wrapPanel.Children.Contains(c)) {
+                wrapPanel.Children.Remove(c);
+                if (hijos.Contains(c)) {
+                    hijos.Remove(c);
+                }
+                
+            } else {
+                Console.WriteLine("No se ha podido borrar la carpeta " + c.getClass().ruta);
+            }
+        }
+
+        public void setButton(Button b) {
+            buttonPrincipal = b;
+        }
+
+        public WrapPanel getWrapPanel() {
+            return wrapPanel;
+        }
     }
 }

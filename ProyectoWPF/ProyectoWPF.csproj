@@ -131,6 +131,7 @@
     <Compile Include="Data\Base\PerfilClass.cs" />
     <Compile Include="Data\Base\UsuarioClass.cs" />
     <Compile Include="Data\ConexionOffline.cs" />
+    <Compile Include="Data\OrderClass.cs" />
     <Compile Include="NewFolders\AddButton.xaml.cs">
       <DependentUpon>AddButton.xaml</DependentUpon>
     </Compile>
