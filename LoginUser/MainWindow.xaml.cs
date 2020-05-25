@@ -39,6 +39,23 @@ namespace LoginUser {
 
             inputUser.getInvButton().Click += clickedUser;
             inputPass.getInvButton().Click += clickedPass;
+
+            newUser.changeMode("username");
+            newUser.invertColors("black");
+            newUser.lostFocus(true);
+
+            newPass1.changeMode("password");
+            newPass1.invertColors("black");
+            newPass1.lostFocus(true);
+
+            newPass2.changeMode("password");
+            newPass2.invertColors("black");
+            newPass2.lostFocus(true);
+
+            newUser.getInvButton().Click += clickedNewUser;
+            newPass1.getInvButton().Click += clickedNewPass1;
+            newPass2.getInvButton().Click += clickedNewPass2;
+
         }
 
         public void clickedUser(object sender, RoutedEventArgs e) {
@@ -49,6 +66,20 @@ namespace LoginUser {
         public void clickedPass(object sender, RoutedEventArgs e) {
             inputUser.lostFocus(false);
             passError.Visibility = Visibility.Hidden;
+        }
+
+        public void clickedNewUser(object sender, RoutedEventArgs e) {
+            newPass1.lostFocus(false);
+            newPass2.lostFocus(false);
+        }
+
+        public void clickedNewPass1(object sender, RoutedEventArgs e) {
+            newUser.lostFocus(false);
+            newPass2.lostFocus(false);
+        }
+        public void clickedNewPass2(object sender, RoutedEventArgs e) {
+            newUser.lostFocus(false);
+            newPass1.lostFocus(false);
         }
 
         private void LoginClick(object sender, EventArgs e) {
@@ -141,7 +172,7 @@ namespace LoginUser {
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e) {
             Point p = Mouse.GetPosition(inputUser);
             Point h = Mouse.GetPosition(inputPass);
-            //Console.WriteLine(p.X + " || "+p.Y + " |||||| " + inputUser.ActualWidth + " || " + inputUser.ActualHeight);
+            Console.WriteLine(p.X + " || "+p.Y + " |||||| " + inputUser.ActualWidth + " || " + inputUser.ActualHeight);
             //Console.WriteLine(h.X + " || "+h.Y + " |||||| " + inputPass.ActualWidth + " || " + inputPass.ActualHeight);
             if ((p.X >= 0 && p.X <= inputUser.ActualWidth) && (p.Y >= 0 && p.Y <= inputUser.ActualHeight)) {
                 userError.Visibility = Visibility.Hidden;
@@ -152,6 +183,28 @@ namespace LoginUser {
             } else {
                 inputUser.lostFocus(true);
                 inputPass.lostFocus(true);
+            }
+
+        }
+        private void NewGrid_MouseUp(object sender, MouseButtonEventArgs e) {
+            Point p = Mouse.GetPosition(newUser);
+            Point h = Mouse.GetPosition(newPass1);
+            Point q = Mouse.GetPosition(newPass2);
+            Console.WriteLine(p.X + " || "+p.Y + " |||||| " + newUser.ActualWidth + " || " + newUser.ActualHeight);
+            Console.WriteLine(h.X + " || "+h.Y + " |||||| " + newPass1.ActualWidth + " || " + newPass1.ActualHeight);
+            Console.WriteLine(q.X + " || " + q.Y + " |||||| " + newPass2.ActualWidth + " || " + newPass2.ActualHeight);
+            if ((p.X >= 0 && p.X <= newUser.ActualWidth) && (p.Y >= 0 && p.Y <= newUser.ActualHeight)) {
+                //userError.Visibility = Visibility.Hidden;
+                //inputPass.lostFocus();
+            } else if ((h.X >= 0 && h.X <= newPass1.ActualWidth) && (h.Y >= 0 && h.Y <= newPass1.ActualHeight)) {
+                //passError.Visibility = Visibility.Hidden;
+                //inputUser.lostFocus();
+            } else if((q.X >= 0 && q.X <= newPass2.ActualWidth) && (q.Y >= 0 && q.Y <= newPass2.ActualHeight)){
+                
+            } else {
+                newUser.lostFocus(true);
+                newPass1.lostFocus(true);
+                newPass2.lostFocus(true);
             }
 
         }
@@ -175,6 +228,11 @@ namespace LoginUser {
             this.Hide();
             selectProf.Show();
             this.Close();
+        }
+
+        private void createUser(object sender, EventArgs e) {
+            gridLogin.Visibility = Visibility.Hidden;
+            gridNewUser.Visibility = Visibility.Visible;
         }
     }
 }

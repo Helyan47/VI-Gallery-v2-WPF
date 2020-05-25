@@ -1,0 +1,139 @@
+﻿<UserControl x:Class="LoginUser.InputTextLoL"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LoginUser"
+             mc:Ignorable="d" 
+             d:DesignHeight="75" d:DesignWidth="300" FontWeight="Bold" FontFamily="Segoe UI Black" KeyUp="UserControl_KeyUp">
+    <Border x:Name="bordePrincipal" CornerRadius="4" Background="#FFEDEDED" BorderBrush="#FF1B1B1B" BorderThickness="2">
+        <Grid x:Name="gridParent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0*"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="mouseLostGrid" Margin="0" Grid.Row="1">
+                <Label x:Name="startText" Content="USERNAME" Margin="10,0,0,0" Foreground="#FF999999" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}"/>
+            </Grid>
+            <Grid x:Name="mouseEnterGrid" Margin="0" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2px"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.30*"/>
+                    <ColumnDefinition Width="2px"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2px"/>
+                    <RowDefinition Height="0.6*"/>
+                    <RowDefinition Height="2px"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2px"/>
+                </Grid.RowDefinitions>
+                <Label x:Name="userText" Content="USERNAME" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0" Foreground="#FF1B1B1B" Background="{x:Null}" Padding="2,0,0,0" FontSize="14"/>
+                <TextBox x:Name="username" Grid.Column="1" Grid.Row="3" Margin="0" VerticalContentAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}" FontFamily="Segoe UI" Foreground="#FF1B1B1B" MaxLines="1" FontSize="18" FontWeight="Bold" SelectionBrush="#FF008EFF">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TextBox}">
+                                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsEnabled" Value="false">
+                                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsFocused" Value="true">
+                                                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <PasswordBox x:Name="password" Grid.Column="1" Grid.Row="3" Margin="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF1B1B1B" VerticalContentAlignment="Center" FontSize="18">
+                    <PasswordBox.Style>
+                        <Style TargetType="PasswordBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type PasswordBox}">
+                                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsEnabled" Value="false">
+                                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsFocused" Value="true">
+                                                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </PasswordBox.Style>
+                </PasswordBox>
+
+                <Viewbox x:Name="hidePass" Visibility="Hidden" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Margin="4" Stretch="None" RenderOptions.BitmapScalingMode="HighQuality">
+                    <Canvas x:Name="canvasFolder">
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="-15" Y="-12.5"/>
+                        </Canvas.RenderTransform>
+                        <Canvas.Resources/>
+                        <!--Unknown tag: sodipodi:namedview-->
+                        <!--Unknown tag: metadata-->
+                        <Canvas Name="layer1">
+                            <Path x:Name="ColorPath" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="0" Canvas.Top="0" Fill="Black" Width="30" Height="20" >
+                                <Path.Style>
+                                    <Style TargetType="{x:Type Path}">
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                    </Style>
+                                </Path.Style>
+                                <Path.Data>
+                                    <PathGeometry Figures="m 273 438.84314 c -19.05748 -1.7753 -46.11183 -6.95889 -62.5 -11.97497 C 173.90793 415.66812 137.30132 395.71853 107.13411 370.53663 89.163175 355.5355 63.866858 327.83669 58.552322 317.34084 55.244324 310.80776 54.073716 298.76006 55.895767 290 57.766325 281.00673 68.991806 266.25476 89.917054 245.2909 128.29768 206.83946 180.58942 178.54848 234.5 167.06834 c 38.42169 -8.18181 79.75951 -9.23058 116.5 -2.9557 58.58382 10.00549 116.96656 39.98601 158.08295 81.17826 20.92524 20.96386 32.15073 35.71583 34.02128 44.7091 1.82205 8.76006 0.65145 20.80776 -2.65655 27.34084 -5.20723 10.28392 -30.29076 37.84515 -47.94768 52.68386 -46.49499 39.07394 -103.69818 62.97712 -164.92368 68.91575 -12.68612 1.2305 -40.86175 1.18026 -54.57632 -0.0973 z m 56.36747 -36.3469 c 15.94153 -1.86478 29.87496 -4.61639 43.99243 -8.68774 l 10.8599 -3.1319 5.93057 -7.0883 c 13.8589 -16.56436 25.78451 -37.13676 31.27117 -53.9447 4.58939 -14.05921 5.85121 -23.59171 5.3138 -40.1436 -0.54439 -16.76713 -3.08461 -28.82693 -8.53074 -40.5 -2.94749 -6.31758 -3.0357 -6.40177 -3.14305 -3 -0.76337 24.1908 -23.85079 43.3543 -47.37658 39.32451 -17.43356 -2.98624 -31.01824 -16.54678 -33.99699 -33.93656 -3.46998 -20.2576 10.05075 -40.76366 30.29907 -45.95278 5.37405 -1.37723 5.27702 -1.41654 -11.98705 -4.85564 -48.55544 -9.67252 -96.39059 -6.16728 -142.19082 10.41939 l -8.69083 3.1474 -6.12817 8.94737 c -8.2028 11.97641 -16.45473 29.42343 -19.63692 41.51826 -3.47755 13.21742 -4.37508 35.6316 -1.9449 48.57027 4.38421 23.3422 14.83855 44.60113 33.20295 67.51827 l 7.37271 9.20049 9.7109 3.11068 c 12.15616 3.89396 29.20118 7.60734 43.11144 9.39213 14.77742 1.89605 46.73887 1.94328 62.56111 0.0924 z" FillRule="NonZero"/>
+                                </Path.Data>
+                            </Path>
+                        </Canvas>
+                    </Canvas>
+                </Viewbox>
+                <Viewbox x:Name="showPass" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Margin="4" Stretch="None" RenderOptions.BitmapScalingMode="HighQuality">
+                    <Canvas x:Name="canvasFolder2">
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="-23" Y="-17.5"/>
+                        </Canvas.RenderTransform>
+                        <Canvas.Resources/>
+                        <!--Unknown tag: sodipodi:namedview-->
+                        <!--Unknown tag: metadata-->
+                        <Canvas Name="layer2">
+                            <Path x:Name="ColorPath2" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="7.875" Canvas.Top="5.25" Fill="Black" Width="30" Height="20" >
+                                <Path.Data>
+                                    <PathGeometry Figures="m 51.57625 138.21072 -2.343754 -2.51402 4.743754 -4.58622 c 2.609062 -2.52242 8.697779 -8.32218 13.530483 -12.88835 10.315424 -9.74651 30.275923 -28.695525 48.031287 -45.597327 6.94209 -6.608355 14.72028 -13.977558 17.28487 -16.376003 l 4.66289 -4.360806 2.48111 2.263788 2.4811 2.263792 -2.1664 2.183136 c -1.19153 1.200724 -2.10233 2.235002 -2.024 2.298397 0.0783 0.06339 1.58241 0.871971 3.34241 1.796842 7.23931 3.804214 15.28842 9.769801 21.27672 15.769225 6.72745 6.73993 10.31706 11.45417 10.91663 14.336826 0.58306 2.803219 0.20847 6.658483 -0.85009 8.74907 -1.66632 3.29085 -9.69305 12.11045 -15.34326 16.85883 -17.13702 14.40179 -38.94991 22.39603 -61.095578 22.39101 -10.571024 -0.002 -22.282844 -1.85404 -31.496825 -4.97967 l -4.311427 -1.46255 -2.748087 2.6749 c -4.339993 4.22441 -3.651574 4.09702 -6.371833 1.17913 z m 53.82134 -9.41192 c 5.10129 -0.59673 9.55999 -1.47725 14.07758 -2.78008 l 3.47517 -1.00221 1.89778 -2.26825 c 4.43485 -5.3006 8.25104 -11.88377 10.00677 -17.26231 1.46861 -4.49895 1.87239 -7.549345 1.70042 -12.84595 -0.17421 -5.365482 -0.98708 -9.224618 -2.72984 -12.96 -0.94319 -2.021626 -0.97142 -2.048566 -1.00577 -0.96 -0.24467 7.753386 -7.63162 13.873488 -15.18384 12.579846 -2.37684 -0.407136 -5.05237 -1.656902 -6.47367 -3.023916 l -0.99782 -0.959703 -17.722184 16.857323 c -9.747204 9.27152 -18.717274 17.8377 -19.933492 19.03594 l -2.211305 2.17864 2.691305 0.80716 c 3.545741 1.06341 8.301136 2.04944 12.451306 2.58176 4.675434 0.5997 14.92138 0.61087 19.95759 0.0217 z m -63.998908 -4.83031 c -5.268317 -3.68101 -8.848602 -6.7002 -13.309857 -11.22395 -4.979912 -5.04968 -8.179801 -8.8803 -9.352082 -11.19547 C 17.678184 99.458483 17.303589 95.603219 17.886645 92.8 18.485224 89.922154 22.077378 85.201523 28.773457 78.493088 41.055258 66.188627 57.788614 57.135514 75.04 53.461869 81.35752 52.11657 86.75496 51.49393 93.76 51.302368 c 8.99303 -0.24593 14.97275 0.312349 23.44442 2.188826 l 3.12442 0.692057 0.85062 -0.771625 0.8506 -0.771626 -0.90872 1.166989 c -0.49979 0.641843 -2.97684 3.140691 -5.50455 5.552989 l -4.59583 4.386 -4.39048 -0.592989 C 101.43597 62.451405 90.832915 62.365827 86.08 62.987126 79.557456 63.839747 72.903392 65.432042 67.138938 67.519654 l -2.781066 1.007168 -1.961014 2.863159 c -2.60112 3.797737 -5.252272 9.38408 -6.305159 13.285843 -0.775357 2.873296 -0.85559 3.708397 -0.872774 9.084176 -0.02198 6.87228 0.4192 9.14398 2.949341 15.18707 l 1.468352 3.50706 -4.298311 4.10698 c -2.364067 2.25884 -5.684899 5.39645 -7.379625 6.97247 l -3.081319 2.86549 z" FillRule="NonZero"/>
+                                </Path.Data>
+                            </Path>
+                        </Canvas>
+                    </Canvas>
+                </Viewbox>
+                <Button x:Name="invButton" Opacity="0" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Margin="4" Background="Black" Foreground="Black" BorderBrush="Black" Click="hideOrShow">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+            </Grid>
+            <Button x:Name="invButtonFocus" Opacity="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="username_GotFocus"/>
+        </Grid>
+    </Border>
+
+</UserControl>

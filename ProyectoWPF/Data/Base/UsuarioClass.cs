@@ -7,25 +7,16 @@ using System.Threading.Tasks;
 namespace ProyectoWPF.Data {
     public class UsuarioClass {
         public long id { get; set; }
-        public string nombre { get; set; }
-        public string apellidos { get; set; }
         public string nick { get; set; }
-        public string email { get; set; }
 
-        public UsuarioClass(long id, string nombre, string apellidos, string nick, string email) {
+        public UsuarioClass(long id, string nick) {
             this.id = id;
-            this.nombre = nombre;
-            this.apellidos = apellidos;
             this.nick = nick;
-            this.email = email;
         }
 
-        public UsuarioClass(string nombre, string apellidos, string nick, string email) {
+        public UsuarioClass(string nick) {
             this.id = -1;
-            this.nombre = nombre;
-            this.apellidos = apellidos;
             this.nick = nick;
-            this.email = email;
         }
     }
 }

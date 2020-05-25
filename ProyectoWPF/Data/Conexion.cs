@@ -535,7 +535,7 @@ namespace ProyectoWPF.Data {
 
                 MySqlTransaction myTrans = conexion.BeginTransaction();
 
-                MySqlCommand comando = new MySqlCommand("SELECT id,nombre,apellidos,nick,email FROM Usuario WHERE nick=@nick and pass=@pass", conexion);
+                MySqlCommand comando = new MySqlCommand("SELECT id,nick FROM Usuario WHERE nick=@nick and pass=@pass", conexion);
                 comando.Parameters.AddWithValue("@nick", nombre);
                 comando.Parameters.AddWithValue("@pass", pass);
                 MySqlDataReader reader = comando.ExecuteReader();
@@ -543,13 +543,13 @@ namespace ProyectoWPF.Data {
                 if (reader.HasRows) {
                     reader.Read();
                     Int32 id = (Int32)reader["id"];
-                    user = new UsuarioClass((long)id, reader["nombre"].ToString(), reader["apellidos"].ToString(), reader["nick"].ToString(), reader["email"].ToString());
+                    user = new UsuarioClass((long)id, reader["nick"].ToString());
                     reader.Close();
                 }
                 conexion.Close();
                 return user;
             } catch (MySqlException e) {
-                Console.WriteLine("Boton  \n" + e);
+                Console.WriteLine("Error al comprobar el usuario  \n" + e);
             } finally {
                 if (conexion != null) {
                     conexion.Close();
