@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using ProyectoWPF.Components;
 using Reproductor;
+using System.Linq;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -103,6 +104,7 @@ namespace ProyectoWPF {
                 Lista.modifyMode(_profile.mode);
                 Lista.orderWrapsSecundarios();
                 Lista.hideAllExceptPrinc();
+                ReturnVisibility(false);
 
             } else {
                 menuButtons.BorderThickness = new Thickness(5);
@@ -166,7 +168,7 @@ namespace ProyectoWPF {
 
                     c.actualizar();
                     c.Visibility = Visibility.Visible;
-
+                    Lista.orderWrap(p);
                 }
 
 
@@ -302,6 +304,54 @@ namespace ProyectoWPF {
             c.addFile(a);
         }
 
+        private void newFile_Click(object sender, RoutedEventArgs e) {
+            var fileDialog = new OpenFileDialog();
+            fileDialog.Multiselect = true;
+            fileDialog.Filter = "mp4 (*.mp4)|*.mp4|avi (*.avi)|*.avi|mkv (*.mkv)|*.mkv|mpeg (*.mpeg)|*.mpeg|wmv (*.wmv)|*.wmv|flv (*.flv)|*.flv|mov (*.mov)|*.mov|wav (*.wav)|*.wav|Todos los archivos (*.*)|*.*";
+
+            fileDialog.CheckFileExists = true;
+            fileDialog.CheckPathExists = true;
+
+
+            if (fileDialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(fileDialog.FileName)) {
+                List<string> _files = OrderClass.orderListOfString(fileDialog.FileNames.ToList());
+                WrapPanelPrincipal p = Lista.getSubWrapsVisibles();
+                Carpeta c = p.getCarpeta();
+                SubCarpeta sc = p.getSubCarpeta();
+                bool? flag = null;
+                if (c != null) {
+                    flag = true;
+                } else if (sc != null) {
+                    flag = false;
+                }
+
+
+                foreach (string file in _files) {
+                    foreach (string s in Lista._extensiones) {
+                        if (s.CompareTo(System.IO.Path.GetExtension(file)) == 0) {
+                            if (flag == true) {
+                                addFileCarpeta(file, c);
+                            } else if (flag == false) {
+                                addFileSubCarpeta(file, sc);
+                            } else {
+                                MessageBox.Show("No se ha podido añadir el archivo");
+                            }
+
+                        }
+                    }
+                    
+                }
+                if (flag == true) {
+                    Lista.orderWrap(c.GetWrapCarpPrincipal());
+                }else if(flag == false) {
+                    Lista.orderWrap(sc.getWrapCarpPrincipal());
+                }
+                
+
+
+            }
+        }
+
 
         private void addText(string[] files) {
 
@@ -393,7 +443,7 @@ namespace ProyectoWPF {
                 aux.addCarpeta(p1);
                 p1.setPadreSerie(aux);
                 p1.SetGridsOpciones(GridPrincipal, GridSecundario);
-
+                Lista.orderWrap(aux);
             } else {
                 p1 = null;
             }
@@ -505,7 +555,7 @@ namespace ProyectoWPF {
             c.Visibility = Visibility.Visible;
         }
 
-        private void Return_MouseLeftButtonUp(object sender, RoutedEventArgs e) {
+        private void Return_MouseLeftButtonUp(object sender, EventArgs e) {
             SubCarpeta p = Lista.getSubWrapsVisibles().getSubCarpeta();
             Carpeta p1 = Lista.getSubWrapsVisibles().getCarpeta();
             if (p != null) {
@@ -757,6 +807,7 @@ namespace ProyectoWPF {
                     if (id != 0) {
                         Conexion.deleteMenu(id);
                         Lista.removeMenu(_activatedButton);
+
                         if (_botonesMenu.Contains(_activatedButton)) {
                             _botonesMenu.Remove(_activatedButton);
                         }
@@ -771,6 +822,7 @@ namespace ProyectoWPF {
                         } else {
                             _activatedButton = null;
                         }
+                        ReturnVisibility(false);
                     }
 
                 } else {
@@ -792,6 +844,7 @@ namespace ProyectoWPF {
                         } else {
                             _activatedButton = null;
                         }
+                        ReturnVisibility(false);
                     }
                 }
                 
@@ -810,8 +863,10 @@ namespace ProyectoWPF {
         public void ReturnVisibility(bool flag) {
             if (flag) {
                 Return.Visibility = Visibility.Visible;
+                borderEnter.Visibility = Visibility.Visible;
             } else {
                 Return.Visibility = Visibility.Hidden;
+                borderEnter.Visibility = Visibility.Hidden;
             }
         }
 
@@ -990,5 +1045,20 @@ namespace ProyectoWPF {
             return firstPanel;
         }
 
+        private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e) {
+            if (this.WindowState == WindowState.Maximized) {
+                this.WindowState = WindowState.Normal;
+                this.Left = Mouse.GetPosition(this).X - 100;
+                this.Top = Mouse.GetPosition(this).Y - 10;
+            }
+            this.DragMove();
+        }
+        private void return_MouseEnter(object sender, MouseEventArgs e) {
+            borderEnter.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+        }
+
+        private void return_MouseLeave(object sender, MouseEventArgs e) {
+            borderEnter.Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255));
+        }
     }
 }

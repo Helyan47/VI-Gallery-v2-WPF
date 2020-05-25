@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ProyectoWPF"
         xmlns:reproductor="clr-namespace:Reproductor;assembly=Reproductor"
         mc:Ignorable="d"
+        ResizeMode="CanResize"
         Title="VI-Gallery" Width="1920" Height="1080" MinWidth="700" MinHeight="700" WindowStartupLocation="CenterScreen" Background="{x:Null}" WindowState="Maximized" WindowStyle="None">
     <Window.Resources>
         <FontFamily x:Key="whitneyBold">/Fonts/#whitney-boldsc.otf</FontFamily>
@@ -50,7 +51,24 @@
                 </Path>
             </Canvas>
         </Canvas>
-
+        <Canvas x:Shared="false"  x:Key="ChangeModeIcon" Width="210" Height="297">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <TranslateTransform X="-305" Y="50"/>
+                    <ScaleTransform ScaleX="-0.60" ScaleY="0.60"/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <!--Unknown tag: sodipodi:namedview-->
+            <!--Unknown tag: metadata-->
+            <Canvas Name="canvaseModeIcon">
+                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="White" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="7.875" Canvas.Top="0" >
+                    <Path.Data>
+                        <PathGeometry Figures="m 90.978611 394.62856 c -4.786277 -2.40077 -6.500684 -4.04687 -9.001061 -8.64247 l -3.08866 -5.67685 V 200.0169 19.724574 l 3.08866 -5.676855 c 2.500377 -4.595604 4.214784 -6.2417072 9.001061 -8.6424801 l 5.912375 -2.9656246 h 104.575204 104.5752 l 5.91238 2.9656246 c 4.78627 2.4007729 6.50067 4.0468761 9.00104 8.6424801 l 3.08867 5.676855 V 200.0169 380.30924 l -3.08867 5.67685 c -2.50037 4.5956 -4.21477 6.2417 -9.00104 8.64247 l -5.91238 2.96563 H 201.46619 96.890986 Z M 309.7196 333.15524 c 2.5985 -1.75743 5.89113 -5.317 7.31697 -7.91015 l 2.59243 -4.71485 -0.28868 -149.36063 -0.28867 -149.360619 -3.43334 -4.092878 c -1.88835 -2.251083 -5.38263 -5.163414 -7.76508 -6.471847 l -4.33174 -2.3789683 h -100.946 -100.94601 l -4.331737 2.3789683 c -2.382448 1.308433 -5.876733 4.220825 -7.765078 6.471983 l -3.433346 4.093015 V 172.33124 322.85323 l 3.327896 4.53668 c 1.83034 2.49517 5.542435 5.65925 8.249097 7.0313 l 4.921208 2.49462 101.19878 -0.28263 101.19877 -0.28264 z m -205.42943 -5.6284 c -4.786269 -2.40077 -6.500665 -4.04687 -9.001042 -8.64248 l -3.088671 -5.67684 V 172.85668 32.505855 L 95.289128 26.829 c 2.500377 -4.595604 4.214773 -6.241708 9.001042 -8.642481 l 5.91238 -2.965624 h 92.37294 92.37294 l 5.91237 2.965624 c 4.78627 2.400773 6.50067 4.046877 9.00105 8.642481 l 3.08867 5.676855 V 172.85668 313.20752 l -3.08867 5.67684 c -2.50038 4.59561 -4.21478 6.24171 -9.00105 8.64248 l -5.91237 2.96563 h -92.37294 -92.37294 z" FillRule="NonZero"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
         <Canvas x:Shared="false"  x:Key="File" Width="210" Height="297">
             <Canvas.RenderTransform>
                 <TransformGroup>
@@ -157,6 +175,7 @@
                     <ColumnDefinition Width="0.045*"/>
                     <ColumnDefinition Width="0.045*"/>
                 </Grid.ColumnDefinitions>
+                <Rectangle Grid.Column="0" MouseDown="Rectangle_MouseDown" Fill="Black" Opacity="0"/>
                 <Button Content="_" Style="{StaticResource CustomButtonStyle}" Grid.Column="1" Padding="0" Foreground="White" FontWeight="ExtraBlack" BorderThickness="0" Click="MinimizeApp" />
                 <Button Content="[ ]" Style="{StaticResource CustomButtonStyle}" Grid.Column="2" Padding="0" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="MaximizeApp"/>
                 <Button Content="X" Style="{StaticResource ButtonClose}" Grid.Column="3" Padding="0" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="CerrarApp"/>
@@ -165,7 +184,8 @@
                 <DockPanel>
                     <Grid Width="280" HorizontalAlignment="Left" Background="#FF121212">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="0.3*"/>
+                            <RowDefinition Height="0*"/>
+                            <!--Mostrar 0.3-->
                             <RowDefinition Height="*"/>
 
                             <RowDefinition Height="0.05*"/>
@@ -182,7 +202,7 @@
                                 <RowDefinition Height="150px"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Button Content="Options" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="showOptions"/>
+                            <Button Content="Options" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="showOptions" Visibility="Hidden"/>
 
                         </Grid>
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
@@ -207,9 +227,38 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.7*" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="0.7*" />
+                                <ColumnDefinition Width="0.8*" />
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="Return" Content="Button" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Bottom" Width="75" Height="75" Click="Return_MouseLeftButtonUp" Visibility="Hidden"/>
+
+                            <Border x:Name="borderEnter" Margin="0,0,0,10" CornerRadius="15" BorderThickness="3" Width="75" Height="75" Grid.Column="2" Grid.Row="2" BorderBrush="#FF3C3C3C" VerticalAlignment="Bottom" Visibility="Hidden">
+
+                                <Viewbox Stretch="None" RenderOptions.BitmapScalingMode="HighQuality" >
+                                    <Canvas Width="94" Height="97">
+                                        <Canvas.RenderTransform>
+                                            <TranslateTransform X="-7" Y="-15"/>
+                                        </Canvas.RenderTransform>
+                                        <Canvas.Resources/>
+                                        <!--Unknown tag: sodipodi:namedview-->
+                                        <!--Unknown tag: metadata-->
+                                        <Canvas Height="97" Width="97">
+                                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="22" Canvas.Top="32" Fill="#FF3C3C3C" Width="38" Height="38" RenderTransformOrigin="0.5,0.5" >
+                                                <Path.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform/>
+                                                        <SkewTransform/>
+                                                        <RotateTransform Angle="-180"/>
+                                                        <TranslateTransform/>
+                                                    </TransformGroup>
+                                                </Path.RenderTransform>
+                                                <Path.Data>
+                                                    <PathGeometry Figures="m 0.18792389 290.1747 0.002953 1.03943 H 10.25154 10.511399 l -4.2758563 4.27586 0.6850819 0.68508 5.5869604 -5.58696 -5.610584 -5.61059 -0.8504462 0.85045 4.4648442 4.46484 z" FillRule="NonZero"/>
+                                                </Path.Data>
+                                            </Path>
+                                        </Canvas>
+                                    </Canvas>
+                                </Viewbox>
+                            </Border>
+                            <Button x:Name="Return" BorderThickness="0" Background="Black" BorderBrush="{x:Null}" Foreground="#FFEDEDED" HorizontalAlignment="Right" Margin="0,0,0,10" Grid.Column="2" VerticalAlignment="Bottom" Width="75" Height="75" Click="Return_MouseLeftButtonUp" Visibility="Hidden" Opacity="0" MouseEnter="return_MouseEnter" MouseLeave="return_MouseLeave"/>
                         </Grid>
 
                     </Grid>
@@ -224,7 +273,7 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="0*"/>
                                 </Grid.RowDefinitions>
-                                <Grid x:Name="GridPrincipal" Grid.Row="1">
+                                <Grid x:Name="GridPrincipal" Grid.Row="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="0.8*"/>
                                         <ColumnDefinition Width="0.075*"/>
@@ -232,20 +281,23 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
-                                        <Button Content="Button" Style="{StaticResource CustomButtonStyle}"  BorderThickness="0" Foreground="White" Margin="2"/>
-                                        <Button Content="Button" Style="{StaticResource CustomButtonStyle}" Padding="1" BorderThickness="0" Foreground="White" Margin="2" Click="ChangeMode"/>
+                                        <!--<Button Content="Button" Style="{StaticResource CustomButtonStyle}"  BorderThickness="0" Foreground="White" Margin="2" Visibility="Hidden"/>-->
                                         <Viewbox Width="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
+                                            <Button Content="{StaticResource ChangeModeIcon}" Style="{StaticResource CustomButtonStyle}" Padding="1" BorderThickness="0" Foreground="White" Margin="2" Click="ChangeMode"/>
+                                        </Viewbox>
+
+                                        <Viewbox Width="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <Button Content="{StaticResource multiFolderDynamic}" Style="{StaticResource ImageButtonStyle}" BorderThickness="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="Button_MouseLeftButtonUp" Margin="100"/>
                                         </Viewbox>
                                         <!--<Button Content="{StaticResource MultiFolderIcon}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="1" BorderThickness="0" Background="{x:Null}" Foreground="White" Click="Button_MouseLeftButtonUp"/>-->
-                                        <Viewbox Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <Viewbox Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3,0,0,0">
                                             <Button x:Name="addButton" Content="{StaticResource Folder}" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="Button_AddCarpeta" Margin="20"/>
                                         </Viewbox>
                                     </StackPanel>
-                                    <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
+                                    <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Hidden"/>
                                 </Grid>
 
-                                <Grid x:Name="GridSecundario" Grid.Row="0">
+                                <Grid x:Name="GridSecundario" Grid.Row="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="0.8*"/>
                                         <ColumnDefinition Width="0.075*"/>
@@ -253,20 +305,23 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
-                                        <Button Content="Button" Padding="1" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White"/>
-                                        <Button Content="Button" Padding="1" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="ChangeMode"/>
-                                        <Viewbox Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3,0,0,0">
-                                            <Button Content="{StaticResource File}" Padding="1" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White"/>
+                                        <!--<Button Content="Button" Padding="1" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White"/>
+                                        <Button Content="Button" Padding="1" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="ChangeMode"/>-->
+                                        <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
+                                            <Button Content="{StaticResource ChangeModeIcon}" Style="{StaticResource CustomButtonStyle}" Padding="1" BorderThickness="0" Foreground="White" Margin="2" Click="ChangeMode"/>
                                         </Viewbox>
-                                        
+                                        <Viewbox Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3,0,0,0">
+                                            <Button Content="{StaticResource File}" Padding="1" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="newFile_Click"/>
+                                        </Viewbox>
+
                                         <Viewbox Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3,0,0,0">
                                             <Button x:Name="addSubCarp" Content="{StaticResource Folder}" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="NewTemp_Click" Margin="20"/>
                                         </Viewbox>
                                     </StackPanel>
-                                    <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0"/>
+                                    <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Hidden"/>
                                 </Grid>
                             </Grid>
-                            <Grid x:Name="gridPrincipal" Grid.Row="1" Background="#FF262626" />
+                            <Grid x:Name="gridPrincipal" Grid.Row="1" Background="#FF262626"/>
                         </Grid>
 
                     </Border>

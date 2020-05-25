@@ -330,6 +330,7 @@ namespace ProyectoWPF {
             foreach (WrapPanelPrincipal wp in _wrapsSecundarios) {
                 wp.Visibility = System.Windows.Visibility.Hidden;
             }
+            
         }
 
         public static void changeMode() {
@@ -487,6 +488,7 @@ namespace ProyectoWPF {
             string name = b.Content.ToString();
             long id = 0;
             MenuClass aux = null;
+            Menu menu = getMenuVisible();
             foreach (MenuClass m in _menusClass) {
                 if (m.nombre.Equals(name)) {
                     id=m.id;
@@ -500,8 +502,10 @@ namespace ProyectoWPF {
             if (id != 0) {
                 removeFolderByMenu(id);
                 removeWrapPanelPrincipal(getWrapFromMenu(aux));
+                //removeMenuFromPrinc(menu);
                 _menusClass.Remove(aux);
                 Console.WriteLine("Borrado menu " + name);
+                Lista.hideAllExceptPrinc();
             }
             
         }
@@ -576,6 +580,25 @@ namespace ProyectoWPF {
                 foreach(UIElement o in hijos) {
                     wp.getWrapPanel().Children.Add(o);
                 }
+            }
+        }
+        public static void orderWrap(WrapPanelPrincipal wp) {
+            List<UIElement> hijos = OrderClass.orderChildOfWrap(wp.hijos);
+            wp.getWrapPanel().Children.Clear();
+            foreach (UIElement o in hijos) {
+                wp.getWrapPanel().Children.Add(o);
+            }
+        }
+
+        public static void removeMenuFromPrinc(Menu m) {
+            try {
+                foreach (WrapPanelPrincipal wp in _wrapsPrincipales) {
+                    if (wp.getWrapPanel().Children.Contains(m)) {
+                        wp.getWrapPanel().Children.Remove(m);
+                    }
+                }
+            } catch (Exception e) {
+                Console.WriteLine("No se ha podido borrar el menu");
             }
         }
     }

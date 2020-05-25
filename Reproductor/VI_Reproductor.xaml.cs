@@ -339,13 +339,14 @@ namespace Reproductor
 
 
         private void gridControles_MouseLeave(object sender, MouseEventArgs e) {
-            if (videoPlayerProperties.isFullScreen()) {
+            //if (videoPlayerProperties.isFullScreen()) {
                 gridControles.Background = new SolidColorBrush(Color.FromArgb(0, 23, 23, 23));
+                
                 gridBotonesPrincipales.Visibility = Visibility.Hidden;
                 dockTimeLine.Visibility = Visibility.Hidden;
                 gridVolume.Visibility = Visibility.Hidden;
                 gridOthers.Visibility = Visibility.Hidden;
-            }
+            //}
 
         }
 
@@ -399,13 +400,15 @@ namespace Reproductor
         }
 
         private void gridControles_MouseEnter(object sender, MouseEventArgs e) {
-            if (videoPlayerProperties.isFullScreen()) {
+            //if (videoPlayerProperties.isFullScreen()) {
+                
                 gridControles.Background = new SolidColorBrush(Color.FromArgb(255, 23, 23, 23));
+                
                 gridBotonesPrincipales.Visibility = Visibility.Visible;
                 dockTimeLine.Visibility = Visibility.Visible;
                 gridVolume.Visibility = Visibility.Visible;
                 gridOthers.Visibility = Visibility.Visible;
-            }
+            //}
         }
 
         private void timeLine_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {

@@ -349,12 +349,17 @@ namespace ProyectoWPF {
             _archivos = null;
             _wrapPanelAnterior.removeFolder(this);
             Lista.removeSubFolders(this);
-            _wrapCarpetaPropia.removeChildrens();
-            Lista.removeWrapPanelSecundario(_wrapCarpetaPropia);
-            _wrapCarpetaPropia = null;
+            if (_wrapCarpetaPropia != null) {
+                _wrapCarpetaPropia.removeChildrens();
+                Lista.removeWrapPanelSecundario(_wrapCarpetaPropia);
+                _wrapCarpetaPropia = null;
+            }
+
+            if (_menuCarpeta != null) {
+                _menuCarpeta.remove();
+                _menuCarpeta = null;
+            }
             
-            _menuCarpeta.remove();
-            _menuCarpeta = null;
             Lista.removeCarpetaClass(_carpeta.id);
         }
     }

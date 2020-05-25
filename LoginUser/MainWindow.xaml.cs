@@ -144,13 +144,27 @@ namespace LoginUser {
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e) {
-            for (int i = 0; i < 10; i++) {
-                borderEnter.Background = new SolidColorBrush(Color.FromArgb((byte)(25.5 * i), 255, 255, 255));
-            }
+            borderEnter.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
         }
 
         private void Button_MouseLeave(object sender, MouseEventArgs e) {
             borderEnter.Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255));
+        }
+
+        private void return_MouseEnter(object sender, MouseEventArgs e) {
+            returnBorder.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+        }
+
+        private void return_MouseLeave(object sender, MouseEventArgs e) {
+            returnBorder.Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255));
+        }
+
+        private void newUser_MouseEnter(object sender, MouseEventArgs e) {
+            borderEnterNew.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+        }
+
+        private void newUser_MouseLeave(object sender, MouseEventArgs e) {
+            borderEnterNew.Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255));
         }
 
         private void create_MouseEnter(object sender, MouseEventArgs e) {
@@ -172,8 +186,6 @@ namespace LoginUser {
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e) {
             Point p = Mouse.GetPosition(inputUser);
             Point h = Mouse.GetPosition(inputPass);
-            Console.WriteLine(p.X + " || "+p.Y + " |||||| " + inputUser.ActualWidth + " || " + inputUser.ActualHeight);
-            //Console.WriteLine(h.X + " || "+h.Y + " |||||| " + inputPass.ActualWidth + " || " + inputPass.ActualHeight);
             if ((p.X >= 0 && p.X <= inputUser.ActualWidth) && (p.Y >= 0 && p.Y <= inputUser.ActualHeight)) {
                 userError.Visibility = Visibility.Hidden;
                 //inputPass.lostFocus();
@@ -190,17 +202,14 @@ namespace LoginUser {
             Point p = Mouse.GetPosition(newUser);
             Point h = Mouse.GetPosition(newPass1);
             Point q = Mouse.GetPosition(newPass2);
-            Console.WriteLine(p.X + " || "+p.Y + " |||||| " + newUser.ActualWidth + " || " + newUser.ActualHeight);
-            Console.WriteLine(h.X + " || "+h.Y + " |||||| " + newPass1.ActualWidth + " || " + newPass1.ActualHeight);
-            Console.WriteLine(q.X + " || " + q.Y + " |||||| " + newPass2.ActualWidth + " || " + newPass2.ActualHeight);
             if ((p.X >= 0 && p.X <= newUser.ActualWidth) && (p.Y >= 0 && p.Y <= newUser.ActualHeight)) {
-                //userError.Visibility = Visibility.Hidden;
+                newUserNameError.Visibility = Visibility.Hidden;
                 //inputPass.lostFocus();
             } else if ((h.X >= 0 && h.X <= newPass1.ActualWidth) && (h.Y >= 0 && h.Y <= newPass1.ActualHeight)) {
-                //passError.Visibility = Visibility.Hidden;
+                newPass1Error.Visibility = Visibility.Hidden;
                 //inputUser.lostFocus();
             } else if((q.X >= 0 && q.X <= newPass2.ActualWidth) && (q.Y >= 0 && q.Y <= newPass2.ActualHeight)){
-                
+                newPass2Error.Visibility = Visibility.Hidden;
             } else {
                 newUser.lostFocus(true);
                 newPass1.lostFocus(true);
@@ -230,9 +239,44 @@ namespace LoginUser {
             this.Close();
         }
 
-        private void createUser(object sender, EventArgs e) {
+        private void showCreateUser(object sender, EventArgs e) {
             gridLogin.Visibility = Visibility.Hidden;
             gridNewUser.Visibility = Visibility.Visible;
+        }
+
+        private void showLogin(object sender, EventArgs e) {
+            gridLogin.Visibility = Visibility.Visible;
+            gridNewUser.Visibility = Visibility.Hidden;
+        }
+
+        private void createUserClick(object sender, EventArgs e) {
+            newUserNameError.Visibility = Visibility.Hidden;
+            newPass1Error.Visibility = Visibility.Hidden;
+            newPass2Error.Visibility = Visibility.Hidden;
+            if (newUser.getText().CompareTo("") != 0) {
+                if(newPass1.getText().Length >= 8) {
+                    if (newPass2.getText().CompareTo(newPass1.getText()) == 0) {
+                        string message = Conexion.saveUser(newUser.getText(), newPass1.getText());
+                        if(message.CompareTo("Usuario existe") == 0) {
+                            newUserNameError.Content = "El nombre de usuario ya existe";
+                            newUserNameError.Visibility = Visibility.Visible;
+                        }else if(message.CompareTo("Usuario creado") == 0) {
+                            MessageBox.Show("Se ha creado correctamente el usuario");
+                            gridLogin.Visibility = Visibility.Visible;
+                            gridNewUser.Visibility = Visibility.Hidden;
+                        }
+                    } else {
+                        newPass2Error.Content = "No coinciden las contraseñas";
+                        newPass2Error.Visibility = Visibility.Visible;
+                    }
+                } else {
+                    newPass1Error.Content = "La contraseña debe tener 8 caracteres como mínimo";
+                    newPass1Error.Visibility = Visibility.Visible;
+                }
+            } else {
+                newUserNameError.Content = "No has introducido un nombre de usuario";
+                newUserNameError.Visibility = Visibility.Visible;
+            }
         }
     }
 }

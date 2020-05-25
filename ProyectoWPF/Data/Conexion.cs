@@ -12,6 +12,47 @@ namespace ProyectoWPF.Data {
             return conexion;
         }
 
+        public static string saveUser(string name, string pass) {
+            MySqlConnection conexion = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                MySqlTransaction myTrans = conexion.BeginTransaction();
+
+                MySqlCommand comando = new MySqlCommand("SELECT id FROM Usuario WHERE nick=@nombre and pass=@pass", conexion);
+                comando.Parameters.AddWithValue("@nombre", name);
+                comando.Parameters.AddWithValue("@pass", pass);
+                MySqlDataReader reader = comando.ExecuteReader();
+
+                if (!reader.HasRows) {
+                    reader.Close();
+
+                    comando = new MySqlCommand("INSERT INTO Usuario VALUES (null, @nombre, @pass)", conexion);
+                    comando.Transaction = myTrans;
+
+                    comando.Parameters.AddWithValue("@nombre", name);
+                    comando.Parameters.AddWithValue("@pass", pass);
+                    comando.ExecuteNonQuery();
+                    myTrans.Commit();
+
+                    comando.Parameters.Clear();
+                    reader.Close();
+                    return "Usuario creado";
+                } else {
+                    return "Usuario existe";
+                }
+
+            } catch (MySqlException e) {
+                Console.WriteLine("Perfil  \n" + e);
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+            return "Usuario no se ha podido crear";
+        }
+
         public static PerfilClassOnline saveProfile(PerfilClassOnline p) {
             MySqlConnection conexion = null;
             try {

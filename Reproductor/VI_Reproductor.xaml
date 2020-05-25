@@ -50,18 +50,17 @@
         <Grid.RowDefinitions>
             <RowDefinition x:Name="closeGrid" Height="30"/>
             <RowDefinition x:Name="videoSpace" Height="*"/>
-            <RowDefinition x:Name="buttonSpace" Height="120"/>
+            <RowDefinition x:Name="buttonSpace" Height="0"/>
         </Grid.RowDefinitions>
         <Grid Height="30" DockPanel.Dock="Top" VerticalAlignment="Top" Background="#FF121212">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="0.045*"/>
-                <ColumnDefinition Width="0.045*"/>
-                <ColumnDefinition Width="0.045*"/>
             </Grid.ColumnDefinitions>
             <Button Content="X" Style="{StaticResource ButtonClose}" Grid.Column="3" Padding="0" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="CerrarReproductor"/>
         </Grid>
-        <Grid x:Name="gridControles" Height="120" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.Row="2" Panel.ZIndex="10" MouseLeave="gridControles_MouseLeave" Focusable="True" LostKeyboardFocus="gridControles_LostKeyboardFocus" FocusVisualStyle="{x:Null}" MouseEnter="gridControles_MouseEnter">
+        
+        <Grid x:Name="gridControles" Height="120" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.Row="1" Panel.ZIndex="10" MouseLeave="gridControles_MouseLeave" Focusable="True" LostKeyboardFocus="gridControles_LostKeyboardFocus" FocusVisualStyle="{x:Null}" MouseEnter="gridControles_MouseEnter">
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FF171717" Offset="1"/>

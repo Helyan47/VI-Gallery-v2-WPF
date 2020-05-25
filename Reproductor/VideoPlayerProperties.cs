@@ -39,8 +39,8 @@ namespace Reproductor {
 
         public void setFullScreen() {
             if (isFullscreen) {
-                parentUser.getButtonSpace().Height = new GridLength(120);
-                parentUser.getGridControles().SetValue(Grid.RowProperty, 1);
+                //parentUser.getButtonSpace().Height = new GridLength(120);
+                //parentUser.getGridControles().SetValue(Grid.RowProperty, 1);
                 isFullscreen = false;
                 parentUser.getRowClose().Height = new GridLength(30,GridUnitType.Pixel);
                 /*Color aux = Color.FromArgb(255, 23, 23, 23);
@@ -48,8 +48,8 @@ namespace Reproductor {
                 aux = Color.FromArgb(255, 23, 23, 23);
                 parentUser.getLastColorStop().Color = aux;*/
             } else {
-                parentUser.getButtonSpace().Height = new GridLength(0);
-                parentUser.getGridControles().SetValue(Grid.RowProperty, 0);
+                //parentUser.getButtonSpace().Height = new GridLength(0);
+                //parentUser.getGridControles().SetValue(Grid.RowProperty, 0);
                 isFullscreen = true;
                 parentUser.getRowClose().Height = new GridLength(0, GridUnitType.Pixel);
                 /*Color aux = Color.FromArgb(74, 23, 23, 23);
