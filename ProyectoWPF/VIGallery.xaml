@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProyectoWPF"
+        xmlns:componentes="clr-namespace:ProyectoWPF.Components"
         xmlns:reproductor="clr-namespace:Reproductor;assembly=Reproductor"
         mc:Ignorable="d"
         ResizeMode="CanResize"
@@ -83,6 +84,24 @@
                 <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="White" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="7.875" Canvas.Top="0" >
                     <Path.Data>
                         <PathGeometry Figures="m 97.03037 398.00464 c -11.220219 -2.93952 -18.680919 -7.36137 -27.72386 -16.43153 -5.94564 -5.96354 -8.971322 -9.98767 -11.689058 -15.54631 -7.191763 -14.70947 -6.880123 -6.66741 -6.568341 -169.5 l 0.279552 -146.00001 3.059923 -8.544169 c 1.682957 -4.699293 4.764602 -11.112377 6.8481 -14.251299 C 66.571263 19.694441 76.593331 10.875479 85.256651 6.5948505 98.48614 0.05803526 100.38319 -0.07561174 175.42007 0.24283713 l 66.90859 0.2839533 6.5 3.09027427 c 10.48505 4.9848756 20.4932 13.8093283 56.5513 49.8627963 36.03427 36.029641 44.86615 46.046326 49.85843 56.546939 l 3.09027 6.5 0.28024 113 c 0.31292 126.17213 0.51298 122.01503 -6.56903 136.5 -2.71774 5.55864 -5.74342 9.58277 -11.68906 15.54631 -9.16556 9.19316 -16.54669 13.51876 -28.11816 16.47825 -7.44688 1.90459 -11.31387 1.97347 -107.81395 1.92038 -95.24432 -0.0524 -100.44337 -0.14763 -107.38833 -1.9671 z m 213.50632 -32.0085 c 7.37748 -3.62852 12.49274 -9.21726 15.29739 -16.71337 1.98817 -5.31385 2.01709 -7.14418 1.758 -111.26387 l -0.26342 -105.86113 -2.78732 -2.90916 c -4.93893 -5.15481 -7.42294 -5.49948 -44.21268 -6.13473 -37.17871 -0.64197 -38.03034 -0.77923 -42.1015 -6.78597 -1.7466 -2.57699 -1.94232 -5.60146 -2.44617 -37.80112 -0.59715 -38.162172 -1.02245 -41.050197 -6.70326 -45.518721 -2.44711 -1.924894 -4.22142 -1.981279 -62.34642 -1.981279 -58.20437 0 -59.97892 0.05661 -65.40385 2.086334 -7.441149 2.784092 -14.628369 9.971312 -17.412459 17.412463 -2.07962 5.55828 -2.08634 6.039478 -2.08634 149.501213 0 141.66761 0.0315 144.00915 2.008 149.29183 3.8837 10.38011 13.711319 18.28202 24.352809 19.58089 2.82655 0.34501 48.11419 0.51988 100.63919 0.38862 l 95.5 -0.23866 z M 164.78845 289.24669 c -1.88758 -0.94594 -3.99409 -2.84489 -4.68114 -4.21989 -0.95097 -1.9032 -1.25269 -15.10428 -1.26391 -55.29966 -0.0158 -56.44745 0.0341 -57.05054 4.92987 -59.6707 5.02456 -2.68906 7.38408 -1.57575 53.32951 25.16308 24.75388 14.40599 45.82139 27.0668 46.81669 28.13513 0.9953 1.06833 2.08558 3.19876 2.42284 4.7343 1.3892 6.325 0.32298 7.10997 -47.77817 35.17487 -24.92543 14.54289 -46.44953 26.72538 -47.83134 27.07219 -1.53325 0.38482 -3.84991 -0.0397 -5.94435 -1.08932 z m 113.83153 -185.42857 0.29132 -7.708689 7.70868 -0.291321 7.70868 -0.29132 v -6.5 -6.5 l -7.70868 -0.29132 -7.70868 -0.291321 -0.29132 -7.708679 -0.29132 -7.70868 h -6.5 -6.5 l -0.29132 7.70868 -0.29132 7.708679 -7.70868 0.291321 -7.70868 0.29132 v 6.5 6.5 l 7.75 0.292064 7.75 0.292065 v 7.291281 c 0 4.0102 0.31903 7.6103 0.70896 8.00023 0.38993 0.38992 3.42743 0.57742 6.75 0.41666 l 6.04104 -0.29229 z" FillRule="NonZero"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+        <Canvas x:Shared="false"  x:Key="OfflineMenuButton" Width="210" Height="297">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <TranslateTransform X="-335" Y="50"/>
+                    <ScaleTransform ScaleX="-0.60" ScaleY="0.60"/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <!--Unknown tag: sodipodi:namedview-->
+            <!--Unknown tag: metadata-->
+            <Canvas Name="OfflineMenuCanvas" >
+                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="White" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="7.875" Canvas.Top="0" >
+                    <Path.Data>
+                        <PathGeometry Figures="m 134 382.0156 c 0 -4.45295 2.34748 -7.55578 7.99292 -10.56476 9.75991 -5.20198 10.41152 -6.95337 11.00708 -29.58446 l 0.5 -19 h 46.5 46.5 l 0.5 19 c 0.59556 22.63109 1.24717 24.38248 11.00708 29.58446 5.64544 3.00898 7.99292 6.11181 7.99292 10.56476 0 1.12073 -11.24052 1.35078 -66 1.35078 -54.75948 0 -66 -0.23005 -66 -1.35078 z M 23.5 313.70475 c -4.412239 -2.32607 -7.423685 -5.33485 -9.847095 -9.83837 -1.942701 -3.6102 -2.184436 -5.82719 -2.480596 -22.75 l -0.328138 -18.75 H 200 389.15583 l -0.32792 18.75 c -0.27938 15.97523 -0.6042 19.26796 -2.19488 22.25 -2.61077 4.89439 -5.52299 7.88179 -9.84319 10.09732 -3.60571 1.84911 -8.58902 1.90155 -177 1.86264 C 43.763761 315.29034 26.201129 315.12874 23.5 313.70475 Z m 182.59301 -18.92254 c 0.94833 -0.85823 2.26181 -2.85823 2.91884 -4.44444 1.00124 -2.41721 0.89464 -3.49808 -0.65862 -6.67771 -3.68933 -7.5523 -13.00058 -7.45539 -16.76834 0.17453 -1.8868 3.82089 -1.8868 3.93069 0 7.43111 1.05331 1.9541 3.04011 4.13779 4.41511 4.85265 2.91582 1.51592 7.6313 0.89168 10.09301 -1.33614 z M 11 145.7324 C 11 63.01331 11.291665 36.124939 12.222645 33.017604 14.12811 26.657729 20.399663 20.835213 26.799221 19.484698 c 7.489196 -1.580464 338.922219 -1.585859 346.290549 -0.0056 6.38512 1.369364 12.82467 7.292596 14.68039 13.503348 C 388.71047 36.129438 389 62.672983 389 145.7324 V 254.36638 H 200 11 Z m 360 -7.86602 V 40.36639 H 200 29 v 97.49999 97.5 h 171 171 z" FillRule="NonZero"/>
                     </Path.Data>
                 </Path>
             </Canvas>
@@ -184,11 +203,12 @@
                 <DockPanel>
                     <Grid Width="280" HorizontalAlignment="Left" Background="#FF121212">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="0*"/>
+                            <RowDefinition Height="0.3*"/>
+                            <RowDefinition Height="0.05*"/>
                             <!--Mostrar 0.3-->
                             <RowDefinition Height="*"/>
 
-                            <RowDefinition Height="0.05*"/>
+                            <RowDefinition x:Name="rowAddMenu" Height="0.05*"/>
                             <RowDefinition Height="0.25*"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
@@ -202,15 +222,82 @@
                                 <RowDefinition Height="150px"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Button Content="Options" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="showOptions" Visibility="Hidden"/>
+                            <Button Content="Options" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="showOptions" Visibility="Visible"/>
 
                         </Grid>
-                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle x:Name="rectOffline" Fill="#FF595959" Visibility="Visible"/>
+                            <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                                <Canvas Width="210" Height="297">
+                                    <Canvas.RenderTransform>
+                                        <TransformGroup>
+                                            <TranslateTransform X="-335" Y="50"/>
+                                            <ScaleTransform ScaleX="-0.60" ScaleY="0.60"/>
+                                        </TransformGroup>
+                                    </Canvas.RenderTransform>
+                                    <Canvas.Resources/>
+                                    <!--Unknown tag: sodipodi:namedview-->
+                                    <!--Unknown tag: metadata-->
+                                    <Canvas>
+                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="White" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="7.875" Canvas.Top="0" >
+                                            <Path.Data>
+                                                <PathGeometry Figures="m 134 382.0156 c 0 -4.45295 2.34748 -7.55578 7.99292 -10.56476 9.75991 -5.20198 10.41152 -6.95337 11.00708 -29.58446 l 0.5 -19 h 46.5 46.5 l 0.5 19 c 0.59556 22.63109 1.24717 24.38248 11.00708 29.58446 5.64544 3.00898 7.99292 6.11181 7.99292 10.56476 0 1.12073 -11.24052 1.35078 -66 1.35078 -54.75948 0 -66 -0.23005 -66 -1.35078 z M 23.5 313.70475 c -4.412239 -2.32607 -7.423685 -5.33485 -9.847095 -9.83837 -1.942701 -3.6102 -2.184436 -5.82719 -2.480596 -22.75 l -0.328138 -18.75 H 200 389.15583 l -0.32792 18.75 c -0.27938 15.97523 -0.6042 19.26796 -2.19488 22.25 -2.61077 4.89439 -5.52299 7.88179 -9.84319 10.09732 -3.60571 1.84911 -8.58902 1.90155 -177 1.86264 C 43.763761 315.29034 26.201129 315.12874 23.5 313.70475 Z m 182.59301 -18.92254 c 0.94833 -0.85823 2.26181 -2.85823 2.91884 -4.44444 1.00124 -2.41721 0.89464 -3.49808 -0.65862 -6.67771 -3.68933 -7.5523 -13.00058 -7.45539 -16.76834 0.17453 -1.8868 3.82089 -1.8868 3.93069 0 7.43111 1.05331 1.9541 3.04011 4.13779 4.41511 4.85265 2.91582 1.51592 7.6313 0.89168 10.09301 -1.33614 z M 11 145.7324 C 11 63.01331 11.291665 36.124939 12.222645 33.017604 14.12811 26.657729 20.399663 20.835213 26.799221 19.484698 c 7.489196 -1.580464 338.922219 -1.585859 346.290549 -0.0056 6.38512 1.369364 12.82467 7.292596 14.68039 13.503348 C 388.71047 36.129438 389 62.672983 389 145.7324 V 254.36638 H 200 11 Z m 360 -7.86602 V 40.36639 H 200 29 v 97.49999 97.5 h 171 171 z" FillRule="NonZero"/>
+                                            </Path.Data>
+                                        </Path>
+                                    </Canvas>
+                                </Canvas>
+                                <!--<Button Grid.Row="0" Content="{StaticResource OfflineMenuButton}" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Margin="0" Click="ChangeMode"/>-->
+                            </Viewbox>
+                            <Button x:Name="bOfflineMenu" Opacity="0" Content="" Grid.Column="0" Click="onChangeMenuClick"/>
+                            <Rectangle x:Name="rectOnline" Fill="#FF595959" Grid.Column="1" Visibility="Hidden"/>
+                            <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1">
+                                <Canvas Width="210" Height="297">
+                                    <Canvas.RenderTransform>
+                                        <TransformGroup>
+                                            <TranslateTransform X="0" Y="50"/>
+                                            <ScaleTransform ScaleX="-0.60" ScaleY="0.60"/>
+                                        </TransformGroup>
+                                    </Canvas.RenderTransform>
+                                    <Canvas.Resources/>
+                                    <!--Unknown tag: sodipodi:namedview-->
+                                    <!--Unknown tag: metadata-->
+                                    <Canvas>
+                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="White" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="-312.359" Canvas.Top="22.137" Height="297.726" RenderTransformOrigin="0.5,0.5" Width="320.359" >
+                                            <Path.RenderTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform ScaleX="-1"/>
+                                                    <SkewTransform/>
+                                                    <RotateTransform/>
+                                                    <TranslateTransform/>
+                                                </TransformGroup>
+                                            </Path.RenderTransform>
+                                            <Path.Data>
+                                                <PathGeometry Figures="m 41.364734 369.51094 c -27.44914 -10.8986 -28.462634 -48.60332 -1.659661 -61.74388 4.752458 -2.32997 6.945374 -2.77548 13.680688 -2.77935 7.054686 -0.004 8.826651 0.39199 14.708026 3.28738 11.555965 5.68898 17.823111 15.19782 18.544522 28.13671 0.341467 6.12437 -0.0068 8.70826 -1.822179 13.52071 -2.731588 7.24111 -9.463636 14.74993 -16.431592 18.32754 -6.92938 3.5578 -19.718431 4.14988 -27.019804 1.25089 z m 98.500006 -19.41738 c 0 -14.1767 -4.41105 -30.9381 -11.92431 -45.31079 -12.33101 -23.58894 -34.159774 -42.10381 -59.41401 -50.39419 -3.700053 -1.21464 -6.600091 -2.53208 -6.444528 -2.92764 0.155563 -0.39556 3.646782 -9.31052 7.758265 -19.811 8.532923 -21.79259 6.224476 -20.0003 19.95832 -15.49579 19.745883 6.47637 37.396473 17.52887 53.123903 33.26527 26.22042 26.23539 39.92629 59.11633 39.93834 95.81367 l 0.004 12.25 h -21.5 -21.5 z m 98.61997 0.63953 c 1.84676 -9.54111 1.72448 -32.88365 -0.23219 -44.32378 -5.94153 -34.7386 -22.49269 -66.03015 -48.88778 -92.42704 -17.77877 -17.77997 -35.08281 -29.25722 -55.54333 -36.84018 -10.67838 -3.95756 -27.33738 -7.659 -34.470744 -7.659 -4.05782 0 -4.61083 -0.23908 -4.0479 -1.75 0.35861 -0.9625 4.51936 -11.58717 9.246124 -23.61038 l 8.5941 -21.86037 4.90804 0.65107 c 7.57813 1.00528 23.07314 5.25455 32.65569 8.95534 86.55962 33.42935 147.7147 132.37993 136.50226 220.86434 l -0.6019 4.75 H 261.89264 237.1782 Z m 97.3802 6 c 10e-5 -0.4125 0.75683 -4.35 1.68163 -8.75 1.27614 -6.07155 1.69413 -13.42377 1.73401 -30.5 0.0451 -19.33234 -0.27555 -24.3302 -2.27799 -35.5 -7.57325 -42.24433 -27.29279 -84.86742 -55.74922 -120.5 -8.69949 -10.89332 -30.57184 -32.82928 -40.8886 -41.00752 -29.23711 -23.176636 -64.1633 -39.720681 -94.9746 -44.988136 -6.53757 -1.117653 -12.04123 -2.186839 -12.23036 -2.375971 -0.44899 -0.448983 15.7208 -41.844036 16.81809 -43.054726 1.32903 -1.466384 20.6131 2.999928 38.88687 9.006446 40.07368 13.172062 78.28518 36.933232 110.0294 68.419907 66.53141 65.99165 99.02278 158.45061 86.35998 245.75 l -0.61647 4.25 H 360.2512 c -13.41255 0 -24.38638 -0.3375 -24.38629 -0.75 z" FillRule="NonZero"/>
+                                            </Path.Data>
+                                        </Path>
+                                    </Canvas>
+                                </Canvas>
+                                <!--<Button Grid.Row="0" Content="{StaticResource OfflineMenuButton}" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Margin="0" Click="ChangeMode"/>-->
+                            </Viewbox>
+                            <Button x:Name="bOnlineMenu" Content="" Opacity="0" Grid.Column="1" Click="onChangeMenuClick"/>
+                        </Grid>
+                        <ScrollViewer x:Name="menuOffline" Grid.Row="2" VerticalScrollBarVisibility="Hidden">
                             <StackPanel x:Name="buttonStack" CanVerticallyScroll="True" >
 
                             </StackPanel>
                         </ScrollViewer>
-                        <Border x:Name="menuButtons" BorderThickness="0" BorderBrush="Red" Grid.Row="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+                        <ScrollViewer x:Name="menuOnline" Grid.Row="2" VerticalScrollBarVisibility="Hidden" Visibility="Hidden">
+                            <StackPanel x:Name="buttonStackOnline" CanVerticallyScroll="True" >
+                                <Button Content="Panel Principal" Style="{StaticResource CustomButtonStyle}" FontSize="30" Height="100" Foreground="White" FontWeight="Bold" Click="changeOnlinePanel"/>
+                                <Button Content="Todos" Style="{StaticResource CustomButtonStyle}" FontSize="30" Height="100" Foreground="White" FontWeight="Bold" Click="changeOnlinePanel"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <Border x:Name="menuButtons" BorderThickness="0" BorderBrush="Red" Grid.Row="3"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Grid>
                                 <StackPanel x:Name="addButtonStack" Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Button Content="+" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="20" BorderThickness="0" Width="50" Click="addMenuClick" FontWeight="Bold"/>
@@ -221,8 +308,8 @@
                         </Border>
 
                         <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
-                        <GridSplitter Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
                         <GridSplitter Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
+                        <GridSplitter Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
                         <Grid Grid.Row="4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.7*" />
@@ -265,10 +352,10 @@
                     <Border CornerRadius="10,0,0,0" Background="#202020" Margin="0">
                         <Grid DockPanel.Dock="Top" >
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition x:Name="rowBuscador" Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Grid Height="30" VerticalAlignment="Top" Grid.Row="0">
+                            <Grid x:Name="buscadorOffline" Height="30" VerticalAlignment="Top" Grid.Row="0" Visibility="Visible">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="0*"/>
@@ -321,7 +408,43 @@
                                     <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Hidden"/>
                                 </Grid>
                             </Grid>
-                            <Grid x:Name="gridPrincipal" Grid.Row="1" Background="#FF262626"/>
+                            <Grid x:Name="buscadorOnline" Height="30" VerticalAlignment="Top" Grid.Row="0" Visibility="Hidden">
+                                <Grid x:Name="GridOnlineAll" Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.8*"/>
+                                        <ColumnDefinition Width="0.075*"/>
+                                        <ColumnDefinition Width="0.25*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Visible"/>
+                                </Grid>
+                            </Grid>
+                            <Grid x:Name="gridPrincipal" Grid.Row="1" Background="#FF262626" Visibility="Hidden"/>
+                            
+                                <Grid x:Name="gridOnlinePanelPrinc" Grid.Row="1" Background="#FF262626" Visibility="Visible">
+                                
+                                
+                                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="450"/>
+                                            <RowDefinition Height="0.1*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <componentes:MenuReciente></componentes:MenuReciente>
+                                        <Label Content="Más recientes" Foreground="White" FontSize="24" Grid.Row="1"/>
+
+                                        <StackPanel Orientation="Vertical" Grid.Row="2">
+                                            <componentes:ListaArchivos Titulo="Series más vistas" Height="400"></componentes:ListaArchivos>
+                                            <componentes:ListaArchivos Titulo="Películas más vistas" Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
+                                            <componentes:ListaArchivos Titulo="Más vistas 2019" Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
+                                        </StackPanel>
+                                    </Grid>
+                                </ScrollViewer>
+
+                            </Grid>
+                            
+                            <Grid x:Name="gridOnlineShowAll" Grid.Row="1" Background="#FF262626" Visibility="Hidden"/>
                         </Grid>
 
                     </Border>

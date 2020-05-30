@@ -124,6 +124,18 @@
     <Compile Include="Components\Archivo.xaml.cs">
       <DependentUpon>Archivo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\ListaArchivos.xaml.cs">
+      <DependentUpon>ListaArchivos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\MenuReciente.xaml.cs">
+      <DependentUpon>MenuReciente.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\VideoElement.xaml.cs">
+      <DependentUpon>VideoElement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\VideoReciente.xaml.cs">
+      <DependentUpon>VideoReciente.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Data\Base\ArchivoClass.cs" />
     <Compile Include="Data\Base\PerfilClassOnline.cs" />
     <Compile Include="Data\Conexion.cs" />
@@ -131,6 +143,11 @@
     <Compile Include="Data\Base\PerfilClass.cs" />
     <Compile Include="Data\Base\UsuarioClass.cs" />
     <Compile Include="Data\ConexionOffline.cs" />
+    <Compile Include="Data\Online\Capitulo.cs" />
+    <Compile Include="Data\Online\ListaOnline.cs" />
+    <Compile Include="Data\Online\Pelicula.cs" />
+    <Compile Include="Data\Online\Serie.cs" />
+    <Compile Include="Data\Online\Temporada.cs" />
     <Compile Include="Data\OrderClass.cs" />
     <Compile Include="NewFolders\AddButton.xaml.cs">
       <DependentUpon>AddButton.xaml</DependentUpon>
@@ -177,6 +194,22 @@
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="Components\Archivo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\ListaArchivos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\MenuReciente.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\VideoElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\VideoReciente.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

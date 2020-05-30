@@ -35,6 +35,7 @@ namespace ProyectoWPF {
         private static PerfilClass _newSelectedProfile = null;
         public static bool changedProfile = false;
         public static UsuarioClass _user { get; set; }
+        private bool panelPrincSelected = true;
         public VIGallery(PerfilClass profile) {
             InitializeComponent();
             _profile = profile;
@@ -686,7 +687,7 @@ namespace ProyectoWPF {
             Button newButton = new Button();
             newButton.Content = m.nombre;
             newButton.Height = 100;
-            newButton.FontSize = 40;
+            newButton.FontSize = 30;
             newButton.BorderThickness = new System.Windows.Thickness(0);
             newButton.FontWeight = FontWeights.Bold;
             newButton.Foreground = Brushes.White;
@@ -699,7 +700,6 @@ namespace ProyectoWPF {
             Lista.addMenu(m);
             Lista.addButtonMenu(newButton);
             buttonStack.Children.Add(newButton);
-            int cont = 0;
             string name = newButton.Content.ToString();
             _aux = new Carpeta(this);
             WrapPanelPrincipal wp = new WrapPanelPrincipal();
@@ -740,7 +740,7 @@ namespace ProyectoWPF {
             a.ShowDialog();
             if (a.isAdded()) {
                 newButton.Height = 100;
-                newButton.FontSize = 40;
+                newButton.FontSize = 30;
                 newButton.BorderThickness = new System.Windows.Thickness(0);
                 newButton.FontWeight = FontWeights.Bold;
                 newButton.Foreground = Brushes.White;
@@ -756,7 +756,6 @@ namespace ProyectoWPF {
                     if (mc != null) {
                         Lista.addMenu(mc);
                         buttonStack.Children.Add(newButton);
-                        int cont = 0;
                         string name = newButton.Content.ToString();
                         _aux = new Carpeta(this);
                         WrapPanelPrincipal wp = new WrapPanelPrincipal();
@@ -780,7 +779,6 @@ namespace ProyectoWPF {
                     if (mc != null) {
                         Lista.addMenu(mc);
                         buttonStack.Children.Add(newButton);
-                        int cont = 0;
                         string name = newButton.Content.ToString();
                         _aux = new Carpeta(this);
                         WrapPanelPrincipal wp = new WrapPanelPrincipal();
@@ -1059,6 +1057,69 @@ namespace ProyectoWPF {
 
         private void return_MouseLeave(object sender, MouseEventArgs e) {
             borderEnter.Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255));
+        }
+
+        private void onChangeMenuClick(object sender, EventArgs e) {
+            if (menuOnline.Visibility == Visibility.Hidden) {
+                menuOnline.Visibility = Visibility.Visible;
+                rectOnline.Visibility = Visibility.Visible;
+                
+                buscadorOnline.Visibility = Visibility.Visible;
+
+                rectOffline.Visibility = Visibility.Hidden;
+                gridPrincipal.Visibility = Visibility.Visible;
+                menuOffline.Visibility = Visibility.Hidden;
+                buscadorOffline.Visibility = Visibility.Hidden;
+
+                if (panelPrincSelected) {
+                    buscadorOnline.Visibility = Visibility.Hidden;
+                    rowBuscador.Height = new GridLength(0, GridUnitType.Star);
+                    gridOnlinePanelPrinc.Visibility = Visibility.Visible;
+                    gridOnlineShowAll.Visibility = Visibility.Hidden;
+                } else {
+                    buscadorOnline.Visibility = Visibility.Visible;
+                    rowBuscador.Height = new GridLength(30,GridUnitType.Auto);
+                    gridOnlineShowAll.Visibility = Visibility.Visible;
+                    gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
+                }
+                
+
+                rowAddMenu.Height = new GridLength(0, GridUnitType.Star);
+            } else {
+                menuOnline.Visibility = Visibility.Hidden;
+                rectOnline.Visibility = Visibility.Hidden;
+                gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
+                gridOnlineShowAll.Visibility = Visibility.Hidden;
+                buscadorOnline.Visibility = Visibility.Hidden;
+
+                menuOffline.Visibility = Visibility.Visible;
+                rectOffline.Visibility = Visibility.Visible;
+                gridPrincipal.Visibility = Visibility.Visible;
+                buscadorOffline.Visibility = Visibility.Visible;
+
+                rowBuscador.Height = new GridLength(30, GridUnitType.Auto);
+
+                rowAddMenu.Height = new GridLength(0.05, GridUnitType.Star);
+            }
+        }
+
+        private void changeOnlinePanel(object sender, EventArgs e) {
+            Button b = (Button)sender;
+            if (b.Content.ToString().CompareTo("Panel Principal") == 0) {
+                panelPrincSelected = true;
+                buscadorOnline.Visibility = Visibility.Hidden;
+                buscadorOffline.Visibility = Visibility.Hidden;
+                rowBuscador.Height = new GridLength(0, GridUnitType.Star);
+                gridOnlinePanelPrinc.Visibility = Visibility.Visible;
+                gridOnlineShowAll.Visibility = Visibility.Hidden;
+            } else {
+                panelPrincSelected = false;
+                buscadorOnline.Visibility = Visibility.Visible;
+                buscadorOffline.Visibility = Visibility.Visible;
+                rowBuscador.Height = new GridLength(30, GridUnitType.Auto);
+                gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
+                gridOnlineShowAll.Visibility = Visibility.Visible;
+            }
         }
     }
 }
