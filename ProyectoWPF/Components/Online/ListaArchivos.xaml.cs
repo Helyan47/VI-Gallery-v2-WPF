@@ -35,15 +35,33 @@ namespace ProyectoWPF.Components {
             foreach(VideoElement ve in lista) {
                 stackLista.Children.Add(ve);
                 this.VerticalAlignment = VerticalAlignment.Stretch;
-                this.HorizontalAlignment = HorizontalAlignment.Stretch;
+                ve.Width = 400;
+                ve.Margin = new Thickness(0, 0, 20, 0);
             }
         }
 
         public void addVideoElement(VideoElement ve) {
             listaVideoElement.Add(ve);
             stackLista.Children.Add(ve);
-            this.VerticalAlignment = VerticalAlignment.Stretch;
-            this.HorizontalAlignment = HorizontalAlignment.Stretch;
+            ve.Height = 200;
+            ve.Width = 400;
+            ve.Margin = new Thickness(0, 0, 20, 0);
+        }
+         
+        public void clear() {
+            stackLista.Children.Clear();
+            listaVideoElement = new List<VideoElement>();
+        }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e) {
+            ScrollViewer scrollViewer = (ScrollViewer)sender;
+            if (e.Delta < 0) {
+                scrollViewer.LineRight();
+            } else {
+                scrollViewer.LineLeft();
+            }
+            e.Handled = true;
         }
     }
+
 }

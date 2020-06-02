@@ -1,6 +1,8 @@
 ﻿using ProyectoWPF.Data.Online;
+using Reproductor;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +24,7 @@ namespace ProyectoWPF.Components {
 
         private Capitulo _capitulo = null;
         private Pelicula _pelicula = null;
+        private VIGallery main;
 
         public double TitleSize {
             get { return title.FontSize; }
@@ -31,8 +34,34 @@ namespace ProyectoWPF.Components {
             InitializeComponent();
         }
 
-        private void onClickReproducir(object sender, EventArgs e) {
+        public void setMain(VIGallery vi) {
+            main = vi;
+        }
 
+        private void onClickReproducir(object sender, EventArgs e) {
+            VI_Reproductor reproductor = new VI_Reproductor();
+            main.getFirstGrid().Children.Add(reproductor);
+            List<Uri> listaArchivos = new List<Uri>();
+            List<string> listaNombre= new List<string>();
+            if (_capitulo != null) {
+                Uri u = new Uri(_capitulo.rutaWeb);
+                listaArchivos.Add(u);
+                Temporada t = ListaOnline.getTempByCap(this._capitulo);
+                Serie s = ListaOnline.getSerieByTemp(t);
+                string nombre = s.nombre + " - Temporada " + t.numTemporada + " " + _capitulo.nombre;
+                listaNombre.Add(nombre);
+                reproductor.setListaNombres(listaNombre.ToArray());
+                reproductor.setLista(listaArchivos.ToArray());
+                reproductor.setVIGallery(main.getFirstGrid());
+            }else if (_pelicula != null) {
+                Uri u = new Uri(_pelicula.rutaWeb);
+                listaArchivos.Add(u);
+                string nombre = _pelicula.nombre;
+                listaNombre.Add(nombre);
+                reproductor.setListaNombres(listaNombre.ToArray());
+                reproductor.setLista(listaArchivos.ToArray());
+                reproductor.setVIGallery(main.getFirstGrid());
+            }
         }
 
         public void setCapitulo(Capitulo c) {
@@ -48,8 +77,12 @@ namespace ProyectoWPF.Components {
         public void actualizar() {
             setImg();
             if (this._capitulo != null) {
-                setTitle(_capitulo.nombre);
+                Temporada t = ListaOnline.getTempByCap(this._capitulo);
+                temp.Content = "Temporada " + t.numTemporada;
+                Serie s = ListaOnline.getSerieByTemp(t);
+                setTitle(s.nombre+" "+_capitulo.nombre);
             } else if (_pelicula != null) {
+                temp.Content = "";
                 setTitle(_pelicula.nombre);
             }
         }
@@ -60,7 +93,7 @@ namespace ProyectoWPF.Components {
                     Temporada t = ListaOnline.getTempByCap(this._capitulo);
                     if (t != null) {
                         if (t.img.CompareTo("") != 0) {
-                            BitmapImage bm = new BitmapImage(new Uri(_pelicula.img, UriKind.RelativeOrAbsolute));
+                            BitmapImage bm = new BitmapImage(new Uri(t.img, UriKind.RelativeOrAbsolute));
                             img.Source = bm;
                             if (bm.Width > bm.Height) {
                                 img.Stretch = Stretch.UniformToFill;
@@ -68,7 +101,7 @@ namespace ProyectoWPF.Components {
                         }
 
                     } else if (ListaOnline.getSerieByTemp(t).img.CompareTo("") != 0) {
-                        BitmapImage bm = new BitmapImage(new Uri(_pelicula.img, UriKind.RelativeOrAbsolute));
+                        BitmapImage bm = new BitmapImage(new Uri(t.img, UriKind.RelativeOrAbsolute));
                         img.Source = bm;
                         if (bm.Width > bm.Height) {
                             img.Stretch = Stretch.UniformToFill;
@@ -95,6 +128,13 @@ namespace ProyectoWPF.Components {
 
         public void setTitle(string titulo) {
             title.Content = titulo;
+        }
+
+        public void clear() {
+            img.Source = null;
+            _capitulo = null;
+            _pelicula = null;
+            title.Content = "Title";
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ProyectoWPF.Components;
+using ProyectoWPF.Components.Online;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,8 @@ namespace ProyectoWPF
         private System.Windows.Media.Color colorGridPadre;
         private Carpeta carpeta;
         private SubCarpeta subcarpeta;
+        private SerieComponent serie;
+        private TemporadaComponent temporada;
         public String tipo = "";
         private Grid gridCarpeta;
         private Button buttonPrincipal;
@@ -51,6 +54,49 @@ namespace ProyectoWPF
             wrapPanel.Children.Add(c);
             hijos.Add(c);
             
+        }
+
+        public void addSerie(SerieComponent s) {
+            s.Width = 250;
+            s.Height = 400;
+            s.Margin = new Thickness(40, 40, 40, 40);
+            //c.changeColor(System.Drawing.Color.Red);
+            wrapPanel.Children.Add(s);
+            hijos.Add(s);
+        }
+
+        public void addTemporada(TemporadaComponent t) {
+            t.Width = 250;
+            t.Height = 400;
+            t.Margin = new Thickness(40, 40, 40, 40);
+            //c.changeColor(System.Drawing.Color.Red);
+            wrapPanel.Children.Add(t);
+            hijos.Add(t);
+        }
+
+        public void setSerie(SerieComponent s) {
+            serie = s;
+        }
+
+        public SerieComponent getSerie() {
+            return serie;
+        }
+
+        public void setTemporada(TemporadaComponent t) {
+            temporada = t;
+        }
+
+        public TemporadaComponent getTemporada() {
+            return temporada;
+        }
+
+        public void addEpisodio(ArchivoComponent ac) {
+            ac.Width = 250;
+            ac.Height = 400;
+            ac.Margin = new Thickness(40, 40, 40, 40);
+            //c.changeColor(System.Drawing.Color.Red);
+            wrapPanel.Children.Add(ac);
+            hijos.Add(ac);
         }
 
         public void setColorGridPadre(Color grid) {

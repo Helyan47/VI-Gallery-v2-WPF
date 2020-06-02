@@ -293,8 +293,8 @@
 
                         <ScrollViewer x:Name="menuOnline" Grid.Row="2" VerticalScrollBarVisibility="Hidden" Visibility="Hidden">
                             <StackPanel x:Name="buttonStackOnline" CanVerticallyScroll="True" >
-                                <Button Content="Panel Principal" Style="{StaticResource CustomButtonStyle}" FontSize="30" Height="100" Foreground="White" FontWeight="Bold" Click="changeOnlinePanel"/>
-                                <Button Content="Todos" Style="{StaticResource CustomButtonStyle}" FontSize="30" Height="100" Foreground="White" FontWeight="Bold" Click="changeOnlinePanel"/>
+                                <Button x:Name="bPanelPrinc" Content="Panel Principal" Style="{StaticResource CustomButtonStyle}" FontSize="30" Height="100" Foreground="White" FontWeight="Bold" Click="changeOnlinePanel"/>
+                                <Button x:Name="bShowAll" Content="Todos" Style="{StaticResource CustomButtonStyle}" FontSize="30" Height="100" Foreground="White" FontWeight="Bold" Click="changeOnlinePanel"/>
                             </StackPanel>
                         </ScrollViewer>
                         <Border x:Name="menuButtons" BorderThickness="0" BorderBrush="Red" Grid.Row="3"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -346,6 +346,7 @@
                                 </Viewbox>
                             </Border>
                             <Button x:Name="Return" BorderThickness="0" Background="Black" BorderBrush="{x:Null}" Foreground="#FFEDEDED" HorizontalAlignment="Right" Margin="0,0,0,10" Grid.Column="2" VerticalAlignment="Bottom" Width="75" Height="75" Click="Return_MouseLeftButtonUp" Visibility="Hidden" Opacity="0" MouseEnter="return_MouseEnter" MouseLeave="return_MouseLeave"/>
+                            
                         </Grid>
 
                     </Grid>
@@ -419,11 +420,9 @@
                                     <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Visible"/>
                                 </Grid>
                             </Grid>
-                            <Grid x:Name="gridPrincipal" Grid.Row="1" Background="#FF262626" Visibility="Hidden"/>
-                            
-                                <Grid x:Name="gridOnlinePanelPrinc" Grid.Row="1" Background="#FF262626" Visibility="Visible">
-                                
-                                
+                            <Grid x:Name="gridPrincipal" Grid.Row="1" Background="#FF262626" Visibility="Visible"/>
+
+                            <Grid x:Name="gridOnlinePanelPrinc" Grid.Row="1" Background="#FF262626" Visibility="Hidden">
                                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden">
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -431,20 +430,21 @@
                                             <RowDefinition Height="0.1*"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
-                                        <componentes:MenuReciente></componentes:MenuReciente>
+                                        <componentes:MenuReciente x:Name="menuReciente"></componentes:MenuReciente>
                                         <Label Content="Más recientes" Foreground="White" FontSize="24" Grid.Row="1"/>
 
                                         <StackPanel Orientation="Vertical" Grid.Row="2">
-                                            <componentes:ListaArchivos Titulo="Series más vistas" Height="400"></componentes:ListaArchivos>
-                                            <componentes:ListaArchivos Titulo="Películas más vistas" Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
-                                            <componentes:ListaArchivos Titulo="Más vistas 2019" Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
+                                            <componentes:ListaArchivos x:Name="episodiosVistos" Titulo="Episodios más vistos" Height="400"></componentes:ListaArchivos>
+                                            <componentes:ListaArchivos x:Name="peliculasVistas" Titulo="Películas más vistas" Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
+                                            <componentes:ListaArchivos x:Name="top2019" Titulo="Más vistas 2019" Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
                                         </StackPanel>
                                     </Grid>
                                 </ScrollViewer>
-
                             </Grid>
-                            
-                            <Grid x:Name="gridOnlineShowAll" Grid.Row="1" Background="#FF262626" Visibility="Hidden"/>
+
+                            <Grid x:Name="gridOnlineShowAll" Grid.Row="1" Background="#FF262626" Visibility="Visible">
+                                <local:WrapPanelPrincipal x:Name="wrapShowAll"></local:WrapPanelPrincipal>
+                            </Grid>
                         </Grid>
 
                     </Border>

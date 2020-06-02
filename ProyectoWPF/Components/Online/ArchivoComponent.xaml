@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="ProyectoWPF.Components.Online.ArchivoComponent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ProyectoWPF.Components.Online"
+             xmlns:main="clr-namespace:ProyectoWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="250">
+    <UserControl.Effect>
+        <DropShadowEffect Direction="0" ShadowDepth="0" BlurRadius="20" />
+    </UserControl.Effect>
+    <Border x:Name="backgroundGrid"  Background="White" ClipToBounds="True">
+        <Grid>
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseLeftButtonUp="onClick">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition x:Name="gridLabel" Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.025*"/>
+                    <RowDefinition Height="0.25*"/>
+                    <RowDefinition x:Name="lastRow" Height="0.025*"/>
+                </Grid.RowDefinitions>
+
+                <Border x:Name="ImgBorde" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" RenderOptions.BitmapScalingMode="HighQuality"/>
+
+
+                <Border x:Name="borde" BorderThickness="5" Grid.Row="0" Grid.RowSpan="3" BorderBrush="White" Panel.ZIndex="11"/>
+
+                <Border x:Name="borde2" BorderThickness="5" Grid.Row="0" Grid.RowSpan="5" BorderBrush="White" Panel.ZIndex="11"/>
+
+                <Border x:Name="Img" HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF212121" Grid.RowSpan="2" ClipToBounds="True" RenderOptions.BitmapScalingMode="HighQuality">
+                    <Viewbox x:Name="viewBoxImg" Stretch="None" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Canvas x:Name="canvasFile" Width="210" Height="300">
+                            <Canvas.RenderTransform>
+                                <TranslateTransform X="0" Y="20"/>
+                            </Canvas.RenderTransform>
+                            <Canvas.Resources/>
+                            <!--Unknown tag: sodipodi:namedview-->
+                            <!--Unknown tag: metadata-->
+                            <Canvas Name="layer1" Height="300" Width="210">
+                                <Path x:Name="ColorPath" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="8" Canvas.Top="5" Fill="White" Height="255" Width="196.35" >
+                                    <Path.Data>
+                                        <PathGeometry Figures="m 96.285305 397.87081 c -11.220214 -2.93952 -18.680914 -7.36137 -27.723854 -16.43153 -5.945641 -5.96354 -8.971323 -9.98767 -11.689059 -15.54631 -7.191763 -14.70947 -6.880123 -6.66741 -6.568341 -169.5 l 0.279552 -146.000005 3.059923 -8.544169 c 1.682957 -4.699293 4.764602 -11.112377 6.8481 -14.251299 C 65.826201 19.560616 75.848271 10.741654 84.511591 6.4610254 97.741075 -0.07578997 99.638135 -0.20943697 174.67501 0.10901203 l 66.90859 0.2839533 6.5 3.09027427 c 10.48505 4.9848754 20.4932 13.8093284 56.5513 49.8627964 36.03427 36.029641 44.86615 46.046314 49.85843 56.546934 l 3.09027 6.5 0.28024 113 c 0.31292 126.17213 0.51298 122.01503 -6.56903 136.5 -2.71774 5.55864 -5.74342 9.58277 -11.68906 15.54631 -9.16556 9.19316 -16.54669 13.51876 -28.11816 16.47825 -7.44688 1.90459 -11.31387 1.97347 -107.81395 1.92038 -95.24432 -0.0524 -100.44338 -0.14763 -107.388335 -1.9671 z m 213.506325 -32.0085 c 7.37748 -3.62852 12.49274 -9.21726 15.29739 -16.71337 1.98817 -5.31385 2.01709 -7.14418 1.758 -111.26387 l -0.26342 -105.86113 -2.78732 -2.90916 c -4.93893 -5.15481 -7.42294 -5.49948 -44.21268 -6.13473 -37.17871 -0.64197 -38.03034 -0.77923 -42.1015 -6.78597 -1.7466 -2.57699 -1.94232 -5.60146 -2.44617 -37.801115 -0.59715 -38.162172 -1.02245 -41.050197 -6.70326 -45.518721 -2.44711 -1.924894 -4.22142 -1.981279 -62.34642 -1.981279 -58.20437 0 -59.97892 0.05661 -65.40386 2.086334 -7.441155 2.784092 -14.628369 9.971312 -17.412459 17.412463 -2.07961 5.55828 -2.08633 6.039478 -2.08633 149.501208 0 141.66761 0.0315 144.00915 2.008 149.29183 3.883694 10.38011 13.711314 18.28202 24.352809 19.58089 2.82655 0.34501 48.11419 0.51988 100.63919 0.38862 l 95.5 -0.23866 z M 164.04339 289.11286 c -1.88758 -0.94594 -3.99409 -2.84489 -4.68114 -4.21989 -0.95097 -1.9032 -1.25269 -15.10428 -1.26391 -55.29966 -0.0158 -56.44745 0.0341 -57.05054 4.92987 -59.6707 5.02456 -2.68906 7.38408 -1.57575 53.32951 25.16308 24.75388 14.40599 45.82139 27.0668 46.81669 28.13513 0.9953 1.06833 2.08558 3.19876 2.42284 4.7343 1.3892 6.325 0.32298 7.10997 -47.77817 35.17487 -24.92543 14.54289 -46.44953 26.72538 -47.83134 27.07219 -1.53325 0.38482 -3.84991 -0.0397 -5.94435 -1.08932 z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                </Path>
+                            </Canvas>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+                <main:LabelDeslizable x:Name="Title"  Grid.Row="3"  VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="0,0,5,0" Width="239" />
+
+            </Grid>
+
+        </Grid>
+    </Border>
+</UserControl>

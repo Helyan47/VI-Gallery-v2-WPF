@@ -24,7 +24,7 @@ namespace ProyectoWPF.Components
 
         private Capitulo _capitulo = null;
         private Pelicula _pelicula = null;
-        private Serie _serie = null;
+        bool noImg = false;
         public VideoElement()
         {
             InitializeComponent();
@@ -33,12 +33,17 @@ namespace ProyectoWPF.Components
 
         private void reproduceButton_MouseEnter(object sender, EventArgs e)
         {
-            gridMouseOver.Visibility = Visibility.Visible;
+            if (!noImg) {
+                gridMouseOver.Visibility = Visibility.Visible;
+            }
+            
         }
 
         private void reproduceButton_MouseLeave(object sender, EventArgs e)
         {
-            gridMouseOver.Visibility = Visibility.Hidden;
+            if (!noImg) {
+                gridMouseOver.Visibility = Visibility.Hidden;
+            }
         }
 
         public void setCapitulo(Capitulo c)
@@ -53,20 +58,15 @@ namespace ProyectoWPF.Components
             actualizar();
         }
 
-        public void setSerie(Serie s) {
-            this._serie = s;
-            actualizar();
-        }
-
         public void actualizar()
         {
             setImg();
             if(this._capitulo != null) {
-                setTitle(_capitulo.nombre);
+                Temporada t = ListaOnline.getTempByCap(this._capitulo);
+                Serie s = ListaOnline.getSerieByTemp(t);
+                setTitle(s.nombre + " Temporada " + t.numTemporada + " " + _capitulo.nombre);
             }else if(_pelicula != null) {
                 setTitle(_pelicula.nombre);
-            }else if(_serie != null) {
-                setTitle(_serie.nombre);
             }
         }
 
@@ -83,6 +83,7 @@ namespace ProyectoWPF.Components
                             }
 
                             bordeImg.Background = ib;
+                            noImg = false;
                         }
 
                     } else if (ListaOnline.getSerieByTemp(t).img.CompareTo("") != 0) {
@@ -93,10 +94,15 @@ namespace ProyectoWPF.Components
                         }
 
                         bordeImg.Background = ib;
+                        noImg = false;
+                    } else {
+                        gridMouseOver.Visibility = Visibility.Visible;
+                        noImg = true;
                     }
 
                 } catch (Exception e) {
                     gridMouseOver.Visibility = Visibility.Visible;
+                    noImg = true;
                     Console.WriteLine(e.Message);
                 }
             } else if (this._pelicula != null) {
@@ -109,23 +115,15 @@ namespace ProyectoWPF.Components
                         }
 
                         bordeImg.Background = ib;
+                        noImg = false;
                     } catch (Exception e) {
                         gridMouseOver.Visibility = Visibility.Visible;
+                        noImg = true;
                         Console.WriteLine(e.Message);
                     }
-                }
-            }else if (this._serie != null) {
-                try {
-                    BitmapImage bm = new BitmapImage(new Uri(_serie.img, UriKind.RelativeOrAbsolute));
-                    ImageBrush ib = new ImageBrush(bm);
-                    if (bm.Width > bm.Height) {
-                        ib.Stretch = Stretch.UniformToFill;
-                    }
-
-                    bordeImg.Background = ib;
-                } catch (Exception e) {
+                } else {
                     gridMouseOver.Visibility = Visibility.Visible;
-                    Console.WriteLine(e.Message);
+                    noImg = true;
                 }
             }
         }

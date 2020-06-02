@@ -13,6 +13,8 @@ using System.Windows.Shapes;
 using ProyectoWPF.Components;
 using Reproductor;
 using System.Linq;
+using ProyectoWPF.Data.Online;
+using ProyectoWPF.Components.Online;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -45,6 +47,7 @@ namespace ProyectoWPF {
             _botonesMenu = new List<Button>();
             changedProfile = false;
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
+            menuReciente.setMain(this);
         }
 
 
@@ -557,15 +560,25 @@ namespace ProyectoWPF {
         }
 
         private void Return_MouseLeftButtonUp(object sender, EventArgs e) {
-            SubCarpeta p = Lista.getSubWrapsVisibles().getSubCarpeta();
-            Carpeta p1 = Lista.getSubWrapsVisibles().getCarpeta();
-            if (p != null) {
-                p.clickInverso();
-            } else if(p1!= null){
-                p1.clickInverso();
+            if (menuOnline.Visibility == Visibility.Visible) {
+                if (!panelPrincSelected) {
+                    MenuComponent mc = ListaOnline.getMenuVisible();
+                    ReturnVisibility(mc.onReturn());
+                }
             } else {
-                MessageBox.Show("null");
+                SubCarpeta p = Lista.getSubWrapsVisibles().getSubCarpeta();
+                Carpeta p1 = Lista.getSubWrapsVisibles().getCarpeta();
+                if (p != null) {
+                    p.clickInverso();
+                } else if (p1 != null) {
+                    p1.clickInverso();
+                } else {
+                    MessageBox.Show("null");
+                }
             }
+                
+            
+            
             
         }
 
@@ -1060,47 +1073,104 @@ namespace ProyectoWPF {
         }
 
         private void onChangeMenuClick(object sender, EventArgs e) {
-            if (menuOnline.Visibility == Visibility.Hidden) {
-                menuOnline.Visibility = Visibility.Visible;
-                rectOnline.Visibility = Visibility.Visible;
-                
-                buscadorOnline.Visibility = Visibility.Visible;
+            Button aux = (Button)sender;
+            if (aux.Name.Equals("bOnlineMenu")) {
+                if (menuOnline.Visibility == Visibility.Hidden) {
+                    menuOnline.Visibility = Visibility.Visible;
+                    rectOnline.Visibility = Visibility.Visible;
 
-                rectOffline.Visibility = Visibility.Hidden;
-                gridPrincipal.Visibility = Visibility.Visible;
-                menuOffline.Visibility = Visibility.Hidden;
-                buscadorOffline.Visibility = Visibility.Hidden;
-
-                if (panelPrincSelected) {
-                    buscadorOnline.Visibility = Visibility.Hidden;
-                    rowBuscador.Height = new GridLength(0, GridUnitType.Star);
-                    gridOnlinePanelPrinc.Visibility = Visibility.Visible;
-                    gridOnlineShowAll.Visibility = Visibility.Hidden;
-                } else {
                     buscadorOnline.Visibility = Visibility.Visible;
-                    rowBuscador.Height = new GridLength(30,GridUnitType.Auto);
-                    gridOnlineShowAll.Visibility = Visibility.Visible;
-                    gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
+
+                    rectOffline.Visibility = Visibility.Hidden;
+                    gridPrincipal.Visibility = Visibility.Visible;
+                    menuOffline.Visibility = Visibility.Hidden;
+                    buscadorOffline.Visibility = Visibility.Hidden;
+                    panelPrincSelected = true;
+
+                    if (panelPrincSelected) {
+                        buscadorOnline.Visibility = Visibility.Hidden;
+                        rowBuscador.Height = new GridLength(0, GridUnitType.Star);
+                        gridOnlinePanelPrinc.Visibility = Visibility.Visible;
+                        gridOnlineShowAll.Visibility = Visibility.Hidden;
+                        bPanelPrinc.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
+                        bShowAll.ClearValue(Button.BackgroundProperty);
+                        ReturnVisibility(false);
+                    }
+
+                    ListaOnline.loadData();
+                    List<Capitulo> capitulosRecientes = ConexionServer.getCapitulosMasRecientes();
+                    List<Pelicula> peliculasRecientes = ConexionServer.getPeliculasMasRecientes();
+                    List<object> listaRecientes = new List<object>();
+                    if (capitulosRecientes != null) {
+                        listaRecientes.AddRange(capitulosRecientes);
+                    }
+                    if (peliculasRecientes != null) {
+                        listaRecientes.AddRange(peliculasRecientes);
+                    }
+                    listaRecientes = OrderClass.orderDates(listaRecientes);
+                    if (listaRecientes != null & listaRecientes.Count >= 8) {
+                        listaRecientes = listaRecientes.GetRange(0, 8);
+                    }
+
+                    menuReciente.setList(listaRecientes);
+
+                    List<Capitulo> capitulos2019 = ConexionServer.getTopEpisodios2019();
+                    List<Pelicula> peliculas2019 = ConexionServer.getTopPeliculas2019();
+                    List<object> listaTop2019 = new List<object>();
+                    if (capitulos2019 != null) {
+                        listaTop2019.AddRange(capitulos2019);
+                    }
+                    if (peliculas2019 != null) {
+                        listaTop2019.AddRange(peliculas2019);
+                    }
+                    listaTop2019 = OrderClass.orderTops(listaTop2019);
+                    if (listaTop2019 != null & listaTop2019.Count >= 10) {
+                        listaTop2019 = listaTop2019.GetRange(0, 10);
+                    }
+
+                    top2019.setLista(ListaOnline.listToVideoElement(listaTop2019));
+
+                    List<VideoElement> videoElements = ListaOnline.listCapituloToVideoElement(ConexionServer.getCapitulosMasVistos());
+                    if (videoElements != null) {
+                        episodiosVistos.setLista(videoElements);
+                    }
+
+                    List<VideoElement> videoElements2 = ListaOnline.listPeliculaToVideoElement(ConexionServer.getPeliculasMasVistas());
+                    if (videoElements != null) {
+                        peliculasVistas.setLista(videoElements2);
+                    }
+
+                    ListaOnline.createAllFolders(gridOnlineShowAll, wrapShowAll, this);
+
+                    rowAddMenu.Height = new GridLength(0, GridUnitType.Star);
                 }
-                
+            }else if (aux.Name.Equals("bOfflineMenu")) {
+                if (menuOffline.Visibility == Visibility.Hidden) {
+                    menuOnline.Visibility = Visibility.Hidden;
+                    rectOnline.Visibility = Visibility.Hidden;
+                    gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
+                    gridOnlineShowAll.Visibility = Visibility.Hidden;
+                    buscadorOnline.Visibility = Visibility.Hidden;
 
-                rowAddMenu.Height = new GridLength(0, GridUnitType.Star);
-            } else {
-                menuOnline.Visibility = Visibility.Hidden;
-                rectOnline.Visibility = Visibility.Hidden;
-                gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
-                gridOnlineShowAll.Visibility = Visibility.Hidden;
-                buscadorOnline.Visibility = Visibility.Hidden;
+                    menuOffline.Visibility = Visibility.Visible;
+                    rectOffline.Visibility = Visibility.Visible;
+                    gridPrincipal.Visibility = Visibility.Visible;
+                    buscadorOffline.Visibility = Visibility.Visible;
 
-                menuOffline.Visibility = Visibility.Visible;
-                rectOffline.Visibility = Visibility.Visible;
-                gridPrincipal.Visibility = Visibility.Visible;
-                buscadorOffline.Visibility = Visibility.Visible;
+                    menuReciente.clear();
+                    episodiosVistos.clear();
+                    peliculasVistas.clear();
+                    top2019.clear();
 
-                rowBuscador.Height = new GridLength(30, GridUnitType.Auto);
+                    ListaOnline.removeComponents(wrapShowAll);
 
-                rowAddMenu.Height = new GridLength(0.05, GridUnitType.Star);
+
+                    rowBuscador.Height = new GridLength(30, GridUnitType.Auto);
+
+                    rowAddMenu.Height = new GridLength(0.05, GridUnitType.Star);
+                }
             }
+            
         }
 
         private void changeOnlinePanel(object sender, EventArgs e) {
@@ -1108,17 +1178,29 @@ namespace ProyectoWPF {
             if (b.Content.ToString().CompareTo("Panel Principal") == 0) {
                 panelPrincSelected = true;
                 buscadorOnline.Visibility = Visibility.Hidden;
-                buscadorOffline.Visibility = Visibility.Hidden;
+                buscadorOffline.Visibility = Visibility.Visible;
                 rowBuscador.Height = new GridLength(0, GridUnitType.Star);
                 gridOnlinePanelPrinc.Visibility = Visibility.Visible;
                 gridOnlineShowAll.Visibility = Visibility.Hidden;
+
+                bPanelPrinc.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
+                bShowAll.ClearValue(Button.BackgroundProperty);
+
+                ReturnVisibility(false);
             } else {
                 panelPrincSelected = false;
                 buscadorOnline.Visibility = Visibility.Visible;
-                buscadorOffline.Visibility = Visibility.Visible;
+                buscadorOffline.Visibility = Visibility.Hidden;
                 rowBuscador.Height = new GridLength(30, GridUnitType.Auto);
                 gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
                 gridOnlineShowAll.Visibility = Visibility.Visible;
+
+                bShowAll.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
+                bPanelPrinc.ClearValue(Button.BackgroundProperty);
+                MenuComponent mc = ListaOnline.getMenuVisible();
+                if (mc != null) {
+                    ReturnVisibility(true);
+                }
             }
         }
     }

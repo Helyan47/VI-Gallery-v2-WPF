@@ -16,7 +16,7 @@
         </Border>
         
         <Label x:Name="videoTitle" Content="Title" Grid.Row="1" Foreground="White"/>
-        <Grid x:Name="gridMouseOver" Background="#7F1D1D1D">
+        <Grid x:Name="gridMouseOver" Background="#7F1D1D1D" Visibility="Hidden">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="100px"/>

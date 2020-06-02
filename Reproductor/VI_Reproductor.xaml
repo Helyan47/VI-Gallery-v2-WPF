@@ -58,6 +58,7 @@
                 <ColumnDefinition Width="0.045*"/>
             </Grid.ColumnDefinitions>
             <Button Content="X" Style="{StaticResource ButtonClose}" Grid.Column="3" Padding="0" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="CerrarReproductor"/>
+            <Label x:Name="videoTitle" Content="Title" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="White"/>
         </Grid>
         
         <Grid x:Name="gridControles" Height="120" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.Row="1" Panel.ZIndex="10" MouseLeave="gridControles_MouseLeave" Focusable="True" LostKeyboardFocus="gridControles_LostKeyboardFocus" FocusVisualStyle="{x:Null}" MouseEnter="gridControles_MouseEnter">

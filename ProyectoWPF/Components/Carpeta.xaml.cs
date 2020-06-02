@@ -134,7 +134,7 @@ namespace ProyectoWPF {
 
         public void setDescripcion(string d) {
             _carpeta.desc= d;
-            descripcion.Content = d;
+            descripcion.Text = d;
         }
 
         public void setRutaDirectorio(string s) {
@@ -157,7 +157,7 @@ namespace ProyectoWPF {
 
             _carpeta = newCarpeta;
             Title.SetText(_carpeta.nombre);
-            descripcion.Content = _carpeta.desc;
+            descripcion.Text = _carpeta.desc;
         }
 
         public WrapPanelPrincipal GetWrapCarpPrincipal() {
@@ -202,11 +202,9 @@ namespace ProyectoWPF {
 #endregion
 
         public void actualizar() {
-            if (_carpeta.nombre.Equals("")) {
-
-            } else {
+            if (!_carpeta.nombre.Equals("")) {
                 Title.SetText(_carpeta.nombre);
-                if (_carpeta.nombre.CompareTo("")!=0) {
+                if (_carpeta.nombre.CompareTo("") != 0) {
                     setImg();
                 }
                 if (_carpeta.desc.CompareTo("") == 0) {

@@ -1,4 +1,5 @@
 ﻿using ProyectoWPF.Components;
+using ProyectoWPF.Data.Online;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,8 @@ namespace ProyectoWPF.Data {
         static NaturalArchivoClassComparer comparadorArchivoClass = new NaturalArchivoClassComparer();
         static NaturalCarpetaClassComparer comparadorCarpetaClass = new NaturalCarpetaClassComparer();
         static NaturalWrapCarpetaNameComparer comparadorWrapCarpeta = new NaturalWrapCarpetaNameComparer();
+        static DateComparer comparadorFechas = new DateComparer();
+        static VisitsComparer comparadorVisitas = new VisitsComparer();
         public static List<string> orderListOfString(List<string> lista) {
             if (lista != null) {
                 lista.Sort(comparadorStrings);
@@ -60,6 +63,24 @@ namespace ProyectoWPF.Data {
                 return null;
             }
         }
+
+        public static List<object> orderDates(List<object> lista) {
+            if (lista != null) {
+                lista.Sort(comparadorFechas);
+                return lista;
+            } else {
+                return null;
+            }
+        }
+
+        public static List<object> orderTops(List<object> lista) {
+            if (lista != null) {
+                lista.Sort(comparadorVisitas);
+                return lista;
+            } else {
+                return null;
+            }
+        }
     }
 
     [SuppressUnmanagedCodeSecurity]
@@ -89,6 +110,78 @@ namespace ProyectoWPF.Data {
     public class NaturalCarpetaClassComparer : IComparer<CarpetaClass> {
         public int Compare(CarpetaClass a, CarpetaClass b) {
             return SafeNativeMethods.StrCmpLogicalW(a.nombre, b.nombre);
+        }
+    }
+
+    public class DateComparer : IComparer<object> {
+        public int Compare(object a, object b) {
+            if((a is Capitulo) && (b is Capitulo)) {
+                Capitulo aux1 = (Capitulo)a;
+                Capitulo aux2 = (Capitulo)b;
+                return aux2.fechaLanzamiento.CompareTo(aux1.fechaLanzamiento);
+            }else if ((a is Capitulo) && (b is Pelicula)) {
+                Capitulo aux1 = (Capitulo)a;
+                Pelicula aux2 = (Pelicula)b;
+                return aux2.fechaLanzamiento.CompareTo(aux1.fechaLanzamiento);
+            } else if ((a is Pelicula) && (b is Capitulo)) {
+                Pelicula aux1 = (Pelicula)a;
+                Capitulo aux2 = (Capitulo)b;
+                return aux2.fechaLanzamiento.CompareTo(aux1.fechaLanzamiento);
+            } else if ((a is Pelicula) && (b is Pelicula)) {
+                Pelicula aux1 = (Pelicula)a;
+                Pelicula aux2 = (Pelicula)b;
+                return aux2.fechaLanzamiento.CompareTo(aux1.fechaLanzamiento);
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    public class VisitsComparer : IComparer<object> {
+        public int Compare(object a, object b) {
+            if ((a is Capitulo) && (b is Capitulo)) {
+                Capitulo aux1 = (Capitulo)a;
+                Capitulo aux2 = (Capitulo)b;
+                if (aux1.numVisitas > aux2.numVisitas) {
+                    return -1;
+                }else if(aux1.numVisitas < aux2.numVisitas) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else if ((a is Capitulo) && (b is Pelicula)) {
+                Capitulo aux1 = (Capitulo)a;
+                Pelicula aux2 = (Pelicula)b;
+                if (aux1.numVisitas > aux2.numVisitas) {
+                    return -1;
+                } else if (aux1.numVisitas < aux2.numVisitas) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else if ((a is Pelicula) && (b is Capitulo)) {
+                Pelicula aux1 = (Pelicula)a;
+                Capitulo aux2 = (Capitulo)b;
+                if (aux1.numVisitas > aux2.numVisitas) {
+                    return -1;
+                } else if (aux1.numVisitas < aux2.numVisitas) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else if ((a is Pelicula) && (b is Pelicula)) {
+                Pelicula aux1 = (Pelicula)a;
+                Pelicula aux2 = (Pelicula)b;
+                if (aux1.numVisitas > aux2.numVisitas) {
+                    return -1;
+                } else if (aux1.numVisitas < aux2.numVisitas) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
         }
     }
 

@@ -54,17 +54,15 @@ namespace ProyectoWPF.Components {
         }
 
         public void actualizar() {
-            if (_archivoClass.nombre.Equals("")) {
-
-            } else {
+            if (!_archivoClass.nombre.Equals("")) {
                 Title.SetText(_archivoClass.nombre);
                 if (_archivoClass.nombre.CompareTo("") != 0) {
                     if (_carpetaPadre != null) {
                         setImgCarpeta();
-                    }else if(_subCarpetaPadre!=null){
+                    } else if (_subCarpetaPadre != null) {
                         setImgSubCarpeta();
                     }
-                    
+
                 }
             }
         }
@@ -126,6 +124,7 @@ namespace ProyectoWPF.Components {
                 main.getFirstGrid().Children.Add(reproductor);
                 List<Archivo> lista = _carpetaPadre._archivos;
                 List<FileInfo> listaArchivos = new List<FileInfo>();
+                List<string> listaNombres = new List<string>();
                 int posicion = 0;
                 int cont = 0;
                 foreach(Archivo archivo in lista) {
@@ -133,9 +132,11 @@ namespace ProyectoWPF.Components {
                         posicion = cont;
                     }
                     FileInfo f = new FileInfo(archivo._archivoClass.rutaSistema);
+                    listaNombres.Add(archivo._archivoClass.nombre);
                     listaArchivos.Add(f);
                     cont++;
                 }
+                reproductor.setListaNombres(listaNombres.ToArray());
                 reproductor.setLista(listaArchivos.ToArray(),posicion);
                 reproductor.setVIGallery(main.getFirstGrid());
             } else if (_subCarpetaPadre != null) {
@@ -143,6 +144,7 @@ namespace ProyectoWPF.Components {
                 main.getFirstGrid().Children.Add(reproductor);
                 List<Archivo> lista = _subCarpetaPadre._archivos;
                 List<FileInfo> listaArchivos = new List<FileInfo>();
+                List<string> listaNombres = new List<string>();
                 int posicion = 0;
                 int cont = 0;
                 foreach (Archivo archivo in lista) {
@@ -150,9 +152,11 @@ namespace ProyectoWPF.Components {
                         posicion = cont;
                     }
                     FileInfo f = new FileInfo(archivo._archivoClass.rutaSistema);
+                    listaNombres.Add(archivo._archivoClass.nombre);
                     listaArchivos.Add(f);
                     cont++;
                 }
+                reproductor.setListaNombres(listaNombres.ToArray());
                 reproductor.setLista(listaArchivos.ToArray(), posicion);
                 reproductor.setVIGallery(main.getFirstGrid());
             } else {

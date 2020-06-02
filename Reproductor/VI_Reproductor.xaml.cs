@@ -14,7 +14,8 @@ namespace Reproductor
     /// </summary>
     public partial class VI_Reproductor : UserControl
     {
-        object[] lista { get; set; }
+        private object[] lista;
+        private object[] names;
         public int currentVideoPosition { get; set; }
         object actualVideo { get; set; }
 
@@ -146,6 +147,7 @@ namespace Reproductor
             lista = args;
             if (args.Length != 0) {
                 lista = args;
+                videoTitle.Content = names[currentVideoPosition];
                 setVideo(lista[0]);
             }
             control.Focus();
@@ -156,6 +158,7 @@ namespace Reproductor
             if (args.Length != 0) {
                 lista = args;
                 currentVideoPosition = position;
+                videoTitle.Content = names[currentVideoPosition];
                 setVideo(lista[position]);
             }
             control.Focus();
@@ -192,9 +195,10 @@ namespace Reproductor
         public void setVideo(object file) {
 
             if (file is FileInfo) {
-                control.SourceProvider.MediaPlayer.Play((FileInfo)file);
+                FileInfo aux = (FileInfo)file;
+                control.SourceProvider.MediaPlayer.Play(aux);
                 actualVideo = file;
-
+                videoTitle.Content = aux.Name;
             } else if (file is Uri) {
                 control.SourceProvider.MediaPlayer.Play((Uri)file);
                 actualVideo = file;
@@ -224,6 +228,7 @@ namespace Reproductor
                 } else {
                     currentVideoPosition++;
                 }
+                videoTitle.Content = names[currentVideoPosition];
                 setVideo(lista[currentVideoPosition]);
             }
             
@@ -238,7 +243,7 @@ namespace Reproductor
             } else {
                 currentVideoPosition--;
             }
-
+            videoTitle.Content = names[currentVideoPosition];
             setVideo(lista[currentVideoPosition]);
         }
 
@@ -427,6 +432,10 @@ namespace Reproductor
 
         public void setVIGallery(Grid grid) {
             this.gridVIGallery = grid;
+        }
+
+        public void setListaNombres(string[] titles) {
+            names = titles;
         }
 
         public void CerrarReproductor(object sender, EventArgs e) {

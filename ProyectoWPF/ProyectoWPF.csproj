@@ -124,16 +124,28 @@
     <Compile Include="Components\Archivo.xaml.cs">
       <DependentUpon>Archivo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\ListaArchivos.xaml.cs">
+    <Compile Include="Components\Online\ArchivoComponent.xaml.cs">
+      <DependentUpon>ArchivoComponent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Online\ListaArchivos.xaml.cs">
       <DependentUpon>ListaArchivos.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\MenuReciente.xaml.cs">
+    <Compile Include="Components\Online\MenuComponent.xaml.cs">
+      <DependentUpon>MenuComponent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Online\MenuReciente.xaml.cs">
       <DependentUpon>MenuReciente.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\VideoElement.xaml.cs">
+    <Compile Include="Components\Online\SerieComponent.xaml.cs">
+      <DependentUpon>SerieComponent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Online\TemporadaComponent.xaml.cs">
+      <DependentUpon>TemporadaComponent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Online\VideoElement.xaml.cs">
       <DependentUpon>VideoElement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\VideoReciente.xaml.cs">
+    <Compile Include="Components\Online\VideoReciente.xaml.cs">
       <DependentUpon>VideoReciente.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\Base\ArchivoClass.cs" />
@@ -144,6 +156,7 @@
     <Compile Include="Data\Base\UsuarioClass.cs" />
     <Compile Include="Data\ConexionOffline.cs" />
     <Compile Include="Data\Online\Capitulo.cs" />
+    <Compile Include="Data\Online\ConexionServer.cs" />
     <Compile Include="Data\Online\ListaOnline.cs" />
     <Compile Include="Data\Online\Pelicula.cs" />
     <Compile Include="Data\Online\Serie.cs" />
@@ -197,19 +210,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\ListaArchivos.xaml">
+    <Page Include="Components\Online\ArchivoComponent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\MenuReciente.xaml">
+    <Page Include="Components\Online\ListaArchivos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\VideoElement.xaml">
+    <Page Include="Components\Online\MenuComponent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\VideoReciente.xaml">
+    <Page Include="Components\Online\MenuReciente.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Online\SerieComponent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Online\TemporadaComponent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Online\VideoElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Online\VideoReciente.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
