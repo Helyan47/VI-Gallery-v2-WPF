@@ -9,9 +9,12 @@
     <Border x:Name="backgroundGrid" CornerRadius="10" Background="White" ClipToBounds="True">
         <Grid>
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseLeftButtonUp="OnClick">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Cambiar nombre" Click="showNewNamePanel"/>
+                        <MenuItem Header="Borrar carpeta" Click="deleteFolder"/>
+                    </ContextMenu>
+                </Grid.ContextMenu>
                 <Grid.RowDefinitions>
                     <RowDefinition x:Name="gridLabel" Height="*"/>
                     <RowDefinition Height="*"/>

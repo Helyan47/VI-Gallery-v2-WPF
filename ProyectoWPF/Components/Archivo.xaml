@@ -12,6 +12,12 @@
     <Border x:Name="backgroundGrid"  Background="White" ClipToBounds="True">
         <Grid>
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseLeftButtonUp="onClick">
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Cambiar nombre" Click="showNewNamePanel"/>
+                        <MenuItem Header="Borrar Archivo" Click="deleteFile"/>
+                    </ContextMenu>
+                </Grid.ContextMenu>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>

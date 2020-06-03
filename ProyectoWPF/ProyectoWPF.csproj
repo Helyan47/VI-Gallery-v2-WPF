@@ -155,6 +155,7 @@
     <Compile Include="Data\Base\PerfilClass.cs" />
     <Compile Include="Data\Base\UsuarioClass.cs" />
     <Compile Include="Data\ConexionOffline.cs" />
+    <Compile Include="Data\Filters.cs" />
     <Compile Include="Data\Online\Capitulo.cs" />
     <Compile Include="Data\Online\ConexionServer.cs" />
     <Compile Include="Data\Online\ListaOnline.cs" />
@@ -177,6 +178,12 @@
     <Compile Include="Data\Lista.cs" />
     <Compile Include="Components\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewFolders\ChangeName.xaml.cs">
+      <DependentUpon>ChangeName.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewFolders\ChangeNameFile.xaml.cs">
+      <DependentUpon>ChangeNameFile.xaml</DependentUpon>
     </Compile>
     <Compile Include="NewFolders\NewProfile.xaml.cs">
       <DependentUpon>NewProfile.xaml</DependentUpon>
@@ -275,6 +282,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\LabelDeslizable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewFolders\ChangeName.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewFolders\ChangeNameFile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

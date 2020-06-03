@@ -34,7 +34,7 @@ namespace ProyectoWPF {
         private void BAceptar_Click(object sender, EventArgs e) {
 
             if (Title.Text.CompareTo("") != 0) {
-                if(!Lista.Contains(VIGallery._profile + "|C/" + button.Content + "/" + Title.Text)) {
+                if(!Lista.Contains(VIGallery._profile.nombre + "|C/" + button.Content + "/" + Title.Text)) {
                     ICollection<String> col = new List<String>();
 
                     UIElementCollection coleccion = ListGeneros.Children;
@@ -60,7 +60,7 @@ namespace ProyectoWPF {
                         }
                     }
                     carpeta.idMenu = Lista.getMenuFromButton(button).id;
-                    carpeta.ruta = "Serie/" + button.Content + "/" + padre.getTitle();
+                    carpeta.ruta = "C/" + button.Content + "/" + padre.getTitle();
                     padre.setClass(carpeta);
                     Lista.addCarpetaClass(carpeta);
                     created = true;

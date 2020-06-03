@@ -240,7 +240,6 @@ namespace ProyectoWPF {
             s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
             c.setRutaDirectorio(nombre);
             if (p != null) {
-                
                 s.ruta = sp1.getClass().ruta + "/" + s.nombre;
                 bool checkIfExists = Lista.Contains(c.getClass().ruta);
                 if (!checkIfExists) {
@@ -274,7 +273,7 @@ namespace ProyectoWPF {
         }
 
         private void addFileCarpeta(string fileName, Carpeta c) {
-            string ruta = "F" + c.getClass().ruta.Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
+            string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
             ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
             Archivo a = new Archivo(ac, this);
 
@@ -291,7 +290,7 @@ namespace ProyectoWPF {
         }
 
         private void addFileSubCarpeta(string fileName, SubCarpeta c) {
-            string ruta = "F" + c.getClass().ruta.Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
+            string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
             ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
             Archivo a = new Archivo(ac, this);
 
@@ -412,7 +411,7 @@ namespace ProyectoWPF {
                 ConexionOffline.startConnection();
                 addCarpeta();
                 ConexionOffline.closeConnection();
-                
+
             } else {
                 menuButtons.BorderThickness = new Thickness(5);
                 MessageBox.Show("No has creado ninguno menú");
@@ -434,8 +433,8 @@ namespace ProyectoWPF {
                 p1.actualizar();
 
                 string name = _activatedButton.Content.ToString();
-                p1.setRutaPrograma("C/" + name + "/" + p1.getClass().nombre);
-                p1.getClass().rutaPadre = "";
+                p1.getClass().rutaPadre = _profile.nombre + "|C/" + name;
+                p1.setRutaPrograma(_profile.nombre + "|C/" + name + "/" + p1.getClass().nombre);
 
                 if (conexionMode) {
                     Conexion.saveFolder(p1);
@@ -468,7 +467,8 @@ namespace ProyectoWPF {
             p1.actualizar();
 
             string name = _activatedButton.Content.ToString();
-            p1.setRutaPrograma("C/" + name + "/" + p1.getClass().nombre);
+            p1.getClass().rutaPadre = _profile.nombre + "|C/" + name;
+            p1.setRutaPrograma(_profile.nombre + "|C/" + name + "/" + p1.getClass().nombre);
             bool checkIfExists = Lista.Contains(p1.getClass().ruta);
             if (!checkIfExists) {
                 Lista.addCarpeta(p1);
@@ -596,6 +596,7 @@ namespace ProyectoWPF {
                     }
                 }
             }
+            Lista.orderWrapsPrincipales();
             Lista.modifyMode(_profile.mode);
             Lista.orderWrapsSecundarios();
         }
@@ -670,6 +671,7 @@ namespace ProyectoWPF {
                     }
                 }
             }
+            Lista.orderWrapsPrincipales();
             Lista.modifyMode(_profile.mode);
             Lista.orderWrapsSecundarios();
         }
@@ -1202,6 +1204,53 @@ namespace ProyectoWPF {
                     ReturnVisibility(true);
                 }
             }
+        }
+
+        private void bComboGenero_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            ComboBox cb = (ComboBox)sender;
+            string content = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
+            if (content.Equals("Todos")) {
+                WrapPanelPrincipal wp = Lista.getWrapVisible();
+                if (wp != null) {
+                    wp.showAll();
+                }
+                
+            } else {
+                WrapPanelPrincipal wp = Lista.getWrapVisible();
+                if (wp != null) {
+                    wp.showFoldersByGender(content.ToString());
+                }
+                
+            }
+        }
+
+        private void onPressEnter(object sender, KeyEventArgs e) {
+            if(e.Key == Key.Enter) {
+                TextBox textBox = (TextBox)sender;
+                if (!textBox.Text.Equals("")) {
+                    if (buscadorOffline.Visibility == Visibility.Visible) {
+                        if (textBox.Name.Equals("textOfflineMain")) {
+                            WrapPanelPrincipal wp = Lista.getWrapVisible();
+                            wp.showFoldersBySearch(textBox.Text);
+                        } else if (textBox.Name.Equals("textOfflineSubFolder")) {
+                            WrapPanelPrincipal wp = Lista.getSubWrapsVisibles();
+                            wp.showFoldersBySearch(textBox.Text);
+                        }
+                    }
+                } else {
+                    if (buscadorOffline.Visibility == Visibility.Visible) {
+                        if (textBox.Name.Equals("textOfflineMain")) {
+                            WrapPanelPrincipal wp = Lista.getWrapVisible();
+                            wp.showAll();
+                        } else if (textBox.Name.Equals("textOfflineSubFolder")) {
+                            WrapPanelPrincipal wp = Lista.getSubWrapsVisibles();
+                            wp.showAll();
+                        }
+                    }
+                }
+                
+            }
+            
         }
     }
 }

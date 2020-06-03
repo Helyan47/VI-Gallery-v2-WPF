@@ -1,4 +1,5 @@
 ﻿using ProyectoWPF.Data;
+using ProyectoWPF.NewFolders;
 using Reproductor;
 using System;
 using System.Collections.Generic;
@@ -162,6 +163,53 @@ namespace ProyectoWPF.Components {
             } else {
                 MessageBox.Show("No se ha podido abrir el archivo");
             }
+        }
+
+        private void changeName(string newName) {
+            _archivoClass.nombre = newName;
+            if (VIGallery.conexionMode) {
+                Conexion.updateFile(_archivoClass);
+            } else {
+                ConexionOffline.updateFile(_archivoClass);
+            }
+            Title.SetText(newName);
+        }
+
+        private void showNewNamePanel(object sender, EventArgs e) {
+            List<ArchivoClass> files = null;
+            if(_carpetaPadre != null) {
+                files = new List<ArchivoClass>();
+                foreach(Archivo a in _carpetaPadre._archivos) {
+                    files.Add(a._archivoClass);
+                }
+            }else if(_subCarpetaPadre != null) {
+                files = new List<ArchivoClass>();
+                foreach (Archivo a in _subCarpetaPadre._archivos) {
+                    files.Add(a._archivoClass);
+                }
+            }
+            if (files != null) {
+                ChangeNameFile cn = new ChangeNameFile(files);
+                cn.ShowDialog();
+                if (cn.getNewName() != null) {
+                    changeName(cn.getNewName());
+                }
+            }
+            
+        }
+
+        private void deleteFile(object sender, EventArgs e) {
+            if (VIGallery.conexionMode) {
+                Conexion.deleteFile(_archivoClass);
+            } else {
+                ConexionOffline.deleteFile(_archivoClass.id);
+            }
+            if (_carpetaPadre != null) {
+                _carpetaPadre.removeFile(this);
+            }else if(_subCarpetaPadre != null) {
+                _subCarpetaPadre.removeFile(this);
+            }
+            _archivoClass = null;
         }
     }
 }

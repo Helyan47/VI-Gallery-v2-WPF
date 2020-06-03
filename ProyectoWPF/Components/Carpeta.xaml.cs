@@ -1,5 +1,6 @@
 ﻿using ProyectoWPF.Components;
 using ProyectoWPF.Data;
+using ProyectoWPF.NewFolders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -275,8 +276,7 @@ namespace ProyectoWPF {
             _ventanaMain.ReturnVisibility(false);
         }
 
-        private void MouseClick(object sender, MouseButtonEventArgs e) {
-
+        private void MouseClick(object sender, EventArgs e) {
             click();
         }
 
@@ -344,6 +344,11 @@ namespace ProyectoWPF {
         }
 
         public void remove() {
+            if (VIGallery.conexionMode) {
+                Conexion.deleteFolder(_carpeta);
+            } else {
+                ConexionOffline.deleteFolder(_carpeta.id);
+            }
             _archivos = null;
             _wrapPanelAnterior.removeFolder(this);
             Lista.removeSubFolders(this);
@@ -359,6 +364,55 @@ namespace ProyectoWPF {
             }
             
             Lista.removeCarpetaClass(_carpeta.id);
+        }
+
+        public bool checkGender(string s) {
+            if (_carpeta.generos.Contains(s)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public void changeName(string newName) {
+            _carpeta.nombre = newName;
+            string[] splitted = _carpeta.ruta.Split('/');
+            splitted[splitted.Length - 1] = newName;
+            string rutaAntigua = _carpeta.ruta;
+            string rutaNueva = "";
+            for(int i = 0; i < splitted.Length; i++) {
+                rutaNueva += splitted[i];
+                if (i != splitted.Length - 1) {
+                    rutaNueva += "/";
+                }
+            }
+            Lista.changeSubFoldersName(rutaAntigua, rutaNueva);
+            Title.SetText(newName);
+            if (VIGallery.conexionMode) {
+                Conexion.updateFolderName(_carpeta);
+            } else {
+                ConexionOffline.updateFolderName(_carpeta);
+            }
+        }
+
+        public void showNewNamePanel(object sender, EventArgs e) {
+            string folderRutaPadre = _carpeta.ruta.Split('/')[0] + "/";
+            ChangeName cn = new ChangeName(folderRutaPadre);
+            cn.ShowDialog();
+            if (cn.getNewName() != null) {
+                changeName(cn.getNewName());
+            }
+        }
+
+        private void deleteFolder(object sender, EventArgs e) {
+            remove();
+        }
+
+        public void removeFile(Archivo a) {
+            if (_archivos.Contains(a)) {
+                _archivos.Remove(a);
+                _wrapCarpetaPropia.removeFile(a);
+            }
         }
     }
 }

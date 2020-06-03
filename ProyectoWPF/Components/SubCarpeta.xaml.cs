@@ -1,5 +1,6 @@
 ﻿using ProyectoWPF.Components;
 using ProyectoWPF.Data;
+using ProyectoWPF.NewFolders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -257,15 +258,87 @@ namespace ProyectoWPF {
         } 
 
         public void remove() {
+            if (VIGallery.conexionMode) {
+                Conexion.deleteFolder(_carpeta);
+            } else {
+                ConexionOffline.deleteFolder(_carpeta.id);
+            }
             _archivos = null;
             Lista.removeSubFolders(this);
             Lista.removeSubCarpeta(this);
+            if (_wrapCarpAnterior != null) {
+                _wrapCarpAnterior.removeSubFolder(this);
+            }
             _wrapCarpPropia.removeChildrens();
             Lista.removeWrapPanelSecundario(_wrapCarpPropia);
             _wrapCarpPropia = null;
             Lista.removeCarpetaClass(_carpeta.id);
             _carpeta = null;
-            //Lista.
+            
+        }
+
+        public void changeName(string newName) {
+            string nombreAntiguo = _carpeta.nombre;
+            _carpeta.nombre = newName;
+            string[] splitted = _carpeta.ruta.Split('/');
+            splitted[splitted.Length - 1] = newName;
+            string rutaAntigua = _carpeta.ruta;
+            string rutaNueva = "";
+            for (int i = 0; i < splitted.Length; i++) {
+                rutaNueva += splitted[i];
+                if (i != splitted.Length - 1) {
+                    rutaNueva += "/";
+                }
+            }
+            Console.WriteLine("Nombre antiguo: " + nombreAntiguo);
+            Console.WriteLine("Nombre nuevo: " + newName);
+            Console.WriteLine("Ruta antigua: " + rutaAntigua);
+            Console.WriteLine("Ruta nueva: " + rutaNueva);
+            Lista.changeSubFoldersName(rutaAntigua, rutaNueva);
+            Title.SetText(newName);
+            if (VIGallery.conexionMode) {
+                Conexion.updateFolderName(_carpeta);
+            } else {
+
+            }
+        }
+
+        public void updateRuta(string rutaAntigua, string rutaNueva) {
+            string rutaPadreAntigua = _carpeta.rutaPadre;
+            _carpeta.rutaPadre = rutaNueva;
+            string rutaAntiguaSub = _carpeta.ruta;
+            _carpeta.ruta = _carpeta.ruta.Replace(rutaAntigua, rutaNueva);
+            Console.WriteLine("RutaPadre antigua: " + rutaPadreAntigua);
+            Console.WriteLine("RutaPadre nueva: " + _carpeta.rutaPadre);
+            Console.WriteLine("Ruta antigua: " + rutaAntiguaSub);
+            Console.WriteLine("Ruta nueva: " + _carpeta.ruta);
+            Console.WriteLine(" ---------------- ");
+            Lista.changeSubFoldersName(rutaAntiguaSub, _carpeta.ruta);
+            if (VIGallery.conexionMode) {
+                Conexion.updateFolderName(_carpeta);
+            } else {
+                ConexionOffline.updateFolderName(_carpeta);
+            }
+        }
+
+        private void showNewNamePanel(object sender, EventArgs e) {
+            string folderRutaPadre = _carpeta.ruta.Split('/')[0] + "/";
+            ChangeName cn = new ChangeName(folderRutaPadre);
+            cn.ShowDialog();
+            if (cn.getNewName() != null) {
+                changeName(cn.getNewName());
+            }
+        }
+
+        private void deleteFolder(object sender, EventArgs e) {
+            remove();
+        }
+
+        public void removeFile(Archivo a) {
+            if (_archivos.Contains(a)) {
+                _archivos.Remove(a);
+                _wrapCarpPropia.removeFile(a);
+            }
         }
     }
 }

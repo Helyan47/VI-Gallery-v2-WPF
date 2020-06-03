@@ -193,7 +193,6 @@ namespace ProyectoWPF.Data {
                 SubCarpeta aux1 = (SubCarpeta)a;
                 SubCarpeta aux2 = (SubCarpeta)b;
                 if (isAscending) {
-                    
                     return SafeNativeMethods.StrCmpLogicalW(aux1.getClass().nombre, aux2.getClass().nombre);
                 } else {
                     return SafeNativeMethods.StrCmpLogicalW(aux2.getClass().nombre, aux1.getClass().nombre);
@@ -212,7 +211,15 @@ namespace ProyectoWPF.Data {
                 } else {
                     return SafeNativeMethods.StrCmpLogicalW(aux2._archivoClass.nombre, aux1._archivoClass.nombre);
                 }
-            } else {
+            } else if ((a is Carpeta) && (b is Carpeta)) {
+                Carpeta aux1 = (Carpeta)a;
+                Carpeta aux2 = (Carpeta)b;
+                if (isAscending) {
+                    return SafeNativeMethods.StrCmpLogicalW(aux1.getClass().nombre, aux2.getClass().nombre);
+                } else {
+                    return SafeNativeMethods.StrCmpLogicalW(aux2.getClass().nombre, aux1.getClass().nombre);
+                }
+            } else { 
                 if (isAscending) {
                     return 1;
                 } else {

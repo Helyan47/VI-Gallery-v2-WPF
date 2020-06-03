@@ -47,7 +47,6 @@ namespace ProyectoWPF.Data {
                 return output.ToList();
             }
         }
-
         public static List<CarpetaClass> LoadCarpetasFromMenu(MenuClass m) {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
                 CarpetaClass c = new CarpetaClass(m.id);
@@ -238,10 +237,54 @@ namespace ProyectoWPF.Data {
             }
         }
 
+        public static void deleteFolder(long id) {
+            try {
+                using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
+                    var parameter = new { idCarpeta = id };
+                    cnn.Execute("DELETE FROM Carpeta WHERE id=@idCarpeta", parameter);
+                    Console.WriteLine("Borrada Carpeta");
+                    cnn.Close();
+                }
+            } catch (Exception e) {
+                Console.WriteLine(e);
+
+            }
+        }
+
+        public static void deleteFile(long id) {
+            try {
+                using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
+                    var parameter = new { idArchivo = id };
+                    cnn.Execute("DELETE FROM Archivo WHERE id=@idArchivo", parameter);
+                    Console.WriteLine("Borrado Archivo");
+                    cnn.Close();
+                }
+            } catch (Exception e) {
+                Console.WriteLine(e);
+
+            }
+        }
+
         public static void updateMode(long modeFolder, PerfilClass profile) {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
                 var parameters = new { mode = modeFolder, idPerfil = profile.id };
                 var output = cnn.Query<CarpetaClass>("UPDATE perfil set mode=@mode where id=@idPerfil", parameters);
+                cnn.Close();
+            }
+        }
+
+        public static void updateFolderName(CarpetaClass c) {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
+                var parameters = new { nombre = c.nombre, ruta = c.ruta, rutaPadre = c.rutaPadre, idCarpeta=c.id};
+                var output = cnn.Query<CarpetaClass>("UPDATE Carpeta set nombre=@nombre and ruta=@ruta and rutaPadre=@rutaPadre where id=@idCarpeta", parameters);
+                cnn.Close();
+            }
+        }
+
+        public static void updateFile(ArchivoClass a) {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
+                var parameters = new { nombre = a.nombre, idArchivo = a.id };
+                var output = cnn.Query<CarpetaClass>("UPDATE Archivo set nombre=@nombre where id=@idArchivo", parameters);
                 cnn.Close();
             }
         }

@@ -1,5 +1,6 @@
 ﻿using ProyectoWPF.Components;
 using ProyectoWPF.Components.Online;
+using ProyectoWPF.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -171,12 +172,100 @@ namespace ProyectoWPF
             }
         }
 
+        public void removeSubFolder(SubCarpeta c) {
+            if (wrapPanel.Children.Contains(c)) {
+                wrapPanel.Children.Remove(c);
+                if (hijos.Contains(c)) {
+                    hijos.Remove(c);
+                }
+
+            } else {
+                Console.WriteLine("No se ha podido borrar la carpeta " + c.getClass().ruta);
+            }
+        }
+
+        public void removeFile(Archivo a) {
+            if (wrapPanel.Children.Contains(a)) {
+                wrapPanel.Children.Remove(a);
+                if (hijos.Contains(a)) {
+                    hijos.Remove(a);
+                }
+
+            } else {
+                Console.WriteLine("No se ha podido borrar el archivo " + a._archivoClass.nombre);
+            }
+        }
+
         public void setButton(Button b) {
             buttonPrincipal = b;
         }
 
         public WrapPanel getWrapPanel() {
             return wrapPanel;
+        }
+
+        public void showFoldersByGender(string gender) {
+            foreach(UIElement ui in hijos) {
+                if(ui is Carpeta) {
+                    Carpeta aux = (Carpeta)ui;
+                    if (aux.checkGender(gender)) {
+                        ui.Visibility = Visibility.Visible;
+                    } else {
+                        ui.Visibility = Visibility.Collapsed;
+                    }
+                }
+            }
+        }
+
+        public void showFoldersBySearch(string search) {
+            List<string> lista = new List<string>();
+            
+            foreach (UIElement ui in hijos) {
+                if (ui is Carpeta) {
+                    Carpeta aux = (Carpeta)ui;
+                    lista.Add(aux.getClass().nombre);
+                }else if(ui is SubCarpeta) {
+                    SubCarpeta aux = (SubCarpeta)ui;
+                    lista.Add(aux.getClass().nombre);
+                }else if(ui is Archivo) {
+                    Archivo aux = (Archivo)ui;
+                    lista.Add(aux._archivoClass.nombre);
+                }
+            }
+
+            if (lista.Count != 0) {
+                List<string> resultados=Filters.filterAlgorithm(lista.ToArray(),search);
+                foreach (UIElement ui in hijos) {
+                    if (ui is Carpeta) {
+                        Carpeta aux = (Carpeta)ui;
+                        if (resultados.Contains(aux.getClass().nombre)) {
+                            aux.Visibility = Visibility.Visible;
+                        } else {
+                            aux.Visibility = Visibility.Collapsed;
+                        }
+                    } else if (ui is SubCarpeta) {
+                        SubCarpeta aux = (SubCarpeta)ui;
+                        if (resultados.Contains(aux.getClass().nombre)) {
+                            aux.Visibility = Visibility.Visible;
+                        } else {
+                            aux.Visibility = Visibility.Collapsed;
+                        }
+                    } else if (ui is Archivo) {
+                        Archivo aux = (Archivo)ui;
+                        if (resultados.Contains(aux._archivoClass.nombre)) {
+                            aux.Visibility = Visibility.Visible;
+                        } else {
+                            aux.Visibility = Visibility.Collapsed;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void showAll() {
+            foreach (UIElement ui in hijos) {
+                ui.Visibility = Visibility.Visible; 
+            }
         }
     }
 }

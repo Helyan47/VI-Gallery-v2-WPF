@@ -30,6 +30,11 @@ namespace ProyectoWPF {
             this.desc = desc;
             this.img = img;
             this.generos = new List<string>();
+            string[] aux = generos.Split('|');
+            if (aux != null) {
+                this.generos = aux;
+            }
+
             this.isFolder = isFolder;
             this.idMenu = idMenu;
         }
@@ -44,6 +49,11 @@ namespace ProyectoWPF {
             this.desc = desc;
             this.img = img;
             this.generos = new List<string>();
+            string[] aux = generos.Split('|');
+            if (aux != null) {
+                this.generos = aux;
+            }
+            
             if (isFolder == 0) {
                 this.isFolder = false;
             } else {
@@ -119,9 +129,10 @@ namespace ProyectoWPF {
             int cont = 0;
             foreach(string s in generos) {
                 cadena += s;
-                if (cont <= generos.Count-1) {
-                    cadena += " | ";
+                if (cont < generos.Count-1) {
+                    cadena += "|";
                 }
+                cont++;
             }
             return cadena;
         }

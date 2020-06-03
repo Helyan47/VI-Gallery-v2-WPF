@@ -12,42 +12,39 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ProyectoWPF {
+namespace ProyectoWPF.NewFolders {
     /// <summary>
-    /// Lógica de interacción para newSubCarpeta.xaml
+    /// Lógica de interacción para ChangeName.xaml
     /// </summary>
-    public partial class NewSubCarpeta : Window {
+    public partial class ChangeName : Window {
 
-        private SubCarpeta p;
-        private string rutaPadre;
-        public NewSubCarpeta(string s) {
+        private string _rutaPadre = "";
+        private string name = null;
+        public ChangeName(string rutaPadre) {
             InitializeComponent();
-            rutaPadre = s;
+            _rutaPadre = rutaPadre;
+            Console.WriteLine("RutaPadre: ---" + rutaPadre);
         }
 
         private void BAceptar_Click(object sender, EventArgs e) {
             if (newName.Text.CompareTo("") != 0) {
-                if (!Lista.Contains(rutaPadre + "/" + newName.Text)) {
-                    p.setTitle(newName.Text);
-                    
+                if (!Lista.Contains(_rutaPadre + "/" + newName.Text)) {
+                    name = newName.Text;
+                    this.Close();
                 } else {
-                    MessageBox.Show("La subcarpeta ya existe");
+                    MessageBox.Show("Una carpeta con ese nombre ya existe");
                 }
-                    
+
             } else {
                 MessageBox.Show("No has introducido ningún nombre para la carpeta");
             }
+
+
             
-            
-            this.Close();
         }
 
-        public void setSubCarpeta(SubCarpeta s) {
-            p = s;
-        }
-
-        public SubCarpeta getSubCarpeta() {
-            return p;
+        public string getNewName() {
+            return name;
         }
     }
 }

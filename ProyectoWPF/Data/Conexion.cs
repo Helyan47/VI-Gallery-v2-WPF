@@ -178,7 +178,7 @@ namespace ProyectoWPF.Data {
                     comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
                     comando.Parameters.AddWithValue("@rutaPadre", p.getClass().rutaPadre);
                     comando.Parameters.AddWithValue("@descripcion", p.getClass().desc);
-                    comando.Parameters.AddWithValue("@generos", p.getClass().generos.ToString());
+                    comando.Parameters.AddWithValue("@generos", p.getClass().getGeneros());
                     comando.Parameters.AddWithValue("@img", p.getClass().img);
                     comando.Parameters.AddWithValue("@isFolder", true);
                     comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
@@ -244,7 +244,7 @@ namespace ProyectoWPF.Data {
                         comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
                         comando.Parameters.AddWithValue("@rutaPadre", p.getClass().rutaPadre);
                         comando.Parameters.AddWithValue("@descripcion", p.getClass().desc);
-                        comando.Parameters.AddWithValue("@generos", p.getClass().generos.ToString());
+                        comando.Parameters.AddWithValue("@generos", p.getClass().getGeneros());
                         comando.Parameters.AddWithValue("@img", p.getClass().img);
                         comando.Parameters.AddWithValue("@isFolder", false);
                         comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
@@ -411,9 +411,8 @@ namespace ProyectoWPF.Data {
                         Int32 idCarpeta = (Int32)reader["id"];
                         Int32 numSubCarp = (Int32)reader["numSubCarps"];
                         Int32 numArchivos = (Int32)reader["numArchivos"];
-                        ICollection<string> generos = new List<string>();
                         CarpetaClass carpeta = new CarpetaClass((long)idCarpeta, reader["nombre"].ToString(), reader["ruta"].ToString(), reader["rutaPadre"].ToString(), numSubCarp, numArchivos,
-                            reader["descripcion"].ToString(), reader["img"].ToString(), generos.ToString(), true, id);
+                            reader["descripcion"].ToString(), reader["img"].ToString(), reader["generos"].ToString(), true, id);
                         carpetas.Add(carpeta);
                     }
                     reader.Close();
@@ -450,9 +449,8 @@ namespace ProyectoWPF.Data {
                         Int32 idCarpeta = (Int32)reader["id"];
                         Int32 numSubCarp = (Int32)reader["numSubCarps"];
                         Int32 numArchivos = (Int32)reader["numArchivos"];
-                        ICollection<string> generos = new List<string>();
                         CarpetaClass carpeta = new CarpetaClass((long)idCarpeta, reader["nombre"].ToString(),  reader["ruta"].ToString(), reader["rutaPadre"].ToString(), numSubCarp, numArchivos,
-                            reader["descripcion"].ToString(),  reader["img"].ToString(), generos.ToString(), false, id);
+                            reader["descripcion"].ToString(),  reader["img"].ToString(), reader["generos"].ToString(), false, id);
                         carpetas.Add(carpeta);
                     }
                     reader.Close();
@@ -552,14 +550,33 @@ namespace ProyectoWPF.Data {
                 conexion = getConnection();
                 conexion.Open();
 
-                MySqlCommand comando = new MySqlCommand("CALL deleteFolder(@ruta, @idMenu)", conexion);
-                comando.Parameters.AddWithValue("@ruta", c.ruta);
-                comando.Parameters.AddWithValue("@idMenu", c.idMenu);
+                MySqlCommand comando = new MySqlCommand("DELETE FROM Carpeta where id=@id", conexion);
+                comando.Parameters.AddWithValue("@id", c.id);
                 comando.ExecuteNonQuery();
 
 
             } catch (MySqlException e) {
-                Console.WriteLine("No se ha podido borrar la carpeta");
+                Console.WriteLine("No se ha podido borrar la carpeta \n"+e);
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+        }
+
+        public static void deleteFile(ArchivoClass a) {
+            MySqlConnection conexion = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                MySqlCommand comando = new MySqlCommand("DELETE FROM Archivo where id=@id", conexion);
+                comando.Parameters.AddWithValue("@id", a.id);
+                comando.ExecuteNonQuery();
+
+
+            } catch (MySqlException e) {
+                Console.WriteLine("No se ha podido borrar la carpeta \n" + e);
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -611,6 +628,62 @@ namespace ProyectoWPF.Data {
                 MySqlCommand comando = new MySqlCommand("UPDATE perfil set mode=@mode where id=@idPerfil", conexion);
                 comando.Parameters.AddWithValue("@mode", mode);
                 comando.Parameters.AddWithValue("@idPerfil", p.id);
+                comando.ExecuteNonQuery();
+
+                myTrans.Commit();
+            } catch (MySqlException e) {
+                if (myTrans != null) {
+                    myTrans.Rollback();
+                }
+                Console.WriteLine(e);
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+        }
+
+        public static void updateFolderName(CarpetaClass c) {
+            MySqlConnection conexion = null;
+            MySqlTransaction myTrans = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                myTrans = conexion.BeginTransaction();
+
+                MySqlCommand comando = new MySqlCommand("UPDATE Carpeta set nombre=@nombre and ruta=@ruta and rutaPadre=@rutaPadre where id=@idCarpeta", conexion);
+                comando.Parameters.AddWithValue("@nombre", c.nombre);
+                comando.Parameters.AddWithValue("@ruta", c.ruta);
+                comando.Parameters.AddWithValue("@rutaPadre", c.rutaPadre);
+                comando.Parameters.AddWithValue("@idCarpeta", c.id);
+                comando.ExecuteNonQuery();
+
+                myTrans.Commit();
+            } catch (MySqlException e) {
+                if (myTrans != null) {
+                    myTrans.Rollback();
+                }
+                Console.WriteLine(e);
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+        }
+
+        public static void updateFile(ArchivoClass c) {
+            MySqlConnection conexion = null;
+            MySqlTransaction myTrans = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                myTrans = conexion.BeginTransaction();
+
+                MySqlCommand comando = new MySqlCommand("UPDATE Archivo set nombre=@nombre where id=@idArchivo", conexion);
+                comando.Parameters.AddWithValue("@nombre", c.nombre);
+                comando.Parameters.AddWithValue("@idArchivo", c.id);
                 comando.ExecuteNonQuery();
 
                 myTrans.Commit();

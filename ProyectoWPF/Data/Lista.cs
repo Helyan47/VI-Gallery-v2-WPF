@@ -533,18 +533,27 @@ namespace ProyectoWPF {
         }
 
         public static void removeSubFolders(Carpeta c) {
-            foreach(SubCarpeta sc in _subCarpetas) {
-                if (sc.getClass().rutaPadre.Equals(c.getClass().ruta)) {
-                    sc.remove();
+            try {
+                foreach (SubCarpeta sc in _subCarpetas) {
+                    if (sc.getClass().rutaPadre.Equals(c.getClass().ruta)) {
+                        sc.remove();
+                    }
                 }
+            } catch(InvalidOperationException e) {
+                removeSubFolders(c);
             }
+            
         }
 
         public static void removeSubFolders(SubCarpeta c) {
-            foreach (SubCarpeta sc in _subCarpetas) {
-                if (sc.getClass().rutaPadre.Equals(c.getClass().ruta)) {
-                    sc.remove();
+            try {
+                foreach (SubCarpeta sc in _subCarpetas) {
+                    if (sc.getClass().rutaPadre.Equals(c.getClass().ruta)) {
+                        sc.remove();
+                    }
                 }
+            } catch (InvalidOperationException e) {
+                removeSubFolders(c);
             }
         }
 
@@ -590,6 +599,16 @@ namespace ProyectoWPF {
             }
         }
 
+        public static void orderWrapsPrincipales() {
+            foreach (WrapPanelPrincipal wp in _wrapsPrincipales) {
+                List<UIElement> hijos = OrderClass.orderChildOfWrap(wp.hijos);
+                wp.getWrapPanel().Children.Clear();
+                foreach (UIElement o in hijos) {
+                    wp.getWrapPanel().Children.Add(o);
+                }
+            }
+        }
+
         public static void removeMenuFromPrinc(Menu m) {
             try {
                 foreach (WrapPanelPrincipal wp in _wrapsPrincipales) {
@@ -601,5 +620,14 @@ namespace ProyectoWPF {
                 Console.WriteLine("No se ha podido borrar el menu");
             }
         }
+
+        public static void changeSubFoldersName(string rutaAntigua, string rutaNueva) {
+            foreach(SubCarpeta sc in _subCarpetas) {
+                if (sc.getClass().rutaPadre.Equals(rutaAntigua)) {
+                    sc.updateRuta(rutaAntigua, rutaNueva); //Asignaremos la nueva rutaPadre y haremos un replace a la ruta de la rutaAntigua por la rutaNueva. Dentro de updateRuta se llamara a este metodo de nuevo con los nuevos valores
+                }
+            }
+        }
+
     }
 }

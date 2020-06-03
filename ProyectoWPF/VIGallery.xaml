@@ -363,17 +363,17 @@
                                 </Grid.RowDefinitions>
                                 <Grid x:Name="GridPrincipal" Grid.Row="0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.8*"/>
+                                        <ColumnDefinition Width="0.5*"/>
                                         <ColumnDefinition Width="0.075*"/>
-                                        <ColumnDefinition Width="0.25*"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="0.75*"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
                                         <!--<Button Content="Button" Style="{StaticResource CustomButtonStyle}"  BorderThickness="0" Foreground="White" Margin="2" Visibility="Hidden"/>-->
                                         <Viewbox Width="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
                                             <Button Content="{StaticResource ChangeModeIcon}" Style="{StaticResource CustomButtonStyle}" Padding="1" BorderThickness="0" Foreground="White" Margin="2" Click="ChangeMode"/>
                                         </Viewbox>
-
+                                        
                                         <Viewbox Width="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                             <Button Content="{StaticResource multiFolderDynamic}" Style="{StaticResource ImageButtonStyle}" BorderThickness="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="Button_MouseLeftButtonUp" Margin="100"/>
                                         </Viewbox>
@@ -381,8 +381,50 @@
                                         <Viewbox Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3,0,0,0">
                                             <Button x:Name="addButton" Content="{StaticResource Folder}" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="Button_AddCarpeta" Margin="20"/>
                                         </Viewbox>
+                                        <Rectangle Stroke="Gray" Margin="5"/>
                                     </StackPanel>
-                                    <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Hidden"/>
+                                    <Grid Grid.Column="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="0.25*"/>
+                                            <ColumnDefinition Width="0.25*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Género:" Foreground="White" Grid.Column="1" HorizontalAlignment="Right"/>
+                                        <ComboBox Name="bComboGenero" Margin="5" Grid.Column="2" SelectedValue="0" SelectionChanged="bComboGenero_SelectionChanged">
+                                            <ComboBoxItem Content="Todos" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" IsSelected="True"/>
+                                            <ComboBoxItem Content="Acción" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" />
+                                            <ComboBoxItem Content="Artes Marciales" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Aventuras" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Carreras" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Ciencia Ficción" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Comedia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Demencia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Demonios" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Deportes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Drama" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Escolares" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Espacial" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Fantasía" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Historico" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Juegos" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Magia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Militar" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Misterio" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Música" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Parodia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Policía" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Psicológico" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Romance" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Samurai" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Sobrenatural" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Superpoderes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Suspenso" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Terror" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Vampiros" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                        </ComboBox>
+                                    </Grid>
+
+                                    <TextBox x:Name="textOfflineMain" MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Visible" KeyUp="onPressEnter"/>
                                 </Grid>
 
                                 <Grid x:Name="GridSecundario" Grid.Row="1">
@@ -406,7 +448,7 @@
                                             <Button x:Name="addSubCarp" Content="{StaticResource Folder}" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="NewTemp_Click" Margin="20"/>
                                         </Viewbox>
                                     </StackPanel>
-                                    <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Hidden"/>
+                                    <TextBox x:Name="textOfflineSubFolder" MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Hidden" KeyUp="onPressEnter"/>
                                 </Grid>
                             </Grid>
                             <Grid x:Name="buscadorOnline" Height="30" VerticalAlignment="Top" Grid.Row="0" Visibility="Hidden">
@@ -417,7 +459,7 @@
                                         <ColumnDefinition Width="0.25*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Visible"/>
+                                    <TextBox x:Name="textOnline" MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Visible" KeyUp="onPressEnter"/>
                                 </Grid>
                             </Grid>
                             <Grid x:Name="gridPrincipal" Grid.Row="1" Background="#FF262626" Visibility="Visible"/>
@@ -442,7 +484,7 @@
                                 </ScrollViewer>
                             </Grid>
 
-                            <Grid x:Name="gridOnlineShowAll" Grid.Row="1" Background="#FF262626" Visibility="Visible">
+                            <Grid x:Name="gridOnlineShowAll" Grid.Row="1" Background="#FF262626" Visibility="Hidden">
                                 <local:WrapPanelPrincipal x:Name="wrapShowAll"></local:WrapPanelPrincipal>
                             </Grid>
                         </Grid>

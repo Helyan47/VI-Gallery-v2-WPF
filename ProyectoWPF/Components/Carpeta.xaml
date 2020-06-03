@@ -12,6 +12,12 @@
     <Border x:Name="backgroundGrid" CornerRadius="10" Background="White" ClipToBounds="True">
         <Grid>
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseLeftButtonUp="MouseClick">
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Cambiar nombre" Click="showNewNamePanel"/>
+                        <MenuItem Header="Borrar carpeta" Click="deleteFolder"/>
+                    </ContextMenu>
+                </Grid.ContextMenu>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
@@ -25,7 +31,18 @@
 
 
                 <Border x:Name="bordeDesc" CornerRadius="10" Background="#FF212121" ClipToBounds="True" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" MouseLeave="bordeDesc_MouseLeave" Visibility="Hidden">
-                    <TextBox x:Name="descripcion" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Descripcion" Foreground="#FFF9F9F9" Background="#FF212121"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="4"/>
+                    <Grid>
+                        <TextBox x:Name="descripcion" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Descripcion" Foreground="#FFF9F9F9" Background="#FF212121"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="4" IsReadOnly="True" MouseLeftButtonUp="MouseClick">
+                            <TextBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Cambiar nombre" Click="showNewNamePanel"/>
+                                    <MenuItem Header="Borrar carpeta" Click="deleteFolder"/>
+                                </ContextMenu>
+                            </TextBox.ContextMenu>
+                        </TextBox>
+                        <Button Opacity="0" Click="MouseClick"/>
+                    </Grid>
+                    
                 </Border>
 
                 <Border x:Name="ImgBorde" CornerRadius="15"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" MouseEnter="img_MouseEnter" RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -35,7 +52,7 @@
 
                 <Border x:Name="borde2" BorderThickness="5" Grid.Row="0" CornerRadius="10" Grid.RowSpan="5" BorderBrush="White" Panel.ZIndex="11"/>
 
-                <Border x:Name="Img"  CornerRadius="15" HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF212121" Grid.RowSpan="2" ClipToBounds="True" MouseEnter="img_MouseEnter" RenderOptions.BitmapScalingMode="HighQuality">
+                <Border x:Name="Img"  CornerRadius="15" HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF212121" Grid.RowSpan="2" ClipToBounds="True" MouseEnter="img_MouseEnter" RenderOptions.BitmapScalingMode="HighQuality" Visibility="Visible">
                     <Viewbox x:Name="viewBoxImg" Stretch="None" RenderOptions.BitmapScalingMode="HighQuality">
                         <Canvas x:Name="canvasFolder" Width="210" Height="300">
                             <Canvas.RenderTransform>
@@ -57,7 +74,6 @@
                 <local:LabelDeslizable x:Name="Title"  Grid.Row="3"  VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="0,0,5,0" Width="239" />
 
             </Grid>
-
         </Grid>
     </Border>
 </UserControl>
