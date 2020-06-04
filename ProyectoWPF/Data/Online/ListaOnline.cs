@@ -139,11 +139,11 @@ namespace ProyectoWPF.Data.Online
             }
         }
 
-        public static List<VideoElement> listCapituloToVideoElement(List<Capitulo> lista) {
+        public static List<VideoElement> listCapituloToVideoElement(List<Capitulo> lista, VIGallery vi) {
             if (lista != null & lista.Count > 0) {
                 List<VideoElement> videoElements = new List<VideoElement>();
                 foreach (Capitulo c in lista) {
-                    VideoElement ve = new VideoElement();
+                    VideoElement ve = new VideoElement(vi);
                     ve.setCapitulo(c);
                     videoElements.Add(ve);
                 }
@@ -153,11 +153,11 @@ namespace ProyectoWPF.Data.Online
             
         }
 
-        public static List<VideoElement> listPeliculaToVideoElement(List<Pelicula> lista) {
+        public static List<VideoElement> listPeliculaToVideoElement(List<Pelicula> lista, VIGallery vi) {
             if (lista != null & lista.Count > 0) {
                 List<VideoElement> videoElements = new List<VideoElement>();
                 foreach (Pelicula p in lista) {
-                    VideoElement ve = new VideoElement();
+                    VideoElement ve = new VideoElement(vi);
                     ve.setPelicula(p);
                     videoElements.Add(ve);
                 }
@@ -167,16 +167,16 @@ namespace ProyectoWPF.Data.Online
 
         }
 
-        public static List<VideoElement> listToVideoElement(List<object> lista) {
+        public static List<VideoElement> listToVideoElement(List<object> lista, VIGallery vi) {
             if (lista != null & lista.Count > 0) {
                 List<VideoElement> videoElements = new List<VideoElement>();
                 foreach (object o in lista) {
                     if(o is Capitulo) {
-                        VideoElement ve = new VideoElement();
+                        VideoElement ve = new VideoElement(vi);
                         ve.setCapitulo((Capitulo)o);
                         videoElements.Add(ve);
                     } else {
-                        VideoElement ve = new VideoElement();
+                        VideoElement ve = new VideoElement(vi);
                         ve.setPelicula((Pelicula)o);
                         videoElements.Add(ve);
                     }

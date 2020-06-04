@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,39 +35,44 @@ namespace ProyectoWPF {
         private void BAceptar_Click(object sender, EventArgs e) {
 
             if (Title.Text.CompareTo("") != 0) {
-                if(!Lista.Contains(VIGallery._profile.nombre + "|C/" + button.Content + "/" + Title.Text)) {
-                    ICollection<String> col = new List<String>();
+                Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
+                if (!containsABadCharacter.IsMatch(Title.Text)) {
+                    if (!Lista.Contains(VIGallery._profile.nombre + "|C/" + button.Content + "/" + Title.Text)) {
+                        ICollection<String> col = new List<String>();
 
-                    UIElementCollection coleccion = ListGeneros.Children;
-                    bool isCheked = false;
-                    foreach (CheckBox cb in coleccion) {
+                        UIElementCollection coleccion = ListGeneros.Children;
+                        bool isCheked = false;
+                        foreach (CheckBox cb in coleccion) {
 
-                        if (cb.IsChecked == true) {
-                            col.Add((String)cb.Content);
-                            isCheked = true;
+                            if (cb.IsChecked == true) {
+                                col.Add((String)cb.Content);
+                                isCheked = true;
+                            }
                         }
-                    }
 
-                    if (isCheked) {
+                        if (isCheked) {
 
-                        if (!dirImg.Equals("")) {
-                            carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, col, true);
-                            carpeta.idMenu = Lista.getMenuFromButton(button).id;
+                            if (!dirImg.Equals("")) {
+                                carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, col, true);
+                                carpeta.idMenu = Lista.getMenuFromButton(button).id;
+                            }
+                        } else {
+                            if (!dirImg.Equals("")) {
+                                carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, true);
+
+                            }
                         }
+                        carpeta.idMenu = Lista.getMenuFromButton(button).id;
+                        carpeta.ruta = "C/" + button.Content + "/" + padre.getTitle();
+                        padre.setClass(carpeta);
+                        Lista.addCarpetaClass(carpeta);
+                        created = true;
+                        this.Close();
                     } else {
-                        if (!dirImg.Equals("")) {
-                            carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, true);
-                            
-                        }
+                        MessageBox.Show("Ya existe la carpeta. Introduce otro nombre");
                     }
-                    carpeta.idMenu = Lista.getMenuFromButton(button).id;
-                    carpeta.ruta = "C/" + button.Content + "/" + padre.getTitle();
-                    padre.setClass(carpeta);
-                    Lista.addCarpetaClass(carpeta);
-                    created = true;
-                    this.Close();
                 } else {
-                    MessageBox.Show("Ya existe la carpeta. Introduce otro nombre");
+                    MessageBox.Show("El nombre contiene caractéres no permitidos: " + new string(System.IO.Path.GetInvalidFileNameChars()));
                 }
 
 

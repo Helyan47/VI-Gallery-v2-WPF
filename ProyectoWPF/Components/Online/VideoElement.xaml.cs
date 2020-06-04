@@ -1,4 +1,5 @@
 ﻿using ProyectoWPF.Data.Online;
+using Reproductor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,47 +26,72 @@ namespace ProyectoWPF.Components
         private Capitulo _capitulo = null;
         private Pelicula _pelicula = null;
         bool noImg = false;
-        public VideoElement()
-        {
+        private VIGallery main;
+
+        public VideoElement(VIGallery vi){
             InitializeComponent();
-            
+            main = vi;
         }
 
-        private void reproduceButton_MouseEnter(object sender, EventArgs e)
-        {
+        private void reproduceButton_MouseEnter(object sender, EventArgs e) {
             if (!noImg) {
                 gridMouseOver.Visibility = Visibility.Visible;
             }
-            
+
         }
 
-        private void reproduceButton_MouseLeave(object sender, EventArgs e)
-        {
+        private void reproduceButton_MouseLeave(object sender, EventArgs e) {
             if (!noImg) {
                 gridMouseOver.Visibility = Visibility.Hidden;
             }
         }
 
-        public void setCapitulo(Capitulo c)
-        {
+        private void onClickReproducir(object sender, EventArgs e) {
+            VI_Reproductor reproductor = new VI_Reproductor(true);
+            main.getFirstGrid().Children.Add(reproductor);
+            List<Uri> listaArchivos = new List<Uri>();
+            List<long> listaId = new List<long>();
+            List<string> listaNombre = new List<string>();
+            if (_capitulo != null) {
+                Uri u = new Uri(_capitulo.rutaWeb);
+                listaArchivos.Add(u);
+                listaId.Add(_capitulo.id);
+                Temporada t = ListaOnline.getTempByCap(this._capitulo);
+                Serie s = ListaOnline.getSerieByTemp(t);
+                string nombre = s.nombre + " - Temporada " + t.numTemporada + " " + _capitulo.nombre;
+                listaNombre.Add(nombre);
+                reproductor.setListaNombres(listaNombre.ToArray());
+                reproductor.setListaCapitulos(listaArchivos.ToArray(), listaId.ToArray()); ;
+                reproductor.setVIGallery(main.getFirstGrid());
+            } else if (_pelicula != null) {
+                Uri u = new Uri(_pelicula.rutaWeb);
+                listaId.Add(_pelicula.id);
+                listaArchivos.Add(u);
+                string nombre = _pelicula.nombre;
+                listaNombre.Add(nombre);
+                reproductor.setListaNombres(listaNombre.ToArray());
+                reproductor.setListaPeliculas(listaArchivos.ToArray(), listaId.ToArray());
+                reproductor.setVIGallery(main.getFirstGrid());
+            }
+        }
+
+        public void setCapitulo(Capitulo c) {
             this._capitulo = c;
             actualizar();
         }
 
-        public void setPelicula(Pelicula p)
-        {
+        public void setPelicula(Pelicula p) {
             this._pelicula = p;
             actualizar();
         }
 
-        public void actualizar()
-        {
+        public void actualizar() {
             setImg();
-            if(this._capitulo != null) {
+            if (this._capitulo != null) {
                 Temporada t = ListaOnline.getTempByCap(this._capitulo);
                 Serie s = ListaOnline.getSerieByTemp(t);
                 setTitle(s.nombre + " Temporada " + t.numTemporada + " " + _capitulo.nombre);
-            }else if(_pelicula != null) {
+            } else if (_pelicula != null) {
                 setTitle(_pelicula.nombre);
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProyectoWPF.Data.Online;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -15,8 +16,13 @@ namespace Reproductor
     public partial class VI_Reproductor : UserControl
     {
         private object[] lista;
+        private long[] _capitulos = null;
+        private long[] _peliculas = null;
         private object[] names;
         public int currentVideoPosition { get; set; }
+        public static bool isOnline = false;
+
+        public static int volumen = 100;
         object actualVideo { get; set; }
 
         int cont = 0;
@@ -30,11 +36,12 @@ namespace Reproductor
 
         public Window MainWindow;
         public VideoPlayerProperties videoPlayerProperties { get; set; }
-        public VI_Reproductor()
+        public VI_Reproductor(bool online)
         {
             InitializeComponent();
             videoPlayerProperties = new VideoPlayerProperties(this, control);
             isClicking = false;
+            isOnline = online;
             isExpanded = false;
             var currentAssembly = Assembly.GetEntryAssembly();
             var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
@@ -108,9 +115,12 @@ namespace Reproductor
                         timeDuration.Content = hours.PadLeft(2, '0') + ":" + minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
                         hasHours = true;
                     }
-                    segundos = 0;
-                    minutos = 0;
-                    horas = 0;
+                    duration = control.SourceProvider.MediaPlayer.Time;
+                    segundos = (int)(duration / 1000);
+                    minutos = (int)segundos / 60;
+                    horas = (int)minutos / 60;
+                    minutos = (int)minutos % 60;
+                    segundos = (int)segundos % 60;
                 }
                 segundos++;
                 if (segundos >= 60) {
@@ -144,8 +154,7 @@ namespace Reproductor
 
 
         public void setLista(object[] args) {
-            lista = args;
-            if (args.Length != 0) {
+            if (args != null & args.Length != 0) {
                 lista = args;
                 videoTitle.Content = names[currentVideoPosition];
                 setVideo(lista[0]);
@@ -153,21 +162,63 @@ namespace Reproductor
             control.Focus();
         }
 
+        public void setListaCapitulos(object[] args, long[] capitulos, int position) {
+            if (args != null & capitulos!= null & args.Length != 0) {
+                lista = args;
+                _capitulos = capitulos;
+                currentVideoPosition = position;
+                videoTitle.Content = names[currentVideoPosition];
+                setVideo(lista[position]);
+                control.Focus();
+            } 
+        }
+
+        public void setListaCapitulos(object[] args, long[] capitulos) {
+            if (args != null & capitulos != null & args.Length != 0) {
+                lista = args;
+                _capitulos = capitulos;
+                videoTitle.Content = names[currentVideoPosition];
+                setVideo(lista[0]);
+                control.Focus();
+            }
+        }
+        public void setListaPeliculas(object[] args, long[] peliculas, int position) {
+            if (args != null & peliculas != null & args.Length != 0) {
+                lista = args;
+                _peliculas = peliculas;
+                currentVideoPosition = position;
+                videoTitle.Content = names[currentVideoPosition];
+                setVideo(lista[position]);
+                control.Focus();
+            }
+        }
+
+        public void setListaPeliculas(object[] args, long[] peliculas) {
+            if (args != null & peliculas != null & args.Length != 0) {
+                lista = args;
+                _peliculas = peliculas;
+                videoTitle.Content = names[currentVideoPosition];
+                setVideo(lista[0]);
+                control.Focus();
+            }
+        }
+
         public void setLista(object[] args,int position) {
-            lista = args;
-            if (args.Length != 0) {
+            if (args != null & args.Length != 0) {
                 lista = args;
                 currentVideoPosition = position;
                 videoTitle.Content = names[currentVideoPosition];
                 setVideo(lista[position]);
+                control.Focus();
             }
-            control.Focus();
+            
         }
 
 
         public void setVolume(int volume) {
             try {
                 control.SourceProvider.MediaPlayer.Audio.Volume = volume;
+                volumen = volume;
             } catch (Exception e) {
 
             }
@@ -208,7 +259,19 @@ namespace Reproductor
             } else {
                 MessageBox.Show("Tipo de archivo no soportado");
             }
-            
+            if (isOnline) {
+                if (_capitulos != null) {
+                    ConexionServer.increaseNumVisitasCap(_capitulos[currentVideoPosition]);
+                    long time = ConexionServer.getTimeCapitulo(_capitulos[currentVideoPosition]);
+                    control.SourceProvider.MediaPlayer.Time = time;
+                } else if (_peliculas != null) {
+                    ConexionServer.increaseNumVisitasPelicula(_peliculas[currentVideoPosition]);
+                    long time = ConexionServer.getTimePelicula(_peliculas[currentVideoPosition]);
+                    control.SourceProvider.MediaPlayer.Time = time;
+                }
+
+            }
+            control.SourceProvider.MediaPlayer.Audio.Volume = volumen;
             dp.Start();
             setTimeLabel();
             //resetMaximumTime();
@@ -219,6 +282,15 @@ namespace Reproductor
 
         public void nextVideo() {
             dp.Stop();
+            long time=control.SourceProvider.MediaPlayer.Time;
+            if (isOnline) {
+                if (_capitulos != null) {
+                    ConexionServer.updateTiempoActualCap(_capitulos[currentVideoPosition], time);
+                }else if (_peliculas != null) {
+                    ConexionServer.updateTiempoActualPel(_peliculas[currentVideoPosition], time);
+                }
+                
+            }
             cont = 0;
             if (lista != null) {
                 if (currentVideoPosition == lista.Length - 1) {
@@ -236,6 +308,15 @@ namespace Reproductor
 
         public void previousVideo() {
             dp.Stop();
+            long time = control.SourceProvider.MediaPlayer.Time;
+            if (isOnline) {
+                if (_capitulos != null) {
+                    ConexionServer.updateTiempoActualCap(_capitulos[currentVideoPosition], time);
+                } else if (_peliculas != null) {
+                    ConexionServer.updateTiempoActualPel(_peliculas[currentVideoPosition], time);
+                }
+
+            }
             cont = 0;
             if (currentVideoPosition == 0) {
                 currentVideoPosition = lista.Length - 1;
@@ -344,14 +425,12 @@ namespace Reproductor
 
 
         private void gridControles_MouseLeave(object sender, MouseEventArgs e) {
-            //if (videoPlayerProperties.isFullScreen()) {
-                gridControles.Background = new SolidColorBrush(Color.FromArgb(0, 23, 23, 23));
-                
-                gridBotonesPrincipales.Visibility = Visibility.Hidden;
-                dockTimeLine.Visibility = Visibility.Hidden;
-                gridVolume.Visibility = Visibility.Hidden;
-                gridOthers.Visibility = Visibility.Hidden;
-            //}
+            gridControles.Background = new SolidColorBrush(Color.FromArgb(0, 23, 23, 23));
+
+            gridBotonesPrincipales.Visibility = Visibility.Hidden;
+            dockTimeLine.Visibility = Visibility.Hidden;
+            gridVolume.Visibility = Visibility.Hidden;
+            gridOthers.Visibility = Visibility.Hidden;
 
         }
 
@@ -405,15 +484,12 @@ namespace Reproductor
         }
 
         private void gridControles_MouseEnter(object sender, MouseEventArgs e) {
-            //if (videoPlayerProperties.isFullScreen()) {
-                
-                gridControles.Background = new SolidColorBrush(Color.FromArgb(255, 23, 23, 23));
-                
-                gridBotonesPrincipales.Visibility = Visibility.Visible;
-                dockTimeLine.Visibility = Visibility.Visible;
-                gridVolume.Visibility = Visibility.Visible;
-                gridOthers.Visibility = Visibility.Visible;
-            //}
+            gridControles.Background = new SolidColorBrush(Color.FromArgb(255, 23, 23, 23));
+
+            gridBotonesPrincipales.Visibility = Visibility.Visible;
+            dockTimeLine.Visibility = Visibility.Visible;
+            gridVolume.Visibility = Visibility.Visible;
+            gridOthers.Visibility = Visibility.Visible;
         }
 
         private void timeLine_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
@@ -440,6 +516,14 @@ namespace Reproductor
 
         public void CerrarReproductor(object sender, EventArgs e) {
             dp.Stop();
+            long time = control.SourceProvider.MediaPlayer.Time;
+            if (isOnline) {
+                if (_capitulos != null) {
+                    ConexionServer.updateTiempoActualCap(_capitulos[currentVideoPosition], time);
+                } else if (_peliculas != null) {
+                    ConexionServer.updateTiempoActualPel(_peliculas[currentVideoPosition], time);
+                }
+            }
             control.Dispose();
             gridVIGallery.Children.Remove(this);
         }

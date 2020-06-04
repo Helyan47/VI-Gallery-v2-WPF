@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,9 +27,14 @@ namespace ProyectoWPF.NewFolders {
 
         private void onClickAccept(object sender, EventArgs e) {
             if (Title.Text.CompareTo("") != 0) {
-                aux.Content = Title.Text;
-                added = true;
-                this.Close();
+                Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
+                if (!containsABadCharacter.IsMatch(Title.Text)) {
+                    aux.Content = Title.Text;
+                    added = true;
+                    this.Close();
+                } else {
+                    MessageBox.Show("El nombre contiene caractéres no permitidos: " + new string(System.IO.Path.GetInvalidFileNameChars()));
+                }
             } else {
                 MessageBox.Show("No has introducido un titulo");
             }

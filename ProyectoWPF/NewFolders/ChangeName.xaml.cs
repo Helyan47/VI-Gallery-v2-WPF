@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,11 +29,16 @@ namespace ProyectoWPF.NewFolders {
 
         private void BAceptar_Click(object sender, EventArgs e) {
             if (newName.Text.CompareTo("") != 0) {
-                if (!Lista.Contains(_rutaPadre + "/" + newName.Text)) {
-                    name = newName.Text;
-                    this.Close();
+                Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
+                if (!containsABadCharacter.IsMatch(newName.Text)) {
+                    if (!Lista.Contains(_rutaPadre + "/" + newName.Text)) {
+                        name = newName.Text;
+                        this.Close();
+                    } else {
+                        MessageBox.Show("Una carpeta con ese nombre ya existe");
+                    }
                 } else {
-                    MessageBox.Show("Una carpeta con ese nombre ya existe");
+                    MessageBox.Show("El nombre contiene caractéres no permitidos: " + new string(System.IO.Path.GetInvalidFileNameChars()));
                 }
 
             } else {

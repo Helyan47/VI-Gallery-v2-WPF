@@ -15,6 +15,7 @@ using Reproductor;
 using System.Linq;
 using ProyectoWPF.Data.Online;
 using ProyectoWPF.Components.Online;
+using System.Net;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -964,11 +965,6 @@ namespace ProyectoWPF {
                 bool added = Lista.addButtonProfile(b);
                 if (added) {
                     perfiles.Children.Add(b);
-                    Rectangle rect = new Rectangle();
-                    rect.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    rect.Height = 2;
-                    rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
-                    perfiles.Children.Add(rect);
                 } else {
                     b = null;
                 }
@@ -1035,11 +1031,6 @@ namespace ProyectoWPF {
                 b.Click += selectProfile;
                 Lista.addButtonProfile(b);
                 perfiles.Children.Add(b);
-                Rectangle rect = new Rectangle();
-                rect.HorizontalAlignment = HorizontalAlignment.Stretch;
-                rect.Height = 2;
-                rect.Fill = new SolidColorBrush(Color.FromRgb(60, 60, 60));
-                perfiles.Children.Add(rect);
                 
                 MessageBox.Show("El perfil ha sido creado. Cambia al perfil desde el panel de opciones pulsando \"Cambiar Perfil\"");
                 
@@ -1054,7 +1045,24 @@ namespace ProyectoWPF {
         }
 
         private void removeProfile(object sender,RoutedEventArgs e) {
-
+            if (_profile.nombre.CompareTo(_newSelectedProfile.nombre) != 0) {
+                if (conexionMode) {
+                    Conexion.deleteProfile(_newSelectedProfile.id);
+                } else {
+                    ConexionOffline.deleteProfile(_newSelectedProfile.id);
+                }
+                
+                Button b=Lista.getProfileButton(_newSelectedProfile.nombre);
+                if (perfiles.Children.Contains(b)) {
+                    perfiles.Children.Remove(b);
+                }
+                Lista.removeProfile(_newSelectedProfile.nombre);
+                _newSelectedProfile = null;
+                Button aux = Lista.getProfileButton(_profile.nombre);
+                selectProfile(aux);
+            } else {
+                MessageBox.Show("No puedes borrrar el perfil seleccionado");
+            }
         }
 
         public Grid getFirstGrid() {
@@ -1081,75 +1089,79 @@ namespace ProyectoWPF {
             Button aux = (Button)sender;
             if (aux.Name.Equals("bOnlineMenu")) {
                 if (menuOnline.Visibility == Visibility.Hidden) {
-                    menuOnline.Visibility = Visibility.Visible;
-                    rectOnline.Visibility = Visibility.Visible;
+                    if (checkConnection()) {
+                        menuOnline.Visibility = Visibility.Visible;
+                        rectOnline.Visibility = Visibility.Visible;
 
-                    buscadorOnline.Visibility = Visibility.Visible;
+                        buscadorOnline.Visibility = Visibility.Visible;
 
-                    rectOffline.Visibility = Visibility.Hidden;
-                    gridPrincipal.Visibility = Visibility.Visible;
-                    menuOffline.Visibility = Visibility.Hidden;
-                    buscadorOffline.Visibility = Visibility.Hidden;
-                    panelPrincSelected = true;
+                        rectOffline.Visibility = Visibility.Hidden;
+                        gridPrincipal.Visibility = Visibility.Visible;
+                        menuOffline.Visibility = Visibility.Hidden;
+                        buscadorOffline.Visibility = Visibility.Hidden;
+                        panelPrincSelected = true;
 
-                    if (panelPrincSelected) {
-                        buscadorOnline.Visibility = Visibility.Hidden;
-                        rowBuscador.Height = new GridLength(0, GridUnitType.Star);
-                        gridOnlinePanelPrinc.Visibility = Visibility.Visible;
-                        gridOnlineShowAll.Visibility = Visibility.Hidden;
-                        bPanelPrinc.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
-                        bShowAll.ClearValue(Button.BackgroundProperty);
-                        ReturnVisibility(false);
+                        if (panelPrincSelected) {
+                            buscadorOnline.Visibility = Visibility.Hidden;
+                            rowBuscador.Height = new GridLength(0, GridUnitType.Star);
+                            gridOnlinePanelPrinc.Visibility = Visibility.Visible;
+                            gridOnlineShowAll.Visibility = Visibility.Hidden;
+                            bPanelPrinc.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
+                            bShowAll.ClearValue(Button.BackgroundProperty);
+                            ReturnVisibility(false);
+                        }
+
+                        ListaOnline.loadData();
+                        List<Capitulo> capitulosRecientes = ConexionServer.getCapitulosMasRecientes();
+                        List<Pelicula> peliculasRecientes = ConexionServer.getPeliculasMasRecientes();
+                        List<object> listaRecientes = new List<object>();
+                        if (capitulosRecientes != null) {
+                            listaRecientes.AddRange(capitulosRecientes);
+                        }
+                        if (peliculasRecientes != null) {
+                            listaRecientes.AddRange(peliculasRecientes);
+                        }
+                        listaRecientes = OrderClass.orderDates(listaRecientes);
+                        if (listaRecientes != null & listaRecientes.Count >= 8) {
+                            listaRecientes = listaRecientes.GetRange(0, 8);
+                        }
+
+                        menuReciente.setList(listaRecientes);
+
+                        List<Capitulo> capitulos2019 = ConexionServer.getTopEpisodios2019();
+                        List<Pelicula> peliculas2019 = ConexionServer.getTopPeliculas2019();
+                        List<object> listaTop2019 = new List<object>();
+                        if (capitulos2019 != null) {
+                            listaTop2019.AddRange(capitulos2019);
+                        }
+                        if (peliculas2019 != null) {
+                            listaTop2019.AddRange(peliculas2019);
+                        }
+                        listaTop2019 = OrderClass.orderTops(listaTop2019);
+                        if (listaTop2019 != null & listaTop2019.Count >= 10) {
+                            listaTop2019 = listaTop2019.GetRange(0, 10);
+                        }
+
+                        top2019.setLista(ListaOnline.listToVideoElement(listaTop2019, this));
+
+                        List<VideoElement> videoElements = ListaOnline.listCapituloToVideoElement(ConexionServer.getCapitulosMasVistos(), this);
+                        if (videoElements != null) {
+                            episodiosVistos.setLista(videoElements);
+                        }
+
+                        List<VideoElement> videoElements2 = ListaOnline.listPeliculaToVideoElement(ConexionServer.getPeliculasMasVistas(), this);
+                        if (videoElements != null) {
+                            peliculasVistas.setLista(videoElements2);
+                        }
+
+                        ListaOnline.createAllFolders(gridOnlineShowAll, wrapShowAll, this);
+
+                        textOnline.Text = "";
+
+                        rowAddMenu.Height = new GridLength(0, GridUnitType.Star);
+                    } else {
+                        MessageBox.Show("No se ha podido conectar con el servidor");
                     }
-
-                    ListaOnline.loadData();
-                    List<Capitulo> capitulosRecientes = ConexionServer.getCapitulosMasRecientes();
-                    List<Pelicula> peliculasRecientes = ConexionServer.getPeliculasMasRecientes();
-                    List<object> listaRecientes = new List<object>();
-                    if (capitulosRecientes != null) {
-                        listaRecientes.AddRange(capitulosRecientes);
-                    }
-                    if (peliculasRecientes != null) {
-                        listaRecientes.AddRange(peliculasRecientes);
-                    }
-                    listaRecientes = OrderClass.orderDates(listaRecientes);
-                    if (listaRecientes != null & listaRecientes.Count >= 8) {
-                        listaRecientes = listaRecientes.GetRange(0, 8);
-                    }
-
-                    menuReciente.setList(listaRecientes);
-
-                    List<Capitulo> capitulos2019 = ConexionServer.getTopEpisodios2019();
-                    List<Pelicula> peliculas2019 = ConexionServer.getTopPeliculas2019();
-                    List<object> listaTop2019 = new List<object>();
-                    if (capitulos2019 != null) {
-                        listaTop2019.AddRange(capitulos2019);
-                    }
-                    if (peliculas2019 != null) {
-                        listaTop2019.AddRange(peliculas2019);
-                    }
-                    listaTop2019 = OrderClass.orderTops(listaTop2019);
-                    if (listaTop2019 != null & listaTop2019.Count >= 10) {
-                        listaTop2019 = listaTop2019.GetRange(0, 10);
-                    }
-
-                    top2019.setLista(ListaOnline.listToVideoElement(listaTop2019));
-
-                    List<VideoElement> videoElements = ListaOnline.listCapituloToVideoElement(ConexionServer.getCapitulosMasVistos());
-                    if (videoElements != null) {
-                        episodiosVistos.setLista(videoElements);
-                    }
-
-                    List<VideoElement> videoElements2 = ListaOnline.listPeliculaToVideoElement(ConexionServer.getPeliculasMasVistas());
-                    if (videoElements != null) {
-                        peliculasVistas.setLista(videoElements2);
-                    }
-
-                    ListaOnline.createAllFolders(gridOnlineShowAll, wrapShowAll, this);
-
-                    textOnline.Text = "";
-
-                    rowAddMenu.Height = new GridLength(0, GridUnitType.Star);
                 }
             }else if (aux.Name.Equals("bOfflineMenu")) {
                 if (menuOffline.Visibility == Visibility.Hidden) {
@@ -1278,6 +1290,21 @@ namespace ProyectoWPF {
             textOfflineMain.Text = "";
             textOfflineSubFolder.Text = "";
             textOnline.Text = "";
+        }
+
+        private bool checkConnection() {
+            WebRequest request = WebRequest.Create("http://vigallery.helyan.com");
+            request.Timeout = 4000;
+            WebResponse response;
+            try {
+                response = request.GetResponse();
+                response.Close();
+                request = null;
+                return true;
+            }catch(Exception e) {
+                request = null;
+                return false;
+            }
         }
     }
 }

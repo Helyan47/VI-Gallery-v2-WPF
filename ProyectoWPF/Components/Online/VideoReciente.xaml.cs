@@ -39,27 +39,30 @@ namespace ProyectoWPF.Components {
         }
 
         private void onClickReproducir(object sender, EventArgs e) {
-            VI_Reproductor reproductor = new VI_Reproductor();
+            VI_Reproductor reproductor = new VI_Reproductor(true);
             main.getFirstGrid().Children.Add(reproductor);
             List<Uri> listaArchivos = new List<Uri>();
+            List<long> listaId = new List<long>();
             List<string> listaNombre= new List<string>();
             if (_capitulo != null) {
                 Uri u = new Uri(_capitulo.rutaWeb);
                 listaArchivos.Add(u);
+                listaId.Add(_capitulo.id);
                 Temporada t = ListaOnline.getTempByCap(this._capitulo);
                 Serie s = ListaOnline.getSerieByTemp(t);
                 string nombre = s.nombre + " - Temporada " + t.numTemporada + " " + _capitulo.nombre;
                 listaNombre.Add(nombre);
                 reproductor.setListaNombres(listaNombre.ToArray());
-                reproductor.setLista(listaArchivos.ToArray());
+                reproductor.setListaCapitulos(listaArchivos.ToArray(), listaId.ToArray()); ;
                 reproductor.setVIGallery(main.getFirstGrid());
             }else if (_pelicula != null) {
                 Uri u = new Uri(_pelicula.rutaWeb);
+                listaId.Add(_pelicula.id);
                 listaArchivos.Add(u);
                 string nombre = _pelicula.nombre;
                 listaNombre.Add(nombre);
                 reproductor.setListaNombres(listaNombre.ToArray());
-                reproductor.setLista(listaArchivos.ToArray());
+                reproductor.setListaPeliculas(listaArchivos.ToArray(),listaId.ToArray());
                 reproductor.setVIGallery(main.getFirstGrid());
             }
         }

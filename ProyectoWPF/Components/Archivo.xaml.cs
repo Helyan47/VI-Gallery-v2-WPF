@@ -121,7 +121,7 @@ namespace ProyectoWPF.Components {
         private void onClick(object sender, EventArgs e) {
             
             if (_carpetaPadre != null) {
-                VI_Reproductor reproductor = new VI_Reproductor();
+                VI_Reproductor reproductor = new VI_Reproductor(false);
                 main.getFirstGrid().Children.Add(reproductor);
                 List<Archivo> lista = _carpetaPadre._archivos;
                 List<FileInfo> listaArchivos = new List<FileInfo>();
@@ -141,7 +141,7 @@ namespace ProyectoWPF.Components {
                 reproductor.setLista(listaArchivos.ToArray(),posicion);
                 reproductor.setVIGallery(main.getFirstGrid());
             } else if (_subCarpetaPadre != null) {
-                VI_Reproductor reproductor = new VI_Reproductor();
+                VI_Reproductor reproductor = new VI_Reproductor(false);
                 main.getFirstGrid().Children.Add(reproductor);
                 List<Archivo> lista = _subCarpetaPadre._archivos;
                 List<FileInfo> listaArchivos = new List<FileInfo>();

@@ -31,13 +31,16 @@ namespace ProyectoWPF.Components {
         }
 
         public void setLista(List<VideoElement> lista) {
-            listaVideoElement = lista;
-            foreach(VideoElement ve in lista) {
-                stackLista.Children.Add(ve);
-                this.VerticalAlignment = VerticalAlignment.Stretch;
-                ve.Width = 400;
-                ve.Margin = new Thickness(0, 0, 20, 0);
+            if (lista != null) {
+                listaVideoElement = lista;
+                foreach (VideoElement ve in lista) {
+                    stackLista.Children.Add(ve);
+                    this.VerticalAlignment = VerticalAlignment.Stretch;
+                    ve.Width = 400;
+                    ve.Margin = new Thickness(0, 0, 20, 0);
+                }
             }
+            
         }
 
         public void addVideoElement(VideoElement ve) {
