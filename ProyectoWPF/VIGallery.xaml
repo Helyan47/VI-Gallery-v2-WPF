@@ -448,7 +448,7 @@
                                             <Button x:Name="addSubCarp" Content="{StaticResource Folder}" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="NewTemp_Click" Margin="20"/>
                                         </Viewbox>
                                     </StackPanel>
-                                    <TextBox x:Name="textOfflineSubFolder" MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Hidden" KeyUp="onPressEnter"/>
+                                    <TextBox x:Name="textOfflineSubFolder" MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Visible" KeyUp="onPressEnter"/>
                                 </Grid>
                             </Grid>
                             <Grid x:Name="buscadorOnline" Height="30" VerticalAlignment="Top" Grid.Row="0" Visibility="Hidden">

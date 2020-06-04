@@ -129,6 +129,7 @@ namespace ProyectoWPF.Components.Online {
                 _wrapSeries.Visibility = Visibility.Visible;
                 this.Visibility = Visibility.Hidden;
                 isVisible = false;
+                _ventanaMain.clearTextBox(wrapTemporadas);
                 return false;
             } else {
                 wrapTemporadas.Visibility = Visibility.Visible;
@@ -136,6 +137,7 @@ namespace ProyectoWPF.Components.Online {
                     tc.getPanelArchivos().Visibility = Visibility.Hidden;
                 }
                 Title.Content = _serie.getSerie().nombre;
+                _ventanaMain.clearTextBox(getWrapVisible());
                 return true;
             }
             
@@ -150,6 +152,19 @@ namespace ProyectoWPF.Components.Online {
             }
             wrapTemporadas.removeChildrens();
             _wrapSeries.removeChildrens();
+        }
+
+        public WrapPanelPrincipal getWrapVisible() {
+            if(wrapTemporadas.Visibility == Visibility.Visible) {
+                return wrapTemporadas;
+            } else {
+                foreach(TemporadaComponent t in _tempComponents) {
+                    if (t.getPanelArchivos().Visibility == Visibility.Visible) {
+                        return t.getPanelArchivos();
+                    }
+                }
+            }
+            return null;
         }
     }
 }

@@ -276,7 +276,7 @@ namespace ProyectoWPF.Data {
         public static void updateFolderName(CarpetaClass c) {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
                 var parameters = new { nombre = c.nombre, ruta = c.ruta, rutaPadre = c.rutaPadre, idCarpeta=c.id};
-                var output = cnn.Query<CarpetaClass>("UPDATE Carpeta set nombre=@nombre and ruta=@ruta and rutaPadre=@rutaPadre where id=@idCarpeta", parameters);
+                var output = cnn.Query<CarpetaClass>("UPDATE Carpeta set nombre=@nombre, ruta=@ruta, rutaPadre=@rutaPadre where id=@idCarpeta", parameters);
                 cnn.Close();
             }
         }

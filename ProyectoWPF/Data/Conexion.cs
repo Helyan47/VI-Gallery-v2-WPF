@@ -186,6 +186,11 @@ namespace ProyectoWPF.Data {
                     myTrans.Commit();
 
                     comando.Parameters.Clear();
+                    comando = new MySqlCommand("UPDATE Menu set numCarps=numCarps+1 where id=@id", conexion);
+                    comando.Parameters.AddWithValue("@id", p.getClass().idMenu);
+                    comando.ExecuteNonQuery();
+
+                    comando.Parameters.Clear();
                     comando = new MySqlCommand("SELECT id FROM carpeta where ruta=@ruta and fk_Menu=@idMenu", conexion);
                     comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
                     comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
@@ -252,6 +257,11 @@ namespace ProyectoWPF.Data {
                         myTrans.Commit();
 
                         comando.Parameters.Clear();
+                        comando = new MySqlCommand("UPDATE Carpeta set numSubCarps=numSubCarps+1 where ruta=@rutaPadre", conexion);
+                        comando.Parameters.AddWithValue("@rutaPadre", p.getClass().rutaPadre);
+                        comando.ExecuteNonQuery();
+
+                        comando.Parameters.Clear();
                         comando = new MySqlCommand("SELECT id FROM carpeta where ruta=@ruta and fk_Menu=@idMenu", conexion);
                         comando.Parameters.AddWithValue("@ruta", p.getClass().ruta);
                         comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
@@ -266,7 +276,7 @@ namespace ProyectoWPF.Data {
                     }
                 }
             } catch (MySqlException e) {
-                
+                Console.WriteLine("SubFolder " + e);
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -302,6 +312,11 @@ namespace ProyectoWPF.Data {
                     myTrans.Commit();
 
                     comando.Parameters.Clear();
+                    comando = new MySqlCommand("UPDATE Carpeta set numArchivos=numArchivos+1 where id=@idCarpeta", conexion);
+                    comando.Parameters.AddWithValue("@idCarpeta", ac.idCarpeta);
+                    comando.ExecuteNonQuery();
+
+                    comando.Parameters.Clear();
                     comando = new MySqlCommand("SELECT id FROM Archivo where rutaPrograma=@ruta and fk_Carpeta=@idCarpeta", conexion);
                     comando.Parameters.AddWithValue("@ruta", ac.rutaPrograma);
                     comando.Parameters.AddWithValue("@idCarpeta", ac.idCarpeta);
@@ -315,7 +330,8 @@ namespace ProyectoWPF.Data {
                     }
                 }
             } catch (MySqlException e) {
-                Console.WriteLine("Carpeta  \n" + e);
+                Console.WriteLine("No se ha podido añadir " + ac.nombre);
+                Console.WriteLine("Archivo " + e);
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -513,6 +529,8 @@ namespace ProyectoWPF.Data {
                 MySqlCommand comando = new MySqlCommand("DELETE FROM Perfil WHERE id=@id", conexion);
                 comando.Parameters.AddWithValue("@id", id);
                 comando.ExecuteNonQuery();
+                
+
 
 
             } catch (MySqlException e) {
@@ -554,6 +572,20 @@ namespace ProyectoWPF.Data {
                 comando.Parameters.AddWithValue("@id", c.id);
                 comando.ExecuteNonQuery();
 
+                comando.Parameters.Clear();
+                if (c.isFolder) {
+                    comando = new MySqlCommand("UPDATE Menu set numCarps=numCarps-1 where id=@id", conexion);
+                    comando.Parameters.AddWithValue("@id", c.idMenu);
+                    comando.ExecuteNonQuery();
+                } else {
+                    comando = new MySqlCommand("UPDATE Carpeta set numSubCarps=numSubCarps-1 where ruta=@rutaPadre", conexion);
+                    comando.Parameters.AddWithValue("@rutaPadre", c.rutaPadre);
+                    comando.ExecuteNonQuery();
+                }
+                
+
+
+
 
             } catch (MySqlException e) {
                 Console.WriteLine("No se ha podido borrar la carpeta \n"+e);
@@ -572,6 +604,11 @@ namespace ProyectoWPF.Data {
 
                 MySqlCommand comando = new MySqlCommand("DELETE FROM Archivo where id=@id", conexion);
                 comando.Parameters.AddWithValue("@id", a.id);
+                comando.ExecuteNonQuery();
+
+                comando.Parameters.Clear();
+                comando = new MySqlCommand("UPDATE Carpeta set numArchivos=numArchivos-1 where id=@idCarpeta", conexion);
+                comando.Parameters.AddWithValue("@idCarpeta", a.idCarpeta);
                 comando.ExecuteNonQuery();
 
 
@@ -652,7 +689,7 @@ namespace ProyectoWPF.Data {
 
                 myTrans = conexion.BeginTransaction();
 
-                MySqlCommand comando = new MySqlCommand("UPDATE Carpeta set nombre=@nombre and ruta=@ruta and rutaPadre=@rutaPadre where id=@idCarpeta", conexion);
+                MySqlCommand comando = new MySqlCommand("UPDATE Carpeta set nombre = @nombre, ruta = @ruta, rutaPadre = @rutaPadre where id = @idCarpeta", conexion);
                 comando.Parameters.AddWithValue("@nombre", c.nombre);
                 comando.Parameters.AddWithValue("@ruta", c.ruta);
                 comando.Parameters.AddWithValue("@rutaPadre", c.rutaPadre);

@@ -173,6 +173,7 @@ namespace ProyectoWPF.Components {
                 ConexionOffline.updateFile(_archivoClass);
             }
             Title.SetText(newName);
+            Lista.orderWrap(_carpetaPadre.GetWrapCarpPrincipal());
         }
 
         private void showNewNamePanel(object sender, EventArgs e) {

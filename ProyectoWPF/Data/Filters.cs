@@ -30,7 +30,6 @@ namespace ProyectoWPF.Data {
                 2-Después se dividen todos los nombres de las carpetas en palabras
                 3-Se compara cada palabra del string search con cada palabra de los nombres de las carpetas
                 */
-                Console.WriteLine("Ejecutado buscador por palabras");
 
                 /*
                 Guarda todas las palabras de los nombres de las carpetas con clave-valor siendo la clave el nombre completo
@@ -71,7 +70,6 @@ namespace ProyectoWPF.Data {
                 obtenidos al descomponer la busqueda.
                 */
                 if (resultados.Count == 0) {
-                    Console.WriteLine("Ejecutado buscador por combinaciones");
                     List<string> caracteres = new List<string>();
                     //Metodo que descompone el string search
                     for (int i = 0; i < search.Length; i++) {

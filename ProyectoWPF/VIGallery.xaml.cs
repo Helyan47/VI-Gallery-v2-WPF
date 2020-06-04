@@ -54,6 +54,8 @@ namespace ProyectoWPF {
         public void onClickButtonMenu(object sender,EventArgs e) {
             Button b = (Button)sender;
             MenuClass mc = Lista.getMenuFromButton(b);
+            WrapPanelPrincipal wp = Lista.getWrapVisible();
+            clearTextBox(wp);
             if (Lista.buttonInButtons(mc)) {
                 Lista.hideAll();
                 GridSecundario.SetValue(Grid.RowProperty, 1);
@@ -119,7 +121,7 @@ namespace ProyectoWPF {
 }
 
         private void addSubCarpeta() {
-            SubCarpeta c = new SubCarpeta();
+            SubCarpeta c = new SubCarpeta(this);
             WrapPanelPrincipal p = Lista.getSubWrapsVisibles();
             NewSubCarpeta n = null;
             if (p.getCarpeta() == null) {
@@ -184,7 +186,7 @@ namespace ProyectoWPF {
         }
 
         private SubCarpeta addSubCarpetaCompleta(Carpeta p1, string nombre) {
-            SubCarpeta c = new SubCarpeta();
+            SubCarpeta c = new SubCarpeta(this);
             
             p1.clickEspecial();
             //FlowCarpeta p = listaSeries.getFlowCarpVisible();
@@ -231,7 +233,7 @@ namespace ProyectoWPF {
         }
 
         private SubCarpeta addSubCarpetaCompleta(SubCarpeta sp1, string nombre) {
-            SubCarpeta c = new SubCarpeta();
+            SubCarpeta c = new SubCarpeta(this);
             
             sp1.click();
             WrapPanelPrincipal p = sp1.getWrapCarpPrincipal();
@@ -518,7 +520,7 @@ namespace ProyectoWPF {
         }
 
         private void addSubCarpetaFromLoad(CarpetaClass cc) {
-            SubCarpeta c = new SubCarpeta();
+            SubCarpeta c = new SubCarpeta(this);
             Lista.addSubCarpeta(c);
             c.setClass(cc);
             object obj = Lista.getFolderRuta(cc.ruta);
@@ -862,6 +864,7 @@ namespace ProyectoWPF {
                 }
                 
             }
+            clearTextBox(null);
         }
 
         public bool checkString(string s) {
@@ -1144,6 +1147,8 @@ namespace ProyectoWPF {
 
                     ListaOnline.createAllFolders(gridOnlineShowAll, wrapShowAll, this);
 
+                    textOnline.Text = "";
+
                     rowAddMenu.Height = new GridLength(0, GridUnitType.Star);
                 }
             }else if (aux.Name.Equals("bOfflineMenu")) {
@@ -1224,33 +1229,55 @@ namespace ProyectoWPF {
             }
         }
 
-        private void onPressEnter(object sender, KeyEventArgs e) {
-            if(e.Key == Key.Enter) {
-                TextBox textBox = (TextBox)sender;
-                if (!textBox.Text.Equals("")) {
-                    if (buscadorOffline.Visibility == Visibility.Visible) {
-                        if (textBox.Name.Equals("textOfflineMain")) {
-                            WrapPanelPrincipal wp = Lista.getWrapVisible();
-                            wp.showFoldersBySearch(textBox.Text);
-                        } else if (textBox.Name.Equals("textOfflineSubFolder")) {
-                            WrapPanelPrincipal wp = Lista.getSubWrapsVisibles();
-                            wp.showFoldersBySearch(textBox.Text);
-                        }
+        private void onPressEnter(object sender, KeyEventArgs e) { 
+            TextBox textBox = (TextBox)sender;
+            if (!textBox.Text.Equals("")) {
+                if (buscadorOffline.Visibility == Visibility.Visible) {
+                    if (textBox.Name.Equals("textOfflineMain")) {
+                        WrapPanelPrincipal wp = Lista.getWrapVisible();
+                        wp.showFoldersBySearch(textBox.Text);
+                    } else if (textBox.Name.Equals("textOfflineSubFolder")) {
+                        WrapPanelPrincipal wp = Lista.getSubWrapsVisibles();
+                        wp.showFoldersBySearch(textBox.Text);
                     }
-                } else {
-                    if (buscadorOffline.Visibility == Visibility.Visible) {
-                        if (textBox.Name.Equals("textOfflineMain")) {
-                            WrapPanelPrincipal wp = Lista.getWrapVisible();
-                            wp.showAll();
-                        } else if (textBox.Name.Equals("textOfflineSubFolder")) {
-                            WrapPanelPrincipal wp = Lista.getSubWrapsVisibles();
-                            wp.showAll();
-                        }
+                }else if(buscadorOnline.Visibility == Visibility.Visible) {
+                    if(wrapShowAll.Visibility == Visibility.Visible) {
+                        wrapShowAll.showFoldersBySearch(textBox.Text);
+                    } else {
+                        MenuComponent mc = ListaOnline.getMenuVisible();
+                        WrapPanelPrincipal wp = mc.getWrapVisible();
+                        wp.showFoldersBySearch(textBox.Text);
                     }
                 }
-                
+            } else {
+                if (buscadorOffline.Visibility == Visibility.Visible) {
+                    if (textBox.Name.Equals("textOfflineMain")) {
+                        WrapPanelPrincipal wp = Lista.getWrapVisible();
+                        wp.showAll();
+                    } else if (textBox.Name.Equals("textOfflineSubFolder")) {
+                        WrapPanelPrincipal wp = Lista.getSubWrapsVisibles();
+                        wp.showAll();
+                    }
+                } else if (buscadorOnline.Visibility == Visibility.Visible) {
+                    if (wrapShowAll.Visibility == Visibility.Visible) {
+                        wrapShowAll.showAll();
+                    } else {
+                        MenuComponent mc = ListaOnline.getMenuVisible();
+                        WrapPanelPrincipal wp = mc.getWrapVisible();
+                        wp.showAll();
+                    }
+                }
+            }
+        }
+
+        public void clearTextBox(WrapPanelPrincipal wp) {
+            if (wp != null) {
+                wp.showAll();
             }
             
+            textOfflineMain.Text = "";
+            textOfflineSubFolder.Text = "";
+            textOnline.Text = "";
         }
     }
 }

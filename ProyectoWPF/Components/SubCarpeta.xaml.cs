@@ -30,8 +30,9 @@ namespace ProyectoWPF {
         private Canvas _defaultCanvas;
         public List<Archivo> _archivos;
         private static long _mode = 0;
+        private VIGallery _ventanaMain;
         public PerfilClass _profile { get; set; }
-        public SubCarpeta() {
+        public SubCarpeta(VIGallery ventanaMain) {
             InitializeComponent();
             _carpeta = new CarpetaClass("", "", false);
             _numSubCarpetas = 0;
@@ -39,6 +40,7 @@ namespace ProyectoWPF {
             _defaultCanvas = canvasFolder;
             _profile = VIGallery._profile;
             changeMode(_profile.mode);
+            _ventanaMain = ventanaMain;
         }
 
         #region get/set
@@ -158,6 +160,7 @@ namespace ProyectoWPF {
             _menuCarpeta.changeTitle(_carpeta.nombre);
             _wrapCarpAnterior.Visibility = System.Windows.Visibility.Hidden;
             _wrapCarpPropia.Visibility = System.Windows.Visibility.Visible;
+            _ventanaMain.clearTextBox(_wrapCarpAnterior);
         }
 
         public void clickEspecial() {
@@ -176,6 +179,7 @@ namespace ProyectoWPF {
             } else if (_wrapCarpAnterior.getCarpeta() != null) {
                 _menuCarpeta.Title.Content = _wrapCarpAnterior.getCarpeta().getTitle();
             }
+            _ventanaMain.clearTextBox(_wrapCarpPropia);
         }
 
         private void OnClick(object sender, RoutedEventArgs e) {
@@ -290,6 +294,7 @@ namespace ProyectoWPF {
                     rutaNueva += "/";
                 }
             }
+            _carpeta.ruta = rutaNueva;
             Console.WriteLine("Nombre antiguo: " + nombreAntiguo);
             Console.WriteLine("Nombre nuevo: " + newName);
             Console.WriteLine("Ruta antigua: " + rutaAntigua);
@@ -301,6 +306,7 @@ namespace ProyectoWPF {
             } else {
 
             }
+            Lista.orderWrap(_wrapCarpAnterior);
         }
 
         public void updateRuta(string rutaAntigua, string rutaNueva) {

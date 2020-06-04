@@ -241,6 +241,8 @@ namespace ProyectoWPF {
             _gridSecundario.SetValue(Grid.RowProperty, 0);
             _gridPrincipal.SetValue(Grid.RowProperty, 1);
 
+            _ventanaMain.clearTextBox(_wrapPanelAnterior);
+
             _ventanaMain.ReturnVisibility(true);
            
         }
@@ -386,6 +388,7 @@ namespace ProyectoWPF {
                     rutaNueva += "/";
                 }
             }
+            _carpeta.ruta = rutaNueva;
             Lista.changeSubFoldersName(rutaAntigua, rutaNueva);
             Title.SetText(newName);
             if (VIGallery.conexionMode) {
@@ -393,6 +396,7 @@ namespace ProyectoWPF {
             } else {
                 ConexionOffline.updateFolderName(_carpeta);
             }
+            Lista.orderWrap(_wrapPanelAnterior);
         }
 
         public void showNewNamePanel(object sender, EventArgs e) {
