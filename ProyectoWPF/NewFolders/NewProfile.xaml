@@ -21,7 +21,7 @@
             <RowDefinition Height="10px"/>
         </Grid.RowDefinitions>
         <Label Content="Introduce el nombre:" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" FontSize="25px" Foreground="White" VerticalAlignment="Top"/>
-        <TextBox x:Name="newProfileText" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10" Grid.Row="2" FontSize="25px" TextWrapping="NoWrap" VerticalAlignment="Stretch"/>
+        <TextBox x:Name="newProfileText" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10" Grid.Row="2" FontSize="25px" TextWrapping="NoWrap" MaxLines="1" VerticalAlignment="Stretch"/>
         <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" FlowDirection="RightToLeft">
             <Button Content="Aceptar" Width="75" IsDefault="True" Click="onAceptar"/>
             <Button Content="Cancel" Margin="10,0,0,0" Width="75" IsCancel="True" Click="onCancel"/>

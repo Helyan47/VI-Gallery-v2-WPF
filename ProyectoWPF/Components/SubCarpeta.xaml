@@ -11,7 +11,7 @@
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseLeftButtonUp="OnClick">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Cambiar nombre" Click="showNewNamePanel"/>
+                        <MenuItem Header="Cambiar información..." Click="showNewNamePanel"/>
                         <MenuItem Header="Borrar carpeta" Click="deleteFolder"/>
                     </ContextMenu>
                 </Grid.ContextMenu>

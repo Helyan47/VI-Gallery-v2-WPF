@@ -150,12 +150,12 @@ namespace SeleccionarProfile.Data {
 
         public static PerfilClass addProfile(PerfilClass profile) {
             try {
-                cnn.Execute("insert into Perfil (nombre,numMenus,mode) values (@nombre,0,@mode)", profile);
+                var parameters = new { nombre = profile.nombre, numMenus = 0, mode = 0 };
+                cnn.Execute("insert into Perfil (nombre,numMenus,mode) values (@nombre,@numMenus,@mode)", parameters);
                 Console.WriteLine("Añadido Perfil");
                 return getPerfil(profile);
-            } catch (SQLiteException e) {
-                Console.WriteLine("Clave Duplicada Profile");
-                throw e;
+            } catch (Exception e) {
+                //throw e;
             }
             return null;
         }
@@ -306,8 +306,8 @@ namespace SeleccionarProfile.Data {
         public static void updateFolderName(CarpetaClass c) {
             try {
                 using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                    var parameters = new { nombre = c.nombre, ruta = c.ruta, rutaPadre = c.rutaPadre, idCarpeta = c.id };
-                    var output = cnn.Query<CarpetaClass>("UPDATE Carpeta set nombre=@nombre, ruta=@ruta, rutaPadre=@rutaPadre where id=@idCarpeta", parameters);
+                    var parameters = new { nombre = c.nombre, ruta = c.ruta, rutaPadre = c.rutaPadre, img = c.img, descripcion = c.desc, generos = c.getGeneros(), idCarpeta = c.id };
+                    var output = cnn.Query<CarpetaClass>("UPDATE Carpeta set nombre=@nombre, ruta=@ruta, rutaPadre=@rutaPadre, img = @img, descripcion = @descripcion, generos = @generos where id=@idCarpeta", parameters);
                     cnn.Close();
                 }
             } catch (SQLiteException e) {
@@ -319,8 +319,8 @@ namespace SeleccionarProfile.Data {
         public static void updateFile(ArchivoClass a) {
             try {
                 using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                    var parameters = new { nombre = a.nombre, ruta = a.rutaPrograma, idArchivo = a.id };
-                    var output = cnn.Query<CarpetaClass>("UPDATE Archivo set nombre=@nombre, rutaPrograma=@ruta where id=@idArchivo", parameters);
+                    var parameters = new { nombre = a.nombre, ruta = a.rutaPrograma, img = a.img, idArchivo = a.id };
+                    var output = cnn.Query<CarpetaClass>("UPDATE Archivo set nombre=@nombre, rutaPrograma=@ruta img = @img where id=@idArchivo", parameters);
                     cnn.Close();
                 }
             } catch (SQLiteException e) {

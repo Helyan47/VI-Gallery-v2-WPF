@@ -46,11 +46,12 @@ namespace SeleccionarProfile.Data {
 
             } catch (MySqlException e) {
                 Console.WriteLine("No se ha podido añadir el usuario:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
                 }
-                throw e;
+                
             }
             return "Usuario no se ha podido crear";
         }
@@ -706,10 +707,13 @@ namespace SeleccionarProfile.Data {
 
                 myTrans = conexion.BeginTransaction();
 
-                MySqlCommand comando = new MySqlCommand("UPDATE Carpeta set nombre = @nombre, ruta = @ruta, rutaPadre = @rutaPadre where id = @idCarpeta", conexion);
+                MySqlCommand comando = new MySqlCommand("UPDATE Carpeta set nombre = @nombre, ruta = @ruta, rutaPadre = @rutaPadre, img = @img, descripcion = @descripcion, generos = @generos  where id = @idCarpeta", conexion);
                 comando.Parameters.AddWithValue("@nombre", c.nombre);
                 comando.Parameters.AddWithValue("@ruta", c.ruta);
                 comando.Parameters.AddWithValue("@rutaPadre", c.rutaPadre);
+                comando.Parameters.AddWithValue("@img", c.img);
+                comando.Parameters.AddWithValue("@descripcion", c.desc);
+                comando.Parameters.AddWithValue("@generos", c.getGeneros());
                 comando.Parameters.AddWithValue("@idCarpeta", c.id);
                 comando.ExecuteNonQuery();
 
@@ -736,9 +740,10 @@ namespace SeleccionarProfile.Data {
 
                 myTrans = conexion.BeginTransaction();
 
-                MySqlCommand comando = new MySqlCommand("UPDATE Archivo set nombre=@nombre, rutaPrograma=@ruta where id=@idArchivo", conexion);
+                MySqlCommand comando = new MySqlCommand("UPDATE Archivo set nombre=@nombre, rutaPrograma=@ruta, img = @img where id=@idArchivo", conexion);
                 comando.Parameters.AddWithValue("@nombre", c.nombre);
                 comando.Parameters.AddWithValue("@ruta", c.rutaPrograma);
+                comando.Parameters.AddWithValue("@img", c.img);
                 comando.Parameters.AddWithValue("@idArchivo", c.id);
                 comando.ExecuteNonQuery();
 

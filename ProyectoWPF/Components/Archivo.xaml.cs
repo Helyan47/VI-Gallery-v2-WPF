@@ -167,8 +167,14 @@ namespace SeleccionarProfile.Components {
             }
         }
 
-        private void changeName(string newName) {
+        private void changeName(string newName, string img) {
             _archivoClass.nombre = newName;
+            _archivoClass.img = img;
+            if (_carpetaPadre != null) {
+                setImgCarpeta();
+            } else if (_subCarpetaPadre != null) {
+                setImgSubCarpeta();
+            }
             string[] splitted = _archivoClass.rutaPrograma.Split('/');
             splitted[splitted.Length - 1] = newName;
             string rutaNueva = "";
@@ -208,9 +214,11 @@ namespace SeleccionarProfile.Components {
             }
             if (files != null) {
                 ChangeNameFile cn = new ChangeNameFile(files);
+                cn.setName(_archivoClass.nombre);
+                cn.setImg(_archivoClass.img);
                 cn.ShowDialog();
                 if (cn.getNewName() != null) {
-                    changeName(cn.getNewName());
+                    changeName(cn.getNewName(),cn.getDirImg());
                 }
             }
             

@@ -38,14 +38,14 @@ namespace SeleccionarProfile {
                 Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
                 if (!containsABadCharacter.IsMatch(Title.Text)) {
                     if (!Lista.Contains(VIGallery._profile.nombre + "|C/" + button.Content + "/" + Title.Text)) {
-                        ICollection<String> col = new List<String>();
+                        ICollection<string> col = new List<string>();
 
                         UIElementCollection coleccion = ListGeneros.Children;
                         bool isCheked = false;
                         foreach (CheckBox cb in coleccion) {
 
                             if (cb.IsChecked == true) {
-                                col.Add((String)cb.Content);
+                                col.Add((string)cb.Content);
                                 isCheked = true;
                             }
                         }
@@ -87,7 +87,7 @@ namespace SeleccionarProfile {
             OpenFileDialog f = new OpenFileDialog();
             if (f.ShowDialog() == true) {
 
-                dirImg.Text = f.FileName;
+                dirImg.Text = System.IO.Path.GetFullPath(f.FileName);
             }
         }
 

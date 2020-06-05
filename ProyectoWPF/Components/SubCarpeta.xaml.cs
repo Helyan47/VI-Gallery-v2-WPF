@@ -290,12 +290,13 @@ namespace SeleccionarProfile {
             }
         }
 
-        public void changeName(string newName) {
+        public void changeName(string newName, string img) {
             string nombreAntiguo = _carpeta.nombre;
             string rutaAntigua = _carpeta.ruta;
             try {
                 
                 _carpeta.nombre = newName;
+                _carpeta.img = img;
                 string[] splitted = _carpeta.ruta.Split('/');
                 splitted[splitted.Length - 1] = newName;
                 string rutaNueva = "";
@@ -305,6 +306,7 @@ namespace SeleccionarProfile {
                         rutaNueva += "/";
                     }
                 }
+                setImg();
                 _carpeta.ruta = rutaNueva;
                 if (VIGallery.conexionMode) {
                     Conexion.updateFolderName(_carpeta);
@@ -353,10 +355,12 @@ namespace SeleccionarProfile {
 
         private void showNewNamePanel(object sender, EventArgs e) {
             string folderRutaPadre = _carpeta.ruta.Split('/')[0] + "/";
-            ChangeName cn = new ChangeName(folderRutaPadre);
+            ChangeName cn = new ChangeName(folderRutaPadre,false);
+            cn.setName(_carpeta.nombre);
+            cn.setImg(_carpeta.img);
             cn.ShowDialog();
             if (cn.getNewName() != null) {
-                changeName(cn.getNewName());
+                changeName(cn.getNewName(),cn.getDirImg());
             }
         }
 

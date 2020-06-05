@@ -46,6 +46,7 @@ namespace SeleccionarProfile {
                     }
                 }
             } else {
+                ConexionOffline.startConnection();
                 _profiles = ConexionOffline.LoadProfiles();
                 if (_profiles.Count != 0) {
                     foreach (PerfilClass p in _profiles) {
@@ -63,7 +64,9 @@ namespace SeleccionarProfile {
                         Lista.addProfile(p);
 
                     }
+                    ConexionOffline.closeConnection();
                 }
+                
             }
         }
 
@@ -86,14 +89,6 @@ namespace SeleccionarProfile {
                 b = null;
             }
             selectProfile(b);
-            /*
-            if (_selectedProfile != null) {
-                if (b.Content.ToString().CompareTo(_profile.nombre) == 0) {
-                    
-                }
-            } else {
-                selectProfile(b);
-            }*/
             
         }
 

@@ -14,7 +14,7 @@
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseLeftButtonUp="MouseClick">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Cambiar nombre" Click="showNewNamePanel"/>
+                        <MenuItem Header="Cambiar información..." Click="showNewNamePanel"/>
                         <MenuItem Header="Borrar carpeta" Click="deleteFolder"/>
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -35,7 +35,7 @@
                         <TextBox x:Name="descripcion" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Descripcion" Foreground="#FFF9F9F9" Background="#FF212121"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="4" IsReadOnly="True" MouseLeftButtonUp="MouseClick">
                             <TextBox.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Cambiar nombre" Click="showNewNamePanel"/>
+                                    <MenuItem Header="Cambiar información..." Click="showNewNamePanel"/>
                                     <MenuItem Header="Borrar carpeta" Click="deleteFolder"/>
                                 </ContextMenu>
                             </TextBox.ContextMenu>

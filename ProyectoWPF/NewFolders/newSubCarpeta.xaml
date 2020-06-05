@@ -16,7 +16,7 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <Label Content="Nombre de la Carpeta: " HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="White" FontSize="18" FontWeight="Bold" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="newName" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,0,10,0" TextWrapping="NoWrap" VerticalAlignment="Center" Background="White" BorderThickness="2" FontSize="18" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="newName" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,0,10,0" TextWrapping="NoWrap" MaxLines="1" VerticalAlignment="Center" Background="White" BorderThickness="2" FontSize="18" VerticalContentAlignment="Center"/>
         <Button Content="Aceptar" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Width="75" Grid.ColumnSpan="2" IsDefault="True" Click="BAceptar_Click"/>
     </Grid>
 </Window>

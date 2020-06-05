@@ -75,6 +75,7 @@ namespace SeleccionarProfile {
             _activatedButton = b;
             b.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
             Return.Visibility = Visibility.Hidden;
+            borderEnter.Visibility = Visibility.Hidden;
         }
 
 

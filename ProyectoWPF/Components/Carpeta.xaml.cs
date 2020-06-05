@@ -381,9 +381,12 @@ namespace SeleccionarProfile {
             }
         }
 
-        public void changeName(string newName) {
+        public void changeName(string newName, string newDescripcion, string newImg, ICollection<string> generos) {
             try {
                 _carpeta.nombre = newName;
+                _carpeta.generos = generos;
+                _carpeta.desc = newDescripcion;
+                _carpeta.img = newImg;
                 string[] splitted = _carpeta.ruta.Split('/');
                 splitted[splitted.Length - 1] = newName;
                 string rutaAntigua = _carpeta.ruta;
@@ -395,6 +398,8 @@ namespace SeleccionarProfile {
                     }
                 }
                 _carpeta.ruta = rutaNueva;
+                setImg();
+                setDescripcion(newDescripcion);
                 Lista.changeSubFoldersName(rutaAntigua, rutaNueva);
                 if (_archivos != null) {
                     foreach (Archivo a in _archivos) {
@@ -415,10 +420,14 @@ namespace SeleccionarProfile {
 
         public void showNewNamePanel(object sender, EventArgs e) {
             string folderRutaPadre = _carpeta.ruta.Split('/')[0] + "/";
-            ChangeName cn = new ChangeName(folderRutaPadre);
+            ChangeName cn = new ChangeName(folderRutaPadre,true);
+            cn.setName(_carpeta.nombre);
+            cn.setDescripcion(_carpeta.desc);
+            cn.setImg(_carpeta.img);
+            cn.checkGeneros(_carpeta.generos);
             cn.ShowDialog();
             if (cn.getNewName() != null) {
-                changeName(cn.getNewName());
+                changeName(cn.getNewName(),cn.getDescripcion(),cn.getDirImg(),cn.getGeneros());
             }
         }
 
