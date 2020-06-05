@@ -1,4 +1,5 @@
-﻿using SeleccionarProfile.Data;
+﻿using MySql.Data.MySqlClient;
+using SeleccionarProfile.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,37 +84,40 @@ namespace LoginUser {
         }
 
         private void LoginClick(object sender, EventArgs e) {
+            try {
+                if (inputUser.getText().CompareTo("") != 0) {
 
-            if (inputUser.getText().CompareTo("") != 0) {
+                    if (inputPass.getText().CompareTo("") != 0) {
+                        UsuarioClass user = Conexion.checkUser(inputUser.getText(), inputPass.getText());
 
-                if (inputPass.getText().CompareTo("") != 0) {
-                    UsuarioClass user = Conexion.checkUser(inputUser.getText(),inputPass.getText());
-                    
-                    if (user!=null) {
-                        MessageBox.Show("Conectado");
-                        SeleccionarProfile.MainWindow selectProf = new SeleccionarProfile.MainWindow(true,user);
-                        this.Hide();
-                        selectProf.Show();
-                        this.Close();
+                        if (user != null) {
+                            MessageBox.Show("Conectado");
+                            SeleccionarProfile.MainWindow selectProf = new SeleccionarProfile.MainWindow(true, user);
+                            this.Hide();
+                            selectProf.Show();
+                            this.Close();
+                        } else {
+                            inputUser.setError();
+                            inputPass.setError();
+                            passError.Content = "El usuario o la contraseña son incorrectos";
+                            passError.Visibility = Visibility.Visible;
+                            //MessageBox.Show("Usuario o contraseña incorrectos");
+                        }
                     } else {
-                        inputUser.setError();
                         inputPass.setError();
-                        passError.Content = "El usuario o la contraseña son incorrectos";
+                        passError.Content = "La contraseña debe contener al menos un carácter";
                         passError.Visibility = Visibility.Visible;
-                        //MessageBox.Show("Usuario o contraseña incorrectos");
                     }
-                } else {
-                    inputPass.setError();
-                    passError.Content = "La contraseña debe contener al menos un carácter";
-                    passError.Visibility = Visibility.Visible;
-                }
 
-            } else {
-                inputUser.setError();
-                userError.Content = "El usuario debe contener al menos un carácter";
-                userError.Visibility = Visibility.Visible;
+                } else {
+                    inputUser.setError();
+                    userError.Content = "El usuario debe contener al menos un carácter";
+                    userError.Visibility = Visibility.Visible;
+                }
+            } catch (MySqlException exc) {
+                MessageBox.Show("Se ha producido un error al conectar con la base de datos");
             }
-        }
+         }
 
         public void MinimizeApp(object sender, RoutedEventArgs e) {
             this.WindowState = WindowState.Minimized;
@@ -250,33 +254,38 @@ namespace LoginUser {
         }
 
         private void createUserClick(object sender, EventArgs e) {
-            newUserNameError.Visibility = Visibility.Hidden;
-            newPass1Error.Visibility = Visibility.Hidden;
-            newPass2Error.Visibility = Visibility.Hidden;
-            if (newUser.getText().CompareTo("") != 0) {
-                if(newPass1.getText().Length >= 8) {
-                    if (newPass2.getText().CompareTo(newPass1.getText()) == 0) {
-                        string message = Conexion.saveUser(newUser.getText(), newPass1.getText());
-                        if(message.CompareTo("Usuario existe") == 0) {
-                            newUserNameError.Content = "El nombre de usuario ya existe";
-                            newUserNameError.Visibility = Visibility.Visible;
-                        }else if(message.CompareTo("Usuario creado") == 0) {
-                            MessageBox.Show("Se ha creado correctamente el usuario");
-                            gridLogin.Visibility = Visibility.Visible;
-                            gridNewUser.Visibility = Visibility.Hidden;
+            try {
+                newUserNameError.Visibility = Visibility.Hidden;
+                newPass1Error.Visibility = Visibility.Hidden;
+                newPass2Error.Visibility = Visibility.Hidden;
+                if (newUser.getText().CompareTo("") != 0) {
+                    if (newPass1.getText().Length >= 8) {
+                        if (newPass2.getText().CompareTo(newPass1.getText()) == 0) {
+                            string message = Conexion.saveUser(newUser.getText(), newPass1.getText());
+                            if (message.CompareTo("Usuario existe") == 0) {
+                                newUserNameError.Content = "El nombre de usuario ya existe";
+                                newUserNameError.Visibility = Visibility.Visible;
+                            } else if (message.CompareTo("Usuario creado") == 0) {
+                                MessageBox.Show("Se ha creado correctamente el usuario");
+                                gridLogin.Visibility = Visibility.Visible;
+                                gridNewUser.Visibility = Visibility.Hidden;
+                            }
+                        } else {
+                            newPass2Error.Content = "No coinciden las contraseñas";
+                            newPass2Error.Visibility = Visibility.Visible;
                         }
                     } else {
-                        newPass2Error.Content = "No coinciden las contraseñas";
-                        newPass2Error.Visibility = Visibility.Visible;
+                        newPass1Error.Content = "La contraseña debe tener 8 caracteres como mínimo";
+                        newPass1Error.Visibility = Visibility.Visible;
                     }
                 } else {
-                    newPass1Error.Content = "La contraseña debe tener 8 caracteres como mínimo";
-                    newPass1Error.Visibility = Visibility.Visible;
+                    newUserNameError.Content = "No has introducido un nombre de usuario";
+                    newUserNameError.Visibility = Visibility.Visible;
                 }
-            } else {
-                newUserNameError.Content = "No has introducido un nombre de usuario";
-                newUserNameError.Visibility = Visibility.Visible;
+            } catch (MySqlException exc) {
+                MessageBox.Show("Se ha producido un error al conectar con la base de datos");
             }
         }
+
     }
 }

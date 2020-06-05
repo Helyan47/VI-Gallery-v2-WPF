@@ -152,5 +152,28 @@ namespace SeleccionarProfile.Components.Online {
                 reproductor.setVIGallery(_main.getFirstGrid());
             }
         }
+
+        public bool checkGender(string s) {
+            if (_pelicula != null) {
+                if (_pelicula.generos.Contains(s)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+            
+        }
+
+        public string getNombre() {
+            if (_capitulo != null) {
+                return _capitulo.nombre;
+            }else if (_pelicula != null) {
+                return _pelicula.nombre;
+            } else {
+                return null;
+            }
+        }
     }
 }

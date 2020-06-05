@@ -1,4 +1,5 @@
-﻿using SeleccionarProfile.Components;
+﻿using MySql.Data.MySqlClient;
+using SeleccionarProfile.Components;
 using SeleccionarProfile.Data;
 using SeleccionarProfile.NewFolders;
 using System;
@@ -346,26 +347,30 @@ namespace SeleccionarProfile {
         }
 
         public void remove() {
-            if (VIGallery.conexionMode) {
-                Conexion.deleteFolder(_carpeta);
-            } else {
-                ConexionOffline.deleteFolder(_carpeta.id);
-            }
-            _archivos = null;
-            _wrapPanelAnterior.removeFolder(this);
-            Lista.removeSubFolders(this);
-            if (_wrapCarpetaPropia != null) {
-                _wrapCarpetaPropia.removeChildrens();
-                Lista.removeWrapPanelSecundario(_wrapCarpetaPropia);
-                _wrapCarpetaPropia = null;
-            }
+            try {
+                if (VIGallery.conexionMode) {
+                    Conexion.deleteFolder(_carpeta);
+                } else {
+                    ConexionOffline.deleteFolder(_carpeta.id);
+                }
+                _archivos = null;
+                _wrapPanelAnterior.removeFolder(this);
+                Lista.removeSubFolders(this);
+                if (_wrapCarpetaPropia != null) {
+                    _wrapCarpetaPropia.removeChildrens();
+                    Lista.removeWrapPanelSecundario(_wrapCarpetaPropia);
+                    _wrapCarpetaPropia = null;
+                }
 
-            if (_menuCarpeta != null) {
-                _menuCarpeta.remove();
-                _menuCarpeta = null;
+                if (_menuCarpeta != null) {
+                    _menuCarpeta.remove();
+                    _menuCarpeta = null;
+                }
+
+                Lista.removeCarpetaClass(_carpeta.id);
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-            
-            Lista.removeCarpetaClass(_carpeta.id);
         }
 
         public bool checkGender(string s) {
@@ -377,26 +382,35 @@ namespace SeleccionarProfile {
         }
 
         public void changeName(string newName) {
-            _carpeta.nombre = newName;
-            string[] splitted = _carpeta.ruta.Split('/');
-            splitted[splitted.Length - 1] = newName;
-            string rutaAntigua = _carpeta.ruta;
-            string rutaNueva = "";
-            for(int i = 0; i < splitted.Length; i++) {
-                rutaNueva += splitted[i];
-                if (i != splitted.Length - 1) {
-                    rutaNueva += "/";
+            try {
+                _carpeta.nombre = newName;
+                string[] splitted = _carpeta.ruta.Split('/');
+                splitted[splitted.Length - 1] = newName;
+                string rutaAntigua = _carpeta.ruta;
+                string rutaNueva = "";
+                for (int i = 0; i < splitted.Length; i++) {
+                    rutaNueva += splitted[i];
+                    if (i != splitted.Length - 1) {
+                        rutaNueva += "/";
+                    }
                 }
+                _carpeta.ruta = rutaNueva;
+                Lista.changeSubFoldersName(rutaAntigua, rutaNueva);
+                if (_archivos != null) {
+                    foreach (Archivo a in _archivos) {
+                        a.updateRuta(rutaAntigua, rutaNueva);
+                    }
+                }
+                Title.SetText(newName);
+                if (VIGallery.conexionMode) {
+                    Conexion.updateFolderName(_carpeta);
+                } else {
+                    ConexionOffline.updateFolderName(_carpeta);
+                }
+                Lista.orderWrap(_wrapPanelAnterior);
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-            _carpeta.ruta = rutaNueva;
-            Lista.changeSubFoldersName(rutaAntigua, rutaNueva);
-            Title.SetText(newName);
-            if (VIGallery.conexionMode) {
-                Conexion.updateFolderName(_carpeta);
-            } else {
-                ConexionOffline.updateFolderName(_carpeta);
-            }
-            Lista.orderWrap(_wrapPanelAnterior);
         }
 
         public void showNewNamePanel(object sender, EventArgs e) {

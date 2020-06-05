@@ -142,5 +142,13 @@ namespace SeleccionarProfile.Components {
             _menu = null;
             _temporadas = null;
         }
+
+        public bool checkGender(string s) {
+            if (_serie.generos.Contains(s)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using MySql.Data.MySqlClient;
 using SeleccionarProfile.Data;
@@ -44,11 +45,12 @@ namespace SeleccionarProfile.Data {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Perfil  \n" + e);
+                Console.WriteLine("No se ha podido añadir el usuario:\n" + e);
             } finally {
                 if (conexion != null) {
                     conexion.Close();
                 }
+                throw e;
             }
             return "Usuario no se ha podido crear";
         }
@@ -96,7 +98,8 @@ namespace SeleccionarProfile.Data {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Perfil  \n" + e);
+                Console.WriteLine("No se ha podido añadir el perfil:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -146,7 +149,8 @@ namespace SeleccionarProfile.Data {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Boton  \n" + e);
+                Console.WriteLine("No se ha podido añadir el menu:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -207,7 +211,8 @@ namespace SeleccionarProfile.Data {
                 if (myTrans != null) {
                     myTrans.Rollback();
                 }
-                Console.WriteLine("Carpeta  \n"+e);
+                Console.WriteLine("No se ha podido añadir la carpeta:\n"+e);
+                throw e;
             } finally {
                 if(conexion != null) {
                     conexion.Close();
@@ -276,7 +281,8 @@ namespace SeleccionarProfile.Data {
                     }
                 }
             } catch (MySqlException e) {
-                Console.WriteLine("SubFolder " + e);
+                Console.WriteLine("No se ha podido añadir la subcarpeta:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -332,6 +338,7 @@ namespace SeleccionarProfile.Data {
             } catch (MySqlException e) {
                 Console.WriteLine("No se ha podido añadir " + ac.nombre);
                 Console.WriteLine("Archivo " + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -365,7 +372,8 @@ namespace SeleccionarProfile.Data {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Boton  \n" + e);
+                Console.WriteLine("Error al cargar los perfiles:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -400,7 +408,8 @@ namespace SeleccionarProfile.Data {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Boton  \n" + e);
+                Console.WriteLine("Error al cargar los menus:+\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -437,7 +446,8 @@ namespace SeleccionarProfile.Data {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Boton  \n" + e);
+                Console.WriteLine("Error al cargar Carpetas de un Menu:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -475,7 +485,8 @@ namespace SeleccionarProfile.Data {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Boton  \n" + e);
+                Console.WriteLine("Error al cargar Subcarpeta: \n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -535,6 +546,7 @@ namespace SeleccionarProfile.Data {
 
             } catch (MySqlException e) {
                 Console.WriteLine("No se ha podido borrar el perfil");
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -555,6 +567,7 @@ namespace SeleccionarProfile.Data {
 
             } catch (MySqlException e) {
                 Console.WriteLine("No se ha podido borrar el menu");
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -589,6 +602,7 @@ namespace SeleccionarProfile.Data {
 
             } catch (MySqlException e) {
                 Console.WriteLine("No se ha podido borrar la carpeta \n"+e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -614,6 +628,7 @@ namespace SeleccionarProfile.Data {
 
             } catch (MySqlException e) {
                 Console.WriteLine("No se ha podido borrar la carpeta \n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -645,6 +660,7 @@ namespace SeleccionarProfile.Data {
                 return user;
             } catch (MySqlException e) {
                 Console.WriteLine("Error al comprobar el usuario  \n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -672,7 +688,8 @@ namespace SeleccionarProfile.Data {
                 if (myTrans != null) {
                     myTrans.Rollback();
                 }
-                Console.WriteLine(e);
+                Console.WriteLine("Error al actualizar el modo: \n"+e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -701,7 +718,8 @@ namespace SeleccionarProfile.Data {
                 if (myTrans != null) {
                     myTrans.Rollback();
                 }
-                Console.WriteLine(e);
+                Console.WriteLine("No se ha podido actualiza el nombre de la carpeta:\n"+e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -729,7 +747,8 @@ namespace SeleccionarProfile.Data {
                 if (myTrans != null) {
                     myTrans.Rollback();
                 }
-                Console.WriteLine(e);
+                Console.WriteLine("No se ha podido cambiar el nombre del archivo:\n"+e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();

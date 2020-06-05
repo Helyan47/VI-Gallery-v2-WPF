@@ -16,6 +16,8 @@ using System.Linq;
 using SeleccionarProfile.Data.Online;
 using SeleccionarProfile.Components.Online;
 using System.Net;
+using MySql.Data.MySqlClient;
+using System.Data.SQLite;
 
 namespace SeleccionarProfile {
     /// <summary>
@@ -81,235 +83,272 @@ namespace SeleccionarProfile {
         }
 
         private void Button_MouseLeftButtonUp(object sender, RoutedEventArgs e) {
-            if (_activatedButton != null) {
-                string[] files = new string[0];
-                using (var folderDialog = new CommonOpenFileDialog()) {
+            try {
+                if (_activatedButton != null) {
+                    string[] files = new string[0];
+                    using (var folderDialog = new CommonOpenFileDialog()) {
 
-                    folderDialog.IsFolderPicker = true;
-                    firstFolder = 0;
-                    if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
-                        _folders = OrderClass.orderArrayOfString(Directory.GetDirectories(folderDialog.FileName));
-                        for (int i = 0; i < _folders.Length; i++) {
-                            _rutas.Add(_folders[i]);
+                        folderDialog.IsFolderPicker = true;
+                        firstFolder = 0;
+                        if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
+                            _folders = OrderClass.orderArrayOfString(Directory.GetDirectories(folderDialog.FileName));
+                            for (int i = 0; i < _folders.Length; i++) {
+                                _rutas.Add(_folders[i]);
 
-                            string[] aux = Directory.GetDirectories(_folders[i]);
-                            for (int j = 0; j < aux.Length; j++) {
-                                _rutas.Add(aux[j]);
+                                string[] aux = Directory.GetDirectories(_folders[i]);
+                                for (int j = 0; j < aux.Length; j++) {
+                                    _rutas.Add(aux[j]);
+                                }
                             }
+
+                            if (_folders != null) {
+                                if (!conexionMode) {
+                                    ConexionOffline.startConnection();
+                                }
+                                addText(_folders);
+                                if (!conexionMode) {
+                                    ConexionOffline.closeConnection();
+                                }
+                            }
+
                         }
-
-                        if (_folders != null) {
-                            if (!conexionMode) {
-                                ConexionOffline.startConnection();
-                            }
-                            addText(_folders);
-                            if (!conexionMode) {
-                                ConexionOffline.closeConnection();
-                            }
-                        }
-
                     }
-                }
-                Lista.modifyMode(_profile.mode);
-                Lista.orderWrapsSecundarios();
-                Lista.hideAllExceptPrinc();
-                ReturnVisibility(false);
+                    Lista.modifyMode(_profile.mode);
+                    Lista.orderWrapsSecundarios();
+                    Lista.hideAllExceptPrinc();
+                    ReturnVisibility(false);
 
-            } else {
-                menuButtons.BorderThickness = new Thickness(5);
-                MessageBox.Show("No has creado ningún menú");
-                menuButtons.BorderThickness = new Thickness(0);
+                } else {
+                    menuButtons.BorderThickness = new Thickness(5);
+                    MessageBox.Show("No has creado ningún menú");
+                    menuButtons.BorderThickness = new Thickness(0);
+                }
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
 
-}
+        }
 
         private void addSubCarpeta() {
-            SubCarpeta c = new SubCarpeta(this);
-            WrapPanelPrincipal p = Lista.getSubWrapsVisibles();
-            NewSubCarpeta n = null;
-            if (p.getCarpeta() == null) {
-                n = new NewSubCarpeta(p.getSubCarpeta().getClass().ruta);
-            } else {
-                n = new NewSubCarpeta(p.getCarpeta().getClass().ruta);
-            }
-            
-           
-            n.setSubCarpeta(c);
-            n.ShowDialog();
-            if (n.getSubCarpeta().getClass().nombre != "") {
-
-                
-                Lista.addSubCarpeta(c);
-                c.getClass().idMenu = Lista.getMenuFromButton(_activatedButton).id;
-                if (p != null) {
-                    if (p.getCarpeta() == null) {
-                        c.setDatos(c.getClass(), p, p.getSubCarpeta().GetGridCarpeta());
-                        p.addSubCarpeta(c);
-                        p.getSubCarpeta().AddSubCarpetas();
-                        c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
-                        c.setImg(p.getSubCarpeta().getClass().img);
-
-                        string name = _activatedButton.Content.ToString();
-                        c.getClass().ruta = p.getSubCarpeta().getClass().ruta + "/" + c.getClass().nombre;
-                        c.getClass().rutaPadre = p.getSubCarpeta().getClass().ruta;
-
-                    } else {
-
-                        c.setDatos(c.getClass(), p, p.GetGridSubCarpetas());
-                        p.addSubCarpeta(c);
-                        p.getCarpeta().AddSubCarpetas();
-                        c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
-
-                        string name = _activatedButton.Content.ToString();
-                        c.getClass().ruta = p.getCarpeta().getClass().ruta + "/" + c.getClass().nombre;
-                        c.getClass().rutaPadre = p.getCarpeta().getClass().ruta;
-                        c.setImg(p.getCarpeta().getClass().img);
-
-                    }
-
-                    if (conexionMode) {
-                        Conexion.saveSubFolder(c);
-                    } else {
-                        ConexionOffline.startConnection();
-                        ConexionOffline.addCarpeta(c.getClass());
-                        ConexionOffline.closeConnection();
-                    }
-
-                    c.actualizar();
-                    c.Visibility = Visibility.Visible;
-                    Lista.orderWrap(p);
+            try {
+                SubCarpeta c = new SubCarpeta(this);
+                WrapPanelPrincipal p = Lista.getSubWrapsVisibles();
+                NewSubCarpeta n = null;
+                if (p.getCarpeta() == null) {
+                    n = new NewSubCarpeta(p.getSubCarpeta().getClass().ruta);
+                } else {
+                    n = new NewSubCarpeta(p.getCarpeta().getClass().ruta);
                 }
 
 
+                n.setSubCarpeta(c);
+                n.ShowDialog();
+                if (n.getSubCarpeta().getClass().nombre != "") {
 
-                
-            } else {
-                c = null;
+
+                    Lista.addSubCarpeta(c);
+                    c.getClass().idMenu = Lista.getMenuFromButton(_activatedButton).id;
+                    if (p != null) {
+                        if (p.getCarpeta() == null) {
+                            c.setDatos(c.getClass(), p, p.getSubCarpeta().GetGridCarpeta());
+                            p.addSubCarpeta(c);
+                            p.getSubCarpeta().AddSubCarpetas();
+                            c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
+                            c.setImg(p.getSubCarpeta().getClass().img);
+
+                            string name = _activatedButton.Content.ToString();
+                            c.getClass().ruta = p.getSubCarpeta().getClass().ruta + "/" + c.getClass().nombre;
+                            c.getClass().rutaPadre = p.getSubCarpeta().getClass().ruta;
+
+                        } else {
+
+                            c.setDatos(c.getClass(), p, p.GetGridSubCarpetas());
+                            p.addSubCarpeta(c);
+                            p.getCarpeta().AddSubCarpetas();
+                            c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
+
+                            string name = _activatedButton.Content.ToString();
+                            c.getClass().ruta = p.getCarpeta().getClass().ruta + "/" + c.getClass().nombre;
+                            c.getClass().rutaPadre = p.getCarpeta().getClass().ruta;
+                            c.setImg(p.getCarpeta().getClass().img);
+
+                        }
+
+                        if (conexionMode) {
+                            Conexion.saveSubFolder(c);
+                        } else {
+                            ConexionOffline.startConnection();
+                            ConexionOffline.addCarpeta(c.getClass());
+                            ConexionOffline.closeConnection();
+                        }
+
+                        c.actualizar();
+                        c.Visibility = Visibility.Visible;
+                        Lista.orderWrap(p);
+                    }
+
+
+
+
+                } else {
+                    c = null;
+                }
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
 
         private SubCarpeta addSubCarpetaCompleta(Carpeta p1, string nombre) {
-            SubCarpeta c = new SubCarpeta(this);
-            
-            p1.clickEspecial();
-            //FlowCarpeta p = listaSeries.getFlowCarpVisible();
-            WrapPanelPrincipal p = p1.GetWrapCarpPrincipal();
-            CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(nombre), "", false);
-            c.setClass(s);
-            s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
-            c.setRutaDirectorio(nombre);
-            if (p != null) {
+            try {
+                SubCarpeta c = new SubCarpeta(this);
 
-                
-                s.ruta = p1.getClass().ruta + "/" + s.nombre;
-                bool checkIfExists = Lista.Contains(c.getClass().ruta);
+                p1.clickEspecial();
+                //FlowCarpeta p = listaSeries.getFlowCarpVisible();
+                WrapPanelPrincipal p = p1.GetWrapCarpPrincipal();
+                CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(nombre), "", false);
+                c.setClass(s);
+                s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
+                c.setRutaDirectorio(nombre);
+                if (p != null) {
 
-                if (!checkIfExists) {
-                    Lista.addSubCarpeta(c);
-                    c.setImg(p1.getClass().img);
-                    c.setDatos(s, p, p.GetGridSubCarpetas());
-                    p.addSubCarpeta(c);
-                    p.getCarpeta().AddSubCarpetas();
-                    c.setMenuCarpeta(p1.GetMenuCarpeta());
-                    c.setTitle(System.IO.Path.GetFileName(nombre));
-                    c.getClass().rutaPadre = p1.getClass().ruta;
 
-                    c.setRutaDirectorio(nombre);
+                    s.ruta = p1.getClass().ruta + "/" + s.nombre;
+                    bool checkIfExists = Lista.Contains(c.getClass().ruta);
 
-                    if (conexionMode) {
-                        Conexion.saveSubFolder(c);
+                    if (!checkIfExists) {
+                        Lista.addSubCarpeta(c);
+                        c.setImg(p1.getClass().img);
+                        c.setDatos(s, p, p.GetGridSubCarpetas());
+                        p.addSubCarpeta(c);
+                        p.getCarpeta().AddSubCarpetas();
+                        c.setMenuCarpeta(p1.GetMenuCarpeta());
+                        c.setTitle(System.IO.Path.GetFileName(nombre));
+                        c.getClass().rutaPadre = p1.getClass().ruta;
+
+                        c.setRutaDirectorio(nombre);
+
+                        if (conexionMode) {
+                            Conexion.saveSubFolder(c);
+                        } else {
+                            ConexionOffline.addCarpeta(c.getClass());
+                        }
+
+                        c.actualizar();
+                        c.Visibility = Visibility.Visible;
                     } else {
-                        ConexionOffline.addCarpeta(c.getClass());
+                        c = null;
                     }
 
-                    c.actualizar();
-                    c.Visibility = Visibility.Visible;
-                } else {
-                    c = null;
                 }
-
+                return c;
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
 
 
-            
-            return c;
+            return null;
         }
 
         private SubCarpeta addSubCarpetaCompleta(SubCarpeta sp1, string nombre) {
-            SubCarpeta c = new SubCarpeta(this);
-            
-            sp1.click();
-            WrapPanelPrincipal p = sp1.getWrapCarpPrincipal();
-            CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(nombre), "", false);
-            c.setClass(s);
-            s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
-            c.setRutaDirectorio(nombre);
-            if (p != null) {
-                s.ruta = sp1.getClass().ruta + "/" + s.nombre;
-                bool checkIfExists = Lista.Contains(c.getClass().ruta);
-                if (!checkIfExists) {
-                    Lista.addSubCarpeta(c);
-                    c.setImg(sp1.getClass().img);
-                    c.setDatos(s, p, sp1.GetGridCarpeta());
-                    p.addSubCarpeta(c);
-                    p.getSubCarpeta().AddSubCarpetas();
-                    c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
-                    c.setTitle(System.IO.Path.GetFileName(nombre));
-                    
-                    c.getClass().rutaPadre = sp1.getClass().ruta;
+            try {
+                SubCarpeta c = new SubCarpeta(this);
 
-                    c.setRutaDirectorio(nombre);
+                sp1.click();
+                WrapPanelPrincipal p = sp1.getWrapCarpPrincipal();
+                CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(nombre), "", false);
+                c.setClass(s);
+                s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
+                c.setRutaDirectorio(nombre);
+                if (p != null) {
+                    s.ruta = sp1.getClass().ruta + "/" + s.nombre;
+                    bool checkIfExists = Lista.Contains(c.getClass().ruta);
+                    if (!checkIfExists) {
+                        Lista.addSubCarpeta(c);
+                        c.setImg(sp1.getClass().img);
+                        c.setDatos(s, p, sp1.GetGridCarpeta());
+                        p.addSubCarpeta(c);
+                        p.getSubCarpeta().AddSubCarpetas();
+                        c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
+                        c.setTitle(System.IO.Path.GetFileName(nombre));
 
-                    if (conexionMode) {
-                        Conexion.saveSubFolder(c);
+                        c.getClass().rutaPadre = sp1.getClass().ruta;
+
+                        c.setRutaDirectorio(nombre);
+
+                        if (conexionMode) {
+                            Conexion.saveSubFolder(c);
+                        } else {
+                            ConexionOffline.addCarpeta(c.getClass());
+                        }
+
+                        c.actualizar();
+                        c.Visibility = Visibility.Visible;
                     } else {
-                        ConexionOffline.addCarpeta(c.getClass());
+                        c = null;
                     }
 
-                    c.actualizar();
-                    c.Visibility = Visibility.Visible;
-                } else {
-                    c = null;
                 }
 
+                return c;
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-            
-            return c;
+            return null;
         }
 
         private void addFileCarpeta(string fileName, Carpeta c) {
-            string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
-            ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
-            Archivo a = new Archivo(ac, this);
+            try {
+                string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
+                ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
+                Archivo a = new Archivo(ac, this);
 
-            a.setCarpetaPadre(c);
+                a.setCarpetaPadre(c);
 
-            if (conexionMode) {
-                Conexion.saveFile(ac);
-            } else {
-                ConexionOffline.addArchivo(ac);
+                if (conexionMode) {
+                    Conexion.saveFile(ac);
+                } else {
+                    ConexionOffline.addArchivo(ac);
+                }
+
+                c.GetWrapCarpPrincipal().addFile(a);
+                c.addFile(a);
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-            
-            c.GetWrapCarpPrincipal().addFile(a);
-            c.addFile(a);
         }
 
         private void addFileSubCarpeta(string fileName, SubCarpeta c) {
-            string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
-            ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
-            Archivo a = new Archivo(ac, this);
+            try {
+                string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
+                ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
+                Archivo a = new Archivo(ac, this);
 
-            a.setSubCarpetaPadre(c);
+                a.setSubCarpetaPadre(c);
 
 
-            if (conexionMode) {
-                Conexion.saveFile(ac);
-            } else {
-                ConexionOffline.addArchivo(ac);
+                if (conexionMode) {
+                    Conexion.saveFile(ac);
+                } else {
+                    ConexionOffline.addArchivo(ac);
+                }
+
+                c.getWrapCarpPrincipal().addFile(a);
+                c.addFile(a);
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-
-            c.getWrapCarpPrincipal().addFile(a);
-            c.addFile(a);
         }
 
         private void newFile_Click(object sender, RoutedEventArgs e) {
@@ -412,95 +451,111 @@ namespace SeleccionarProfile {
         }
 
         private void Button_AddCarpeta(object sender, EventArgs e) {
-            if (_activatedButton != null) {
-                ConexionOffline.startConnection();
-                addCarpeta();
-                ConexionOffline.closeConnection();
+            try {
+                if (_activatedButton != null) {
+                    ConexionOffline.startConnection();
+                    addCarpeta();
+                    ConexionOffline.closeConnection();
 
-            } else {
-                menuButtons.BorderThickness = new Thickness(5);
-                MessageBox.Show("No has creado ninguno menú");
-                menuButtons.BorderThickness = new Thickness(0);
+                } else {
+                    menuButtons.BorderThickness = new Thickness(5);
+                    MessageBox.Show("No has creado ninguno menú");
+                    menuButtons.BorderThickness = new Thickness(0);
+                }
+            } catch (SQLiteException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
 
         }
 
         private void addCarpeta() {
-            Carpeta p1 = new Carpeta(this);
-            
-            AddCarpeta newSerie = new AddCarpeta(p1, _activatedButton);
-            newSerie.ShowDialog();
+            try {
+                Carpeta p1 = new Carpeta(this);
 
-            if (newSerie.createdSerie()) {
-                Lista.addCarpeta(p1);
+                AddCarpeta newSerie = new AddCarpeta(p1, _activatedButton);
+                newSerie.ShowDialog();
+
+                if (newSerie.createdSerie()) {
+                    Lista.addCarpeta(p1);
+                    WrapPanelPrincipal aux = Lista.getWrapVisible();
+
+                    p1.actualizar();
+
+                    string name = _activatedButton.Content.ToString();
+                    p1.getClass().rutaPadre = _profile.nombre + "|C/" + name;
+                    p1.setRutaPrograma(_profile.nombre + "|C/" + name + "/" + p1.getClass().nombre);
+
+                    if (conexionMode) {
+                        Conexion.saveFolder(p1);
+                    } else {
+                        ConexionOffline.addCarpeta(p1.getClass());
+                    }
+
+                    p1.SetGridPadre(gridPrincipal);
+                    aux.addCarpeta(p1);
+                    p1.setPadreSerie(aux);
+                    p1.SetGridsOpciones(GridPrincipal, GridSecundario);
+                    Lista.orderWrap(aux);
+                } else {
+                    p1 = null;
+                }
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            }
+
+        }
+
+        private Carpeta addCarpetaCompleta(string filename) {
+            try {
+                Carpeta p1 = new Carpeta(this);
+                p1.setRutaDirectorio(filename);
+
+
                 WrapPanelPrincipal aux = Lista.getWrapVisible();
-
+                CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(filename), "", true);
+                p1.setClass(s);
+                s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
+                s.rutaPadre = "";
                 p1.actualizar();
 
                 string name = _activatedButton.Content.ToString();
                 p1.getClass().rutaPadre = _profile.nombre + "|C/" + name;
                 p1.setRutaPrograma(_profile.nombre + "|C/" + name + "/" + p1.getClass().nombre);
+                bool checkIfExists = Lista.Contains(p1.getClass().ruta);
+                if (!checkIfExists) {
+                    Lista.addCarpeta(p1);
 
-                if (conexionMode) {
-                    Conexion.saveFolder(p1);
+                    string[] files = System.IO.Directory.GetFiles(filename, "cover.*");
+                    if (files.Length > 0) {
+                        p1.getClass().img = files[0];
+                    }
+
+
+                    if (conexionMode) {
+                        Conexion.saveFolder(p1);
+                    } else {
+                        ConexionOffline.addCarpeta(p1.getClass());
+                    }
+
+                    aux.addCarpeta(p1);
+
+                    p1.SetGridsOpciones(GridPrincipal, GridSecundario);
+                    p1.setPadreSerie(aux);
+                    p1.SetGridPadre(gridPrincipal);
+
                 } else {
-                    ConexionOffline.addCarpeta(p1.getClass());
+                    p1 = null;
+                    s = null;
                 }
-
-                p1.SetGridPadre(gridPrincipal);
-                aux.addCarpeta(p1);
-                p1.setPadreSerie(aux);
-                p1.SetGridsOpciones(GridPrincipal, GridSecundario);
-                Lista.orderWrap(aux);
-            } else {
-                p1 = null;
+                return p1;
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-            
-
-        }
-
-        private Carpeta addCarpetaCompleta(string filename) {
-            Carpeta p1 = new Carpeta(this);
-            p1.setRutaDirectorio(filename);
-            
-
-            WrapPanelPrincipal aux = Lista.getWrapVisible();
-            CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(filename), "", true);
-            p1.setClass(s);
-            s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
-            s.rutaPadre = "";
-            p1.actualizar();
-
-            string name = _activatedButton.Content.ToString();
-            p1.getClass().rutaPadre = _profile.nombre + "|C/" + name;
-            p1.setRutaPrograma(_profile.nombre + "|C/" + name + "/" + p1.getClass().nombre);
-            bool checkIfExists = Lista.Contains(p1.getClass().ruta);
-            if (!checkIfExists) {
-                Lista.addCarpeta(p1);
-
-                string[] files = System.IO.Directory.GetFiles(filename, "cover.*");
-                if (files.Length > 0) {
-                    p1.getClass().img = files[0];
-                }
-
-
-                if (conexionMode) {
-                    Conexion.saveFolder(p1);
-                } else {
-                    ConexionOffline.addCarpeta(p1.getClass());
-                }
-
-                aux.addCarpeta(p1);
-
-                p1.SetGridsOpciones(GridPrincipal, GridSecundario);
-                p1.setPadreSerie(aux);
-                p1.SetGridPadre(gridPrincipal);
-
-            } else {
-                p1 = null;
-                s = null;
-            }
-            return p1;
+            return null;
         }
 
         private void addCarpetaFromLoad(CarpetaClass cc) {
@@ -588,118 +643,141 @@ namespace SeleccionarProfile {
         }
 
         public void LoadProfileOffline(PerfilClass perfil) {
-            List<MenuClass> menus = ConexionOffline.LoadMenus(perfil);
+            try {
+                List<MenuClass> menus = ConexionOffline.LoadMenus(perfil);
 
-            foreach(MenuClass m in menus) {
-                addMenuFromClass(m);
-                List<CarpetaClass> carpetas = ConexionOffline.LoadCarpetasFromMenu(m);
-                if (carpetas != null) {
-                    foreach(CarpetaClass c in carpetas) {
-                        addCarpetaFromLoad(c);
-                        loadFilesOffline(c);
-                        loadSubCarpetasOffline(c);
-                    }
-                }
-            }
-            Lista.orderWrapsPrincipales();
-            Lista.modifyMode(_profile.mode);
-            Lista.orderWrapsSecundarios();
-        }
-
-        private void loadFiles(CarpetaClass c) {
-            if (c.isFolder) {
-                Carpeta carpeta = Lista.getCarpetaById(c.id);
-                List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(Conexion.loadFiles(c.id));
-                if (archivos != null) {
-                    foreach (ArchivoClass ac in archivos) {
-                        Archivo a = new Archivo(ac, this);
-                        carpeta.GetWrapCarpPrincipal().addFile(a);
-                        carpeta.addFile(a);
-                        a.setCarpetaPadre(carpeta);
-                    }
-                }
-            } else {
-                SubCarpeta subcarpeta = Lista.getSubCarpetaById(c.id);
-                List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(Conexion.loadFiles(c.id));
-                if (archivos != null) {
-                    foreach (ArchivoClass ac in archivos) {
-                        Archivo a = new Archivo(ac, this);
-                        subcarpeta.getWrapCarpPrincipal().addFile(a);
-                        subcarpeta.addFile(a);
-                        a.setSubCarpetaPadre(subcarpeta);
-                    }
-                }
-            }
-            
-        }
-
-        private void loadFilesOffline(CarpetaClass c) {
-            if (!c.isFolder) {
-                Carpeta carpeta = Lista.getCarpetaById(c.id);
-                List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(ConexionOffline.loadFiles(c));
-                if (archivos != null) {
-                    foreach (ArchivoClass ac in archivos) {
-                        Archivo a = new Archivo(ac, this);
-                        carpeta.GetWrapCarpPrincipal().addFile(a);
-                        carpeta.addFile(a);
-                        a.setCarpetaPadre(carpeta);
-                    }
-                }
-            } else {
-                SubCarpeta subcarpeta = Lista.getSubCarpetaById(c.id);
-                List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(ConexionOffline.loadFiles(c));
-                if (archivos != null) {
-                    foreach (ArchivoClass ac in archivos) {
-                        Archivo a = new Archivo(ac, this);
-                        subcarpeta.getWrapCarpPrincipal().addFile(a);
-                        subcarpeta.addFile(a);
-                        a.setSubCarpetaPadre(subcarpeta);
-                    }
-                }
-            }
-
-        }
-
-        public void loadDataConexion(long id) {
-            List<MenuClass> menus = Conexion.loadMenus(_profile.id);
-            if (menus != null) {
-                foreach(MenuClass m in menus) {
+                foreach (MenuClass m in menus) {
                     addMenuFromClass(m);
-                    List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(Conexion.loadFoldersFromMenu(m.id));
+                    List<CarpetaClass> carpetas = ConexionOffline.LoadCarpetasFromMenu(m);
                     if (carpetas != null) {
-                        foreach(CarpetaClass c in carpetas) {
+                        foreach (CarpetaClass c in carpetas) {
                             addCarpetaFromLoad(c);
-                            loadFiles(c);
-                            //Console.WriteLine(c.rutaPrograma);
-                            loadSubCarpetas(c, m.id);
+                            loadFilesOffline(c);
+                            loadSubCarpetasOffline(c);
                         }
                     }
                 }
+                Lista.orderWrapsPrincipales();
+                Lista.modifyMode(_profile.mode);
+                Lista.orderWrapsSecundarios();
+            } catch (SQLiteException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-            Lista.orderWrapsPrincipales();
-            Lista.modifyMode(_profile.mode);
-            Lista.orderWrapsSecundarios();
+        }
+
+        private void loadFiles(CarpetaClass c) {
+            try {
+                if (c.isFolder) {
+                    Carpeta carpeta = Lista.getCarpetaById(c.id);
+                    List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(Conexion.loadFiles(c.id));
+                    if (archivos != null) {
+                        foreach (ArchivoClass ac in archivos) {
+                            Archivo a = new Archivo(ac, this);
+                            carpeta.GetWrapCarpPrincipal().addFile(a);
+                            carpeta.addFile(a);
+                            a.setCarpetaPadre(carpeta);
+                        }
+                    }
+                } else {
+                    SubCarpeta subcarpeta = Lista.getSubCarpetaById(c.id);
+                    List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(Conexion.loadFiles(c.id));
+                    if (archivos != null) {
+                        foreach (ArchivoClass ac in archivos) {
+                            Archivo a = new Archivo(ac, this);
+                            subcarpeta.getWrapCarpPrincipal().addFile(a);
+                            subcarpeta.addFile(a);
+                            a.setSubCarpetaPadre(subcarpeta);
+                        }
+                    }
+                }
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            }
+
+        }
+
+        private void loadFilesOffline(CarpetaClass c) {
+            try {
+                if (!c.isFolder) {
+                    Carpeta carpeta = Lista.getCarpetaById(c.id);
+                    List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(ConexionOffline.loadFiles(c));
+                    if (archivos != null) {
+                        foreach (ArchivoClass ac in archivos) {
+                            Archivo a = new Archivo(ac, this);
+                            carpeta.GetWrapCarpPrincipal().addFile(a);
+                            carpeta.addFile(a);
+                            a.setCarpetaPadre(carpeta);
+                        }
+                    }
+                } else {
+                    SubCarpeta subcarpeta = Lista.getSubCarpetaById(c.id);
+                    List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(ConexionOffline.loadFiles(c));
+                    if (archivos != null) {
+                        foreach (ArchivoClass ac in archivos) {
+                            Archivo a = new Archivo(ac, this);
+                            subcarpeta.getWrapCarpPrincipal().addFile(a);
+                            subcarpeta.addFile(a);
+                            a.setSubCarpetaPadre(subcarpeta);
+                        }
+                    }
+                }
+            } catch (SQLiteException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            }
+        }
+
+        public void loadDataConexion(long id) {
+            try {
+                List<MenuClass> menus = Conexion.loadMenus(_profile.id);
+                if (menus != null) {
+                    foreach (MenuClass m in menus) {
+                        addMenuFromClass(m);
+                        List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(Conexion.loadFoldersFromMenu(m.id));
+                        if (carpetas != null) {
+                            foreach (CarpetaClass c in carpetas) {
+                                addCarpetaFromLoad(c);
+                                loadFiles(c);
+                                //Console.WriteLine(c.rutaPrograma);
+                                loadSubCarpetas(c, m.id);
+                            }
+                        }
+                    }
+                }
+                Lista.orderWrapsPrincipales();
+                Lista.modifyMode(_profile.mode);
+                Lista.orderWrapsSecundarios();
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            }
         }
 
         public void loadSubCarpetas(CarpetaClass c, long idMenu) {
-            List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(Conexion.loadSubFoldersFromCarpeta(c, idMenu));
-            if (carpetas != null) {
-                foreach(CarpetaClass cc in carpetas) {
-                    addSubCarpetaFromLoad(cc);
-                    loadFiles(cc);
-                    loadSubCarpetas(cc, idMenu);
+            try {
+                List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(Conexion.loadSubFoldersFromCarpeta(c, idMenu));
+                if (carpetas != null) {
+                    foreach (CarpetaClass cc in carpetas) {
+                        addSubCarpetaFromLoad(cc);
+                        loadFiles(cc);
+                        loadSubCarpetas(cc, idMenu);
+                    }
                 }
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
 
         public void loadSubCarpetasOffline(CarpetaClass c) {
-            List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(ConexionOffline.loadSubCarpetasFromCarpeta(c));
-            if (carpetas != null) {
-                foreach (CarpetaClass cc in carpetas) {
-                    addSubCarpetaFromLoad(cc);
-                    loadFilesOffline(cc);
-                    loadSubCarpetasOffline(cc);
+            try {
+                List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(ConexionOffline.loadSubCarpetasFromCarpeta(c));
+                if (carpetas != null) {
+                    foreach (CarpetaClass cc in carpetas) {
+                        addSubCarpetaFromLoad(cc);
+                        loadFilesOffline(cc);
+                        loadSubCarpetasOffline(cc);
+                    }
                 }
+            } catch (SQLiteException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
 
@@ -754,120 +832,132 @@ namespace SeleccionarProfile {
         }
 
         private void addMenuClick(object sender, EventArgs e) {
-            Button newButton = new Button();
-            newButton.Content = "";
-            AddButton a = new AddButton(newButton);
-            a.ShowDialog();
-            if (a.isAdded()) {
-                newButton.Height = 100;
-                newButton.FontSize = 30;
-                newButton.BorderThickness = new System.Windows.Thickness(0);
-                newButton.FontWeight = FontWeights.Bold;
-                newButton.Foreground = Brushes.White;
-                newButton.Visibility = Visibility.Visible;
-                newButton.Style = (Style)Application.Current.Resources["CustomButtonStyle"];
-                newButton.Click += onClickButtonMenu;
+            try {
+                Button newButton = new Button();
+                newButton.Content = "";
+                AddButton a = new AddButton(newButton);
+                a.ShowDialog();
+                if (a.isAdded()) {
+                    newButton.Height = 100;
+                    newButton.FontSize = 30;
+                    newButton.BorderThickness = new System.Windows.Thickness(0);
+                    newButton.FontWeight = FontWeights.Bold;
+                    newButton.Foreground = Brushes.White;
+                    newButton.Visibility = Visibility.Visible;
+                    newButton.Style = (Style)Application.Current.Resources["CustomButtonStyle"];
+                    newButton.Click += onClickButtonMenu;
 
 
-                _botonesMenu.Add(newButton);
-                MenuClass mc = new MenuClass(newButton.Content.ToString(), _profile.id);
-                if (conexionMode) {
-                    mc = Conexion.saveMenu(mc);
-                    if (mc != null) {
-                        Lista.addMenu(mc);
-                        buttonStack.Children.Add(newButton);
-                        string name = newButton.Content.ToString();
-                        _aux = new Carpeta(this);
-                        WrapPanelPrincipal wp = new WrapPanelPrincipal();
-                        wp.name = name;
-                        gridPrincipal.Children.Add(wp);
-                        wp.Visibility = Visibility.Visible;
-                        _activatedButton = newButton;
-                        _wrapsPrincipales.Add(wp);
+                    _botonesMenu.Add(newButton);
+                    MenuClass mc = new MenuClass(newButton.Content.ToString(), _profile.id);
+                    if (conexionMode) {
+                        mc = Conexion.saveMenu(mc);
+                        if (mc != null) {
+                            Lista.addMenu(mc);
+                            buttonStack.Children.Add(newButton);
+                            string name = newButton.Content.ToString();
+                            _aux = new Carpeta(this);
+                            WrapPanelPrincipal wp = new WrapPanelPrincipal();
+                            wp.name = name;
+                            gridPrincipal.Children.Add(wp);
+                            wp.Visibility = Visibility.Visible;
+                            _activatedButton = newButton;
+                            _wrapsPrincipales.Add(wp);
 
-                        Lista.addWrapPrincipal(wp);
-                        wp.setButton(newButton);
+                            Lista.addWrapPrincipal(wp);
+                            wp.setButton(newButton);
 
-                        onClickButtonMenu(newButton, e);
+                            onClickButtonMenu(newButton, e);
+                        } else {
+                            MessageBox.Show("No se ha podido crear el Menu");
+                        }
                     } else {
-                        MessageBox.Show("No se ha podido crear el Menu");
-                    }
-                } else {
-                    ConexionOffline.startConnection();
-                    mc = ConexionOffline.addMenu(mc);
-                    ConexionOffline.closeConnection();
-                    if (mc != null) {
-                        Lista.addMenu(mc);
-                        buttonStack.Children.Add(newButton);
-                        string name = newButton.Content.ToString();
-                        _aux = new Carpeta(this);
-                        WrapPanelPrincipal wp = new WrapPanelPrincipal();
-                        wp.name = name;
-                        gridPrincipal.Children.Add(wp);
-                        wp.Visibility = Visibility.Visible;
-                        _activatedButton = newButton;
-                        _wrapsPrincipales.Add(wp);
+                        ConexionOffline.startConnection();
+                        mc = ConexionOffline.addMenu(mc);
+                        ConexionOffline.closeConnection();
+                        if (mc != null) {
+                            Lista.addMenu(mc);
+                            buttonStack.Children.Add(newButton);
+                            string name = newButton.Content.ToString();
+                            _aux = new Carpeta(this);
+                            WrapPanelPrincipal wp = new WrapPanelPrincipal();
+                            wp.name = name;
+                            gridPrincipal.Children.Add(wp);
+                            wp.Visibility = Visibility.Visible;
+                            _activatedButton = newButton;
+                            _wrapsPrincipales.Add(wp);
 
-                        Lista.addWrapPrincipal(wp);
-                        wp.setButton(newButton);
+                            Lista.addWrapPrincipal(wp);
+                            wp.setButton(newButton);
 
-                        onClickButtonMenu(newButton, e);
+                            onClickButtonMenu(newButton, e);
+                        }
                     }
                 }
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
 
         }
 
         private void removeMenu(object sender, EventArgs e) {
-            if (_activatedButton != null) {
-                if (conexionMode) {
-                    long id = Lista.getMenuFromButton(_activatedButton).id;
-                    if (id != 0) {
-                        Conexion.deleteMenu(id);
-                        Lista.removeMenu(_activatedButton);
+            try {
+                if (_activatedButton != null) {
+                    if (conexionMode) {
+                        long id = Lista.getMenuFromButton(_activatedButton).id;
+                        if (id != 0) {
+                            Conexion.deleteMenu(id);
+                            Lista.removeMenu(_activatedButton);
 
-                        if (_botonesMenu.Contains(_activatedButton)) {
-                            _botonesMenu.Remove(_activatedButton);
-                        }
-                        if (_botones.Contains(_activatedButton)) {
-                            _botones.Remove(_activatedButton);
-                        }
-                        if (_botonesMenu.Count != 0) {
-                            foreach (Button b in _botonesMenu) {
-                                onClickButtonMenu(b, e);
-                                break;
+                            if (_botonesMenu.Contains(_activatedButton)) {
+                                _botonesMenu.Remove(_activatedButton);
                             }
-                        } else {
-                            _activatedButton = null;
+                            if (_botones.Contains(_activatedButton)) {
+                                _botones.Remove(_activatedButton);
+                            }
+                            if (_botonesMenu.Count != 0) {
+                                foreach (Button b in _botonesMenu) {
+                                    onClickButtonMenu(b, e);
+                                    break;
+                                }
+                            } else {
+                                _activatedButton = null;
+                            }
+                            ReturnVisibility(false);
                         }
-                        ReturnVisibility(false);
+
+                    } else {
+                        long id = Lista.getMenuFromButton(_activatedButton).id;
+                        if (id != 0) {
+                            ConexionOffline.deleteMenu(id);
+                            Lista.removeMenu(_activatedButton);
+                            if (_botonesMenu.Contains(_activatedButton)) {
+                                _botonesMenu.Remove(_activatedButton);
+                            }
+                            if (_botones.Contains(_activatedButton)) {
+                                _botones.Remove(_activatedButton);
+                            }
+                            if (_botonesMenu.Count != 0) {
+                                foreach (Button b in _botonesMenu) {
+                                    onClickButtonMenu(_activatedButton, e);
+                                    break;
+                                }
+                            } else {
+                                _activatedButton = null;
+                            }
+                            ReturnVisibility(false);
+                        }
                     }
 
-                } else {
-                    long id = Lista.getMenuFromButton(_activatedButton).id;
-                    if (id != 0) {
-                        ConexionOffline.deleteMenu(id);
-                        Lista.removeMenu(_activatedButton);
-                        if (_botonesMenu.Contains(_activatedButton)) {
-                            _botonesMenu.Remove(_activatedButton);
-                        }
-                        if (_botones.Contains(_activatedButton)) {
-                            _botones.Remove(_activatedButton);
-                        }
-                        if (_botonesMenu.Count != 0) {
-                            foreach(Button b in _botonesMenu) {
-                                onClickButtonMenu(_activatedButton, e);
-                                break;
-                            }
-                        } else {
-                            _activatedButton = null;
-                        }
-                        ReturnVisibility(false);
-                    }
                 }
-                
+                clearTextBox(null);
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-            clearTextBox(null);
         }
 
         public bool checkString(string s) {
@@ -913,13 +1003,18 @@ namespace SeleccionarProfile {
         }
 
         public static void updateMode(long mode) {
-            _profile.mode = mode;
-            if (conexionMode) {
-                Conexion.updateMode(mode, _profile);
-            } else {
-                ConexionOffline.updateMode(mode, _profile);
+            try {
+                _profile.mode = mode;
+                if (conexionMode) {
+                    Conexion.updateMode(mode, _profile);
+                } else {
+                    ConexionOffline.updateMode(mode, _profile);
+                }
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-            
         }
 
         private void showOptions(object sender, RoutedEventArgs e) {
@@ -1046,24 +1141,30 @@ namespace SeleccionarProfile {
             return _user;
         }
 
-        private void removeProfile(object sender,RoutedEventArgs e) {
-            if (_profile.nombre.CompareTo(_newSelectedProfile.nombre) != 0) {
-                if (conexionMode) {
-                    Conexion.deleteProfile(_newSelectedProfile.id);
+        private void removeProfile(object sender, RoutedEventArgs e) {
+            try {
+                if (_profile.nombre.CompareTo(_newSelectedProfile.nombre) != 0) {
+                    if (conexionMode) {
+                        Conexion.deleteProfile(_newSelectedProfile.id);
+                    } else {
+                        ConexionOffline.deleteProfile(_newSelectedProfile.id);
+                    }
+
+                    Button b = Lista.getProfileButton(_newSelectedProfile.nombre);
+                    if (perfiles.Children.Contains(b)) {
+                        perfiles.Children.Remove(b);
+                    }
+                    Lista.removeProfile(_newSelectedProfile.nombre);
+                    _newSelectedProfile = null;
+                    Button aux = Lista.getProfileButton(_profile.nombre);
+                    selectProfile(aux);
                 } else {
-                    ConexionOffline.deleteProfile(_newSelectedProfile.id);
+                    MessageBox.Show("No puedes borrrar el perfil seleccionado");
                 }
-                
-                Button b=Lista.getProfileButton(_newSelectedProfile.nombre);
-                if (perfiles.Children.Contains(b)) {
-                    perfiles.Children.Remove(b);
-                }
-                Lista.removeProfile(_newSelectedProfile.nombre);
-                _newSelectedProfile = null;
-                Button aux = Lista.getProfileButton(_profile.nombre);
-                selectProfile(aux);
-            } else {
-                MessageBox.Show("No puedes borrrar el perfil seleccionado");
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
 
@@ -1088,7 +1189,8 @@ namespace SeleccionarProfile {
         }
 
         private void onChangeMenuClick(object sender, EventArgs e) {
-            Button aux = (Button)sender;
+            
+                Button aux = (Button)sender;
             if (aux.Name.Equals("bOnlineMenu")) {
                 if (menuOnline.Visibility == Visibility.Hidden) {
 
@@ -1114,48 +1216,51 @@ namespace SeleccionarProfile {
                             bShowAll.ClearValue(Button.BackgroundProperty);
                             ReturnVisibility(false);
                         }
+                        try {
+                            ListaOnline.loadData();
+                            List<Capitulo> capitulosRecientes = ConexionServer.getCapitulosMasRecientes();
+                            List<Pelicula> peliculasRecientes = ConexionServer.getPeliculasMasRecientes();
+                            List<object> listaRecientes = new List<object>();
+                            if (capitulosRecientes != null) {
+                                listaRecientes.AddRange(capitulosRecientes);
+                            }
+                            if (peliculasRecientes != null) {
+                                listaRecientes.AddRange(peliculasRecientes);
+                            }
+                            listaRecientes = OrderClass.orderDates(listaRecientes);
+                            if (listaRecientes != null & listaRecientes.Count >= 8) {
+                                listaRecientes = listaRecientes.GetRange(0, 8);
+                            }
 
-                        ListaOnline.loadData();
-                        List<Capitulo> capitulosRecientes = ConexionServer.getCapitulosMasRecientes();
-                        List<Pelicula> peliculasRecientes = ConexionServer.getPeliculasMasRecientes();
-                        List<object> listaRecientes = new List<object>();
-                        if (capitulosRecientes != null) {
-                            listaRecientes.AddRange(capitulosRecientes);
-                        }
-                        if (peliculasRecientes != null) {
-                            listaRecientes.AddRange(peliculasRecientes);
-                        }
-                        listaRecientes = OrderClass.orderDates(listaRecientes);
-                        if (listaRecientes != null & listaRecientes.Count >= 8) {
-                            listaRecientes = listaRecientes.GetRange(0, 8);
-                        }
+                            menuReciente.setList(listaRecientes);
 
-                        menuReciente.setList(listaRecientes);
+                            List<Capitulo> capitulos2019 = ConexionServer.getTopEpisodios2019();
+                            List<Pelicula> peliculas2019 = ConexionServer.getTopPeliculas2019();
+                            List<object> listaTop2019 = new List<object>();
+                            if (capitulos2019 != null) {
+                                listaTop2019.AddRange(capitulos2019);
+                            }
+                            if (peliculas2019 != null) {
+                                listaTop2019.AddRange(peliculas2019);
+                            }
+                            listaTop2019 = OrderClass.orderTops(listaTop2019);
+                            if (listaTop2019 != null & listaTop2019.Count >= 10) {
+                                listaTop2019 = listaTop2019.GetRange(0, 10);
+                            }
 
-                        List<Capitulo> capitulos2019 = ConexionServer.getTopEpisodios2019();
-                        List<Pelicula> peliculas2019 = ConexionServer.getTopPeliculas2019();
-                        List<object> listaTop2019 = new List<object>();
-                        if (capitulos2019 != null) {
-                            listaTop2019.AddRange(capitulos2019);
-                        }
-                        if (peliculas2019 != null) {
-                            listaTop2019.AddRange(peliculas2019);
-                        }
-                        listaTop2019 = OrderClass.orderTops(listaTop2019);
-                        if (listaTop2019 != null & listaTop2019.Count >= 10) {
-                            listaTop2019 = listaTop2019.GetRange(0, 10);
-                        }
+                            top2019.setLista(ListaOnline.listToVideoElement(listaTop2019, this));
 
-                        top2019.setLista(ListaOnline.listToVideoElement(listaTop2019, this));
+                            List<VideoElement> videoElements = ListaOnline.listCapituloToVideoElement(ConexionServer.getCapitulosMasVistos(), this);
+                            if (videoElements != null) {
+                                episodiosVistos.setLista(videoElements);
+                            }
 
-                        List<VideoElement> videoElements = ListaOnline.listCapituloToVideoElement(ConexionServer.getCapitulosMasVistos(), this);
-                        if (videoElements != null) {
-                            episodiosVistos.setLista(videoElements);
-                        }
-
-                        List<VideoElement> videoElements2 = ListaOnline.listPeliculaToVideoElement(ConexionServer.getPeliculasMasVistas(), this);
-                        if (videoElements != null) {
-                            peliculasVistas.setLista(videoElements2);
+                            List<VideoElement> videoElements2 = ListaOnline.listPeliculaToVideoElement(ConexionServer.getPeliculasMasVistas(), this);
+                            if (videoElements != null) {
+                                peliculasVistas.setLista(videoElements2);
+                            }
+                        } catch (MySqlException exc) {
+                            MessageBox.Show("No se ha podido conectar a la base de datos");
                         }
 
                         ListaOnline.createAllFolders(gridOnlineShowAll, wrapShowAll, this);
@@ -1163,15 +1268,16 @@ namespace SeleccionarProfile {
                         textOnline.Text = "";
 
                         rowAddMenu.Height = new GridLength(0, GridUnitType.Star);
-                        
+
 
 
                     } else {
                         MessageBox.Show("No se ha podido conectar con el servidor");
                     }
                 }
-            }else if (aux.Name.Equals("bOfflineMenu")) {
-                if (menuOffline.Visibility == Visibility.Hidden) {;
+            } else if (aux.Name.Equals("bOfflineMenu")) {
+                if (menuOffline.Visibility == Visibility.Hidden) {
+                    ;
                     menuOnline.Visibility = Visibility.Hidden;
                     rectOnline.Visibility = Visibility.Hidden;
                     gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
@@ -1196,6 +1302,7 @@ namespace SeleccionarProfile {
                 }
             }
             
+
         }
 
         private void changeOnlinePanel(object sender, EventArgs e) {
@@ -1241,13 +1348,30 @@ namespace SeleccionarProfile {
             } else {
                 WrapPanelPrincipal wp = Lista.getWrapVisible();
                 if (wp != null) {
-                    wp.showFoldersByGender(content.ToString());
+                    wp.showFoldersByGender(content);
                 }
                 
             }
         }
 
-        private void onPressEnter(object sender, KeyEventArgs e) { 
+        private void bComboGenero_SelectionChangedOnline(object sender, SelectionChangedEventArgs e) {
+            ComboBox cb = (ComboBox)sender;
+            string content = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
+            if (content.Equals("Todos")) {
+                if (wrapShowAll != null) {
+                    if (wrapShowAll.Visibility == Visibility.Visible) {
+                        wrapShowAll.showAll();
+                    }
+                }
+                
+            } else {
+                if (wrapShowAll != null & wrapShowAll.Visibility == Visibility.Visible) {
+                    wrapShowAll.showFoldersByGender(content);
+                }
+            }
+        }
+
+        private void onSearchValueChanged(object sender, KeyEventArgs e) { 
             TextBox textBox = (TextBox)sender;
             if (!textBox.Text.Equals("")) {
                 if (buscadorOffline.Visibility == Visibility.Visible) {

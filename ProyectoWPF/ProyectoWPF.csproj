@@ -187,8 +187,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Data\SaveDataType.cs" />
-    <Compile Include="Data\SaveData.cs" />
     <Compile Include="Data\Base\CarpetaClass.cs" />
     <Compile Include="Components\SubCarpeta.xaml.cs">
       <DependentUpon>SubCarpeta.xaml</DependentUpon>

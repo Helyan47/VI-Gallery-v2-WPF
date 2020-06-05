@@ -38,7 +38,8 @@ namespace SeleccionarProfile.Data.Online {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Boton  \n" + e);
+                Console.WriteLine("No se han podido cargar las series:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -75,7 +76,8 @@ namespace SeleccionarProfile.Data.Online {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Temporada  \n" + e);
+                Console.WriteLine("No se han podido cargar las temporadas:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -113,7 +115,8 @@ namespace SeleccionarProfile.Data.Online {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Capitulo  \n" + e);
+                Console.WriteLine("No se han podido cargar los capitulos:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -150,7 +153,8 @@ namespace SeleccionarProfile.Data.Online {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Capitulo  \n" + e);
+                Console.WriteLine("No se han podido cargar las peliculas:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -188,7 +192,8 @@ namespace SeleccionarProfile.Data.Online {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Capitulo  \n" + e);
+                Console.WriteLine("No se han podido cargar los capitulos:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -225,7 +230,8 @@ namespace SeleccionarProfile.Data.Online {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Capitulo  \n" + e);
+                Console.WriteLine("No se han podido cargar las peliculas:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -263,7 +269,8 @@ namespace SeleccionarProfile.Data.Online {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Capitulo  \n" + e);
+                Console.WriteLine("No se han podido cargar los capitulos:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -300,7 +307,8 @@ namespace SeleccionarProfile.Data.Online {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Capitulo  \n" + e);
+                Console.WriteLine("No se han podido cargar las peliculas:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -337,7 +345,8 @@ namespace SeleccionarProfile.Data.Online {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Capitulo  \n" + e);
+                Console.WriteLine("No se han podido cargar las peliculas:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -375,7 +384,8 @@ namespace SeleccionarProfile.Data.Online {
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Capitulo  \n" + e);
+                Console.WriteLine("No se han podido cargar los capitulos:\n" + e);
+                throw e;
             } finally {
                 if (conexion != null) {
                     conexion.Close();
@@ -383,111 +393,6 @@ namespace SeleccionarProfile.Data.Online {
             }
             return null;
         }
-
-        public static void increaseNumVisitasCap(Capitulo c) {
-            MySqlConnection conexion = null;
-            MySqlTransaction myTrans = null;
-            try {
-                conexion = getConnection();
-                conexion.Open();
-
-                myTrans = conexion.BeginTransaction();
-
-                MySqlCommand comando = new MySqlCommand("UPDATE Capitulo set numVisitas=numVisitas+1 where id=@idCapitulo", conexion);
-                comando.Parameters.AddWithValue("@idCapitulo", c.id);
-                comando.ExecuteNonQuery();
-
-                myTrans.Commit();
-            } catch (MySqlException e) {
-                if (myTrans != null) {
-                    myTrans.Rollback();
-                }
-                Console.WriteLine(e);
-            } finally {
-                if (conexion != null) {
-                    conexion.Close();
-                }
-            }
-        }
-
-        public static void increaseNumVisitasPelicula(Pelicula p) {
-            MySqlConnection conexion = null;
-            MySqlTransaction myTrans = null;
-            try {
-                conexion = getConnection();
-                conexion.Open();
-
-                myTrans = conexion.BeginTransaction();
-
-                MySqlCommand comando = new MySqlCommand("UPDATE Pelicula set numVisitas=numVisitas+1 where id=@idPelicula", conexion);
-                comando.Parameters.AddWithValue("@idPelicula", p.id);
-                comando.ExecuteNonQuery();
-
-                myTrans.Commit();
-            } catch (MySqlException e) {
-                if (myTrans != null) {
-                    myTrans.Rollback();
-                }
-                Console.WriteLine(e);
-            } finally {
-                if (conexion != null) {
-                    conexion.Close();
-                }
-            }
-        }
-
-        public static void updateTiempoActualCap(Capitulo c) {
-            MySqlConnection conexion = null;
-            MySqlTransaction myTrans = null;
-            try {
-                conexion = getConnection();
-                conexion.Open();
-
-                myTrans = conexion.BeginTransaction();
-
-                MySqlCommand comando = new MySqlCommand("UPDATE Capitulo set tiempoActual=@tiempoActual where id=@idCapitulo", conexion);
-                comando.Parameters.AddWithValue("@tiempoActual", c.tiempoactual);
-                comando.Parameters.AddWithValue("@idCapitulo", c.id);
-                comando.ExecuteNonQuery();
-
-                myTrans.Commit();
-            } catch (MySqlException e) {
-                if (myTrans != null) {
-                    myTrans.Rollback();
-                }
-                Console.WriteLine(e);
-            } finally {
-                if (conexion != null) {
-                    conexion.Close();
-                }
-            }
-        }
-
-        public static void updateTiempoActualPel(Pelicula p) {
-            MySqlConnection conexion = null;
-            MySqlTransaction myTrans = null;
-            try {
-                conexion = getConnection();
-                conexion.Open();
-
-                myTrans = conexion.BeginTransaction();
-
-                MySqlCommand comando = new MySqlCommand("UPDATE Pelicula set tiempoActual=@tiempoActual where id=@idPelicula", conexion);
-                comando.Parameters.AddWithValue("@tiempoActual", p.tiempoactual);
-                comando.Parameters.AddWithValue("@idPelicula", p.id);
-                comando.ExecuteNonQuery();
-
-                myTrans.Commit();
-            } catch (MySqlException e) {
-                if (myTrans != null) {
-                    myTrans.Rollback();
-                }
-                Console.WriteLine(e);
-            } finally {
-                if (conexion != null) {
-                    conexion.Close();
-                }
-            }
-        }
+       
     }
 }

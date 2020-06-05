@@ -16,6 +16,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.SQLite;
+using MySql.Data.MySqlClient;
 
 namespace SeleccionarProfile.Components {
     /// <summary>
@@ -215,25 +217,37 @@ namespace SeleccionarProfile.Components {
         }
 
         private void deleteFile(object sender, EventArgs e) {
-            if (VIGallery.conexionMode) {
-                Conexion.deleteFile(_archivoClass);
-            } else {
-                ConexionOffline.deleteFile(_archivoClass.id);
+            try {
+                if (VIGallery.conexionMode) {
+                    Conexion.deleteFile(_archivoClass);
+                } else {
+                    ConexionOffline.deleteFile(_archivoClass.id);
+                }
+                if (_carpetaPadre != null) {
+                    _carpetaPadre.removeFile(this);
+                } else if (_subCarpetaPadre != null) {
+                    _subCarpetaPadre.removeFile(this);
+                }
+                _archivoClass = null;
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-            if (_carpetaPadre != null) {
-                _carpetaPadre.removeFile(this);
-            }else if(_subCarpetaPadre != null) {
-                _subCarpetaPadre.removeFile(this);
-            }
-            _archivoClass = null;
         }
 
         public void updateRuta(string rutaAntigua, string rutaNueva) {
-            _archivoClass.rutaPrograma = _archivoClass.rutaPrograma.Replace(rutaAntigua, rutaNueva);
-            if (VIGallery.conexionMode) {
-                Conexion.updateFile(_archivoClass);
-            } else {
-                ConexionOffline.updateFile(_archivoClass);
+            try {
+                _archivoClass.rutaPrograma = _archivoClass.rutaPrograma.Replace(rutaAntigua, rutaNueva);
+                if (VIGallery.conexionMode) {
+                    Conexion.updateFile(_archivoClass);
+                } else {
+                    ConexionOffline.updateFile(_archivoClass);
+                }
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
     }

@@ -1,8 +1,10 @@
-﻿using SeleccionarProfile.Components;
+﻿using MySql.Data.MySqlClient;
+using SeleccionarProfile.Components;
 using SeleccionarProfile.Data;
 using SeleccionarProfile.NewFolders;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
@@ -262,70 +264,91 @@ namespace SeleccionarProfile {
         } 
 
         public void remove() {
-            if (VIGallery.conexionMode) {
-                Conexion.deleteFolder(_carpeta);
-            } else {
-                ConexionOffline.deleteFolder(_carpeta.id);
+            try {
+
+
+                if (VIGallery.conexionMode) {
+                    Conexion.deleteFolder(_carpeta);
+                } else {
+                    ConexionOffline.deleteFolder(_carpeta.id);
+                }
+                _archivos = null;
+                Lista.removeSubFolders(this);
+                Lista.removeSubCarpeta(this);
+                if (_wrapCarpAnterior != null) {
+                    _wrapCarpAnterior.removeSubFolder(this);
+                }
+                _wrapCarpPropia.removeChildrens();
+                Lista.removeWrapPanelSecundario(_wrapCarpPropia);
+                _wrapCarpPropia = null;
+                Lista.removeCarpetaClass(_carpeta.id);
+                _carpeta = null;
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-            _archivos = null;
-            Lista.removeSubFolders(this);
-            Lista.removeSubCarpeta(this);
-            if (_wrapCarpAnterior != null) {
-                _wrapCarpAnterior.removeSubFolder(this);
-            }
-            _wrapCarpPropia.removeChildrens();
-            Lista.removeWrapPanelSecundario(_wrapCarpPropia);
-            _wrapCarpPropia = null;
-            Lista.removeCarpetaClass(_carpeta.id);
-            _carpeta = null;
-            
         }
 
         public void changeName(string newName) {
             string nombreAntiguo = _carpeta.nombre;
-            _carpeta.nombre = newName;
-            string[] splitted = _carpeta.ruta.Split('/');
-            splitted[splitted.Length - 1] = newName;
             string rutaAntigua = _carpeta.ruta;
-            string rutaNueva = "";
-            for (int i = 0; i < splitted.Length; i++) {
-                rutaNueva += splitted[i];
-                if (i != splitted.Length - 1) {
-                    rutaNueva += "/";
+            try {
+                
+                _carpeta.nombre = newName;
+                string[] splitted = _carpeta.ruta.Split('/');
+                splitted[splitted.Length - 1] = newName;
+                string rutaNueva = "";
+                for (int i = 0; i < splitted.Length; i++) {
+                    rutaNueva += splitted[i];
+                    if (i != splitted.Length - 1) {
+                        rutaNueva += "/";
+                    }
                 }
+                _carpeta.ruta = rutaNueva;
+                if (VIGallery.conexionMode) {
+                    Conexion.updateFolderName(_carpeta);
+                } else {
+                    ConexionOffline.updateFolderName(_carpeta);
+                }
+                Lista.changeSubFoldersName(rutaAntigua, rutaNueva);
+                Title.SetText(newName);
+                
+                Lista.orderWrap(_wrapCarpAnterior);
+            } catch (MySqlException exc) {
+                _carpeta.nombre = nombreAntiguo;
+                _carpeta.ruta = rutaAntigua;
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                _carpeta.nombre = nombreAntiguo;
+                _carpeta.ruta = rutaAntigua;
+                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-            _carpeta.ruta = rutaNueva;
-            Console.WriteLine("Nombre antiguo: " + nombreAntiguo);
-            Console.WriteLine("Nombre nuevo: " + newName);
-            Console.WriteLine("Ruta antigua: " + rutaAntigua);
-            Console.WriteLine("Ruta nueva: " + rutaNueva);
-            Lista.changeSubFoldersName(rutaAntigua, rutaNueva);
-            Title.SetText(newName);
-            if (VIGallery.conexionMode) {
-                Conexion.updateFolderName(_carpeta);
-            } else {
-                ConexionOffline.updateFolderName(_carpeta);
-            }
-            Lista.orderWrap(_wrapCarpAnterior);
         }
 
         public void updateRuta(string rutaAntigua, string rutaNueva) {
-            string rutaPadreAntigua = _carpeta.rutaPadre;
-            _carpeta.rutaPadre = rutaNueva;
-            string rutaAntiguaSub = _carpeta.ruta;
-            _carpeta.ruta = _carpeta.ruta.Replace(rutaAntigua, rutaNueva);
-            Lista.changeSubFoldersName(rutaAntiguaSub, _carpeta.ruta);
-            if (VIGallery.conexionMode) {
-                Conexion.updateFolderName(_carpeta);
-            } else {
-                ConexionOffline.updateFolderName(_carpeta);
-            }
-            if (_archivos != null) {
-                foreach (Archivo a in _archivos) {
-                    a.updateRuta(rutaAntiguaSub, _carpeta.ruta);
+            try {
+                string rutaPadreAntigua = _carpeta.rutaPadre;
+                _carpeta.rutaPadre = rutaNueva;
+                string rutaAntiguaSub = _carpeta.ruta;
+                _carpeta.ruta = _carpeta.ruta.Replace(rutaAntigua, rutaNueva);
+                if (VIGallery.conexionMode) {
+                    Conexion.updateFolderName(_carpeta);
+                } else {
+                    ConexionOffline.updateFolderName(_carpeta);
                 }
+                Lista.changeSubFoldersName(rutaAntiguaSub, _carpeta.ruta);
+                
+                if (_archivos != null) {
+                    foreach (Archivo a in _archivos) {
+                        a.updateRuta(rutaAntiguaSub, _carpeta.ruta);
+                    }
+                }
+            } catch (MySqlException exc) {
+                throw exc;
+            } catch (SQLiteException exc2) {
+                throw exc2;
             }
-            
         }
 
         private void showNewNamePanel(object sender, EventArgs e) {
