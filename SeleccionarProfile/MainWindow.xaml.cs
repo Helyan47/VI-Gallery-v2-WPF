@@ -1,6 +1,6 @@
-﻿using ProyectoWPF;
-using ProyectoWPF.Data;
-using ProyectoWPF.NewFolders;
+﻿using SeleccionarProfile;
+using SeleccionarProfile.Data;
+using SeleccionarProfile.NewFolders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -147,7 +147,6 @@ namespace SeleccionarProfile {
             if (_selectedProfile != null) {
                 if (conn) {
                     VIGallery vi = new VIGallery(_selectedProfile);
-                    
                     vi.loadDataConexion(_selectedProfile.id);
                     this.Hide();
                     vi.Show();

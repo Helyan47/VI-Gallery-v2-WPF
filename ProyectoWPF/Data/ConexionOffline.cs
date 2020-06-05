@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoWPF.Data {
+namespace SeleccionarProfile.Data {
     public class ConexionOffline {
 
         private static IDbConnection cnn = null;
@@ -283,8 +283,8 @@ namespace ProyectoWPF.Data {
 
         public static void updateFile(ArchivoClass a) {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString())) {
-                var parameters = new { nombre = a.nombre, idArchivo = a.id };
-                var output = cnn.Query<CarpetaClass>("UPDATE Archivo set nombre=@nombre where id=@idArchivo", parameters);
+                var parameters = new { nombre = a.nombre, ruta = a.rutaPrograma, idArchivo = a.id };
+                var output = cnn.Query<CarpetaClass>("UPDATE Archivo set nombre=@nombre, rutaPrograma=@ruta where id=@idArchivo", parameters);
                 cnn.Close();
             }
         }

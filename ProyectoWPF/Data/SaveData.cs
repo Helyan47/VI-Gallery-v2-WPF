@@ -1,4 +1,4 @@
-﻿using ProyectoWPF.Data;
+﻿using SeleccionarProfile.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace ProyectoWPF {
+namespace SeleccionarProfile {
     public class SaveData {
 
         public static string _archivoData= "../../../ProyectoWPF/bin/Debug/ArchivoData.txt";

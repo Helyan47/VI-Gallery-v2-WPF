@@ -1,10 +1,10 @@
-﻿<Window x:Class="ProyectoWPF.VIGallery"
+﻿<Window x:Class="SeleccionarProfile.VIGallery"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ProyectoWPF"
-        xmlns:componentes="clr-namespace:ProyectoWPF.Components"
+        xmlns:local="clr-namespace:SeleccionarProfile"
+        xmlns:componentes="clr-namespace:SeleccionarProfile.Components"
         xmlns:reproductor="clr-namespace:Reproductor;assembly=Reproductor"
         mc:Ignorable="d"
         ResizeMode="CanResize"
@@ -204,7 +204,7 @@
                     <Grid Width="280" HorizontalAlignment="Left" Background="#FF121212">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="0.3*"/>
-                            <RowDefinition Height="0.05*"/>
+                            <RowDefinition x:Name="rowOnline" Height="0.05*"/>
                             <!--Mostrar 0.3-->
                             <RowDefinition Height="*"/>
 
@@ -502,6 +502,7 @@
                                     <TextBox x:Name="textOnline" MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Visible" KeyUp="onPressEnter"/>
                                 </Grid>
                             </Grid>
+                            
                             <Grid x:Name="gridPrincipal" Grid.Row="1" Background="#FF262626" Visibility="Visible"/>
 
                             <Grid x:Name="gridOnlinePanelPrinc" Grid.Row="1" Background="#FF262626" Visibility="Hidden">
@@ -523,9 +524,8 @@
                                     </Grid>
                                 </ScrollViewer>
                             </Grid>
-
                             <Grid x:Name="gridOnlineShowAll" Grid.Row="1" Background="#FF262626" Visibility="Hidden">
-                                <local:WrapPanelPrincipal x:Name="wrapShowAll"></local:WrapPanelPrincipal>
+                                <local:WrapPanelPrincipal x:Name="wrapShowAll"/>
                             </Grid>
                         </Grid>
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoWPF {
+namespace SeleccionarProfile {
     [Serializable]
     public class SaveDataType {
         private string name;

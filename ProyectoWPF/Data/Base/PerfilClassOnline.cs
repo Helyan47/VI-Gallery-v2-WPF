@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoWPF.Data {
+namespace SeleccionarProfile.Data {
     public class PerfilClassOnline : PerfilClass{
         public long idUsuario { get; set; }
 

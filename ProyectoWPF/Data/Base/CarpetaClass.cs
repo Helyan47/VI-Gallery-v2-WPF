@@ -1,11 +1,11 @@
-﻿using ProyectoWPF.Data;
+﻿using SeleccionarProfile.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoWPF {
+namespace SeleccionarProfile {
     public class CarpetaClass {
         public long id { get; set; }
         public string nombre { get; set; }

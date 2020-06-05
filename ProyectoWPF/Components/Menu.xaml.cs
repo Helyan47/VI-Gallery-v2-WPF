@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ProyectoWPF {
+namespace SeleccionarProfile {
     /// <summary>
     /// Lógica de interacción para Menu.xaml
     /// </summary>

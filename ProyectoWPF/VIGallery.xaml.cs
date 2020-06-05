@@ -1,23 +1,23 @@
 ﻿using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using ProyectoWPF.Data;
+using SeleccionarProfile.Data;
 using System;
 using System.Collections.Generic;
-using ProyectoWPF.NewFolders;
+using SeleccionarProfile.NewFolders;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using ProyectoWPF.Components;
+using SeleccionarProfile.Components;
 using Reproductor;
 using System.Linq;
-using ProyectoWPF.Data.Online;
-using ProyectoWPF.Components.Online;
+using SeleccionarProfile.Data.Online;
+using SeleccionarProfile.Components.Online;
 using System.Net;
 
-namespace ProyectoWPF {
+namespace SeleccionarProfile {
     /// <summary>
     /// Lógica de interacción para VIGallery.xaml
     /// </summary>
@@ -49,6 +49,9 @@ namespace ProyectoWPF {
             changedProfile = false;
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
             menuReciente.setMain(this);
+            if (!conexionMode) {
+                rowOnline.Height = new GridLength(0,GridUnitType.Star);
+            }
         }
 
 
@@ -94,7 +97,7 @@ namespace ProyectoWPF {
                                 _rutas.Add(aux[j]);
                             }
                         }
-                        
+
                         if (_folders != null) {
                             if (!conexionMode) {
                                 ConexionOffline.startConnection();
@@ -104,7 +107,6 @@ namespace ProyectoWPF {
                                 ConexionOffline.closeConnection();
                             }
                         }
-
 
                     }
                 }
@@ -1089,14 +1091,16 @@ namespace ProyectoWPF {
             Button aux = (Button)sender;
             if (aux.Name.Equals("bOnlineMenu")) {
                 if (menuOnline.Visibility == Visibility.Hidden) {
+
                     if (checkConnection()) {
+
                         menuOnline.Visibility = Visibility.Visible;
                         rectOnline.Visibility = Visibility.Visible;
 
                         buscadorOnline.Visibility = Visibility.Visible;
 
                         rectOffline.Visibility = Visibility.Hidden;
-                        gridPrincipal.Visibility = Visibility.Visible;
+                        gridPrincipal.Visibility = Visibility.Hidden;
                         menuOffline.Visibility = Visibility.Hidden;
                         buscadorOffline.Visibility = Visibility.Hidden;
                         panelPrincSelected = true;
@@ -1159,12 +1163,15 @@ namespace ProyectoWPF {
                         textOnline.Text = "";
 
                         rowAddMenu.Height = new GridLength(0, GridUnitType.Star);
+                        
+
+
                     } else {
                         MessageBox.Show("No se ha podido conectar con el servidor");
                     }
                 }
             }else if (aux.Name.Equals("bOfflineMenu")) {
-                if (menuOffline.Visibility == Visibility.Hidden) {
+                if (menuOffline.Visibility == Visibility.Hidden) {;
                     menuOnline.Visibility = Visibility.Hidden;
                     rectOnline.Visibility = Visibility.Hidden;
                     gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
@@ -1182,7 +1189,6 @@ namespace ProyectoWPF {
                     top2019.clear();
 
                     ListaOnline.removeComponents(wrapShowAll);
-
 
                     rowBuscador.Height = new GridLength(30, GridUnitType.Auto);
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoWPF.Data.Online
+namespace SeleccionarProfile.Data.Online
 {
     public class Capitulo
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 using MySql.Data.MySqlClient;
-using ProyectoWPF.Data;
+using SeleccionarProfile.Data;
 
-namespace ProyectoWPF.Data.Online {
+namespace SeleccionarProfile.Data.Online {
     public static class ConexionServer {
         public static MySqlConnection getConnection() {
             MySqlConnection conexion = new MySqlConnection("datasource=192.168.0.147;port=3306;username=vigallery;password=vigallery;database=vi_gallery_online");

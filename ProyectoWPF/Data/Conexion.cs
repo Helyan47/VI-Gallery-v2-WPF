@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 using MySql.Data.MySqlClient;
-using ProyectoWPF.Data;
+using SeleccionarProfile.Data;
 
-namespace ProyectoWPF.Data {
+namespace SeleccionarProfile.Data {
     public static class Conexion {
 
         public static MySqlConnection getConnection() {
@@ -718,8 +718,9 @@ namespace ProyectoWPF.Data {
 
                 myTrans = conexion.BeginTransaction();
 
-                MySqlCommand comando = new MySqlCommand("UPDATE Archivo set nombre=@nombre where id=@idArchivo", conexion);
+                MySqlCommand comando = new MySqlCommand("UPDATE Archivo set nombre=@nombre, rutaPrograma=@ruta where id=@idArchivo", conexion);
                 comando.Parameters.AddWithValue("@nombre", c.nombre);
+                comando.Parameters.AddWithValue("@ruta", c.rutaPrograma);
                 comando.Parameters.AddWithValue("@idArchivo", c.id);
                 comando.ExecuteNonQuery();
 

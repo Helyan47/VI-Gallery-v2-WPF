@@ -1,4 +1,4 @@
-﻿using ProyectoWPF.Data.Online;
+﻿using SeleccionarProfile.Data.Online;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ProyectoWPF.Components {
+namespace SeleccionarProfile.Components {
     /// <summary>
     /// Lógica de interacción para ListaArchivos.xaml
     /// </summary>

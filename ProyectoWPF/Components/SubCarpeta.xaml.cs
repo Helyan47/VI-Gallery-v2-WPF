@@ -1,6 +1,6 @@
-﻿using ProyectoWPF.Components;
-using ProyectoWPF.Data;
-using ProyectoWPF.NewFolders;
+﻿using SeleccionarProfile.Components;
+using SeleccionarProfile.Data;
+using SeleccionarProfile.NewFolders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace ProyectoWPF {
+namespace SeleccionarProfile {
     /// <summary>
     /// Lógica de interacción para SubCarpeta.xaml
     /// </summary>
@@ -304,7 +304,7 @@ namespace ProyectoWPF {
             if (VIGallery.conexionMode) {
                 Conexion.updateFolderName(_carpeta);
             } else {
-
+                ConexionOffline.updateFolderName(_carpeta);
             }
             Lista.orderWrap(_wrapCarpAnterior);
         }
@@ -314,17 +314,18 @@ namespace ProyectoWPF {
             _carpeta.rutaPadre = rutaNueva;
             string rutaAntiguaSub = _carpeta.ruta;
             _carpeta.ruta = _carpeta.ruta.Replace(rutaAntigua, rutaNueva);
-            Console.WriteLine("RutaPadre antigua: " + rutaPadreAntigua);
-            Console.WriteLine("RutaPadre nueva: " + _carpeta.rutaPadre);
-            Console.WriteLine("Ruta antigua: " + rutaAntiguaSub);
-            Console.WriteLine("Ruta nueva: " + _carpeta.ruta);
-            Console.WriteLine(" ---------------- ");
             Lista.changeSubFoldersName(rutaAntiguaSub, _carpeta.ruta);
             if (VIGallery.conexionMode) {
                 Conexion.updateFolderName(_carpeta);
             } else {
                 ConexionOffline.updateFolderName(_carpeta);
             }
+            if (_archivos != null) {
+                foreach (Archivo a in _archivos) {
+                    a.updateRuta(rutaAntiguaSub, _carpeta.ruta);
+                }
+            }
+            
         }
 
         private void showNewNamePanel(object sender, EventArgs e) {

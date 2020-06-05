@@ -1,5 +1,5 @@
-﻿using ProyectoWPF.Data;
-using ProyectoWPF.NewFolders;
+﻿using SeleccionarProfile.Data;
+using SeleccionarProfile.NewFolders;
 using Reproductor;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ProyectoWPF.Components {
+namespace SeleccionarProfile.Components {
     /// <summary>
     /// Lógica de interacción para Archivo.xaml
     /// </summary>
@@ -167,13 +167,28 @@ namespace ProyectoWPF.Components {
 
         private void changeName(string newName) {
             _archivoClass.nombre = newName;
+            string[] splitted = _archivoClass.rutaPrograma.Split('/');
+            splitted[splitted.Length - 1] = newName;
+            string rutaNueva = "";
+            for (int i = 0; i < splitted.Length; i++) {
+                rutaNueva += splitted[i];
+                if (i != splitted.Length - 1) {
+                    rutaNueva += "/";
+                }
+            }
+            _archivoClass.rutaPrograma = rutaNueva;
             if (VIGallery.conexionMode) {
                 Conexion.updateFile(_archivoClass);
             } else {
                 ConexionOffline.updateFile(_archivoClass);
             }
             Title.SetText(newName);
-            Lista.orderWrap(_carpetaPadre.GetWrapCarpPrincipal());
+            if (_carpetaPadre != null) {
+                Lista.orderWrap(_carpetaPadre.GetWrapCarpPrincipal());
+            }else if(_subCarpetaPadre != null) {
+                Lista.orderWrap(_subCarpetaPadre.getWrapCarpPrincipal());
+            }
+            
         }
 
         private void showNewNamePanel(object sender, EventArgs e) {
@@ -211,6 +226,15 @@ namespace ProyectoWPF.Components {
                 _subCarpetaPadre.removeFile(this);
             }
             _archivoClass = null;
+        }
+
+        public void updateRuta(string rutaAntigua, string rutaNueva) {
+            _archivoClass.rutaPrograma = _archivoClass.rutaPrograma.Replace(rutaAntigua, rutaNueva);
+            if (VIGallery.conexionMode) {
+                Conexion.updateFile(_archivoClass);
+            } else {
+                ConexionOffline.updateFile(_archivoClass);
+            }
         }
     }
 }

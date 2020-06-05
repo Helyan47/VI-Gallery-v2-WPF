@@ -1,6 +1,6 @@
-﻿using ProyectoWPF.Components;
-using ProyectoWPF.Components.Online;
-using ProyectoWPF.Data;
+﻿using SeleccionarProfile.Components;
+using SeleccionarProfile.Components.Online;
+using SeleccionarProfile.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ProyectoWPF
+namespace SeleccionarProfile
 {
     /// <summary>
     /// Lógica de interacción para WrapPanelPrincipal.xaml

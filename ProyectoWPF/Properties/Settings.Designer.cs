@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProyectoWPF.Properties
+namespace SeleccionarProfile.Properties
 {
 
 

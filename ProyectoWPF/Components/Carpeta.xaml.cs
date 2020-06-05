@@ -1,6 +1,6 @@
-﻿using ProyectoWPF.Components;
-using ProyectoWPF.Data;
-using ProyectoWPF.NewFolders;
+﻿using SeleccionarProfile.Components;
+using SeleccionarProfile.Data;
+using SeleccionarProfile.NewFolders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
-namespace ProyectoWPF {
+namespace SeleccionarProfile {
     /// <summary>
     /// Lógica de interacción para Carpeta.xaml
     /// </summary>

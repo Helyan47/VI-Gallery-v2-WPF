@@ -1,9 +1,9 @@
-﻿<Window x:Class="ProyectoWPF.NewSubCarpeta"
+﻿<Window x:Class="SeleccionarProfile.NewSubCarpeta"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ProyectoWPF"
+        xmlns:local="clr-namespace:SeleccionarProfile"
         mc:Ignorable="d"
         Title="Crear Carpeta" Height="175" Width="570" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid Background="#FF2B2B2B">

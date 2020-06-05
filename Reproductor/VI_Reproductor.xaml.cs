@@ -1,4 +1,4 @@
-﻿using ProyectoWPF.Data.Online;
+﻿using SeleccionarProfile.Data.Online;
 using System;
 using System.IO;
 using System.Reflection;
