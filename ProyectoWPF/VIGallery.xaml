@@ -205,9 +205,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="0.3*"/>
                             <RowDefinition x:Name="rowOnline" Height="0.05*"/>
-                            <!--Mostrar 0.3-->
                             <RowDefinition Height="*"/>
-
                             <RowDefinition x:Name="rowAddMenu" Height="0.05*"/>
                             <RowDefinition Height="0.25*"/>
                         </Grid.RowDefinitions>
@@ -222,7 +220,6 @@
                                 <RowDefinition Height="150px"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Button Content="Options" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="showOptions" Visibility="Visible"/>
 
                         </Grid>
                         <Grid Grid.Row="1">
@@ -281,7 +278,6 @@
                                         </Path>
                                     </Canvas>
                                 </Canvas>
-                                <!--<Button Grid.Row="0" Content="{StaticResource OfflineMenuButton}" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Margin="0" Click="ChangeMode"/>-->
                             </Viewbox>
                             <Button x:Name="bOnlineMenu" Content="" Opacity="0" Grid.Column="1" Click="onChangeMenuClick"/>
                         </Grid>
@@ -312,12 +308,26 @@
                         <GridSplitter Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="2" Background="#FF343434" Visibility="Hidden"/>
                         <Grid Grid.Row="4">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.7*" />
+                                <ColumnDefinition Width="0.8*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="0.8*" />
                             </Grid.ColumnDefinitions>
+                            <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="0" Width="75" Height="75" Margin="0,0,0,10">
+                                <Canvas Name="svg815" Width="500" Height="500">
+                                    <Canvas.RenderTransform>
+                                        <TranslateTransform X="0" Y="0"/>
+                                    </Canvas.RenderTransform>
+                                    <Canvas.Resources/>
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path825" Fill="White">
+                                        <Path.Data>
+                                            <PathGeometry Figures="m 221.21618 498.92808 c -4.0061 -0.40097 -11.5436 -1.53135 -16.75 -2.51195 L 195 494.63321 v -28.07994 -28.07994 l -8.55768 -2.90555 c -4.70672 -1.59806 -13.425 -5.25296 -19.37394 -8.122 l -10.81626 -5.21643 -19.84093 19.85955 -19.84093 19.85954 -2.53513 -1.62356 C 97.828649 449.94583 73.042342 427.97749 59.526343 412.01322 49.925965 400.67383 40 387.00875 40 385.13128 c 0 -0.83297 8.629409 -10.18527 19.176464 -20.78289 L 78.352928 345.08 74.616345 337.11747 c -2.055121 -4.37939 -5.852161 -13.28489 -8.437865 -19.79 L 61.477198 305.5 33.801001 305.23429 C 7.8316384 304.98497 6.0884164 304.85394 5.5347954 303.10963 3.8786064 297.89144 0.87583043 272.70877 0.33479143 259.5 -0.43309857 240.75293 1.8123064 213.86995 5.5342314 197.25 L 6.0381044 195 33.269052 194.9847 c 14.977021 -0.008 27.699924 -0.34592 28.273118 -0.75 0.573193 -0.40408 3.192027 -6.35969 5.819631 -13.23469 2.627604 -6.875 6.041477 -15.2 7.586386 -18.5 l 2.808924 -6 -19.52335 -19.65408 -19.523349 -19.65408 3.28443 -5.34592 C 55.27061 90.237553 92.385823 53.471769 114.42107 40.101571 l 2.59015 -1.571611 19.74439 19.692267 19.74439 19.692266 8 -3.8174 c 4.4 -2.09957 12.725 -5.535094 18.5 -7.634501 5.775 -2.099407 10.78627 -4.243497 11.13615 -4.764644 0.34988 -0.521147 0.71022 -13.139228 0.80076 -28.04018 0.0905 -14.900952 0.33667 -27.2646772 0.54693 -27.4749452 1.00667 -1.006668 31.44843 -5.085897 42.51616 -5.69721205 14.40201 -0.79548 39.29744 0.77701305 55.3244 3.49450505 5.95343 1.009447 10.96024 1.989377 11.12625 2.177622 0.36522 0.414125 1.49839 35.9311282 1.52811 47.8954292 l 0.0212 8.553167 7.25 2.31631 c 3.9875 1.273971 12.63255 4.750863 19.21123 7.726429 l 11.96123 5.41011 19.75351 -19.734986 19.75351 -19.734988 8.28526 5.702571 c 23.84232 16.410169 48.82933 41.562563 64.79752 65.22639 l 4.83017 7.158 -19.79653 19.77798 -19.79654 19.77797 5.23216 11.13394 c 2.87768 6.12367 6.52636 14.84644 8.10816 19.38394 l 2.87601 8.25 h 27.70814 c 15.4767 0 27.95531 0.39994 28.26807 0.90599 2.05721 3.32863 4.60475 26.4101 5.17642 46.89994 0.65231 23.37979 -0.14703 36.63811 -3.22122 53.42867 l -1.59922 8.7346 -28.08305 0.2654 -28.08305 0.2654 -4.34231 11.5 c -2.38827 6.325 -5.9883 15.01292 -8.00008 19.30648 l -3.65779 7.80648 19.81263 19.83121 c 14.15438 14.16767 19.57798 20.22028 18.991 21.19353 -5.05679 8.38454 -19.63216 26.71667 -30.02743 37.7669 -10.83709 11.51989 -35.96444 32.453 -46.2701 38.54672 -0.96665 0.57158 -7.12196 -4.94872 -21.19353 -19.00709 l -19.83121 -19.81263 -8.30648 3.90703 C 331.23792 428.6875 322.55 432.31208 316.5 434.59326 l -11 4.14761 -0.26527 27.94905 -0.26526 27.94904 -9.23474 1.72688 c -5.0791 0.94979 -12.60973 2.1122 -16.73473 2.58314 -8.95787 1.0227 -47.49651 1.00876 -57.78382 -0.0209 z M 280 340.16264 c 14.04873 -4.80084 23.7422 -10.98494 35.52329 -22.66264 11.37114 -11.27134 17.98556 -20.6249 22.4247 -31.71115 5.38859 -13.45735 6.28771 -19.36986 5.82263 -38.28885 -0.37377 -15.20487 -0.70131 -17.82294 -3.10174 -24.79333 -12.64474 -36.71782 -41.74159 -61.17272 -78.25227 -65.76834 -29.785 -3.74906 -58.75885 6.23722 -78.98877 27.22468 -18.82436 19.52926 -27.36396 40.51541 -27.40048 67.33699 -0.0163 11.99586 1.40369 20.0898 5.38348 30.6852 11.41577 30.3922 37.42541 53.46234 68.08916 60.39402 4.1141 0.93001 11.50054 1.27358 23.5 1.09308 16.77953 -0.25241 17.89111 -0.3969 27 -3.50966 z" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                </Canvas>
+                            </Viewbox>
+                            <Button Content="" Style="{StaticResource CustomButtonStyle}" Grid.Row="1" Grid.Column="1" Opacity="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="showOptions" Visibility="Visible"/>
 
-                            <Border x:Name="borderEnter" Margin="0,0,0,10" CornerRadius="15" BorderThickness="3" Width="75" Height="75" Grid.Column="2" Grid.Row="2" BorderBrush="#FF3C3C3C" VerticalAlignment="Bottom" Visibility="Hidden">
+                            <Border x:Name="borderEnter" Margin="0,0,0,10" CornerRadius="15" BorderThickness="3" Width="75" Height="75" Grid.Column="2" Grid.Row="2" BorderBrush="#FF3C3C3C" VerticalAlignment="Bottom" Visibility="Visible">
 
                                 <Viewbox Stretch="None" RenderOptions.BitmapScalingMode="HighQuality" >
                                     <Canvas Width="94" Height="97">
@@ -325,8 +335,6 @@
                                             <TranslateTransform X="-7" Y="-15"/>
                                         </Canvas.RenderTransform>
                                         <Canvas.Resources/>
-                                        <!--Unknown tag: sodipodi:namedview-->
-                                        <!--Unknown tag: metadata-->
                                         <Canvas Height="97" Width="97">
                                             <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="22" Canvas.Top="32" Fill="#FF3C3C3C" Width="38" Height="38" RenderTransformOrigin="0.5,0.5" >
                                                 <Path.RenderTransform>
@@ -536,77 +544,8 @@
                         <ColumnDefinition Width="0.3*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-
-                    <Grid x:Name="panelUSuario" Visibility="Visible" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="0.3*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.3*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Border Background="#FF1D1D1D" Grid.Row="0" Grid.ColumnSpan="4" CornerRadius="20,0,0,0">
-                                <!--<Border.Effect>
-                                    <DropShadowEffect BlurRadius="100" Direction="-90" Color="Black" ShadowDepth="20" RenderingBias="Quality"/>
-                                </Border.Effect>-->
-                            </Border>
-                            <Grid Grid.Row="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Border x:Name="ImgBorde" CornerRadius="15" BorderThickness="5" Width="150" Height="200" BorderBrush="White" Grid.Column="1" Grid.Row="1" RenderOptions.BitmapScalingMode="HighQuality">
-                                    <Viewbox RenderOptions.BitmapScalingMode="HighQuality">
-                                        <Canvas x:Name="canvasFolder" Width="210" Height="300" RenderOptions.BitmapScalingMode="HighQuality">
-                                            <Canvas.RenderTransform>
-                                                <TranslateTransform X="0" Y="0"/>
-                                            </Canvas.RenderTransform>
-                                            <Canvas.Resources/>
-                                            <!--Unknown tag: sodipodi:namedview-->
-                                            <!--Unknown tag: metadata-->
-                                            <Canvas Name="layer2" Height="300" Width="210">
-                                                <Path x:Name="ColorPath" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="7.875" Canvas.Top="5.25" Fill="White" >
-                                                    <Path.Data>
-                                                        <PathGeometry Figures="m 54.147296 247.46357 c 0 -61.12934 -0.668027 -103.25674 -1.637377 -103.25674 -2.262521 0 -7.8483 -4.18297 -9.732755 -7.28847 -5.806217 -9.5684 -6.112227 -13.79857 -5.234268 -72.356365 l 0.730272 -48.707356 1.800655 -4.104055 c 2.52343 -5.7513848 6.797018 -8.3171316 13.853269 -8.3171316 3.937937 0 147.802708 30.8254296 148.720278 31.8657976 0.0689 0.07803 -0.0494 52.527176 -0.26279 116.55354 l -0.38798 116.41161 -2.38454 0.40074 c -1.31149 0.22042 -34.20411 5.23624 -73.09472 11.14627 -38.8906 5.91004 -70.80977 11.01518 -70.931495 11.34477 -1.18427 3.20658 -1.438549 -4.51653 -1.438549 -43.69261 z M 19.290168 270.0789 C 14.665093 266.68887 12.09087 261.3467 11.01466 252.90503 9.5373509 241.3172 10.175238 45.665787 11.702776 41.8476 14.673513 34.422047 20.051308 29.805699 25.750627 29.788765 l 2.476787 -0.0065 0.178994 53.357561 0.178994 53.357554 2.647917 4.35872 c 1.594813 2.62525 4.525102 5.93281 7.367901 8.31649 6.596179 5.53094 6.250842 1.82651 6.250842 67.05293 v 54.45236 h -5.873508 c -3.230432 0 -8.533694 0.1939 -11.78503 0.4309 -5.12716 0.37372 -6.175804 0.23718 -7.903356 -1.02905 z" FillRule="NonZero"/>
-                                                    </Path.Data>
-                                                </Path>
-                                            </Canvas>
-                                        </Canvas>
-                                    </Viewbox>
-                                </Border>
-                            </Grid>
-
-                            <Label Content="nombreUsuario" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" FontWeight="Bold" Foreground="White" FontSize="100" Grid.Column="1"/>
-                        </Grid>
-                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Background="#FF252525">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.3*"/>
-                                <ColumnDefinition Width="0.5*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label x:Name="UsernameOptions" Content="Nombre de Usuario" Foreground="White" FontSize="30px" HorizontalContentAlignment="Right"/>
-                            <Grid Grid.Column="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.2*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="0.2*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="1" Margin="20,5,20,5"></TextBox>
-                            </Grid>
-
-                        </Grid>
-                    </Grid>
-                    <Border x:Name="panelPerfiles" Background="#FF1D1D1D" Grid.Column="1" Grid.ColumnSpan="4" CornerRadius="20,0,0,0" Visibility="Hidden">
+                    
+                    <Border x:Name="panelPerfiles" Background="#FF1D1D1D" Grid.Column="1" Grid.ColumnSpan="4" CornerRadius="20,0,0,0" Visibility="Visible">
 
                         <Grid Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Grid.RowDefinitions>
@@ -669,21 +608,7 @@
                                 </Grid.RowDefinitions>
                                 <Label Content="AJUSTES DE USUARIO" Grid.Row="0" Foreground="#FFA2A2A2" FontFamily="{StaticResource whitneyBold}" FontSize="20" VerticalAlignment="Center" FontWeight="Bold"/>
                                 <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0">
-                                    <Button Content="Mi cuenta" Padding="0" FontSize="25" HorizontalContentAlignment="Left" Foreground="#FFE6E6E6" Style="{DynamicResource PropertieButton}" VerticalContentAlignment="Center" VerticalAlignment="Center" Click="onOptionClick"/>
-                                    <Button Content="Perfiles" Padding="10" FontSize="25" HorizontalContentAlignment="Right" Foreground="#FFE6E6E6" Style="{DynamicResource PropertieButton}" Click="onOptionClick"/>
-                                </StackPanel>
-                            </Grid>
-                            <Separator Grid.Row="1" VerticalAlignment="Center" Background="#7FA0A0A0"/>
-                            <Grid Grid.Row="2">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="5px"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Label Content="AJUSTES DE INTERFAZ" Grid.Row="0" Foreground="#FFA2A2A2" FontFamily="{StaticResource whitneyBold}" FontSize="20" VerticalAlignment="Center" FontWeight="Bold"/>
-                                <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0">
-                                    <Button Content="Temas" Padding="10" FontSize="25" HorizontalContentAlignment="Right" Foreground="#FFE6E6E6" Style="{DynamicResource PropertieButton}" Click="onOptionClick"/>
-                                    <Button Content="Reproductor" Padding="10" FontSize="25" HorizontalContentAlignment="Left" Foreground="#FFE6E6E6" Style="{DynamicResource PropertieButton}" VerticalContentAlignment="Center" Click="onOptionClick"/>
+                                    <Button Content="Perfiles" Padding="10" FontSize="25" HorizontalContentAlignment="Right" Foreground="#FFE6E6E6" Style="{DynamicResource PropertieButton}"/>
                                 </StackPanel>
                             </Grid>
                             <Button Content="Return" Grid.Row="4" Width="75px" Height="75px" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="showMain"/>

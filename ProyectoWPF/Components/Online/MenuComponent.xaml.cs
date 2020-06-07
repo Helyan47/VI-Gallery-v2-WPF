@@ -68,7 +68,7 @@ namespace SeleccionarProfile.Components.Online {
 
             if (_serie.getSerie().img != "") {
                 try {
-                    BitmapImage bm = new BitmapImage(new Uri(_serie.getSerie().img, UriKind.RelativeOrAbsolute));
+                    BitmapImage bm = new BitmapImage(new Uri(@_serie.getSerie().img, UriKind.Absolute));
                     ImageBrush ib = new ImageBrush(bm);
                     if (bm.Width > bm.Height) {
                         ib.Stretch = Stretch.UniformToFill;

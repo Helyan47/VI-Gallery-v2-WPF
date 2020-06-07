@@ -1027,24 +1027,6 @@ namespace SeleccionarProfile {
             optionPanel.Visibility = Visibility.Hidden;
         }
 
-        private void onOptionClick(object sender, RoutedEventArgs e) {
-            Button b = (Button) sender;
-            switch (b.Content.ToString()) {
-                case "Mi cuenta":
-                    panelUSuario.Visibility = Visibility.Visible;
-                    panelPerfiles.Visibility = Visibility.Hidden;
-                    break;
-                case "Perfiles":
-                    panelUSuario.Visibility = Visibility.Hidden;
-                    panelPerfiles.Visibility = Visibility.Visible;
-                    break;
-                case "Temas":
-                    break;
-                case "Reproductor":
-                    break;
-            }
-        }
-
         private void addProfilesOptions() {
             perfiles.Children.Clear();
             Lista.reloadProfiles();

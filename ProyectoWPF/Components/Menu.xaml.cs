@@ -48,16 +48,7 @@ namespace SeleccionarProfile {
             string cadena = "";
             ICollection<string> generosAux = carpeta.getClass().generos;
             if (generosAux.Count != 0) {
-                for (int i = 0; i < generosAux.Count; i++) {
-
-                    if (i == (generosAux.Count - 1)) {
-                        cadena += generosAux.ElementAt(i);
-                    } else {
-                        cadena += generosAux.ElementAt(i);
-                        cadena += " | ";
-                    }
-                }
-                listaGeneros.Content = cadena;
+                listaGeneros.Content = carpeta.getClass().getGeneros();
             } else {
                 Generos.Visibility = Visibility.Hidden;
                 listaGeneros.Visibility = Visibility.Hidden;
