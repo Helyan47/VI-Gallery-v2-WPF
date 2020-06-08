@@ -23,26 +23,6 @@ namespace SeleccionarProfile {
         private static List<Button> _bPerfiles = new List<Button>();
         public static string[] _extensiones = { ".mp4", ".avi", ".mkv", ".mpeg", ".wmv", ".flv", ".mov", ".wav" };
 
-        /*
-        public static Lista(ICollection<WrapPanelPrincipal> wraps,ICollection<Button> buttons) {
-            this._wrapsPrincipales = wraps;
-            this._buttons = buttons;
-            this._menus = new List<Menu>();
-            this._seriesClase = new List<SerieClass>();
-            this._carpetas = new List<Carpeta>();
-            this._subCarpetas = new List<SubCarpeta>();
-            this._wrapsSecundarios = new List<WrapPanelPrincipal>();
-        }
-
-        public Lista() {
-            this._wrapsPrincipales = new List<WrapPanelPrincipal>();
-            this._buttons = new List<Button>();
-            this._menus = new List<Menu>();
-            this._seriesClase = new List<SerieClass>();
-            this._carpetas = new List<Carpeta>();
-            this._subCarpetas = new List<SubCarpeta>();
-            this._wrapsSecundarios = new List<WrapPanelPrincipal>();
-        }*/
         public static void clearListas() {
             _wrapsSecundarios = new List<WrapPanelPrincipal>();
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
@@ -106,6 +86,15 @@ namespace SeleccionarProfile {
                 }
             }
             return null;
+        }
+
+        public static bool checkMenu(string nombre) {
+            foreach(MenuClass m in _menusClass) {
+                if (m.nombre.Equals(nombre)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static bool buttonInButtons(MenuClass m) {
@@ -488,7 +477,6 @@ namespace SeleccionarProfile {
             string name = b.Content.ToString();
             long id = 0;
             MenuClass aux = null;
-            Menu menu = getMenuVisible();
             foreach (MenuClass m in _menusClass) {
                 if (m.nombre.Equals(name)) {
                     id=m.id;

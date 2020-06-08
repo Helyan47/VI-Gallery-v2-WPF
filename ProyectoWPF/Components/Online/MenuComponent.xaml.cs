@@ -70,9 +70,7 @@ namespace SeleccionarProfile.Components.Online {
                 try {
                     BitmapImage bm = new BitmapImage(new Uri(@_serie.getSerie().img, UriKind.Absolute));
                     ImageBrush ib = new ImageBrush(bm);
-                    if (bm.Width > bm.Height) {
-                        ib.Stretch = Stretch.UniformToFill;
-                    }
+                    ib.Stretch = Stretch.UniformToFill;
                     Img.Background = ib;
                     Img.Visibility = Visibility.Visible;
                     ImgBorde.Visibility = Visibility.Hidden;

@@ -43,6 +43,7 @@ namespace Reproductor
             isClicking = false;
             isOnline = online;
             isExpanded = false;
+            Volumen.Value = volumen;
             var currentAssembly = Assembly.GetEntryAssembly();
             var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
             var libDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));

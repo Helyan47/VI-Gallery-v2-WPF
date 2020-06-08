@@ -22,8 +22,6 @@ namespace SeleccionarProfile {
 
         Carpeta carpeta;
         WrapPanelPrincipal wrapAnterior;
-        Grid gridButtonPrincipal;
-        Grid gridButtonBSecundario;
         WrapPanelPrincipal wrapCarpPrincipal;
         private Canvas _defaultCanvas;
         public Menu(Carpeta carpPrincipal) {
@@ -45,7 +43,6 @@ namespace SeleccionarProfile {
         public void actualizar() {
             Title.Content = carpeta.getClass().nombre;
             Descripcion.Content = carpeta.getClass().desc;
-            string cadena = "";
             ICollection<string> generosAux = carpeta.getClass().generos;
             if (generosAux.Count != 0) {
                 listaGeneros.Content = carpeta.getClass().getGeneros();

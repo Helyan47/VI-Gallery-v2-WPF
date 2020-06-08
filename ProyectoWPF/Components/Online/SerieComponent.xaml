@@ -25,7 +25,7 @@
 
 
                 <Border x:Name="bordeDesc" CornerRadius="10" Background="#FF212121" ClipToBounds="True" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" MouseLeave="bordeDesc_MouseLeave" Visibility="Hidden">
-                    <TextBox x:Name="descripcion" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Descripcion" Background="#FF212121" Foreground="#FFF9F9F9" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="4"/>
+                    <TextBox x:Name="descripcion" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Descripcion" Foreground="#FFF9F9F9" Background="#FF212121"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TextWrapping="Wrap" Padding="4" IsReadOnly="True" MouseLeftButtonUp="MouseClick"/>
                 </Border>
 
                 <Border x:Name="ImgBorde" CornerRadius="15"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" MouseEnter="img_MouseEnter" RenderOptions.BitmapScalingMode="HighQuality"/>

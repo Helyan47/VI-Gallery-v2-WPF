@@ -29,9 +29,14 @@ namespace SeleccionarProfile.NewFolders {
             if (Title.Text.CompareTo("") != 0) {
                 Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
                 if (!containsABadCharacter.IsMatch(Title.Text)) {
-                    aux.Content = Title.Text;
-                    added = true;
-                    this.Close();
+                    if (!Lista.checkMenu(Title.Text)) {
+                        aux.Content = Title.Text;
+                        added = true;
+                        this.Close();
+                    } else {
+                        MessageBox.Show("Ya existe el menu");
+                    }
+                    
                 } else {
                     MessageBox.Show("El nombre contiene caractéres no permitidos: " + new string(System.IO.Path.GetInvalidFileNameChars()));
                 }

@@ -179,14 +179,6 @@ namespace LoginUser {
             create.Foreground = new SolidColorBrush(Color.FromRgb(210, 210, 210));
         }
 
-        private void forgotPass_MouseEnter(object sender, MouseEventArgs e) {
-            forgotPass.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-        }
-
-        private void forgotPass_MouseLeave(object sender, MouseEventArgs e) {
-            forgotPass.Foreground = new SolidColorBrush(Color.FromRgb(210, 210, 210));
-        }
-
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e) {
             Point p = Mouse.GetPosition(inputUser);
             Point h = Mouse.GetPosition(inputPass);

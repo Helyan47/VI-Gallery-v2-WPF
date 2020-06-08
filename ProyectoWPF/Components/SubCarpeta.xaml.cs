@@ -20,7 +20,6 @@ namespace SeleccionarProfile {
     [Serializable]
     public partial class SubCarpeta : UserControl {
 
-        private String _nombre;
         private CarpetaClass _carpeta;
         private WrapPanelPrincipal _wrapCarpAnterior;
         private int _numSubCarpetas;
@@ -28,7 +27,6 @@ namespace SeleccionarProfile {
         private Grid _gridPadre;
         private Menu _menuCarpeta;
         private string _rutaDirectorio;
-        private string _rutaPrograma;
         private Canvas _defaultCanvas;
         public List<Archivo> _archivos;
         private static long _mode = 0;
@@ -81,21 +79,8 @@ namespace SeleccionarProfile {
             _numSubCarpetas++;
         }
 
-        public int getNumSubCarp() {
-            return _numSubCarpetas;
-        }
-
         public Grid GetGridCarpeta() {
             return _gridPadre;
-        }
-
-        public WrapPanelPrincipal getPadreSerie() {
-            return _wrapCarpAnterior;
-        }
-
-        public void SetGridPadre(Grid p) {
-            _gridPadre = p;
-            p.Children.Add(_wrapCarpPropia);
         }
 
         public void setClass(CarpetaClass newSerie) { 
@@ -118,11 +103,6 @@ namespace SeleccionarProfile {
 
         public WrapPanelPrincipal getWrapCarpPrincipal() {
             return _wrapCarpPropia;
-        }
-
-
-        public Grid GetGridPadre() {
-            return _gridPadre;
         }
 
         #endregion
@@ -165,13 +145,6 @@ namespace SeleccionarProfile {
             _ventanaMain.clearTextBox(_wrapCarpAnterior);
         }
 
-        public void clickEspecial() {
-
-            _menuCarpeta.actualizar();
-            _menuCarpeta.changeTitle(_carpeta.nombre);
-
-        }
-
         public void clickInverso() {
             _wrapCarpAnterior.Visibility = System.Windows.Visibility.Visible;
             _wrapCarpPropia.Visibility = System.Windows.Visibility.Hidden;
@@ -190,7 +163,6 @@ namespace SeleccionarProfile {
 
 
         public void setTitle(string titulo) {
-            _nombre = titulo;
             _carpeta.nombre = titulo;
             Title.SetText(titulo);
         }
@@ -198,10 +170,6 @@ namespace SeleccionarProfile {
         public void setImg(string img) {
             _carpeta.img = img;
             setImg();
-        }
-
-        private void SubCarpeta_MouseClick(object sender, MouseEventArgs e) {
-            click();
         }
 
         public void changeMode(long mode) {

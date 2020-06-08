@@ -86,6 +86,7 @@ namespace SeleccionarProfile.Components {
 
         public void setDescripcion(string d) {
             descripcion.Text = d;
+            descripcion.TextWrapping = TextWrapping.Wrap;
         }
 
         public void setImg() {

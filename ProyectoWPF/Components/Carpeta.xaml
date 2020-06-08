@@ -32,7 +32,7 @@
 
                 <Border x:Name="bordeDesc" CornerRadius="10" Background="#FF212121" ClipToBounds="True" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" MouseLeave="bordeDesc_MouseLeave" Visibility="Hidden">
                     <Grid>
-                        <TextBox x:Name="descripcion" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Descripcion" Foreground="#FFF9F9F9" Background="#FF212121"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="4" IsReadOnly="True" MouseLeftButtonUp="MouseClick">
+                        <TextBox x:Name="descripcion" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Descripcion" Foreground="#FFF9F9F9" Background="#FF212121"  VerticalContentAlignment="Center" TextWrapping="Wrap" HorizontalContentAlignment="Center" Padding="4" IsReadOnly="True" MouseLeftButtonUp="MouseClick">
                             <TextBox.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Cambiar información..." Click="showNewNamePanel"/>

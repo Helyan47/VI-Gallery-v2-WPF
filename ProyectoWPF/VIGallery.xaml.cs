@@ -56,7 +56,10 @@ namespace SeleccionarProfile {
             }
         }
 
-
+        /**
+        * Evento que se lanza al pulsar alguno de los botones del menu
+        * Oculta los paneles de cada menu y muestra el seleccionado
+        */
         public void onClickButtonMenu(object sender,EventArgs e) {
             Button b = (Button)sender;
             MenuClass mc = Lista.getMenuFromButton(b);
@@ -78,11 +81,16 @@ namespace SeleccionarProfile {
             borderEnter.Visibility = Visibility.Hidden;
         }
 
-
+        /**
+         * Evento que se lanza al ir a crear una subcarpeta
+         */
         private void NewTemp_Click(object sender, EventArgs e) {
             addSubCarpeta();
         }
 
+        /**
+         * Muestra un explorador de carpetas que permite añadir varias carpetas a la aplicacion
+         */
         private void Button_MouseLeftButtonUp(object sender, RoutedEventArgs e) {
             try {
                 if (_activatedButton != null) {
@@ -116,6 +124,10 @@ namespace SeleccionarProfile {
                     }
                     Lista.modifyMode(_profile.mode);
                     Lista.orderWrapsSecundarios();
+                    WrapPanelPrincipal wp = Lista.getWrapVisible();
+                    if (wp != null) {
+                        Lista.orderWrap(wp);
+                    }
                     Lista.hideAllExceptPrinc();
                     ReturnVisibility(false);
 
@@ -132,6 +144,9 @@ namespace SeleccionarProfile {
 
         }
 
+        /**
+         * Aáde una subcarpeta con el nombre que se la asigne
+         */
         private void addSubCarpeta() {
             try {
                 SubCarpeta c = new SubCarpeta(this);
@@ -203,6 +218,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Añade una subcarpeta a la carpeta que se le pase por argumentos
+         */
         private SubCarpeta addSubCarpetaCompleta(Carpeta p1, string nombre) {
             try {
                 SubCarpeta c = new SubCarpeta(this);
@@ -256,6 +274,9 @@ namespace SeleccionarProfile {
             return null;
         }
 
+        /**
+         * Añade una subcarpeta a la subcarpeta que se le pase por argumentos
+         */
         private SubCarpeta addSubCarpetaCompleta(SubCarpeta sp1, string nombre) {
             try {
                 SubCarpeta c = new SubCarpeta(this);
@@ -305,6 +326,9 @@ namespace SeleccionarProfile {
             return null;
         }
 
+        /**
+         * Añade un archivo a la carpeta que se le pase por argumentos
+         */
         private void addFileCarpeta(string fileName, Carpeta c) {
             try {
                 string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
@@ -328,6 +352,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Añade una archivo a la subcarpeta que se le pase por argumentos
+         */
         private void addFileSubCarpeta(string fileName, SubCarpeta c) {
             try {
                 string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
@@ -352,6 +379,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Muestra un explorador de archivos que permite añadir varias archivos de video a una carpeta
+         */
         private void newFile_Click(object sender, RoutedEventArgs e) {
             var fileDialog = new OpenFileDialog();
             fileDialog.Multiselect = true;
@@ -400,7 +430,11 @@ namespace SeleccionarProfile {
             }
         }
 
-
+        /**
+         * Evento llamado al añadir varias carpetas a la aplicacion
+         * Recorre todas las carpetas hijo de la carpeta seleccionada, asi como sus archivos
+         * Recorre todo el arbol de carpetas hasta que no haya mas por leer
+         */
         private void addText(string[] files) {
 
             for (int i = 0; i < files.Length; i++) {
@@ -469,6 +503,9 @@ namespace SeleccionarProfile {
 
         }
 
+        /**
+         * Añade una carpeta al menu
+         */
         private void addCarpeta() {
             try {
                 Carpeta p1 = new Carpeta(this);
@@ -508,6 +545,9 @@ namespace SeleccionarProfile {
 
         }
 
+        /**
+         * Añade una carpeta de las multiples carpetas seleccionadas
+         */
         private Carpeta addCarpetaCompleta(string filename) {
             try {
                 Carpeta p1 = new Carpeta(this);
@@ -559,6 +599,9 @@ namespace SeleccionarProfile {
             return null;
         }
 
+        /**
+         * Añade una carpeta a partir de un registro en la base de datos
+         */
         private void addCarpetaFromLoad(CarpetaClass cc) {
             Carpeta p1 = new Carpeta(this);
             Lista.addCarpeta(p1);
@@ -566,8 +609,6 @@ namespace SeleccionarProfile {
             WrapPanelPrincipal aux = Lista.getWrapVisible();
             p1.setClass(cc);
             p1.actualizar();
-
-            string name = _activatedButton.Content.ToString();
 
             aux.addCarpeta(p1);
 
@@ -578,6 +619,9 @@ namespace SeleccionarProfile {
             p1.clickEspecial();
         }
 
+        /**
+         * Añade una subcarpeta a partir de un registro en la base de datos
+         */
         private void addSubCarpetaFromLoad(CarpetaClass cc) {
             SubCarpeta c = new SubCarpeta(this);
             Lista.addSubCarpeta(c);
@@ -599,15 +643,11 @@ namespace SeleccionarProfile {
                     p.addSubCarpeta(c);
                     c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
 
-                    string name = _activatedButton.Content.ToString();
-
                 } else {
 
                     c.setDatos(cc, p, p.GetGridSubCarpetas());
                     p.addSubCarpeta(c);
                     c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
-
-                    string name = _activatedButton.Content.ToString();
 
                 }
 
@@ -620,6 +660,9 @@ namespace SeleccionarProfile {
             c.Visibility = Visibility.Visible;
         }
 
+        /**
+         * Controla la opcion de volver atras en las subcarpetas
+         */
         private void Return_MouseLeftButtonUp(object sender, EventArgs e) {
             if (menuOnline.Visibility == Visibility.Visible) {
                 if (!panelPrincSelected) {
@@ -643,6 +686,9 @@ namespace SeleccionarProfile {
             
         }
 
+        /**
+         * Carga un perfil de la base de datos offline
+         */
         public void LoadProfileOffline(PerfilClass perfil) {
             try {
                 List<MenuClass> menus = ConexionOffline.LoadMenus(perfil);
@@ -666,6 +712,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Carga los archivos de la base de datos online
+         */
         private void loadFiles(CarpetaClass c) {
             try {
                 if (c.isFolder) {
@@ -697,6 +746,9 @@ namespace SeleccionarProfile {
 
         }
 
+        /**
+         * Carga los archivos de la base de datos offline
+         */
         private void loadFilesOffline(CarpetaClass c) {
             try {
                 if (!c.isFolder) {
@@ -727,6 +779,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Carga los datos de la base de datos online
+         */
         public void loadDataConexion(long id) {
             try {
                 List<MenuClass> menus = Conexion.loadMenus(_profile.id);
@@ -752,6 +807,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Carga las subcarpetas de una carpeta de la base de datos online
+         */
         public void loadSubCarpetas(CarpetaClass c, long idMenu) {
             try {
                 List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(Conexion.loadSubFoldersFromCarpeta(c, idMenu));
@@ -767,6 +825,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Carga las subcarpetas de una carpeta de la base de datos online
+         */
         public void loadSubCarpetasOffline(CarpetaClass c) {
             try {
                 List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(ConexionOffline.loadSubCarpetasFromCarpeta(c));
@@ -782,6 +843,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Añade un menu a partir de un registro
+         */
         public void addMenuFromClass(MenuClass m) {
             Button newButton = new Button();
             newButton.Content = m.nombre;
@@ -814,6 +878,9 @@ namespace SeleccionarProfile {
             onClickButtonMenuEspecial(newButton);
         }
 
+        /**
+         * Evento que se añadira a un menu cargado
+         */
         public void onClickButtonMenuEspecial(object sender) {
             Button b = (Button)sender;
             MenuClass mc = Lista.getMenuFromButton(b);
@@ -832,6 +899,9 @@ namespace SeleccionarProfile {
             Return.Visibility = Visibility.Hidden;
         }
 
+        /**
+         * Muestra un panel para agregar un menu a la aplicacion
+         */
         private void addMenuClick(object sender, EventArgs e) {
             try {
                 Button newButton = new Button();
@@ -903,6 +973,9 @@ namespace SeleccionarProfile {
 
         }
 
+        /**
+         * Borra un menu y todos los elementos que contiene
+         */
         private void removeMenu(object sender, EventArgs e) {
             try {
                 if (_activatedButton != null) {
@@ -960,7 +1033,6 @@ namespace SeleccionarProfile {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
-
         public bool checkString(string s) {
             foreach (string h in _rutas) {
                 if (s.Equals(h)) {
@@ -970,6 +1042,9 @@ namespace SeleccionarProfile {
             return false;
         }
 
+        /**
+         * Muestra o oculta el boton de return
+         */
         public void ReturnVisibility(bool flag) {
             if (flag) {
                 Return.Visibility = Visibility.Visible;
@@ -980,10 +1055,16 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Evento que se lanza al pulsar en la cruz superior derecha que cierra la aplicacion
+         */
         public void CerrarApp(object sender, RoutedEventArgs e) {
             this.Close();
         }
 
+        /**
+         * Cambia entre el estado maximizado y normal al pulsar en el boton de maximizar
+         */
         public void MaximizeApp(object sender, RoutedEventArgs e) {
             if (this.WindowState == WindowState.Normal) {
                 this.WindowState = WindowState.Maximized;
@@ -995,14 +1076,23 @@ namespace SeleccionarProfile {
             
         }
 
+        /**
+         * Minimiza la aplicacion
+         */
         public void MinimizeApp(object sender, RoutedEventArgs e) {
             this.WindowState = WindowState.Minimized;
         }
 
+        /**
+         * Cambia el modo de las carpetas para que se muestren distinto
+         */
         public void ChangeMode(object sender,RoutedEventArgs e) {
             Lista.changeMode();
         }
 
+        /**
+         * Actualiza el modo en la base de datos
+         */
         public static void updateMode(long mode) {
             try {
                 _profile.mode = mode;
@@ -1018,15 +1108,24 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Muestra el panel de opciones
+         */
         private void showOptions(object sender, RoutedEventArgs e) {
             optionPanel.Visibility = Visibility.Visible;
             addProfilesOptions();
         }
 
+        /**
+         * Muestra la aplicacion principal
+         */
         private void showMain(object sender, RoutedEventArgs e) {
             optionPanel.Visibility = Visibility.Hidden;
         }
 
+        /**
+         * Carga los perfiles que tiene el usuario
+         */
         private void addProfilesOptions() {
             perfiles.Children.Clear();
             Lista.reloadProfiles();
@@ -1055,11 +1154,14 @@ namespace SeleccionarProfile {
             
         }
 
+        /**
+         * Modifica el background del boton seleccionado
+         */
         private void selectProfile(object sender,RoutedEventArgs e) {
             Button aux = (Button)sender;
             PerfilClass perfilSelected = Lista.getProfile(aux.Content.ToString());
             if (perfilSelected != null) {
-                if (_newSelectedProfile.nombre.CompareTo(aux.Content.ToString()) != 0) {
+                if (_newSelectedProfile != null & _newSelectedProfile.nombre.CompareTo(aux.Content.ToString()) != 0) {
                     _newSelectedProfile = perfilSelected;
                     Lista.clearBackProfile();
                     aux.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
@@ -1067,6 +1169,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Modifica el background del perfil seleccionado
+         */
         private void selectProfile(Button b) {
             PerfilClass perfilSelected = Lista.getProfile(b.Content.ToString());
             if (perfilSelected != null) {
@@ -1075,6 +1180,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Abre una nueva ventana con el nuevo perfil seleccionado y cierra la actual
+         */
         private void changeProfile(object sender, RoutedEventArgs e) {
             if (_profile.nombre.CompareTo(_newSelectedProfile.nombre) != 0) {
                 _profile = _newSelectedProfile;
@@ -1093,7 +1201,9 @@ namespace SeleccionarProfile {
             }
 
         }
-
+        /**
+         * Añade un nuevo perfil a la aplicacion
+         */
         private void addProfile(object sender, RoutedEventArgs e) {
             NewProfile newProf = new NewProfile();
             newProf.ShowDialog();
@@ -1120,10 +1230,16 @@ namespace SeleccionarProfile {
             
         }
 
+        /**
+         * Devuelve el usuario
+         */
         public static UsuarioClass getUser() {
             return _user;
         }
 
+        /**
+         * Borra el perfil seleccionado
+         */
         private void removeProfile(object sender, RoutedEventArgs e) {
             try {
                 if (_profile.nombre.CompareTo(_newSelectedProfile.nombre) != 0) {
@@ -1138,7 +1254,7 @@ namespace SeleccionarProfile {
                         perfiles.Children.Remove(b);
                     }
                     Lista.removeProfile(_newSelectedProfile.nombre);
-                    _newSelectedProfile = null;
+                    _newSelectedProfile = _profile;
                     Button aux = Lista.getProfileButton(_profile.nombre);
                     selectProfile(aux);
                 } else {
@@ -1151,10 +1267,16 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Devuelve el gridPrincipal
+         */
         public Grid getFirstGrid() {
             return firstPanel;
         }
 
+        /**
+         * Permite mover la ventana de la aplicacion
+         */
         private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e) {
             if (this.WindowState == WindowState.Maximized) {
                 this.WindowState = WindowState.Normal;
@@ -1163,14 +1285,39 @@ namespace SeleccionarProfile {
             }
             this.DragMove();
         }
+
+        /**
+         * Cambia el fondo del boton return al entrar el raton
+         */
         private void return_MouseEnter(object sender, MouseEventArgs e) {
             borderEnter.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
         }
 
+        /**
+         * Quita el fondo del boton return al salir de el
+         */
         private void return_MouseLeave(object sender, MouseEventArgs e) {
             borderEnter.Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255));
         }
 
+        /**
+         * Cambia el fondo del boton return al entrar el raton
+         */
+        private void return2_MouseEnter(object sender, MouseEventArgs e) {
+            borderEnter2.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+        }
+
+        /**
+         * Quita el fondo del boton return al salir de el
+         */
+        private void return2_MouseLeave(object sender, MouseEventArgs e) {
+            borderEnter2.Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255));
+        }
+
+        /**
+         * Si el menu online no se ha mostrado, se muestra y carga las peliculas y series que hay en el servidor, 
+         * si por el contrario se pulsa en el otro boton, borra los datos del menu online y muestra el panel de carpetas del usuario
+         */
         private void onChangeMenuClick(object sender, EventArgs e) {
             
                 Button aux = (Button)sender;
@@ -1260,7 +1407,6 @@ namespace SeleccionarProfile {
                 }
             } else if (aux.Name.Equals("bOfflineMenu")) {
                 if (menuOffline.Visibility == Visibility.Hidden) {
-                    ;
                     menuOnline.Visibility = Visibility.Hidden;
                     rectOnline.Visibility = Visibility.Hidden;
                     gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
@@ -1282,12 +1428,18 @@ namespace SeleccionarProfile {
                     rowBuscador.Height = new GridLength(30, GridUnitType.Auto);
 
                     rowAddMenu.Height = new GridLength(0.05, GridUnitType.Star);
+                    if (Lista.getSubWrapsVisibles() != null) {
+                        ReturnVisibility(true);
+                    }
                 }
             }
             
 
         }
 
+        /**
+         * Evento que permite cambiar entre el panel principal del menu online y el panel donde estan todas las series y peliculas
+         */
         private void changeOnlinePanel(object sender, EventArgs e) {
             Button b = (Button)sender;
             if (b.Content.ToString().CompareTo("Panel Principal") == 0) {
@@ -1319,6 +1471,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Filtra por genero el panel seleccionado
+         */
         private void bComboGenero_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             ComboBox cb = (ComboBox)sender;
             string content = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
@@ -1337,6 +1492,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Filtra por genero el panel online
+         */
         private void bComboGenero_SelectionChangedOnline(object sender, SelectionChangedEventArgs e) {
             ComboBox cb = (ComboBox)sender;
             string content = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
@@ -1354,6 +1512,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Filtra por los datos de busqueda introducidos
+         */
         private void onSearchValueChanged(object sender, KeyEventArgs e) { 
             TextBox textBox = (TextBox)sender;
             if (!textBox.Text.Equals("")) {
@@ -1395,6 +1556,9 @@ namespace SeleccionarProfile {
             }
         }
 
+        /**
+         * Vacia el buscador
+         */
         public void clearTextBox(WrapPanelPrincipal wp) {
             if (wp != null) {
                 wp.showAll();
@@ -1405,6 +1569,9 @@ namespace SeleccionarProfile {
             textOnline.Text = "";
         }
 
+        /**
+         * Comprueba si hay conexion con el servidor
+         */
         private bool checkConnection() {
             WebRequest request = WebRequest.Create("http://vigallery.helyan.com");
             request.Timeout = 4000;

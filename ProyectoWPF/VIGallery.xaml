@@ -203,7 +203,7 @@
                 <DockPanel>
                     <Grid Width="280" HorizontalAlignment="Left" Background="#FF121212">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="0.3*"/>
+                            <RowDefinition Height="0*"/>
                             <RowDefinition x:Name="rowOnline" Height="0.05*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition x:Name="rowAddMenu" Height="0.05*"/>
@@ -325,9 +325,9 @@
                                     </Path>
                                 </Canvas>
                             </Viewbox>
-                            <Button Content="" Style="{StaticResource CustomButtonStyle}" Grid.Row="1" Grid.Column="1" Opacity="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="showOptions" Visibility="Visible"/>
+                            <Button Content="" Grid.Row="0" Grid.Column="0" Width="75" Height="75" Margin="0,0,0,10" Style="{StaticResource CustomButtonStyle}" Opacity="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Click="showOptions" Visibility="Visible"/>
 
-                            <Border x:Name="borderEnter" Margin="0,0,0,10" CornerRadius="15" BorderThickness="3" Width="75" Height="75" Grid.Column="2" Grid.Row="2" BorderBrush="#FF3C3C3C" VerticalAlignment="Bottom" Visibility="Visible">
+                            <Border x:Name="borderEnter" Margin="0,0,0,10" CornerRadius="15" BorderThickness="3" Width="75" Height="75" Grid.Column="2" Grid.Row="2" BorderBrush="#FF3C3C3C" VerticalAlignment="Bottom" Visibility="Hidden">
 
                                 <Viewbox Stretch="None" RenderOptions.BitmapScalingMode="HighQuality" >
                                     <Canvas Width="94" Height="97">
@@ -406,6 +406,7 @@
                                             <ComboBoxItem Content="Carreras" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
                                             <ComboBoxItem Content="Ciencia Ficción" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
                                             <ComboBoxItem Content="Comedia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Crimen" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
                                             <ComboBoxItem Content="Demencia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
                                             <ComboBoxItem Content="Demonios" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
                                             <ComboBoxItem Content="Deportes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
@@ -482,6 +483,7 @@
                                             <ComboBoxItem Content="Carreras" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
                                             <ComboBoxItem Content="Ciencia Ficción" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
                                             <ComboBoxItem Content="Comedia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
+                                            <ComboBoxItem Content="Crimen" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
                                             <ComboBoxItem Content="Demencia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
                                             <ComboBoxItem Content="Demonios" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
                                             <ComboBoxItem Content="Deportes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
@@ -611,7 +613,33 @@
                                     <Button Content="Perfiles" Padding="10" FontSize="25" HorizontalContentAlignment="Right" Foreground="#FFE6E6E6" Style="{DynamicResource PropertieButton}"/>
                                 </StackPanel>
                             </Grid>
-                            <Button Content="Return" Grid.Row="4" Width="75px" Height="75px" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="showMain"/>
+                            <Border x:Name="borderEnter2" Margin="0,0,0,10" CornerRadius="15" BorderThickness="3" Width="75" Height="75" Grid.Row="4" BorderBrush="#FF3C3C3C" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="Visible">
+
+                                <Viewbox Stretch="None" RenderOptions.BitmapScalingMode="HighQuality" >
+                                    <Canvas Width="94" Height="97">
+                                        <Canvas.RenderTransform>
+                                            <TranslateTransform X="-7" Y="-15"/>
+                                        </Canvas.RenderTransform>
+                                        <Canvas.Resources/>
+                                        <Canvas Height="97" Width="97">
+                                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StrokeThickness="0.70697761" Stretch="Fill" Canvas.Left="22" Canvas.Top="32" Fill="#FF3C3C3C" Width="38" Height="38" RenderTransformOrigin="0.5,0.5" >
+                                                <Path.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform/>
+                                                        <SkewTransform/>
+                                                        <RotateTransform Angle="-180"/>
+                                                        <TranslateTransform/>
+                                                    </TransformGroup>
+                                                </Path.RenderTransform>
+                                                <Path.Data>
+                                                    <PathGeometry Figures="m 0.18792389 290.1747 0.002953 1.03943 H 10.25154 10.511399 l -4.2758563 4.27586 0.6850819 0.68508 5.5869604 -5.58696 -5.610584 -5.61059 -0.8504462 0.85045 4.4648442 4.46484 z" FillRule="NonZero"/>
+                                                </Path.Data>
+                                            </Path>
+                                        </Canvas>
+                                    </Canvas>
+                                </Viewbox>
+                            </Border>
+                            <Button Content="" Opacity="0" Grid.Row="4" Width="75px" Height="75px" Margin="0,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="showMain" MouseEnter="return2_MouseEnter" MouseLeave="return2_MouseLeave"/>
 
 
 

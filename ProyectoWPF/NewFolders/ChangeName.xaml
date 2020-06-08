@@ -31,35 +31,36 @@
             <Label Grid.Column="0" Grid.Row="4" Content="Generos: " HorizontalAlignment="Right" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Foreground="White" FontSize="14" Margin="0,10,0,0" Height="29" Width="68"/>
 
             <WrapPanel x:Name="ListGeneros" Grid.Column="1" Margin="10,10,100,10" Grid.Row="4" Orientation="Vertical">
-                <CheckBox Content="Acción" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Artes Marciales" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Aventuras" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Carreras" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Ciencia Ficción" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Comedia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Demencia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Demonios" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Deportes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Drama" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Escolares" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Espacial" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Fantasía" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Historico" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Juegos" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Magia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Militar" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Misterio" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Música" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Parodia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Policía" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Psicológico" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Romance" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Samurai" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Sobrenatural" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Superpoderes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Suspenso" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Terror" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
-                <CheckBox Content="Vampiros" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White" Selector.IsSelected="True"/>
+                <CheckBox Content="Acción" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Artes Marciales" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Aventuras" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Carreras" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Ciencia Ficción" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Comedia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Crimen" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Demencia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Demonios" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Deportes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Drama" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Escolares" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Espacial" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Fantasía" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Historico" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Juegos" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Magia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Militar" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Misterio" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Música" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Parodia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Policía" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Psicológico" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Romance" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Samurai" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Sobrenatural" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Superpoderes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Suspenso" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Terror" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
+                <CheckBox Content="Vampiros" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" Foreground="White"/>
             </WrapPanel>
             <Button Content="Aceptar" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="2" Padding="15,5" IsDefault="True" Click="BAceptar_Click"/>
         </Grid>
