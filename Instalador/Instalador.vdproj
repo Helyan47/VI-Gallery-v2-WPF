@@ -6946,12 +6946,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_68BD09514D43592757F16E19FBEF8365"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_74B9301C4B2C4C13A11E616AE8608E98"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -7051,6 +7045,12 @@
         "OwnerKey" = "8:_06CEF48D1E3DECA722CBE964E5059EFD"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_68BD09514D43592757F16E19FBEF8365"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -7108,6 +7108,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -35501,7 +35509,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:VIGallery"
         "ProductCode" = "8:{784B2D3F-2C2F-4892-B33A-D9D8459A22DD}"
-        "PackageCode" = "8:{9D2122FA-6008-4C4B-92F8-D83A993EF675}"
+        "PackageCode" = "8:{F013E864-7112-4E11-A0E9-F8ED86525E66}"
         "UpgradeCode" = "8:{98D80525-A580-4432-8280-7788313CBB64}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

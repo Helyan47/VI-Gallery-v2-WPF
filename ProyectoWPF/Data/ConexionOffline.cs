@@ -7,6 +7,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SeleccionarProfile.Data {
     public class ConexionOffline {
@@ -154,8 +155,7 @@ namespace SeleccionarProfile.Data {
                 cnn.Execute("insert into Perfil (nombre,numMenus,mode) values (@nombre,@numMenus,@mode)", parameters);
                 Console.WriteLine("Añadido Perfil");
                 return getPerfil(profile);
-            } catch (Exception e) {
-                //throw e;
+            } catch (Exception) {
             }
             return null;
         }

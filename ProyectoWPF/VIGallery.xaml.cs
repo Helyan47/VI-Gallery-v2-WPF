@@ -981,6 +981,8 @@ namespace SeleccionarProfile {
                 if (_activatedButton != null) {
                     if (conexionMode) {
                         long id = Lista.getMenuFromButton(_activatedButton).id;
+
+                        WrapPanelPrincipal wp = Lista.getWrapFromMenu(Lista.getMenuFromButton(_activatedButton));
                         if (id != 0) {
                             Conexion.deleteMenu(id);
                             Lista.removeMenu(_activatedButton);
@@ -990,6 +992,9 @@ namespace SeleccionarProfile {
                             }
                             if (_botones.Contains(_activatedButton)) {
                                 _botones.Remove(_activatedButton);
+                            }
+                            if (gridPrincipal.Children.Contains(wp)) {
+                                gridPrincipal.Children.Remove(wp);
                             }
                             if (_botonesMenu.Count != 0) {
                                 foreach (Button b in _botonesMenu) {
@@ -1004,6 +1009,7 @@ namespace SeleccionarProfile {
 
                     } else {
                         long id = Lista.getMenuFromButton(_activatedButton).id;
+                        WrapPanelPrincipal wp = Lista.getWrapFromMenu(Lista.getMenuFromButton(_activatedButton));
                         if (id != 0) {
                             ConexionOffline.deleteMenu(id);
                             Lista.removeMenu(_activatedButton);
@@ -1013,9 +1019,12 @@ namespace SeleccionarProfile {
                             if (_botones.Contains(_activatedButton)) {
                                 _botones.Remove(_activatedButton);
                             }
+                            if (gridPrincipal.Children.Contains(wp)) {
+                                gridPrincipal.Children.Remove(wp);
+                            }
                             if (_botonesMenu.Count != 0) {
                                 foreach (Button b in _botonesMenu) {
-                                    onClickButtonMenu(_activatedButton, e);
+                                    onClickButtonMenu(b, e);
                                     break;
                                 }
                             } else {
