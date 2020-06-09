@@ -39,19 +39,24 @@ namespace Reproductor
         public VI_Reproductor(bool online)
         {
             InitializeComponent();
-            videoPlayerProperties = new VideoPlayerProperties(this, control);
-            isClicking = false;
-            isOnline = online;
-            isExpanded = false;
-            Volumen.Value = volumen;
-            var currentAssembly = Assembly.GetEntryAssembly();
-            var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
-            var libDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
-            Console.WriteLine(libDirectory.FullName);
-            dp = new DispatcherTimer();
-            dp.Interval = new TimeSpan(0, 0, 1);
-            dp.Tick += tick;
-            control.SourceProvider.CreatePlayer(libDirectory);
+            try {
+                videoPlayerProperties = new VideoPlayerProperties(this, control);
+                isClicking = false;
+                isOnline = online;
+                isExpanded = false;
+                Volumen.Value = volumen;
+                currentVideoPosition = 0;
+                var currentAssembly = Assembly.GetEntryAssembly();
+                var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
+                var libDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
+                Console.WriteLine(libDirectory.FullName);
+                dp = new DispatcherTimer();
+                dp.Interval = new TimeSpan(0, 0, 1);
+                dp.Tick += tick;
+                control.SourceProvider.CreatePlayer(libDirectory);
+            }catch(Exception e) {
+                Console.WriteLine(e.ToString());
+            }
         }
 
         public void setWindow(Window w) {
@@ -64,155 +69,188 @@ namespace Reproductor
         }
 
         private void setTimeLabel() {
-            string seconds;
-            string minutes;
-            string hours;
-            long duration = control.SourceProvider.MediaPlayer.Time;
-            segundos = (int)(duration / 1000);
-            minutos = (int)segundos / 60;
-            horas = (int)minutos / 60;
-            minutos = (int)minutos % 60;
-            segundos = (int)segundos % 60;
-
-            if (horas == 0) {
-                seconds = segundos + "";
-                minutes = minutos + "";
-                currentTime.Content = minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
-            } else {
-                seconds = segundos + "";
-                minutes = minutos + "";
-                hours = horas + "";
-                currentTime.Content = hours.PadLeft(2, '0') + ":" + minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
-            }
-        }
-
-        public void tick(object sender, EventArgs e) {
-
-            if (control.SourceProvider.MediaPlayer.IsPlaying()) {
-                
-                long duration;
+            try {
                 string seconds;
                 string minutes;
                 string hours;
-                if (cont == 0) {
-                    timeLine.Maximum = control.SourceProvider.MediaPlayer.Length;
-                    cont++;
-                    duration = control.SourceProvider.MediaPlayer.Length;
-                    segundos = (int)(duration / 1000);
-                    minutos = (int)segundos / 60;
-                    horas = (int)minutos / 60;
-                    minutos = (int)minutos % 60;
-                    segundos = (int)segundos % 60;
+                long duration = control.SourceProvider.MediaPlayer.Time;
+                segundos = (int)(duration / 1000);
+                minutos = (int)segundos / 60;
+                horas = (int)minutos / 60;
+                minutos = (int)minutos % 60;
+                segundos = (int)segundos % 60;
 
-                    if (horas == 0) {
-                        seconds = segundos + "";
-                        minutes = minutos + "";
-                        timeDuration.Content = minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
-                        hasHours = false;
-                    } else {
-                        seconds = segundos + "";
-                        minutes = minutos + "";
-                        hours = horas + "";
-                        timeDuration.Content = hours.PadLeft(2, '0') + ":" + minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
-                        hasHours = true;
-                    }
-                    duration = control.SourceProvider.MediaPlayer.Time;
-                    segundos = (int)(duration / 1000);
-                    minutos = (int)segundos / 60;
-                    horas = (int)minutos / 60;
-                    minutos = (int)minutos % 60;
-                    segundos = (int)segundos % 60;
-                }
-                segundos++;
-                if (segundos >= 60) {
-                    segundos = 0;
-                    minutos++;
-                    if (minutos >= 60) {
-                        minutos = 0;
-                        horas++;
-                    }
-
-                }
-                if (!hasHours) {
+                if (horas == 0) {
                     seconds = segundos + "";
                     minutes = minutos + "";
-
                     currentTime.Content = minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
                 } else {
                     seconds = segundos + "";
                     minutes = minutos + "";
                     hours = horas + "";
-
                     currentTime.Content = hours.PadLeft(2, '0') + ":" + minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
                 }
+            }catch (Exception e) {
+                Console.WriteLine(e.ToString());
+            }
+        }
 
-                timeLine.Value = control.SourceProvider.MediaPlayer.Time;
-                if (timeLine.Value >= control.SourceProvider.MediaPlayer.Length-1000) {
-                    nextVideo();
+        public void tick(object sender, EventArgs e) {
+            try {
+                if (control.SourceProvider.MediaPlayer.IsPlaying()) {
+
+                    long duration;
+                    string seconds;
+                    string minutes;
+                    string hours;
+                    if (cont == 0) {
+                        timeLine.Maximum = control.SourceProvider.MediaPlayer.Length;
+                        cont++;
+                        duration = control.SourceProvider.MediaPlayer.Length;
+                        segundos = (int)(duration / 1000);
+                        minutos = (int)segundos / 60;
+                        horas = (int)minutos / 60;
+                        minutos = (int)minutos % 60;
+                        segundos = (int)segundos % 60;
+
+                        if (horas == 0) {
+                            seconds = segundos + "";
+                            minutes = minutos + "";
+                            timeDuration.Content = minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
+                            hasHours = false;
+                        } else {
+                            seconds = segundos + "";
+                            minutes = minutos + "";
+                            hours = horas + "";
+                            timeDuration.Content = hours.PadLeft(2, '0') + ":" + minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
+                            hasHours = true;
+                        }
+                        duration = control.SourceProvider.MediaPlayer.Time;
+                        segundos = (int)(duration / 1000);
+                        minutos = (int)segundos / 60;
+                        horas = (int)minutos / 60;
+                        minutos = (int)minutos % 60;
+                        segundos = (int)segundos % 60;
+                    }
+                    segundos++;
+                    if (segundos >= 60) {
+                        segundos = 0;
+                        minutos++;
+                        if (minutos >= 60) {
+                            minutos = 0;
+                            horas++;
+                        }
+
+                    }
+                    if (!hasHours) {
+                        seconds = segundos + "";
+                        minutes = minutos + "";
+
+                        currentTime.Content = minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
+                    } else {
+                        seconds = segundos + "";
+                        minutes = minutos + "";
+                        hours = horas + "";
+
+                        currentTime.Content = hours.PadLeft(2, '0') + ":" + minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
+                    }
+
+                    timeLine.Value = control.SourceProvider.MediaPlayer.Time;
+                    if (timeLine.Value >= control.SourceProvider.MediaPlayer.Length - 1000) {
+                        nextVideo();
+                    }
                 }
+            } catch (Exception ex) {
+                Console.WriteLine(ex.ToString());
             }
         }
 
 
         public void setLista(object[] args) {
-            if (args != null & args.Length != 0) {
-                lista = args;
-                videoTitle.Content = names[currentVideoPosition];
-                setVideo(lista[0]);
+            try {
+                if (args != null & args.Length != 0) {
+                    lista = args;
+                    videoTitle.Content = names[currentVideoPosition];
+                    setVideo(lista[0]);
+                }
+                control.Focus();
+            } catch (Exception e) {
+                MessageBox.Show(e.ToString());
             }
-            control.Focus();
         }
 
         public void setListaCapitulos(object[] args, long[] capitulos, int position) {
-            if (args != null & capitulos!= null & args.Length != 0) {
-                lista = args;
-                _capitulos = capitulos;
-                currentVideoPosition = position;
-                videoTitle.Content = names[currentVideoPosition];
-                setVideo(lista[position]);
-                control.Focus();
-            } 
-        }
+            try {
+                if (args != null & capitulos != null & args.Length != 0) {
+                    lista = args;
+                    _capitulos = capitulos;
+                    currentVideoPosition = position;
+                    videoTitle.Content = names[currentVideoPosition];
+                    setVideo(lista[position]);
+                    control.Focus();
+                }
+            }catch (Exception e) {
+                Console.WriteLine(e.ToString());
+            }
+}
 
         public void setListaCapitulos(object[] args, long[] capitulos) {
-            if (args != null & capitulos != null & args.Length != 0) {
-                lista = args;
-                _capitulos = capitulos;
-                videoTitle.Content = names[currentVideoPosition];
-                setVideo(lista[0]);
-                control.Focus();
+            try {
+                if (args != null & capitulos != null & args.Length != 0) {
+                    lista = args;
+                    _capitulos = capitulos;
+                    currentVideoPosition = 0;
+                    videoTitle.Content = names[currentVideoPosition];
+                    setVideo(lista[0]);
+                    control.Focus();
+                }
+            } catch (Exception e) {
+                MessageBox.Show(e.ToString());
             }
         }
         public void setListaPeliculas(object[] args, long[] peliculas, int position) {
-            if (args != null & peliculas != null & args.Length != 0) {
-                lista = args;
-                _peliculas = peliculas;
-                currentVideoPosition = position;
-                videoTitle.Content = names[currentVideoPosition];
-                setVideo(lista[position]);
-                control.Focus();
+            try {
+                if (args != null & peliculas != null & args.Length != 0) {
+                    lista = args;
+                    _peliculas = peliculas;
+                    currentVideoPosition = position;
+                    videoTitle.Content = names[currentVideoPosition];
+                    setVideo(lista[position]);
+                    control.Focus();
+                }
+            } catch (Exception e) {
+                MessageBox.Show(e.ToString());
             }
         }
 
         public void setListaPeliculas(object[] args, long[] peliculas) {
-            if (args != null & peliculas != null & args.Length != 0) {
-                lista = args;
-                _peliculas = peliculas;
-                videoTitle.Content = names[currentVideoPosition];
-                setVideo(lista[0]);
-                control.Focus();
+            try {
+                if (args != null & peliculas != null & args.Length != 0) {
+                    lista = args;
+                    _peliculas = peliculas;
+                    currentVideoPosition = 0;
+                    videoTitle.Content = names[currentVideoPosition];
+                    setVideo(lista[0]);
+                    control.Focus();
+                }
+            } catch (Exception e) {
+                Console.WriteLine(e.ToString());
             }
         }
 
         public void setLista(object[] args,int position) {
-            if (args != null & args.Length != 0) {
-                lista = args;
-                currentVideoPosition = position;
-                videoTitle.Content = names[currentVideoPosition];
-                setVideo(lista[position]);
-                control.Focus();
+            try {
+                if (args != null & args.Length != 0) {
+                    lista = args;
+                    currentVideoPosition = position;
+                    videoTitle.Content = names[currentVideoPosition];
+                    setVideo(lista[position]);
+                    control.Focus();
+                }
+            } catch (Exception e) {
+                MessageBox.Show(e.ToString());
             }
-            
+
         }
 
 
@@ -245,43 +283,55 @@ namespace Reproductor
 
 
         public void setVideo(object file) {
-
-            if (file is FileInfo) {
-                FileInfo aux = (FileInfo)file;
-                control.SourceProvider.MediaPlayer.Play(aux);
-                actualVideo = file;
-                videoTitle.Content = aux.Name;
-            } else if (file is Uri) {
-                control.SourceProvider.MediaPlayer.Play((Uri)file);
-                actualVideo = file;
-            } else if (file is Stream) {
-                control.SourceProvider.MediaPlayer.Play((Stream)file);
-                actualVideo = file;
-            } else {
-                MessageBox.Show("Tipo de archivo no soportado");
-            }
-            if (isOnline) {
-                if (_capitulos != null) {
-                    ConexionServer.increaseNumVisitasCap(_capitulos[currentVideoPosition]);
-                    long time = ConexionServer.getTimeCapitulo(_capitulos[currentVideoPosition]);
-                    control.SourceProvider.MediaPlayer.Time = time;
-                } else if (_peliculas != null) {
-                    ConexionServer.increaseNumVisitasPelicula(_peliculas[currentVideoPosition]);
-                    long time = ConexionServer.getTimePelicula(_peliculas[currentVideoPosition]);
-                    control.SourceProvider.MediaPlayer.Time = time;
+            try {
+                if (file is FileInfo) {
+                    FileInfo aux = (FileInfo)file;
+                    control.SourceProvider.MediaPlayer.Play(aux);
+                    actualVideo = file;
+                    videoTitle.Content = aux.Name;
+                } else if (file is Uri) {
+                    control.SourceProvider.MediaPlayer.Play((Uri)file);
+                    actualVideo = file;
+                } else if (file is Stream) {
+                    control.SourceProvider.MediaPlayer.Play((Stream)file);
+                    actualVideo = file;
+                } else {
+                    MessageBox.Show("Tipo de archivo no soportado");
                 }
+                if (isOnline) {
+                    if (_capitulos != null) {
+                        try {
+                            ConexionServer.increaseNumVisitasCap(_capitulos[currentVideoPosition]);
+                            long time = ConexionServer.getTimeCapitulo(_capitulos[currentVideoPosition]);
+                            control.SourceProvider.MediaPlayer.Time = time;
+                        }catch(Exception e) {
+                            control.SourceProvider.MediaPlayer.Time = 0;
+                        }
+                    } else if (_peliculas != null) {
+                        try {
+                            ConexionServer.increaseNumVisitasPelicula(_peliculas[0]);
+                            long time = ConexionServer.getTimePelicula(_peliculas[0]);
+                            control.SourceProvider.MediaPlayer.Time = time;
+                        } catch (Exception e) {
+                            control.SourceProvider.MediaPlayer.Time = 0;
+                        }
+                    }
 
+                }
+                control.SourceProvider.MediaPlayer.Audio.Volume = volumen;
+                dp.Start();
+                setTimeLabel();
+                //resetMaximumTime();
+                viewBoxPause.Visibility = Visibility.Visible;
+                viewBoxPlay.Visibility = Visibility.Hidden;
+            } catch (Exception e) {
+                Console.WriteLine(e.ToString());
             }
-            control.SourceProvider.MediaPlayer.Audio.Volume = volumen;
-            dp.Start();
-            setTimeLabel();
-            //resetMaximumTime();
-            viewBoxPause.Visibility = Visibility.Visible;
-            viewBoxPlay.Visibility = Visibility.Hidden;
         }
 
 
         public void nextVideo() {
+            try { 
             dp.Stop();
             long time=control.SourceProvider.MediaPlayer.Time;
             if (isOnline) {
@@ -304,7 +354,10 @@ namespace Reproductor
                 videoTitle.Content = names[currentVideoPosition];
                 setVideo(lista[currentVideoPosition]);
             }
-            
+            } catch (Exception e) {
+                Console.WriteLine(e.ToString());
+            }
+
         }
 
         public void previousVideo() {
@@ -516,14 +569,19 @@ namespace Reproductor
         }
 
         public void CerrarReproductor(object sender, EventArgs e) {
-            dp.Stop();
-            long time = control.SourceProvider.MediaPlayer.Time;
-            if (isOnline) {
-                if (_capitulos != null) {
-                    ConexionServer.updateTiempoActualCap(_capitulos[currentVideoPosition], time);
-                } else if (_peliculas != null) {
-                    ConexionServer.updateTiempoActualPel(_peliculas[currentVideoPosition], time);
+            try {
+                dp.Stop();
+                long time = control.SourceProvider.MediaPlayer.Time;
+                if (isOnline) {
+                    if (_capitulos != null) {
+                        ConexionServer.updateTiempoActualCap(_capitulos[currentVideoPosition], time);
+                    } else if (_peliculas != null) {
+                        ConexionServer.updateTiempoActualPel(_peliculas[0], time);
+                    }
                 }
+                
+            }catch(Exception ex) {
+
             }
             control.Dispose();
             gridVIGallery.Children.Remove(this);

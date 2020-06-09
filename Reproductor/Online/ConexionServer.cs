@@ -158,7 +158,7 @@ namespace SeleccionarProfile.Data.Online {
                 if(reader.HasRows) {
                     long time = 0;
                     while (reader.Read()) {
-                       time  = reader.GetInt64("id");
+                       time  = reader.GetInt64("tiempoActual");
                     }
                     reader.Close();
                     conexion.Close();
