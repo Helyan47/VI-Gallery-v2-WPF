@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SeleccionarProfile.Components {
+namespace ProyectoWPF.Components {
     /// <summary>
     /// Lógica de interacción para ListaArchivos.xaml
     /// </summary>

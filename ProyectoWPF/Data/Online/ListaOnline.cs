@@ -1,5 +1,5 @@
-﻿using SeleccionarProfile.Components;
-using SeleccionarProfile.Components.Online;
+﻿using ProyectoWPF.Components;
+using ProyectoWPF.Components.Online;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace SeleccionarProfile.Data.Online
+namespace ProyectoWPF.Data.Online
 {
     public static class ListaOnline{
         private static ICollection<Serie> _series = new List<Serie>();

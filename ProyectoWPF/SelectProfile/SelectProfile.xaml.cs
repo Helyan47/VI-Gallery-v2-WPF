@@ -1,39 +1,29 @@
-﻿using SeleccionarProfile;
-using SeleccionarProfile.Data;
-using SeleccionarProfile.NewFolders;
-using System;
+﻿using ProyectoWPF.Data;
+using ProyectoWPF.NewFolders;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using VIGallery.Data;
 
-namespace SeleccionarProfile {
+namespace ProyectoWPF.SelectProfile {
     /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
+    /// Lógica de interacción para SelectProfile.xaml
     /// </summary>
-    public partial class MainWindow : Window {
+    public partial class SelectProfile : Window {
 
         public static string loadNewProfile = "";
         public static bool conn;
         public List<PerfilClass> _profiles = null;
         private List<Button> _buttons = new List<Button>();
         private PerfilClass _selectedProfile = null;
-        public MainWindow(bool connection,UsuarioClass user) {
+        public SelectProfile(bool connection, UsuarioClass user) {
             InitializeComponent();
+
             conn = connection;
             VIGallery.conexionMode = connection;
-            
+
             if (connection) {
                 VIGallery._user = user;
             } else {
@@ -68,7 +58,7 @@ namespace SeleccionarProfile {
                     }
                     ConexionOffline.closeConnection();
                 }
-                
+
             }
         }
 
@@ -91,7 +81,7 @@ namespace SeleccionarProfile {
                 b = null;
             }
             selectProfile(b);
-            
+
         }
 
         public void MinimizeApp(object sender, RoutedEventArgs e) {
@@ -161,7 +151,7 @@ namespace SeleccionarProfile {
         }
 
         private PerfilClass getProfile(string s) {
-            foreach(PerfilClass p in _profiles) {
+            foreach (PerfilClass p in _profiles) {
                 if (p.nombre.CompareTo(s) == 0) {
                     return p;
                 }
@@ -204,7 +194,7 @@ namespace SeleccionarProfile {
                     if (b != null) {
                         perfiles.Children.Remove(b);
                     }
-                    
+
                 } else {
                     ConexionOffline.deleteProfile(_selectedProfile.id);
                     Button b = Lista.getProfileButton(_selectedProfile.nombre);
@@ -213,7 +203,7 @@ namespace SeleccionarProfile {
                         perfiles.Children.Remove(b);
                     }
                 }
-                
+
             }
         }
     }

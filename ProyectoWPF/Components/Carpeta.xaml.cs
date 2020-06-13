@@ -1,19 +1,18 @@
 ﻿using MySql.Data.MySqlClient;
-using SeleccionarProfile.Components;
-using SeleccionarProfile.Data;
-using SeleccionarProfile.NewFolders;
+using ProyectoWPF.Components;
+using ProyectoWPF.Data;
+using ProyectoWPF.NewFolders;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using VIGallery.Data;
 
-namespace SeleccionarProfile {
+namespace ProyectoWPF {
     /// <summary>
     /// Lógica de interacción para Carpeta.xaml
     /// </summary>

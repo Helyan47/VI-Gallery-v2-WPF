@@ -1,5 +1,5 @@
-﻿using SeleccionarProfile.Components;
-using SeleccionarProfile.Data.Online;
+﻿using ProyectoWPF.Components;
+using ProyectoWPF.Data.Online;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace SeleccionarProfile.Data {
+namespace ProyectoWPF.Data {
     public static class OrderClass {
         static NaturalStringComparer comparadorStrings = new NaturalStringComparer();
         static NaturalArchivoClassComparer comparadorArchivoClass = new NaturalArchivoClassComparer();

@@ -1,6 +1,4 @@
-﻿using SeleccionarProfile.Data;
-using SeleccionarProfile.NewFolders;
-using Reproductor;
+﻿using Reproductor;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,8 +16,11 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SQLite;
 using MySql.Data.MySqlClient;
+using ProyectoWPF.Data;
+using VIGallery.Data;
+using ProyectoWPF.NewFolders;
 
-namespace SeleccionarProfile.Components {
+namespace ProyectoWPF.Components {
     /// <summary>
     /// Lógica de interacción para Archivo.xaml
     /// </summary>

@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SeleccionarProfile.NewFolders {
+namespace ProyectoWPF.NewFolders {
     /// <summary>
     /// Lógica de interacción para AddButton.xaml
     /// </summary>

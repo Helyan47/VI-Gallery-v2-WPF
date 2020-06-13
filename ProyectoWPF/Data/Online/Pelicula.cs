@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeleccionarProfile.Data.Online
+namespace ProyectoWPF.Data.Online
 {
     public class Pelicula
     {

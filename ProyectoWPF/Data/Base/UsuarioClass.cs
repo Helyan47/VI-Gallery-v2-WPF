@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeleccionarProfile.Data {
+namespace ProyectoWPF.Data {
     public class UsuarioClass {
         public long id { get; set; }
         public string nick { get; set; }

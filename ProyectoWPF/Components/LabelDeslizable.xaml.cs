@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace SeleccionarProfile {
+namespace ProyectoWPF {
     /// <summary>
     /// Lógica de interacción para LabelDeslizable.xaml
     /// </summary>

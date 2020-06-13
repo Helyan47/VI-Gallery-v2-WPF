@@ -1,6 +1,6 @@
-﻿using SeleccionarProfile.Components;
-using SeleccionarProfile.Components.Online;
-using SeleccionarProfile.Data;
+﻿using ProyectoWPF.Components;
+using ProyectoWPF.Components.Online;
+using ProyectoWPF.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SeleccionarProfile
-{
+namespace ProyectoWPF {
     /// <summary>
     /// Lógica de interacción para WrapPanelPrincipal.xaml
     /// </summary>
@@ -260,7 +259,7 @@ namespace SeleccionarProfile
             }
 
             if (lista.Count != 0) {
-                List<string> resultados=Filters.filterAlgorithm(lista.ToArray(),search);
+                List<string> resultados = Filters.filterAlgorithm(lista.ToArray(),search);
                 foreach (UIElement ui in hijos) {
                     if (ui is Carpeta) {
                         Carpeta aux = (Carpeta)ui;

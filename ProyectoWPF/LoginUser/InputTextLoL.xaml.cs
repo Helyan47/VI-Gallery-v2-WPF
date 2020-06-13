@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LoginUser {
+namespace ProyectoWPF {
     /// <summary>
     /// Lógica de interacción para InputTextLoL.xaml
     /// </summary>

@@ -1,4 +1,5 @@
-﻿using SeleccionarProfile.Data.Online;
+﻿using ProyectoWPF;
+using SeleccionarProfile.Data.Online;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SeleccionarProfile.Components.Online {
+namespace ProyectoWPF.Components.Online {
     /// <summary>
     /// Lógica de interacción para MenuComponent.xaml
     /// </summary>

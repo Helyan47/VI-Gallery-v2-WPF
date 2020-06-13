@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeleccionarProfile {
+namespace ProyectoWPF {
     public class CarpetaClass {
         public long id { get; set; }
         public string nombre { get; set; }

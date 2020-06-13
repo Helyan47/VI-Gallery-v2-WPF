@@ -1,5 +1,5 @@
-﻿using SeleccionarProfile.Components.Online;
-using SeleccionarProfile.Data.Online;
+﻿using ProyectoWPF.Components.Online;
+using ProyectoWPF.Data.Online;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace SeleccionarProfile.Components {
+namespace ProyectoWPF.Components {
     /// <summary>
     /// Lógica de interacción para SerieComponent.xaml
     /// </summary>

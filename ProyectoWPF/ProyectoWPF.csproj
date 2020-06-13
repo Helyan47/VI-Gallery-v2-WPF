@@ -157,6 +157,12 @@
     <Compile Include="Data\Online\Serie.cs" />
     <Compile Include="Data\Online\Temporada.cs" />
     <Compile Include="Data\OrderClass.cs" />
+    <Compile Include="LoginUser\InputTextLoL.xaml.cs">
+      <DependentUpon>InputTextLoL.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoginUser\LoginUser.xaml.cs">
+      <DependentUpon>LoginUser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewFolders\AddButton.xaml.cs">
       <DependentUpon>AddButton.xaml</DependentUpon>
     </Compile>
@@ -241,6 +247,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LoginUser\InputTextLoL.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoginUser\LoginUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NewFolders\AddButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -289,6 +303,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SelectProfile\SelectProfile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="VIGallery.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -296,6 +314,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SelectProfile\SelectProfile.xaml.cs">
+      <DependentUpon>SelectProfile.xaml</DependentUpon>
     </Compile>
     <Compile Include="VIGallery.xaml.cs">
       <DependentUpon>VIGallery.xaml</DependentUpon>

@@ -3,23 +3,26 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using SeleccionarProfile.Data;
 using System;
 using System.Collections.Generic;
-using SeleccionarProfile.NewFolders;
+using ProyectoWPF.NewFolders;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using SeleccionarProfile.Components;
 using Reproductor;
 using System.Linq;
-using SeleccionarProfile.Data.Online;
-using SeleccionarProfile.Components.Online;
 using System.Net;
 using MySql.Data.MySqlClient;
 using System.Data.SQLite;
+using ProyectoWPF;
+using ProyectoWPF.Data;
+using VIGallery.Data;
+using ProyectoWPF.Components;
+using ProyectoWPF.Data.Online;
+using ProyectoWPF.Components.Online;
 
-namespace SeleccionarProfile {
+namespace ProyectoWPF {
     /// <summary>
     /// Lógica de interacción para VIGallery.xaml
     /// </summary>

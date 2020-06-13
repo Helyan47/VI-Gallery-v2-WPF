@@ -1,4 +1,6 @@
 ﻿using Dapper;
+using ProyectoWPF;
+using ProyectoWPF.Data;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace SeleccionarProfile.Data {
+namespace VIGallery.Data {
     public class ConexionOffline {
 
         private static IDbConnection cnn = null;

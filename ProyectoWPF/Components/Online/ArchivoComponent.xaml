@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="SeleccionarProfile.Components.Online.ArchivoComponent"
+﻿<UserControl x:Class="ProyectoWPF.Components.Online.ArchivoComponent"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SeleccionarProfile.Components.Online"
-             xmlns:main="clr-namespace:SeleccionarProfile"
+             xmlns:local="clr-namespace:ProyectoWPF.Components.Online"
+             xmlns:main="clr-namespace:ProyectoWPF"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="250">
     <UserControl.Effect>

@@ -1,5 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
-using SeleccionarProfile.Data;
+using ProyectoWPF.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +12,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-
-namespace LoginUser {
+namespace ProyectoWPF.LoginUser {
     /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
+    /// Lógica de interacción para LoginUser.xaml
     /// </summary>
-    public partial class MainWindow : Window {
+    public partial class LoginUser : Window {
 
         TextBox textUserBox;
         PasswordBox textPassBox;
 
-        public MainWindow() {
+        public LoginUser() {
             InitializeComponent();
             inputUser.changeMode("username");
             inputUser.invertColors("black");
@@ -92,7 +90,7 @@ namespace LoginUser {
 
                         if (user != null) {
                             MessageBox.Show("Conectado");
-                            SeleccionarProfile.MainWindow selectProf = new SeleccionarProfile.MainWindow(true, user);
+                            SelectProfile.SelectProfile selectProf = new SelectProfile.SelectProfile(true, user);
                             this.Hide();
                             selectProf.Show();
                             this.Close();
@@ -117,7 +115,7 @@ namespace LoginUser {
             } catch (MySqlException exc) {
                 MessageBox.Show("Se ha producido un error al conectar con la base de datos");
             }
-         }
+        }
 
         public void MinimizeApp(object sender, RoutedEventArgs e) {
             this.WindowState = WindowState.Minimized;
@@ -204,7 +202,7 @@ namespace LoginUser {
             } else if ((h.X >= 0 && h.X <= newPass1.ActualWidth) && (h.Y >= 0 && h.Y <= newPass1.ActualHeight)) {
                 newPass1Error.Visibility = Visibility.Hidden;
                 //inputUser.lostFocus();
-            } else if((q.X >= 0 && q.X <= newPass2.ActualWidth) && (q.Y >= 0 && q.Y <= newPass2.ActualHeight)){
+            } else if ((q.X >= 0 && q.X <= newPass2.ActualWidth) && (q.Y >= 0 && q.Y <= newPass2.ActualHeight)) {
                 newPass2Error.Visibility = Visibility.Hidden;
             } else {
                 newUser.lostFocus(true);
@@ -229,7 +227,7 @@ namespace LoginUser {
         }
 
         private void OfflineMode_Click(object sender, MouseButtonEventArgs e) {
-            SeleccionarProfile.MainWindow selectProf = new SeleccionarProfile.MainWindow(false, null);
+            SelectProfile.SelectProfile selectProf = new SelectProfile.SelectProfile(false, null);
             this.Hide();
             selectProf.Show();
             this.Close();

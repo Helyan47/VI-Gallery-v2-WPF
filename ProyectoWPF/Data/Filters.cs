@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeleccionarProfile.Data {
+namespace ProyectoWPF.Data {
     public static class Filters {
         public static List<string> filterAlgorithm(string[] carpetas, string search) {
             List<string> resultados = new List<string>();

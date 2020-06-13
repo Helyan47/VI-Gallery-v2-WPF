@@ -14,8 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ProyectoWPF.Data.Online;
 
-namespace SeleccionarProfile.Components.Online {
+namespace ProyectoWPF.Components.Online {
     /// <summary>
     /// Lógica de interacción para ArchivoComponent.xaml
     /// </summary>

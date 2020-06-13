@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using SeleccionarProfile.Data;
+using ProyectoWPF.Data;
 
-namespace SeleccionarProfile {
+namespace ProyectoWPF {
     public static class Lista {
 
         private static ICollection<WrapPanelPrincipal> _wrapsSecundarios = new List<WrapPanelPrincipal>();

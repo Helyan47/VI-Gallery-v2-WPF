@@ -1,4 +1,5 @@
-﻿using SeleccionarProfile.Data;
+﻿using ProyectoWPF.Data;
+using SeleccionarProfile.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using VIGallery.Data;
 
-namespace SeleccionarProfile.NewFolders {
+namespace ProyectoWPF.NewFolders {
     /// <summary>
     /// Lógica de interacción para NewProfile.xaml
     /// </summary>

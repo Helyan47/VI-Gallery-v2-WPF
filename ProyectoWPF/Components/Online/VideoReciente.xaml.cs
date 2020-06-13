@@ -15,8 +15,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ProyectoWPF.Data.Online;
 
-namespace SeleccionarProfile.Components {
+namespace ProyectoWPF.Components {
     /// <summary>
     /// Lógica de interacción para VideoReciente.xaml
     /// </summary>

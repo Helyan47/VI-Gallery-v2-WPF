@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SeleccionarProfile {
+namespace ProyectoWPF {
     /// <summary>
     /// Lógica de interacción para AddCarpeta.xaml
     /// </summary>

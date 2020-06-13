@@ -1,18 +1,17 @@
 ﻿using MySql.Data.MySqlClient;
-using SeleccionarProfile.Components;
-using SeleccionarProfile.Data;
-using SeleccionarProfile.NewFolders;
+using ProyectoWPF.Components;
+using ProyectoWPF.Data;
+using ProyectoWPF.NewFolders;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using VIGallery.Data;
 
-namespace SeleccionarProfile {
+namespace ProyectoWPF {
     /// <summary>
     /// Lógica de interacción para SubCarpeta.xaml
     /// </summary>
