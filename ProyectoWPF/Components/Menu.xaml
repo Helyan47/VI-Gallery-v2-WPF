@@ -64,7 +64,7 @@
             </Grid>
         </Border>
         <Border CornerRadius="10" Background="#FF1B1B1B" Grid.Row="1" Margin="10">
-            <Grid x:Name="WrapSubCarpetas" Grid.Row="1"/>
+            <local:WrapPanelPrincipal x:Name="WrapSubCarpetas" Grid.Row="1"/>
         </Border>
     </Grid>
 </UserControl>

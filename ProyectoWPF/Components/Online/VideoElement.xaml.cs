@@ -1,20 +1,11 @@
-﻿using SeleccionarProfile.Data.Online;
-using Reproductor;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ProyectoWPF.Data.Online;
+using ProyectoWPF.Reproductor;
 
 namespace ProyectoWPF.Components
 {
@@ -48,8 +39,9 @@ namespace ProyectoWPF.Components
         }
 
         private void onClickReproducir(object sender, EventArgs e) {
-            VI_Reproductor reproductor = new VI_Reproductor(true);
-            main.getFirstGrid().Children.Add(reproductor);
+            VI_Reproductor reproductor = main.getReproductor();
+            reproductor.Visibility = Visibility.Visible;
+            reproductor.setOnline(true);
             List<Uri> listaArchivos = new List<Uri>();
             List<long> listaId = new List<long>();
             List<string> listaNombre = new List<string>();
@@ -63,7 +55,7 @@ namespace ProyectoWPF.Components
                 listaNombre.Add(nombre);
                 reproductor.setListaNombres(listaNombre.ToArray());
                 reproductor.setListaCapitulos(listaArchivos.ToArray(), listaId.ToArray()); ;
-                reproductor.setVIGallery(main.getFirstGrid());
+                reproductor.setVIGallery(main);
             } else if (_pelicula != null) {
                 Uri u = new Uri(_pelicula.rutaWeb);
                 listaId.Add(_pelicula.id);
@@ -72,7 +64,7 @@ namespace ProyectoWPF.Components
                 listaNombre.Add(nombre);
                 reproductor.setListaNombres(listaNombre.ToArray());
                 reproductor.setListaPeliculas(listaArchivos.ToArray(), listaId.ToArray());
-                reproductor.setVIGallery(main.getFirstGrid());
+                reproductor.setVIGallery(main);
             }
         }
 

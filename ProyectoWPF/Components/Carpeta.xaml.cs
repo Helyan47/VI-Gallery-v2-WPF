@@ -4,6 +4,7 @@ using ProyectoWPF.Data;
 using ProyectoWPF.NewFolders;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,25 +22,38 @@ namespace ProyectoWPF {
     [Serializable]
     public partial class Carpeta : UserControl {
 
-        private DispatcherTimer _dispatcherTimer;
+        /*private DispatcherTimer _dispatcherTimer;
         private WrapPanelPrincipal _wrapPanelAnterior;
         private Grid _gridPrincipal;
         private Grid _gridSecundario;
         private WrapPanelPrincipal _wrapCarpetaPropia;
         private Menu _menuCarpeta;
         private Grid _gridPadre;
+        
+        */
+        private string rutaDirectorio = null;
+        private DispatcherTimer _dispatcherTimer;
+        private Grid _gridPrincipal;
+        private Grid _gridSecundario;
+        private Menu _menu;
         private CarpetaClass _carpeta;
-        private string _rutaDirectorio;
+        public WrapPanelPrincipal _primerPanel { get; set; }
+        private Carpeta _carpetaPadre;
+        private List<Carpeta> _carpetasHijo;
         private VIGallery _ventanaMain;
         private Canvas _defaultCanvas;
         public List<Archivo> _archivos { get; set; }
         private static long _mode = 0;
         public PerfilClass _profile { get; set; }
 
-        public Carpeta(VIGallery ventana) {
+        public Carpeta(VIGallery ventana, WrapPanelPrincipal primerPanel, Menu menu, Carpeta carpetaPadre) {
             InitializeComponent();
             Title.SetText("");
+            _carpetaPadre = carpetaPadre;
+            _primerPanel = primerPanel;
+            _menu = menu;
             _archivos = new List<Archivo>();
+            _carpetasHijo = new List<Carpeta>();
             _ventanaMain = ventana;
             _defaultCanvas = canvasFolder;
             _profile = VIGallery._profile;
@@ -79,37 +93,36 @@ namespace ProyectoWPF {
         }
 
         private void img_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
-            bordeDesc.Visibility = Visibility.Visible;
-            Img.Visibility = Visibility.Hidden;
-            ImgBorde.Visibility = Visibility.Hidden;
-            descripcion.Opacity = 0.04;
-            _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-            _dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
-            _dispatcherTimer.Start();
-            descripcion.Visibility = Visibility.Visible;
-            if (_mode != 0) {
-                Title.Visibility = Visibility.Hidden;
+            if (_carpeta.isFolder) {
+                bordeDesc.Visibility = Visibility.Visible;
+                Img.Visibility = Visibility.Hidden;
+                ImgBorde.Visibility = Visibility.Hidden;
+                descripcion.Opacity = 0.04;
+                _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+                _dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+                _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+                _dispatcherTimer.Start();
+                descripcion.Visibility = Visibility.Visible;
+                if (_mode != 0) {
+                    Title.Visibility = Visibility.Hidden;
+                }
             }
-            
         }
 
         private void bordeDesc_MouseLeave(object sender, MouseEventArgs e) {
-            if (_carpeta.img.Equals("")) {
-                Img.Visibility = Visibility.Visible;
-            } else {
-                ImgBorde.Visibility = Visibility.Visible;
-            }
-            bordeDesc.Visibility = Visibility.Hidden;
-            descripcion.Visibility = Visibility.Hidden;
-            if (_mode != 3) {
-                Title.Visibility = Visibility.Visible;
+            if (_carpeta.isFolder) {
+                if (_carpeta.img.Equals("")) {
+                    Img.Visibility = Visibility.Visible;
+                } else {
+                    ImgBorde.Visibility = Visibility.Visible;
+                }
+                bordeDesc.Visibility = Visibility.Hidden;
+                descripcion.Visibility = Visibility.Hidden;
+                if (_mode != 3) {
+                    Title.Visibility = Visibility.Visible;
+                }
             }
             
-        }
-        public void setMenuCarpeta(Menu m) {
-            _menuCarpeta = m;
-            m.SetFlowCarpPrincipal(_menuCarpeta.getFlowCarpPrincipal());
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e) {
@@ -119,31 +132,9 @@ namespace ProyectoWPF {
             }
         }
 
-
-        public void setPadreSerie(WrapPanelPrincipal wrapPadre) {
-
-            _wrapPanelAnterior = wrapPadre;
-        }
-
-
-        public void SetGridPadre(Grid p) {
-            _gridPadre = p;
-        }
-        public Grid GetGridPadre() {
-            return _gridPadre;
-        }
-
         public void setDescripcion(string d) {
             _carpeta.desc= d;
             descripcion.Text = d;
-        }
-
-        public void setRutaDirectorio(string s) {
-            _rutaDirectorio = s;
-        }
-
-        public string getRutaDirectorio() {
-            return _rutaDirectorio;
         }
 
         public void setRutaPrograma(string s) {
@@ -159,10 +150,6 @@ namespace ProyectoWPF {
             _carpeta = newCarpeta;
             Title.SetText(_carpeta.nombre);
             descripcion.Text = _carpeta.desc;
-        }
-
-        public WrapPanelPrincipal GetWrapCarpPrincipal() {
-            return _wrapCarpetaPropia;
         }
 
         public Grid getGridButtonsPrincipal() {
@@ -193,11 +180,32 @@ namespace ProyectoWPF {
         }
 
         public Menu GetMenuCarpeta() {
-            return _menuCarpeta;
+            return _menu;
         }
 
         public void addFile(Archivo ac) {
             _archivos.Add(ac);
+        }
+
+        public void addCarpetaHijo(Carpeta c) {
+            if (!_carpetasHijo.Contains(c)) {
+                _carpetasHijo.Add(c);
+            }
+        }
+
+        public List<Carpeta> getCarpetasHijos() {
+            if (_carpetasHijo.Count == 0) {
+                return null;
+            }
+            return _carpetasHijo;
+        }
+
+        public void setRutaDirectorio(string ruta) {
+            rutaDirectorio = ruta;
+        }
+
+        public string getRutaDirectorio() {
+            return rutaDirectorio;
         }
 
 #endregion
@@ -208,74 +216,58 @@ namespace ProyectoWPF {
                 if (_carpeta.nombre.CompareTo("") != 0) {
                     setImg();
                 }
-                if (_carpeta.desc.CompareTo("") == 0) {
-                    setDescripcion("Inserta una descripción");
+                if (_carpeta.isFolder) {
+                    if (_carpeta.desc.CompareTo("") == 0) {
+                        setDescripcion("Inserta una descripción");
+                    }
+                } else {
+                    bordeDesc.Visibility = Visibility.Hidden;
+                    descripcion.Visibility = Visibility.Hidden;
                 }
+                
             }
 
         }
 
         public void click() {
-            if (_menuCarpeta == null) {
-                _menuCarpeta = new Menu(this);
-                Lista.addMenu(_menuCarpeta);
-                _wrapCarpetaPropia = new WrapPanelPrincipal();
-                Lista.addSubWrap(_wrapCarpetaPropia);
-                _wrapCarpetaPropia.setCarpeta(this);
-                _wrapCarpetaPropia.setSubcarpeta(null);
-                _gridPadre.Children.Add(_menuCarpeta);
-                _menuCarpeta.SetFlowLayAnterior(_wrapPanelAnterior);
-                //menuCarpeta.Children.Add(menuCarpeta); //checkear padre
-                _wrapCarpetaPropia.setGridSubCarpetas(_menuCarpeta.getWrapSubCarpetas());
-
-                _menuCarpeta.SetFlowCarpPrincipal(_wrapCarpetaPropia);
-                _wrapCarpetaPropia.Visibility = Visibility.Hidden;
-                _menuCarpeta.Visibility = Visibility.Hidden;
+            if (_menu != null) {
+                _menu.actualizar(this);
+                _menu.Visibility = Visibility.Visible;
+                _primerPanel.Visibility = Visibility.Hidden;
             }
-            _menuCarpeta.actualizar();
-            _wrapPanelAnterior.Visibility = Visibility.Hidden;
-            _menuCarpeta.Visibility = Visibility.Visible;
-            _wrapCarpetaPropia.Visibility = Visibility.Visible;
 
 
             _gridSecundario.SetValue(Grid.RowProperty, 0);
             _gridPrincipal.SetValue(Grid.RowProperty, 1);
 
-            _ventanaMain.clearTextBox(_wrapPanelAnterior);
+            _ventanaMain.clearTextBox();
 
             _ventanaMain.ReturnVisibility(true);
            
         }
 
         public void clickEspecial() {
-            if (_menuCarpeta == null) {
-                _menuCarpeta = new Menu(this);
-                Lista.addMenu(_menuCarpeta);
-                _wrapCarpetaPropia = new WrapPanelPrincipal();
-                Lista.addSubWrap(_wrapCarpetaPropia);
-                _wrapCarpetaPropia.setCarpeta(this);
-                _wrapCarpetaPropia.setSubcarpeta(null);
-                _gridPadre.Children.Add(_menuCarpeta);
-                _menuCarpeta.SetFlowLayAnterior(_wrapPanelAnterior);
-                //menuCarpeta.Children.Add(menuCarpeta); //checkear padre
-                _wrapCarpetaPropia.setGridSubCarpetas(_menuCarpeta.getWrapSubCarpetas());
-
-                _menuCarpeta.SetFlowCarpPrincipal(_wrapCarpetaPropia);
-                _wrapCarpetaPropia.Visibility = Visibility.Hidden;
-                _menuCarpeta.Visibility = Visibility.Hidden;
+            if (_menu == null) {
+                _menu.actualizar(this);
             }
-            _menuCarpeta.actualizar();
+            
             
         }
 
         public void clickInverso() {
-            _menuCarpeta.Visibility = Visibility.Hidden;
-            _wrapPanelAnterior.Visibility = Visibility.Visible;
-            _wrapCarpetaPropia.Visibility = Visibility.Hidden;
 
             _gridSecundario.SetValue(Grid.RowProperty, 1);
             _gridPrincipal.SetValue(Grid.RowProperty, 0);
-            _ventanaMain.ReturnVisibility(false);
+            
+            if (_carpetaPadre == null) {
+                _ventanaMain.ReturnVisibility(false);
+                _primerPanel.Visibility = Visibility.Visible;
+            } else {
+                _menu.actualizar(_carpetaPadre);
+                _ventanaMain.ReturnVisibility(true);
+                
+            }
+            
         }
 
         private void MouseClick(object sender, EventArgs e) {
@@ -352,19 +344,21 @@ namespace ProyectoWPF {
                 } else {
                     ConexionOffline.deleteFolder(_carpeta.id);
                 }
-                _archivos = null;
-                _wrapPanelAnterior.removeFolder(this);
-                Lista.removeSubFolders(this);
-                if (_wrapCarpetaPropia != null) {
-                    _wrapCarpetaPropia.removeChildrens();
-                    Lista.removeWrapPanelSecundario(_wrapCarpetaPropia);
-                    _wrapCarpetaPropia = null;
+                if (_archivos != null) {
+                    foreach(Archivo a in _archivos) {
+                        removeFile(a);
+                    }
+                    _archivos = null;
                 }
-
-                if (_menuCarpeta != null) {
-                    _menuCarpeta.remove();
-                    _menuCarpeta = null;
+                
+                if (_carpetasHijo != null) {
+                    foreach (Carpeta c in _carpetasHijo) {
+                        c.remove();
+                    }
+                    _carpetasHijo = null;
                 }
+                
+                
 
                 Lista.removeCarpetaClass(_carpeta.id);
             } catch (MySqlException exc) {
@@ -411,22 +405,94 @@ namespace ProyectoWPF {
                 } else {
                     ConexionOffline.updateFolderName(_carpeta);
                 }
-                Lista.orderWrap(_wrapPanelAnterior);
+                Lista.orderWrap(_primerPanel);
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
 
+        public void changeName(string newName, string newImg) {
+            try {
+                _carpeta.nombre = newName;
+                _carpeta.img = newImg;
+                string[] splitted = _carpeta.ruta.Split('/');
+                splitted[splitted.Length - 1] = newName;
+                string rutaAntigua = _carpeta.ruta;
+                string rutaNueva = "";
+                for (int i = 0; i < splitted.Length; i++) {
+                    rutaNueva += splitted[i];
+                    if (i != splitted.Length - 1) {
+                        rutaNueva += "/";
+                    }
+                }
+                _carpeta.ruta = rutaNueva;
+                setImg();
+                Lista.changeSubFoldersName(rutaAntigua, rutaNueva);
+                if (_archivos != null) {
+                    foreach (Archivo a in _archivos) {
+                        a.updateRuta(rutaAntigua, rutaNueva);
+                    }
+                }
+                Title.SetText(newName);
+                if (VIGallery.conexionMode) {
+                    Conexion.updateFolderName(_carpeta);
+                } else {
+                    ConexionOffline.updateFolderName(_carpeta);
+                }
+                Lista.orderWrap(_primerPanel);
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            }
+        }
+
+        public void updateRuta(string rutaAntigua, string rutaNueva) {
+            try {
+                string rutaPadreAntigua = _carpeta.rutaPadre;
+                _carpeta.rutaPadre = rutaNueva;
+                string rutaAntiguaSub = _carpeta.ruta;
+                _carpeta.ruta = _carpeta.ruta.Replace(rutaAntigua, rutaNueva);
+                if (VIGallery.conexionMode) {
+                    Conexion.updateFolderName(_carpeta);
+                } else {
+                    ConexionOffline.updateFolderName(_carpeta);
+                }
+                Lista.changeSubFoldersName(rutaAntiguaSub, _carpeta.ruta);
+
+                if (_archivos != null) {
+                    foreach (Archivo a in _archivos) {
+                        a.updateRuta(rutaAntiguaSub, _carpeta.ruta);
+                    }
+                }
+            } catch (MySqlException exc) {
+                throw exc;
+            } catch (SQLiteException exc2) {
+                throw exc2;
+            }
+        }
+
         public void showNewNamePanel(object sender, EventArgs e) {
             string folderRutaPadre = _carpeta.ruta.Split('/')[0] + "/";
-            ChangeName cn = new ChangeName(folderRutaPadre,true);
+            ChangeName cn = null;
+            if (_carpetaPadre == null) {
+               cn = new ChangeName(folderRutaPadre, true);
+                cn.setDescripcion(_carpeta.desc);
+                cn.checkGeneros(_carpeta.generos);
+            } else {
+                cn = new ChangeName(folderRutaPadre, false);
+            }
+
             cn.setName(_carpeta.nombre);
-            cn.setDescripcion(_carpeta.desc);
+            
             cn.setImg(_carpeta.img);
-            cn.checkGeneros(_carpeta.generos);
+            
             cn.ShowDialog();
             if (cn.getNewName() != null) {
-                changeName(cn.getNewName(),cn.getDescripcion(),cn.getDirImg(),cn.getGeneros());
+                if (_carpetaPadre == null) {
+                    changeName(cn.getNewName(), cn.getDescripcion(), cn.getDirImg(), cn.getGeneros());
+                } else {
+                    changeName(cn.getNewName(), cn.getDirImg());
+                }
+                
             }
         }
 
@@ -437,7 +503,7 @@ namespace ProyectoWPF {
         public void removeFile(Archivo a) {
             if (_archivos.Contains(a)) {
                 _archivos.Remove(a);
-                _wrapCarpetaPropia.removeFile(a);
+                _menu.getWrap().removeFile(a);
             }
         }
     }

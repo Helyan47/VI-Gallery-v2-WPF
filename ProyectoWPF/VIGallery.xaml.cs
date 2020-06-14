@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using SeleccionarProfile.Data;
 using System;
 using System.Collections.Generic;
 using ProyectoWPF.NewFolders;
@@ -9,18 +8,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using Reproductor;
 using System.Linq;
 using System.Net;
 using MySql.Data.MySqlClient;
 using System.Data.SQLite;
-using ProyectoWPF;
 using ProyectoWPF.Data;
 using VIGallery.Data;
 using ProyectoWPF.Components;
 using ProyectoWPF.Data.Online;
 using ProyectoWPF.Components.Online;
+using ProyectoWPF.Reproductor;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -32,7 +29,7 @@ namespace ProyectoWPF {
         private ICollection<Button> _botonesMenu;
         string[] _folders;
         private Carpeta _aux;
-        private SubCarpeta _aux2;
+        private Carpeta _aux2;
         List<string> _rutas = new List<string>();
         private UIElementCollection _botones;
         private Button _activatedButton;
@@ -57,6 +54,7 @@ namespace ProyectoWPF {
             if (!conexionMode) {
                 rowOnline.Height = new GridLength(0,GridUnitType.Star);
             }
+            reproductorControl.setVIGallery(this);
         }
 
         /**
@@ -67,9 +65,10 @@ namespace ProyectoWPF {
             Button b = (Button)sender;
             MenuClass mc = Lista.getMenuFromButton(b);
             WrapPanelPrincipal wp = Lista.getWrapVisible();
-            clearTextBox(wp);
+            clearTextBox();
             if (Lista.buttonInButtons(mc)) {
                 Lista.hideAll();
+                menuCarpetas.Visibility = Visibility.Hidden;
                 GridSecundario.SetValue(Grid.RowProperty, 1);
                 GridPrincipal.SetValue(Grid.RowProperty, 0);
                 Lista.showWrapFromMenu(mc);
@@ -103,36 +102,42 @@ namespace ProyectoWPF {
                         folderDialog.IsFolderPicker = true;
                         firstFolder = 0;
                         if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
-                            _folders = OrderClass.orderArrayOfString(Directory.GetDirectories(folderDialog.FileName));
-                            for (int i = 0; i < _folders.Length; i++) {
-                                _rutas.Add(_folders[i]);
+                            Dispatcher.Invoke(new Action(() => {
+                                _folders = OrderClass.orderArrayOfString(Directory.GetDirectories(folderDialog.FileName));
+                                for (int i = 0; i < _folders.Length; i++) {
+                                    _rutas.Add(_folders[i]);
 
-                                string[] aux = Directory.GetDirectories(_folders[i]);
-                                for (int j = 0; j < aux.Length; j++) {
-                                    _rutas.Add(aux[j]);
+                                    string[] aux = Directory.GetDirectories(_folders[i]);
+                                    for (int j = 0; j < aux.Length; j++) {
+                                        _rutas.Add(aux[j]);
+                                    }
                                 }
-                            }
+                            }));
 
-                            if (_folders != null) {
-                                if (!conexionMode) {
-                                    ConexionOffline.startConnection();
+                            Dispatcher.Invoke(new Action(() => {
+                                if (_folders != null) {
+                                    if (!conexionMode) {
+                                        ConexionOffline.startConnection();
+                                    }
+                                    addText(_folders);
+                                    if (!conexionMode) {
+                                        ConexionOffline.closeConnection();
+                                    }
                                 }
-                                addText(_folders);
-                                if (!conexionMode) {
-                                    ConexionOffline.closeConnection();
-                                }
-                            }
+                            }));
 
                         }
                     }
-                    Lista.modifyMode(_profile.mode);
-                    Lista.orderWrapsSecundarios();
-                    WrapPanelPrincipal wp = Lista.getWrapVisible();
-                    if (wp != null) {
-                        Lista.orderWrap(wp);
-                    }
-                    Lista.hideAllExceptPrinc();
-                    ReturnVisibility(false);
+                    Dispatcher.Invoke(new Action(() => {
+                        Lista.modifyMode(_profile.mode);
+                        Lista.orderWrap(menuCarpetas.getWrap());
+                        WrapPanelPrincipal wp = Lista.getWrapVisible();
+                        if (wp != null) {
+                            Lista.orderWrap(wp);
+                        }
+                        Lista.hideAllExceptPrinc();
+                        ReturnVisibility(false);
+                    }));
 
                 } else {
                     menuButtons.BorderThickness = new Thickness(5);
@@ -151,62 +156,35 @@ namespace ProyectoWPF {
          * Aáde una subcarpeta con el nombre que se la asigne
          */
         private void addSubCarpeta() {
+
             try {
-                SubCarpeta c = new SubCarpeta(this);
-                WrapPanelPrincipal p = Lista.getSubWrapsVisibles();
+                Carpeta padre = menuCarpetas.getCarpeta();
+                Carpeta c = new Carpeta(this, Lista.getWrapVisible(), menuCarpetas, padre);
                 NewSubCarpeta n = null;
-                if (p.getCarpeta() == null) {
-                    n = new NewSubCarpeta(p.getSubCarpeta().getClass().ruta);
-                } else {
-                    n = new NewSubCarpeta(p.getCarpeta().getClass().ruta);
-                }
+                n = new NewSubCarpeta(padre.getClass().ruta);
 
-
-                n.setSubCarpeta(c);
                 n.ShowDialog();
-                if (n.getSubCarpeta().getClass().nombre != "") {
-
-
-                    Lista.addSubCarpeta(c);
+                if (n.getNombre() != "") {
+                    CarpetaClass s = new CarpetaClass(n.getNombre(), "", true);
+                    c.setClass(s);
                     c.getClass().idMenu = Lista.getMenuFromButton(_activatedButton).id;
-                    if (p != null) {
-                        if (p.getCarpeta() == null) {
-                            c.setDatos(c.getClass(), p, p.getSubCarpeta().GetGridCarpeta());
-                            p.addSubCarpeta(c);
-                            p.getSubCarpeta().AddSubCarpetas();
-                            c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
-                            c.setImg(p.getSubCarpeta().getClass().img);
-
-                            string name = _activatedButton.Content.ToString();
-                            c.getClass().ruta = p.getSubCarpeta().getClass().ruta + "/" + c.getClass().nombre;
-                            c.getClass().rutaPadre = p.getSubCarpeta().getClass().ruta;
-
-                        } else {
-
-                            c.setDatos(c.getClass(), p, p.GetGridSubCarpetas());
-                            p.addSubCarpeta(c);
-                            p.getCarpeta().AddSubCarpetas();
-                            c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
-
-                            string name = _activatedButton.Content.ToString();
-                            c.getClass().ruta = p.getCarpeta().getClass().ruta + "/" + c.getClass().nombre;
-                            c.getClass().rutaPadre = p.getCarpeta().getClass().ruta;
-                            c.setImg(p.getCarpeta().getClass().img);
-
-                        }
-
-                        if (conexionMode) {
-                            Conexion.saveSubFolder(c);
-                        } else {
-                            ConexionOffline.startConnection();
-                            ConexionOffline.addCarpeta(c.getClass());
-                            ConexionOffline.closeConnection();
-                        }
-
-                        c.actualizar();
-                        c.Visibility = Visibility.Visible;
-                        Lista.orderWrap(p);
+                    c.getClass().img = padre.getClass().img;
+                    c.getClass().rutaPadre = padre.getClass().ruta;
+                    c.setRutaPrograma(padre.getClass().ruta + "/" + c.getClass().nombre);
+                    padre.addCarpetaHijo(c);
+                    Lista.addCarpeta(c);
+                    if (conexionMode) {
+                        Conexion.saveSubFolder(c);
+                    } else {
+                        ConexionOffline.startConnection();
+                        ConexionOffline.addCarpeta(c.getClass());
+                        ConexionOffline.closeConnection();
                     }
+
+                    c.actualizar();
+                    menuCarpetas.actualizar(padre);
+                    c.Visibility = Visibility.Visible;
+                    Lista.orderWrap(menuCarpetas.getWrap());
 
 
 
@@ -219,115 +197,9 @@ namespace ProyectoWPF {
             } catch (SQLiteException exc2) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
+            
         }
 
-        /**
-         * Añade una subcarpeta a la carpeta que se le pase por argumentos
-         */
-        private SubCarpeta addSubCarpetaCompleta(Carpeta p1, string nombre) {
-            try {
-                SubCarpeta c = new SubCarpeta(this);
-
-                p1.clickEspecial();
-                //FlowCarpeta p = listaSeries.getFlowCarpVisible();
-                WrapPanelPrincipal p = p1.GetWrapCarpPrincipal();
-                CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(nombre), "", false);
-                c.setClass(s);
-                s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
-                c.setRutaDirectorio(nombre);
-                if (p != null) {
-
-
-                    s.ruta = p1.getClass().ruta + "/" + s.nombre;
-                    bool checkIfExists = Lista.Contains(c.getClass().ruta);
-
-                    if (!checkIfExists) {
-                        Lista.addSubCarpeta(c);
-                        c.setImg(p1.getClass().img);
-                        c.setDatos(s, p, p.GetGridSubCarpetas());
-                        p.addSubCarpeta(c);
-                        p.getCarpeta().AddSubCarpetas();
-                        c.setMenuCarpeta(p1.GetMenuCarpeta());
-                        c.setTitle(System.IO.Path.GetFileName(nombre));
-                        c.getClass().rutaPadre = p1.getClass().ruta;
-
-                        c.setRutaDirectorio(nombre);
-
-                        if (conexionMode) {
-                            Conexion.saveSubFolder(c);
-                        } else {
-                            ConexionOffline.addCarpeta(c.getClass());
-                        }
-
-                        c.actualizar();
-                        c.Visibility = Visibility.Visible;
-                    } else {
-                        c = null;
-                    }
-
-                }
-                return c;
-            } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            }
-
-
-            return null;
-        }
-
-        /**
-         * Añade una subcarpeta a la subcarpeta que se le pase por argumentos
-         */
-        private SubCarpeta addSubCarpetaCompleta(SubCarpeta sp1, string nombre) {
-            try {
-                SubCarpeta c = new SubCarpeta(this);
-
-                sp1.click();
-                WrapPanelPrincipal p = sp1.getWrapCarpPrincipal();
-                CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(nombre), "", false);
-                c.setClass(s);
-                s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
-                c.setRutaDirectorio(nombre);
-                if (p != null) {
-                    s.ruta = sp1.getClass().ruta + "/" + s.nombre;
-                    bool checkIfExists = Lista.Contains(c.getClass().ruta);
-                    if (!checkIfExists) {
-                        Lista.addSubCarpeta(c);
-                        c.setImg(sp1.getClass().img);
-                        c.setDatos(s, p, sp1.GetGridCarpeta());
-                        p.addSubCarpeta(c);
-                        p.getSubCarpeta().AddSubCarpetas();
-                        c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
-                        c.setTitle(System.IO.Path.GetFileName(nombre));
-
-                        c.getClass().rutaPadre = sp1.getClass().ruta;
-
-                        c.setRutaDirectorio(nombre);
-
-                        if (conexionMode) {
-                            Conexion.saveSubFolder(c);
-                        } else {
-                            ConexionOffline.addCarpeta(c.getClass());
-                        }
-
-                        c.actualizar();
-                        c.Visibility = Visibility.Visible;
-                    } else {
-                        c = null;
-                    }
-
-                }
-
-                return c;
-            } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            }
-            return null;
-        }
 
         /**
          * Añade un archivo a la carpeta que se le pase por argumentos
@@ -336,7 +208,7 @@ namespace ProyectoWPF {
             try {
                 string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
                 ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
-                Archivo a = new Archivo(ac, this);
+                Archivo a = new Archivo(ac, this, null);
 
                 a.setCarpetaPadre(c);
 
@@ -345,35 +217,6 @@ namespace ProyectoWPF {
                 } else {
                     ConexionOffline.addArchivo(ac);
                 }
-
-                c.GetWrapCarpPrincipal().addFile(a);
-                c.addFile(a);
-            } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            }
-        }
-
-        /**
-         * Añade una archivo a la subcarpeta que se le pase por argumentos
-         */
-        private void addFileSubCarpeta(string fileName, SubCarpeta c) {
-            try {
-                string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
-                ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
-                Archivo a = new Archivo(ac, this);
-
-                a.setSubCarpetaPadre(c);
-
-
-                if (conexionMode) {
-                    Conexion.saveFile(ac);
-                } else {
-                    ConexionOffline.addArchivo(ac);
-                }
-
-                c.getWrapCarpPrincipal().addFile(a);
                 c.addFile(a);
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
@@ -388,7 +231,7 @@ namespace ProyectoWPF {
         private void newFile_Click(object sender, RoutedEventArgs e) {
             var fileDialog = new OpenFileDialog();
             fileDialog.Multiselect = true;
-            fileDialog.Filter = "mp4 (*.mp4)|*.mp4|avi (*.avi)|*.avi|mkv (*.mkv)|*.mkv|mpeg (*.mpeg)|*.mpeg|wmv (*.wmv)|*.wmv|flv (*.flv)|*.flv|mov (*.mov)|*.mov|wav (*.wav)|*.wav|Todos los archivos (*.*)|*.*";
+            fileDialog.Filter = "Video Files (*.mp4, *.avi, *.mkv, *.mpeg, *.wmv, *.flv, *.mov, *.wav | *.mp4; *.avi; *.mkv; *.mpeg; *.wmv; *.flv; *.mov; *.wav;";
 
             fileDialog.CheckFileExists = true;
             fileDialog.CheckPathExists = true;
@@ -396,14 +239,10 @@ namespace ProyectoWPF {
 
             if (fileDialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(fileDialog.FileName)) {
                 List<string> _files = OrderClass.orderListOfString(fileDialog.FileNames.ToList());
-                WrapPanelPrincipal p = Lista.getSubWrapsVisibles();
-                Carpeta c = p.getCarpeta();
-                SubCarpeta sc = p.getSubCarpeta();
+                Carpeta c = menuCarpetas.getCarpeta();
                 bool? flag = null;
                 if (c != null) {
                     flag = true;
-                } else if (sc != null) {
-                    flag = false;
                 }
 
 
@@ -412,8 +251,7 @@ namespace ProyectoWPF {
                         if (s.CompareTo(System.IO.Path.GetExtension(file)) == 0) {
                             if (flag == true) {
                                 addFileCarpeta(file, c);
-                            } else if (flag == false) {
-                                addFileSubCarpeta(file, sc);
+                                menuCarpetas.actualizar(c);
                             } else {
                                 MessageBox.Show("No se ha podido añadir el archivo");
                             }
@@ -423,14 +261,108 @@ namespace ProyectoWPF {
                     
                 }
                 if (flag == true) {
-                    Lista.orderWrap(c.GetWrapCarpPrincipal());
-                }else if(flag == false) {
-                    Lista.orderWrap(sc.getWrapCarpPrincipal());
+                    Lista.orderWrap(menuCarpetas.getWrap());
                 }
                 
 
 
             }
+        }
+
+        /**
+         * Añade una carpeta de las multiples carpetas seleccionadas
+         */
+        private Carpeta addCarpetaCompleta(string filename) {
+            try {
+                Carpeta p1 = new Carpeta(this, Lista.getWrapVisible(), menuCarpetas, null);
+
+                CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(filename), "", true);
+                p1.setClass(s);
+                s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
+                s.rutaPadre = "";
+                p1.actualizar();
+
+                string name = _activatedButton.Content.ToString();
+                p1.getClass().rutaPadre = _profile.nombre + "|C/" + name;
+                p1.setRutaPrograma(_profile.nombre + "|C/" + name + "/" + p1.getClass().nombre);
+                bool checkIfExists = Lista.Contains(p1.getClass().ruta);
+                if (!checkIfExists) {
+                    Lista.addCarpeta(p1);
+
+                    string[] files = System.IO.Directory.GetFiles(filename, "cover.*");
+                    if (files.Length > 0) {
+                        p1.getClass().img = files[0];
+                    }
+
+
+                    if (conexionMode) {
+                        Conexion.saveFolder(p1);
+                    } else {
+                        ConexionOffline.addCarpeta(p1.getClass());
+                    }
+
+                    p1.setRutaDirectorio(filename);
+
+                    p1.SetGridsOpciones(GridPrincipal, GridSecundario);
+                } else {
+                    p1 = null;
+                    s = null;
+                }
+                return p1;
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            }
+            return null;
+        }
+
+        private Carpeta addSubCarpetaCompleta(Carpeta c, string filename) {
+            try {
+                Carpeta p1 = new Carpeta(this, Lista.getWrapVisible(), menuCarpetas, c);
+
+                CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(filename), "", false);
+                p1.setClass(s);
+                s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
+                s.rutaPadre = "";
+                p1.actualizar();
+
+                string name = _activatedButton.Content.ToString();
+                p1.getClass().rutaPadre = c.getClass().ruta;
+                p1.setRutaPrograma(c.getClass().ruta + "/" + p1.getClass().nombre);
+                bool checkIfExists = Lista.Contains(p1.getClass().ruta);
+                if (!checkIfExists) {
+                    Lista.addCarpeta(p1);
+
+                    string[] files = System.IO.Directory.GetFiles(filename, "cover.*");
+                    if (files.Length > 0) {
+                        p1.getClass().img = files[0];
+                    } else {
+                        p1.getClass().img = c.getClass().img;
+                    }
+
+
+                    if (conexionMode) {
+                        Conexion.saveFolder(p1);
+                    } else {
+                        ConexionOffline.addCarpeta(p1.getClass());
+                    }
+
+                    p1.setRutaDirectorio(filename);
+
+                    p1.SetGridsOpciones(GridPrincipal, GridSecundario);
+                    c.addCarpetaHijo(p1);
+                } else {
+                    p1 = null;
+                    s = null;
+                }
+                return p1;
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            } catch (SQLiteException exc2) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            }
+            return null;
         }
 
         /**
@@ -459,23 +391,29 @@ namespace ProyectoWPF {
                             }
                         }
                     }
-                    
-                } else {
 
+
+                } else {
                     _aux2 = Lista.searchRuta(Directory.GetParent(files[i]).FullName);
                     if (!checkString(files[i])) {
-                        _aux2 = addSubCarpetaCompleta(_aux2, files[i]);
+                        if (_aux2 != null) {
+                            _aux2 = addSubCarpetaCompleta(_aux2, files[i]);
+                        }
+                       
                     } else {
                         if (_aux != null) {
                             _aux2 = addSubCarpetaCompleta(_aux, files[i]);
                         }
                     }
+
                     string[] archivos = OrderClass.orderArrayOfString(Directory.GetFiles(files[i]));
-                    for (int j = 0; j < archivos.Length; j++) {
-                        foreach (string s in Lista._extensiones) {
-                            if (s.ToLower().CompareTo(System.IO.Path.GetExtension(archivos[j]).ToLower()) == 0) {
-                                addFileSubCarpeta(archivos[j], _aux2);
-                                Console.WriteLine("Added: " + archivos[j]);
+                    if (_aux2 != null) {
+                        for (int j = 0; j < archivos.Length; j++) {
+                            foreach (string s in Lista._extensiones) {
+                                if (s.ToLower().CompareTo(System.IO.Path.GetExtension(archivos[j]).ToLower()) == 0) {
+                                    addFileCarpeta(archivos[j], _aux2);
+                                    Console.WriteLine("Added: " + archivos[j]);
+                                }
                             }
                         }
                     }
@@ -484,6 +422,7 @@ namespace ProyectoWPF {
                     string[] directorios = OrderClass.orderArrayOfString(Directory.GetDirectories(files[i]));
                     addText(directorios);
                 }
+
 
             }
         }
@@ -506,12 +445,15 @@ namespace ProyectoWPF {
 
         }
 
+
+
         /**
          * Añade una carpeta al menu
          */
         private void addCarpeta() {
             try {
-                Carpeta p1 = new Carpeta(this);
+                
+                Carpeta p1 = new Carpeta(this, Lista.getWrapVisible(), menuCarpetas, null);
 
                 AddCarpeta newSerie = new AddCarpeta(p1, _activatedButton);
                 newSerie.ShowDialog();
@@ -532,9 +474,7 @@ namespace ProyectoWPF {
                         ConexionOffline.addCarpeta(p1.getClass());
                     }
 
-                    p1.SetGridPadre(gridPrincipal);
                     aux.addCarpeta(p1);
-                    p1.setPadreSerie(aux);
                     p1.SetGridsOpciones(GridPrincipal, GridSecundario);
                     Lista.orderWrap(aux);
                 } else {
@@ -548,65 +488,13 @@ namespace ProyectoWPF {
 
         }
 
-        /**
-         * Añade una carpeta de las multiples carpetas seleccionadas
-         */
-        private Carpeta addCarpetaCompleta(string filename) {
-            try {
-                Carpeta p1 = new Carpeta(this);
-                p1.setRutaDirectorio(filename);
-
-
-                WrapPanelPrincipal aux = Lista.getWrapVisible();
-                CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(filename), "", true);
-                p1.setClass(s);
-                s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
-                s.rutaPadre = "";
-                p1.actualizar();
-
-                string name = _activatedButton.Content.ToString();
-                p1.getClass().rutaPadre = _profile.nombre + "|C/" + name;
-                p1.setRutaPrograma(_profile.nombre + "|C/" + name + "/" + p1.getClass().nombre);
-                bool checkIfExists = Lista.Contains(p1.getClass().ruta);
-                if (!checkIfExists) {
-                    Lista.addCarpeta(p1);
-
-                    string[] files = System.IO.Directory.GetFiles(filename, "cover.*");
-                    if (files.Length > 0) {
-                        p1.getClass().img = files[0];
-                    }
-
-
-                    if (conexionMode) {
-                        Conexion.saveFolder(p1);
-                    } else {
-                        ConexionOffline.addCarpeta(p1.getClass());
-                    }
-
-                    aux.addCarpeta(p1);
-
-                    p1.SetGridsOpciones(GridPrincipal, GridSecundario);
-                    p1.setPadreSerie(aux);
-                    p1.SetGridPadre(gridPrincipal);
-
-                } else {
-                    p1 = null;
-                    s = null;
-                }
-                return p1;
-            } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            }
-            return null;
-        }
+        
 
         /**
          * Añade una carpeta a partir de un registro en la base de datos
          */
         private void addCarpetaFromLoad(CarpetaClass cc) {
-            Carpeta p1 = new Carpeta(this);
+            Carpeta p1 = new Carpeta(this, Lista.getWrapVisible(), menuCarpetas, null);
             Lista.addCarpeta(p1);
 
             WrapPanelPrincipal aux = Lista.getWrapVisible();
@@ -616,8 +504,6 @@ namespace ProyectoWPF {
             aux.addCarpeta(p1);
 
             p1.SetGridsOpciones(GridPrincipal, GridSecundario);
-            p1.setPadreSerie(aux);
-            p1.SetGridPadre(gridPrincipal);
 
             p1.clickEspecial();
         }
@@ -625,40 +511,14 @@ namespace ProyectoWPF {
         /**
          * Añade una subcarpeta a partir de un registro en la base de datos
          */
-        private void addSubCarpetaFromLoad(CarpetaClass cc) {
-            SubCarpeta c = new SubCarpeta(this);
-            Lista.addSubCarpeta(c);
+        private void addSubCarpetaFromLoad(CarpetaClass cc, Carpeta padre) {
+            Carpeta c= new Carpeta(this, Lista.getWrapVisible(), menuCarpetas, padre);
+            padre.addCarpetaHijo(c);
+            Lista.addCarpeta(c);
+
             c.setClass(cc);
-            object obj = Lista.getFolderRuta(cc.ruta);
-            WrapPanelPrincipal p=null;
-            if (obj is Carpeta) {
-                Carpeta aux = (Carpeta)obj;
-                p = aux.GetWrapCarpPrincipal();
-            } else if (obj is SubCarpeta) {
-                SubCarpeta aux = (SubCarpeta)obj;
-                p = aux.getWrapCarpPrincipal();
-            }
-             
-            if (p != null) {
-                if (p.getCarpeta() == null) {
-
-                    c.setDatos(cc, p, p.getSubCarpeta().GetGridCarpeta());
-                    p.addSubCarpeta(c);
-                    c.setMenuCarpeta(p.getSubCarpeta().GetMenuCarpeta());
-
-                } else {
-
-                    c.setDatos(cc, p, p.GetGridSubCarpetas());
-                    p.addSubCarpeta(c);
-                    c.setMenuCarpeta(p.getCarpeta().GetMenuCarpeta());
-
-                }
-
-            }
-
 
             c.actualizar();
-
 
             c.Visibility = Visibility.Visible;
         }
@@ -673,11 +533,8 @@ namespace ProyectoWPF {
                     ReturnVisibility(mc.onReturn());
                 }
             } else {
-                SubCarpeta p = Lista.getSubWrapsVisibles().getSubCarpeta();
-                Carpeta p1 = Lista.getSubWrapsVisibles().getCarpeta();
-                if (p != null) {
-                    p.clickInverso();
-                } else if (p1 != null) {
+                Carpeta p1 = menuCarpetas.getCarpeta();
+                if (p1 != null) {
                     p1.clickInverso();
                 } else {
                     MessageBox.Show("null");
@@ -709,7 +566,7 @@ namespace ProyectoWPF {
                 }
                 Lista.orderWrapsPrincipales();
                 Lista.modifyMode(_profile.mode);
-                Lista.orderWrapsSecundarios();
+                Lista.orderWrap(menuCarpetas.getWrap());
             } catch (SQLiteException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
@@ -720,33 +577,18 @@ namespace ProyectoWPF {
          */
         private void loadFiles(CarpetaClass c) {
             try {
-                if (c.isFolder) {
-                    Carpeta carpeta = Lista.getCarpetaById(c.id);
-                    List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(Conexion.loadFiles(c.id));
-                    if (archivos != null) {
-                        foreach (ArchivoClass ac in archivos) {
-                            Archivo a = new Archivo(ac, this);
-                            carpeta.GetWrapCarpPrincipal().addFile(a);
-                            carpeta.addFile(a);
-                            a.setCarpetaPadre(carpeta);
-                        }
-                    }
-                } else {
-                    SubCarpeta subcarpeta = Lista.getSubCarpetaById(c.id);
-                    List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(Conexion.loadFiles(c.id));
-                    if (archivos != null) {
-                        foreach (ArchivoClass ac in archivos) {
-                            Archivo a = new Archivo(ac, this);
-                            subcarpeta.getWrapCarpPrincipal().addFile(a);
-                            subcarpeta.addFile(a);
-                            a.setSubCarpetaPadre(subcarpeta);
-                        }
+                Carpeta carpeta = Lista.getCarpetaById(c.id);
+                List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(Conexion.loadFiles(c.id));
+                if (archivos != null) {
+                    foreach (ArchivoClass ac in archivos) {
+                        Archivo a = new Archivo(ac, this, menuCarpetas.getWrap());
+                        carpeta.addFile(a);
+                        a.setCarpetaPadre(carpeta);
                     }
                 }
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-
         }
 
         /**
@@ -754,27 +596,13 @@ namespace ProyectoWPF {
          */
         private void loadFilesOffline(CarpetaClass c) {
             try {
-                if (!c.isFolder) {
-                    Carpeta carpeta = Lista.getCarpetaById(c.id);
-                    List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(ConexionOffline.loadFiles(c));
-                    if (archivos != null) {
-                        foreach (ArchivoClass ac in archivos) {
-                            Archivo a = new Archivo(ac, this);
-                            carpeta.GetWrapCarpPrincipal().addFile(a);
-                            carpeta.addFile(a);
-                            a.setCarpetaPadre(carpeta);
-                        }
-                    }
-                } else {
-                    SubCarpeta subcarpeta = Lista.getSubCarpetaById(c.id);
-                    List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(ConexionOffline.loadFiles(c));
-                    if (archivos != null) {
-                        foreach (ArchivoClass ac in archivos) {
-                            Archivo a = new Archivo(ac, this);
-                            subcarpeta.getWrapCarpPrincipal().addFile(a);
-                            subcarpeta.addFile(a);
-                            a.setSubCarpetaPadre(subcarpeta);
-                        }
+                Carpeta carpeta = Lista.getCarpetaById(c.id);
+                List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(ConexionOffline.loadFiles(c));
+                if (archivos != null) {
+                    foreach (ArchivoClass ac in archivos) {
+                        Archivo a = new Archivo(ac, this, menuCarpetas.getWrap());
+                        carpeta.addFile(a);
+                        a.setCarpetaPadre(carpeta);
                     }
                 }
             } catch (SQLiteException exc) {
@@ -796,7 +624,6 @@ namespace ProyectoWPF {
                             foreach (CarpetaClass c in carpetas) {
                                 addCarpetaFromLoad(c);
                                 loadFiles(c);
-                                //Console.WriteLine(c.rutaPrograma);
                                 loadSubCarpetas(c, m.id);
                             }
                         }
@@ -804,7 +631,6 @@ namespace ProyectoWPF {
                 }
                 Lista.orderWrapsPrincipales();
                 Lista.modifyMode(_profile.mode);
-                Lista.orderWrapsSecundarios();
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
@@ -815,10 +641,11 @@ namespace ProyectoWPF {
          */
         public void loadSubCarpetas(CarpetaClass c, long idMenu) {
             try {
+                Carpeta aux = Lista.getCarpetaById(c.id);
                 List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(Conexion.loadSubFoldersFromCarpeta(c, idMenu));
                 if (carpetas != null) {
                     foreach (CarpetaClass cc in carpetas) {
-                        addSubCarpetaFromLoad(cc);
+                        addSubCarpetaFromLoad(cc,aux);
                         loadFiles(cc);
                         loadSubCarpetas(cc, idMenu);
                     }
@@ -833,10 +660,11 @@ namespace ProyectoWPF {
          */
         public void loadSubCarpetasOffline(CarpetaClass c) {
             try {
+                Carpeta aux = Lista.getCarpetaById(c.id);
                 List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(ConexionOffline.loadSubCarpetasFromCarpeta(c));
                 if (carpetas != null) {
                     foreach (CarpetaClass cc in carpetas) {
-                        addSubCarpetaFromLoad(cc);
+                        addSubCarpetaFromLoad(cc,aux);
                         loadFilesOffline(cc);
                         loadSubCarpetasOffline(cc);
                     }
@@ -867,7 +695,6 @@ namespace ProyectoWPF {
             Lista.addButtonMenu(newButton);
             buttonStack.Children.Add(newButton);
             string name = newButton.Content.ToString();
-            _aux = new Carpeta(this);
             WrapPanelPrincipal wp = new WrapPanelPrincipal();
             wp.name = name;
             gridPrincipal.Children.Add(wp);
@@ -930,7 +757,6 @@ namespace ProyectoWPF {
                             Lista.addMenu(mc);
                             buttonStack.Children.Add(newButton);
                             string name = newButton.Content.ToString();
-                            _aux = new Carpeta(this);
                             WrapPanelPrincipal wp = new WrapPanelPrincipal();
                             wp.name = name;
                             gridPrincipal.Children.Add(wp);
@@ -953,7 +779,6 @@ namespace ProyectoWPF {
                             Lista.addMenu(mc);
                             buttonStack.Children.Add(newButton);
                             string name = newButton.Content.ToString();
-                            _aux = new Carpeta(this);
                             WrapPanelPrincipal wp = new WrapPanelPrincipal();
                             wp.name = name;
                             gridPrincipal.Children.Add(wp);
@@ -1038,7 +863,7 @@ namespace ProyectoWPF {
                     }
 
                 }
-                clearTextBox(null);
+                clearTextBox();
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             } catch (SQLiteException exc2) {
@@ -1064,6 +889,7 @@ namespace ProyectoWPF {
             } else {
                 Return.Visibility = Visibility.Hidden;
                 borderEnter.Visibility = Visibility.Hidden;
+                menuCarpetas.Visibility = Visibility.Hidden;
             }
         }
 
@@ -1440,7 +1266,7 @@ namespace ProyectoWPF {
                     rowBuscador.Height = new GridLength(30, GridUnitType.Auto);
 
                     rowAddMenu.Height = new GridLength(0.05, GridUnitType.Star);
-                    if (Lista.getSubWrapsVisibles() != null) {
+                    if (Lista.getMenuVisible() != null) {
                         ReturnVisibility(true);
                     }
                 }
@@ -1535,7 +1361,7 @@ namespace ProyectoWPF {
                         WrapPanelPrincipal wp = Lista.getWrapVisible();
                         wp.showFoldersBySearch(textBox.Text);
                     } else if (textBox.Name.Equals("textOfflineSubFolder")) {
-                        WrapPanelPrincipal wp = Lista.getSubWrapsVisibles();
+                        WrapPanelPrincipal wp = menuCarpetas.getWrap();
                         wp.showFoldersBySearch(textBox.Text);
                     }
                 }else if(buscadorOnline.Visibility == Visibility.Visible) {
@@ -1553,7 +1379,7 @@ namespace ProyectoWPF {
                         WrapPanelPrincipal wp = Lista.getWrapVisible();
                         wp.showAll();
                     } else if (textBox.Name.Equals("textOfflineSubFolder")) {
-                        WrapPanelPrincipal wp = Lista.getSubWrapsVisibles();
+                        WrapPanelPrincipal wp = menuCarpetas.getWrap();
                         wp.showAll();
                     }
                 } else if (buscadorOnline.Visibility == Visibility.Visible) {
@@ -1571,10 +1397,10 @@ namespace ProyectoWPF {
         /**
          * Vacia el buscador
          */
-        public void clearTextBox(WrapPanelPrincipal wp) {
-            if (wp != null) {
-                wp.showAll();
-            }
+        public void clearTextBox() {
+            //if (wp != null) {
+            //    wp.showAll();
+            //}
             
             textOfflineMain.Text = "";
             textOfflineSubFolder.Text = "";
@@ -1597,6 +1423,14 @@ namespace ProyectoWPF {
                 request = null;
                 return false;
             }
+        }
+
+        public void hideControl() {
+            reproductorControl.Visibility = Visibility.Hidden;
+        }
+
+        public VI_Reproductor getReproductor() {
+            return reproductorControl;
         }
     }
 }

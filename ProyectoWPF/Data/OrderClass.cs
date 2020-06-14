@@ -189,15 +189,7 @@ namespace ProyectoWPF.Data {
 
         private bool isAscending = true;
         public int Compare(UIElement a, UIElement b) {
-            if ((a is SubCarpeta) && (b is SubCarpeta)) {
-                SubCarpeta aux1 = (SubCarpeta)a;
-                SubCarpeta aux2 = (SubCarpeta)b;
-                if (isAscending) {
-                    return SafeNativeMethods.StrCmpLogicalW(aux1.getClass().nombre, aux2.getClass().nombre);
-                } else {
-                    return SafeNativeMethods.StrCmpLogicalW(aux2.getClass().nombre, aux1.getClass().nombre);
-                }
-            } else if ((a is SubCarpeta) && (b is Archivo)) {
+            if ((a is Carpeta) && (b is Archivo)) {
                 if (isAscending) {
                     return -1;
                 } else {

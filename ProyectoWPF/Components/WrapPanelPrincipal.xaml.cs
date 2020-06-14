@@ -25,7 +25,6 @@ namespace ProyectoWPF {
 
         private System.Windows.Media.Color colorGridPadre;
         private Carpeta carpeta;
-        private SubCarpeta subcarpeta;
         private SerieComponent serie;
         private TemporadaComponent temporada;
         public String tipo = "";
@@ -124,19 +123,6 @@ namespace ProyectoWPF {
             return carpeta;
         }
 
-        public void addSubCarpeta(SubCarpeta p) {
-            p.Width = 250;
-            p.Height = 400;
-            p.Margin = new Thickness(20, 20, 20, 20);
-            if (!p.getClass().img.Equals("")) {
-                p.setImg();
-            } else {
-                p.setDefaultSource();
-            }
-            wrapPanel.Children.Add(p);
-            hijos.Add(p);
-        }
-
         public void addFile(Archivo a) {
             a.Width = 250;
             a.Height = 400;
@@ -144,14 +130,6 @@ namespace ProyectoWPF {
             
             wrapPanel.Children.Add(a);
             hijos.Add(a);
-        }
-
-        public SubCarpeta getSubCarpeta() {
-            return subcarpeta;
-        }
-
-        public void setSubcarpeta(SubCarpeta p) {
-            subcarpeta = p;
         }
 
         public void removeChildrens() {
@@ -171,16 +149,22 @@ namespace ProyectoWPF {
             }
         }
 
-        public void removeSubFolder(SubCarpeta c) {
-            if (wrapPanel.Children.Contains(c)) {
-                wrapPanel.Children.Remove(c);
-                if (hijos.Contains(c)) {
-                    hijos.Remove(c);
-                }
-
-            } else {
-                Console.WriteLine("No se ha podido borrar la carpeta " + c.getClass().ruta);
+        public void addUIElement(UIElement element) {
+            if(element is Carpeta) {
+                Carpeta aux = (Carpeta)element;
+                aux.Width = 250;
+                aux.Height = 400;
+                aux.Margin = new Thickness(40, 40, 40, 40);
+                wrapPanel.Children.Add(aux);
+            } else if(element is Archivo) {
+                Archivo aux = (Archivo)element;
+                aux.Width = 250;
+                aux.Height = 400;
+                aux.Margin = new Thickness(40, 40, 40, 40);
+                wrapPanel.Children.Add(aux);
             }
+            
+            
         }
 
         public void removeFile(Archivo a) {
@@ -237,9 +221,6 @@ namespace ProyectoWPF {
                 if (ui is Carpeta) {
                     Carpeta aux = (Carpeta)ui;
                     lista.Add(aux.getClass().nombre);
-                }else if(ui is SubCarpeta) {
-                    SubCarpeta aux = (SubCarpeta)ui;
-                    lista.Add(aux.getClass().nombre);
                 }else if(ui is Archivo) {
                     Archivo aux = (Archivo)ui;
                     lista.Add(aux._archivoClass.nombre);
@@ -263,13 +244,6 @@ namespace ProyectoWPF {
                 foreach (UIElement ui in hijos) {
                     if (ui is Carpeta) {
                         Carpeta aux = (Carpeta)ui;
-                        if (resultados.Contains(aux.getClass().nombre)) {
-                            aux.Visibility = Visibility.Visible;
-                        } else {
-                            aux.Visibility = Visibility.Collapsed;
-                        }
-                    } else if (ui is SubCarpeta) {
-                        SubCarpeta aux = (SubCarpeta)ui;
                         if (resultados.Contains(aux.getClass().nombre)) {
                             aux.Visibility = Visibility.Visible;
                         } else {

@@ -1,6 +1,9 @@
 ﻿using ProyectoWPF.Data;
 using ProyectoWPF.NewFolders;
+using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -132,23 +135,27 @@ namespace ProyectoWPF.SelectProfile {
 
         private void onClick(object sender, RoutedEventArgs e) {
             if (_selectedProfile != null) {
-                if (conn) {
-                    VIGallery vi = new VIGallery(_selectedProfile);
-                    vi.loadDataConexion(_selectedProfile.id);
-                    this.Hide();
-                    vi.Show();
-                    this.Close();
-                } else {
-                    VIGallery vi = new VIGallery(_selectedProfile);
-                    vi.LoadProfileOffline(_selectedProfile);
-                    this.Hide();
-                    vi.Show();
-                    this.Close();
-                }
+                Dispatcher.Invoke(new Action(() => {
+                    if (conn) {
+                        VIGallery vi = new VIGallery(_selectedProfile);
+                        vi.loadDataConexion(_selectedProfile.id);
+                        vi.Show();
+
+                    } else {
+                        VIGallery vi = new VIGallery(_selectedProfile);
+                        vi.LoadProfileOffline(_selectedProfile);
+                        vi.Show();
+
+                    }
+                }));
+                //Task task1 = Task.Factory.StartNew(() => loadProfile());
+                //Task.WaitAll(task1);
+                this.Close();
             } else {
                 MessageBox.Show("No has seleccionado un perfil");
             }
         }
+
 
         private PerfilClass getProfile(string s) {
             foreach (PerfilClass p in _profiles) {

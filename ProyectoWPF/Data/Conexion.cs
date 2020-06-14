@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using MySql.Data.MySqlClient;
-using SeleccionarProfile.Data;
 
 namespace ProyectoWPF.Data {
     public static class Conexion {
@@ -213,7 +211,7 @@ namespace ProyectoWPF.Data {
                     comando.Parameters.AddWithValue("@descripcion", p.getClass().desc);
                     comando.Parameters.AddWithValue("@generos", p.getClass().getGeneros());
                     comando.Parameters.AddWithValue("@img", p.getClass().img);
-                    comando.Parameters.AddWithValue("@isFolder", true);
+                    comando.Parameters.AddWithValue("@isFolder", p.getClass().isFolder);
                     comando.Parameters.AddWithValue("@idMenu", p.getClass().idMenu);
                     comando.ExecuteNonQuery();
                     myTrans.Commit();
@@ -249,7 +247,7 @@ namespace ProyectoWPF.Data {
             }
         }
 
-        public static void saveSubFolder(SubCarpeta p) {
+        public static void saveSubFolder(Carpeta p) {
             MySqlConnection conexion = null;
             MySqlTransaction myTrans = null;
             try {

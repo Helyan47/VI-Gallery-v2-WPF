@@ -103,6 +103,15 @@
     <Reference Include="Ubiety.Dns.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.19\lib\net452\Ubiety.Dns.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Vlc.DotNet.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vlc.DotNet.Core.3.0.0\lib\net45\Vlc.DotNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Core.Interops, Version=3.0.0.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vlc.DotNet.Core.Interops.3.0.0\lib\net45\Vlc.DotNet.Core.Interops.dll</HintPath>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Wpf, Version=3.0.0.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vlc.DotNet.Wpf.3.0.0\lib\net45\Vlc.DotNet.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -160,7 +169,7 @@
     <Compile Include="LoginUser\InputTextLoL.xaml.cs">
       <DependentUpon>InputTextLoL.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoginUser\LoginUser.xaml.cs">
+    <Compile Include="LoginUser.xaml.cs">
       <DependentUpon>LoginUser.xaml</DependentUpon>
     </Compile>
     <Compile Include="NewFolders\AddButton.xaml.cs">
@@ -197,9 +206,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Data\Base\CarpetaClass.cs" />
-    <Compile Include="Components\SubCarpeta.xaml.cs">
-      <DependentUpon>SubCarpeta.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Components\WrapPanelPrincipal.xaml.cs">
       <DependentUpon>WrapPanelPrincipal.xaml</DependentUpon>
     </Compile>
@@ -251,7 +257,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="LoginUser\LoginUser.xaml">
+    <Page Include="LoginUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -303,6 +309,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Reproductor\VI_Reproductor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SelectProfile\SelectProfile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -314,6 +324,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Reproductor\KeyList.cs" />
+    <Compile Include="Reproductor\PlayerProperty.cs" />
+    <Compile Include="Reproductor\VideoPlayerProperties.cs" />
+    <Compile Include="Reproductor\VI_Reproductor.xaml.cs">
+      <DependentUpon>VI_Reproductor.xaml</DependentUpon>
     </Compile>
     <Compile Include="SelectProfile\SelectProfile.xaml.cs">
       <DependentUpon>SelectProfile.xaml</DependentUpon>
@@ -327,10 +343,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewFolders\NewSubCarpeta.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Components\SubCarpeta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -380,12 +392,6 @@
     <Content Include="x86\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Reproductor\Reproductor.csproj">
-      <Project>{5532c692-67db-40f2-b3ff-a1f920feb517}</Project>
-      <Name>Reproductor</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

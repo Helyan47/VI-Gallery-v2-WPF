@@ -1,36 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using ProyectoWPF.Data;
+using VIGallery.Data;
 
 namespace ProyectoWPF {
     public static class Lista {
 
-        private static ICollection<WrapPanelPrincipal> _wrapsSecundarios = new List<WrapPanelPrincipal>();
         private static ICollection<WrapPanelPrincipal> _wrapsPrincipales = new List<WrapPanelPrincipal>();
         private static ICollection<Menu> _menus = new List<Menu>();
         private static ICollection<MenuClass> _menusClass = new List<MenuClass>();
         private static ICollection<Button> _buttonsMenu = new List<Button>();
         private static ICollection<Carpeta> _carpetas = new List<Carpeta>();
         private static ICollection<CarpetaClass> _carpetasClase = new List<CarpetaClass>();
-        private static ICollection<SubCarpeta> _subCarpetas = new List<SubCarpeta>();
         private static List<PerfilClass> _perfiles = new List<PerfilClass>();
         private static List<Button> _bPerfiles = new List<Button>();
         public static string[] _extensiones = { ".mp4", ".avi", ".mkv", ".mpeg", ".wmv", ".flv", ".mov", ".wav" };
 
         public static void clearListas() {
-            _wrapsSecundarios = new List<WrapPanelPrincipal>();
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
             _menus = new List<Menu>();
             _menusClass = new List<MenuClass>();
             _carpetas = new List<Carpeta>();
             _carpetasClase = new List<CarpetaClass>();
-            _subCarpetas = new List<SubCarpeta>();
             _perfiles = new List<PerfilClass>();
             _bPerfiles = new List<Button>();
         }
@@ -134,19 +127,6 @@ namespace ProyectoWPF {
             _wrapsPrincipales.Add(wp);
         }
 
-        public static void addSubWrap(WrapPanelPrincipal wp) {
-            _wrapsSecundarios.Add(wp);
-        }
-
-        public static WrapPanelPrincipal getSubWrapsVisibles() {
-            foreach (WrapPanelPrincipal wp in _wrapsSecundarios) {
-                if (wp.Visibility == System.Windows.Visibility.Visible) {
-                    return wp;
-                }
-            }
-            return null;
-        }
-
         public static void showWrapFromMenu(MenuClass m) {
             int comp = 0;
             int cont = 0;
@@ -164,12 +144,6 @@ namespace ProyectoWPF {
                     wp.Visibility = System.Windows.Visibility.Hidden;
                 }
                 cont++;
-            }
-        }
-
-        public static void hideAllWraps() {
-            foreach (WrapPanelPrincipal wp in _wrapsPrincipales) {
-                wp.Visibility = System.Windows.Visibility.Hidden;
             }
         }
 
@@ -214,17 +188,6 @@ namespace ProyectoWPF {
             _wrapsPrincipales.Remove(p);
         }
 
-        public static void addSubCarpeta(SubCarpeta m) {
-            _subCarpetas.Add(m);
-        }
-
-        public static void removeSubCarpeta(SubCarpeta m) {
-            if (_subCarpetas.Contains(m)) {
-                _subCarpetas.Remove(m);
-            }
-            
-        }
-
         public static Menu getMenuVisible() {
             foreach (Menu m in _menus) {
                 if (m.Visibility == System.Windows.Visibility.Visible) {
@@ -232,6 +195,17 @@ namespace ProyectoWPF {
                 }
             }
 
+            return null;
+        }
+
+        public static Carpeta searchRuta(string rutaDirectorio) {
+            foreach(Carpeta c in _carpetas) {
+                if (c.getRutaDirectorio() != null) {
+                    if (c.getRutaDirectorio().Equals(rutaDirectorio)) {
+                        return c;
+                    }
+                }
+            }
             return null;
         }
 
@@ -252,16 +226,6 @@ namespace ProyectoWPF {
             }
             return null;
         }
-
-        public static SubCarpeta getSubCarpetaVisible() {
-            foreach (SubCarpeta c in _subCarpetas) {
-                if (c.Visibility == System.Windows.Visibility.Visible) {
-                    return c;
-                }
-            }
-            return null;
-        }
-
 
         public static Menu searchMenu(Carpeta p) {
             foreach (Menu m in _menus) {
@@ -289,25 +253,9 @@ namespace ProyectoWPF {
         //    }
         //}
 
-
-        public static SubCarpeta searchRuta(string s) {
-            foreach (SubCarpeta p in _subCarpetas) {
-                if (p.getRutaDirectorio() != null) {
-                    if (p.getRutaDirectorio().Equals(s)) {
-                        return p;
-                    }
-                }
-                
-            }
-            return null;
-        }
-
         public static void hideAll() {
             foreach (Menu m in _menus) {
                 m.Visibility = System.Windows.Visibility.Hidden;
-            }
-            foreach (WrapPanelPrincipal wp in _wrapsSecundarios) {
-                wp.Visibility = System.Windows.Visibility.Hidden;
             }
             ocultarWrapsPrincipales();
         }
@@ -315,9 +263,6 @@ namespace ProyectoWPF {
         public static void hideAllExceptPrinc() {
             foreach (Menu m in _menus) {
                 m.Visibility = System.Windows.Visibility.Hidden;
-            }
-            foreach (WrapPanelPrincipal wp in _wrapsSecundarios) {
-                wp.Visibility = System.Windows.Visibility.Hidden;
             }
             
         }
@@ -344,10 +289,6 @@ namespace ProyectoWPF {
             foreach (Carpeta p in _carpetas) {
                 p.changeMode(mode);               
             }
-
-            foreach(SubCarpeta p in _subCarpetas) {
-                p.changeMode(mode);
-            }
         }
 
         public static WrapPanelPrincipal getWrapFromMenu(MenuClass m) {
@@ -359,8 +300,7 @@ namespace ProyectoWPF {
             return null;
         }
 
-        public static object getFolderRuta(string rutaPrograma) {
-            object c = new object();
+        public static Carpeta getFolderRuta(string rutaPrograma) {
             string[] splits = rutaPrograma.Split('/');
             string namePadre = "";
             for (int i = 0; i < (splits.Length - 1); i++) {
@@ -372,15 +312,10 @@ namespace ProyectoWPF {
             }
             foreach(Carpeta p in _carpetas) {
                 if (p.getClass().ruta.Equals(namePadre)) {
-                    c = p;
+                    return p;
                 }
             }
-            foreach(SubCarpeta p in _subCarpetas) {
-                if (p.getClass().ruta.Equals(namePadre)) {
-                    c = p;
-                }
-            }
-            return c;
+            return null;
         }
 
         public static string getRutaPadre(string rutaPrograma) {
@@ -433,15 +368,6 @@ namespace ProyectoWPF {
         public static Carpeta getCarpetaById(long id) {
             foreach(Carpeta c in _carpetas) {
                 if(c.getClass().id == id) {
-                    return c;
-                }
-            }
-            return null;
-        }
-
-        public static SubCarpeta getSubCarpetaById(long id) {
-            foreach (SubCarpeta c in _subCarpetas) {
-                if (c.getClass().id == id) {
                     return c;
                 }
             }
@@ -520,39 +446,6 @@ namespace ProyectoWPF {
 
         }
 
-        public static void removeSubFolders(Carpeta c) {
-            try {
-                foreach (SubCarpeta sc in _subCarpetas) {
-                    if (sc.getClass().rutaPadre.Equals(c.getClass().ruta)) {
-                        sc.remove();
-                    }
-                }
-            } catch(InvalidOperationException e) {
-                removeSubFolders(c);
-            }
-            
-        }
-
-        public static void removeSubFolders(SubCarpeta c) {
-            try {
-                foreach (SubCarpeta sc in _subCarpetas) {
-                    if (sc.getClass().rutaPadre.Equals(c.getClass().ruta)) {
-                        sc.remove();
-                    }
-                }
-            } catch (InvalidOperationException e) {
-                removeSubFolders(c);
-            }
-        }
-
-        public static void removeWrapPanelSecundario(WrapPanelPrincipal wp) {
-            if (_wrapsSecundarios.Contains(wp)) {
-                _wrapsSecundarios.Remove(wp);
-                Console.WriteLine("Borrado WrapPanel Secundario");
-            }
-            
-        }
-
         public static void removeWrapPanelPrincipal(WrapPanelPrincipal wp) {
             if (_wrapsPrincipales.Contains(wp)) {
                 _wrapsPrincipales.Remove(wp);
@@ -570,15 +463,6 @@ namespace ProyectoWPF {
             }
         }
 
-        public static void orderWrapsSecundarios() {
-            foreach(WrapPanelPrincipal wp in _wrapsSecundarios) {
-                List<UIElement> hijos= OrderClass.orderChildOfWrap(wp.hijos);
-                wp.getWrapPanel().Children.Clear();
-                foreach(UIElement o in hijos) {
-                    wp.getWrapPanel().Children.Add(o);
-                }
-            }
-        }
         public static void orderWrap(WrapPanelPrincipal wp) {
             List<UIElement> hijos = OrderClass.orderChildOfWrap(wp.hijos);
             wp.getWrapPanel().Children.Clear();
@@ -610,9 +494,9 @@ namespace ProyectoWPF {
         }
 
         public static void changeSubFoldersName(string rutaAntigua, string rutaNueva) {
-            foreach(SubCarpeta sc in _subCarpetas) {
-                if (sc.getClass().rutaPadre.Equals(rutaAntigua)) {
-                    sc.updateRuta(rutaAntigua, rutaNueva); //Asignaremos la nueva rutaPadre y haremos un replace a la ruta de la rutaAntigua por la rutaNueva. Dentro de updateRuta se llamara a este metodo de nuevo con los nuevos valores
+            foreach (Carpeta c in _carpetas) {
+                if (c.getClass().rutaPadre.Equals(rutaAntigua)) {
+                    c.updateRuta(rutaAntigua, rutaNueva); //Asignaremos la nueva rutaPadre y haremos un replace a la ruta de la rutaAntigua por la rutaNueva. Dentro de updateRuta se llamara a este metodo de nuevo con los nuevos valores
                 }
             }
         }

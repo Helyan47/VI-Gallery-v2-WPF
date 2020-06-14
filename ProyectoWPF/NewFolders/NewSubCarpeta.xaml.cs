@@ -18,9 +18,8 @@ namespace ProyectoWPF {
     /// Lógica de interacción para newSubCarpeta.xaml
     /// </summary>
     public partial class NewSubCarpeta : Window {
-
-        private SubCarpeta p;
         private string rutaPadre;
+        private string _nombre = "";
         public NewSubCarpeta(string s) {
             InitializeComponent();
             rutaPadre = s;
@@ -31,7 +30,7 @@ namespace ProyectoWPF {
                 Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
                 if (!containsABadCharacter.IsMatch(newName.Text)) {
                     if (!Lista.Contains(rutaPadre + "/" + newName.Text)) {
-                        p.setTitle(newName.Text);
+                        _nombre=newName.Text;
                         this.Close();
                     } else {
                         MessageBox.Show("La subcarpeta ya existe");
@@ -44,17 +43,10 @@ namespace ProyectoWPF {
             } else {
                 MessageBox.Show("No has introducido ningún nombre para la carpeta");
             }
-
-
-
         }
 
-        public void setSubCarpeta(SubCarpeta s) {
-            p = s;
-        }
-
-        public SubCarpeta getSubCarpeta() {
-            return p;
+        public string getNombre() {
+            return _nombre;
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProyectoWPF"
         xmlns:componentes="clr-namespace:ProyectoWPF.Components"
-        xmlns:reproductor="clr-namespace:Reproductor;assembly=Reproductor"
+        xmlns:reproductor="clr-namespace:ProyectoWPF.Reproductor"
         mc:Ignorable="d"
         ResizeMode="CanResize"
         Title="VI-Gallery" Width="1920" Height="1080" MinWidth="700" MinHeight="700" WindowStartupLocation="CenterScreen" Background="{x:Null}" WindowState="Maximized" WindowStyle="None">
@@ -514,7 +514,8 @@
                             </Grid>
                             
                             <Grid x:Name="gridPrincipal" Grid.Row="1" Background="#FF262626" Visibility="Visible"/>
-
+                            <local:Menu x:Name="menuCarpetas" Grid.Row="1" Visibility="Hidden"></local:Menu>
+                            
                             <Grid x:Name="gridOnlinePanelPrinc" Grid.Row="1" Background="#FF262626" Visibility="Hidden">
                                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden">
                                     <Grid>
@@ -527,9 +528,12 @@
                                         <Label Content="Más recientes" Foreground="White" FontSize="24" Grid.Row="1"/>
 
                                         <StackPanel Orientation="Vertical" Grid.Row="2">
-                                            <componentes:ListaArchivos x:Name="episodiosVistos" Titulo="Episodios más vistos" Height="400"></componentes:ListaArchivos>
-                                            <componentes:ListaArchivos x:Name="peliculasVistas" Titulo="Películas más vistas" Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
-                                            <componentes:ListaArchivos x:Name="top2019" Titulo="Más vistas 2019" Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
+                                            <componentes:ListaArchivos x:Name="episodiosVistos" Height="400"/>
+                                            <!-- Titulo="Episodios más vistos"  -->
+                                            <componentes:ListaArchivos x:Name="peliculasVistas"  Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
+                                            <!-- Titulo="Películas más vistas"  -->
+                                            <componentes:ListaArchivos x:Name="top2019" Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
+                                            <!-- Titulo="Más vistas 2019" -->
                                         </StackPanel>
                                     </Grid>
                                 </ScrollViewer>
@@ -647,7 +651,8 @@
                     </ScrollViewer>
                 </Grid>
             </Grid>
+            
         </DockPanel>
-        <!--<reproductor:VI_Reproductor Visibility="Hidden"/>-->
+        <reproductor:VI_Reproductor x:Name="reproductorControl" Visibility="Hidden"/>
     </Grid>
 </Window>

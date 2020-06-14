@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ProyectoWPF.LoginUser {
+namespace ProyectoWPF {
     /// <summary>
     /// Lógica de interacción para LoginUser.xaml
     /// </summary>
@@ -89,7 +89,6 @@ namespace ProyectoWPF.LoginUser {
                         UsuarioClass user = Conexion.checkUser(inputUser.getText(), inputPass.getText());
 
                         if (user != null) {
-                            MessageBox.Show("Conectado");
                             SelectProfile.SelectProfile selectProf = new SelectProfile.SelectProfile(true, user);
                             this.Hide();
                             selectProf.Show();

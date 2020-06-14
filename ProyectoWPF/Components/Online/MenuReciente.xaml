@@ -11,14 +11,16 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <local:VideoReciente x:Name="img1" TitleSize="40"></local:VideoReciente>
+        <local:VideoReciente x:Name="img1" />
+        <!--TitleSize="40"-->
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <local:VideoReciente x:Name="img2" TitleSize="25"></local:VideoReciente>
+                <local:VideoReciente x:Name="img2" />
+                <!--TitleSize="25"-->
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
@@ -31,9 +33,10 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <local:VideoReciente x:Name="img3" Grid.Column="0" TitleSize="15"></local:VideoReciente>
-                    <local:VideoReciente x:Name="img4" Grid.Column="1" TitleSize="15"></local:VideoReciente>
-                    <local:VideoReciente x:Name="img5" Grid.Column="2" TitleSize="15"></local:VideoReciente>
+                    <local:VideoReciente x:Name="img3" Grid.Column="0"/>
+                    <local:VideoReciente x:Name="img4" Grid.Column="1"/>
+                    <local:VideoReciente x:Name="img5" Grid.Column="2"/>
+                    <!--TitleSize="15"-->
                 </Grid>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
@@ -41,9 +44,10 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <local:VideoReciente x:Name="img6" Grid.Column="0" TitleSize="15"></local:VideoReciente>
-                    <local:VideoReciente x:Name="img7" Grid.Column="1" TitleSize="15"></local:VideoReciente>
-                    <local:VideoReciente x:Name="img8" Grid.Column="2" TitleSize="15"></local:VideoReciente>
+                    <local:VideoReciente x:Name="img6" Grid.Column="0" />
+                    <local:VideoReciente x:Name="img7" Grid.Column="1" />
+                    <local:VideoReciente x:Name="img8" Grid.Column="2" />
+                    <!--TitleSize="15"-->
                 </Grid>
             </Grid>
         </Grid>

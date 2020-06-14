@@ -1,19 +1,10 @@
-﻿using ProyectoWPF;
-using SeleccionarProfile.Data.Online;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ProyectoWPF.Components.Online {
     /// <summary>
@@ -128,7 +119,7 @@ namespace ProyectoWPF.Components.Online {
                 _wrapSeries.Visibility = Visibility.Visible;
                 this.Visibility = Visibility.Hidden;
                 isVisible = false;
-                _ventanaMain.clearTextBox(wrapTemporadas);
+                _ventanaMain.clearTextBox();
                 return false;
             } else {
                 wrapTemporadas.Visibility = Visibility.Visible;
@@ -136,7 +127,7 @@ namespace ProyectoWPF.Components.Online {
                     tc.getPanelArchivos().Visibility = Visibility.Hidden;
                 }
                 Title.Content = _serie.getSerie().nombre;
-                _ventanaMain.clearTextBox(getWrapVisible());
+                _ventanaMain.clearTextBox();
                 return true;
             }
             

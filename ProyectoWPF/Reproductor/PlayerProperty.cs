@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace Reproductor {
+namespace ProyectoWPF.Reproductor {
     public class PlayerProperty {
         public Key value { get; set; }
         public string name { get; set; }

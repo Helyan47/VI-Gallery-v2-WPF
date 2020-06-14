@@ -1,20 +1,29 @@
-﻿using SeleccionarProfile.Data.Online;
+﻿using ProyectoWPF.Data.Online;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using System.Windows.Threading;
+using Vlc.DotNet.Core;
 
-namespace Reproductor
-{
+namespace ProyectoWPF.Reproductor {
     /// <summary>
-    /// Lógica de interacción para UserControl1.xaml
+    /// Lógica de interacción para VI_Reproductor.xaml
     /// </summary>
-    public partial class VI_Reproductor : UserControl
-    {
+    public partial class VI_Reproductor : UserControl {
+
         private object[] lista;
         private long[] _capitulos = null;
         private long[] _peliculas = null;
@@ -32,36 +41,39 @@ namespace Reproductor
         bool hasHours { get; set; }
         bool isExpanded { get; set; }
         DispatcherTimer dp { get; set; }
-        Grid gridVIGallery { get; set; }
+
+        private VIGallery main = null;
 
         public Window MainWindow;
         public VideoPlayerProperties videoPlayerProperties { get; set; }
-        public VI_Reproductor(bool online)
-        {
+
+        public VI_Reproductor() {
             InitializeComponent();
             try {
                 videoPlayerProperties = new VideoPlayerProperties(this, control);
                 isClicking = false;
-                isOnline = online;
                 isExpanded = false;
                 Volumen.Value = volumen;
                 currentVideoPosition = 0;
                 var currentAssembly = Assembly.GetEntryAssembly();
                 var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
-                var libDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
+                var libDirectory = new DirectoryInfo(System.IO.Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
                 Console.WriteLine(libDirectory.FullName);
                 dp = new DispatcherTimer();
                 dp.Interval = new TimeSpan(0, 0, 1);
                 dp.Tick += tick;
                 control.SourceProvider.CreatePlayer(libDirectory);
-            }catch(Exception e) {
+            } catch (Exception e) {
                 Console.WriteLine(e.ToString());
             }
         }
 
-        public void setWindow(Window w) {
-            this.MainWindow = w;
-            videoPlayerProperties.parentWindow = w;
+        public void setOnline(bool online) {
+            isOnline = online;
+        }
+
+        public void setVIGallery(VIGallery vi) {
+            main = vi;
         }
 
         public Window getWindow() {
@@ -90,7 +102,7 @@ namespace Reproductor
                     hours = horas + "";
                     currentTime.Content = hours.PadLeft(2, '0') + ":" + minutes.PadLeft(2, '0') + ":" + seconds.PadLeft(2, '0');
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 Console.WriteLine(e.ToString());
             }
         }
@@ -189,10 +201,10 @@ namespace Reproductor
                     setVideo(lista[position]);
                     control.Focus();
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 Console.WriteLine(e.ToString());
             }
-}
+        }
 
         public void setListaCapitulos(object[] args, long[] capitulos) {
             try {
@@ -238,7 +250,7 @@ namespace Reproductor
             }
         }
 
-        public void setLista(object[] args,int position) {
+        public void setLista(object[] args, int position) {
             try {
                 if (args != null & args.Length != 0) {
                     lista = args;
@@ -304,7 +316,7 @@ namespace Reproductor
                             ConexionServer.increaseNumVisitasCap(_capitulos[currentVideoPosition]);
                             long time = ConexionServer.getTimeCapitulo(_capitulos[currentVideoPosition]);
                             control.SourceProvider.MediaPlayer.Time = time;
-                        }catch(Exception e) {
+                        } catch (Exception e) {
                             control.SourceProvider.MediaPlayer.Time = 0;
                         }
                     } else if (_peliculas != null) {
@@ -331,29 +343,29 @@ namespace Reproductor
 
 
         public void nextVideo() {
-            try { 
-            dp.Stop();
-            long time=control.SourceProvider.MediaPlayer.Time;
-            if (isOnline) {
-                if (_capitulos != null) {
-                    ConexionServer.updateTiempoActualCap(_capitulos[currentVideoPosition], time);
-                }else if (_peliculas != null) {
-                    ConexionServer.updateTiempoActualPel(_peliculas[currentVideoPosition], time);
-                }
-                
-            }
-            cont = 0;
-            if (lista != null) {
-                if (currentVideoPosition == lista.Length - 1) {
+            try {
+                dp.Stop();
+                long time = control.SourceProvider.MediaPlayer.Time;
+                if (isOnline) {
+                    if (_capitulos != null) {
+                        ConexionServer.updateTiempoActualCap(_capitulos[currentVideoPosition], time);
+                    } else if (_peliculas != null) {
+                        ConexionServer.updateTiempoActualPel(_peliculas[currentVideoPosition], time);
+                    }
 
-                    currentVideoPosition = 0;
-
-                } else {
-                    currentVideoPosition++;
                 }
-                videoTitle.Content = names[currentVideoPosition];
-                setVideo(lista[currentVideoPosition]);
-            }
+                cont = 0;
+                if (lista != null) {
+                    if (currentVideoPosition == lista.Length - 1) {
+
+                        currentVideoPosition = 0;
+
+                    } else {
+                        currentVideoPosition++;
+                    }
+                    videoTitle.Content = names[currentVideoPosition];
+                    setVideo(lista[currentVideoPosition]);
+                }
             } catch (Exception e) {
                 Console.WriteLine(e.ToString());
             }
@@ -428,23 +440,56 @@ namespace Reproductor
             control.SourceProvider.Dispose();
             var currentAssembly = Assembly.GetEntryAssembly();
             var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
-            var libDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
+            var libDirectory = new DirectoryInfo(System.IO.Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
             control.SourceProvider.CreatePlayer(libDirectory);
+        }
+
+        private void timeLine_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            dp.Stop();
+            isClicking = true;
+        }
+
+
+        private void timeLine_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+            isClicking = false;
+            setTimeLabel();
+            control.SourceProvider.MediaPlayer.Play();
+            dp.Start();
+        }
+
+
+        private void timeLine_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+            isClicking = false;
+            dp.Start();
+            setTimeLabel();
+            control.SourceProvider.MediaPlayer.Time = (long)timeLine.Value;
+        }
+
+        private void timeLine_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            dp.Stop();
+            isClicking = true;
+            control.SourceProvider.MediaPlayer.Time = (long)timeLine.Value;
+
+            Console.WriteLine(timeLine.Value);
+            setTimeLabel();
         }
 
 
         private void TrackTime_ValueChanged(object sender, EventArgs e) {
             if (isClicking) {
-                setTimeLabel();
-                control.SourceProvider.MediaPlayer.Time = (long)timeLine.Value;
+                if (control.SourceProvider.MediaPlayer.IsPlaying()) {
+                    control.SourceProvider.MediaPlayer.Time = (long)timeLine.Value;
+                } else {
+                    control.SourceProvider.MediaPlayer.Time = (long)timeLine.Value;
+                }
+                
+                
             }
-
         }
 
 
         private void bExpandClick(object sender, RoutedEventArgs e) {
             videoPlayerProperties.setFullScreen();
-
         }
 
 
@@ -452,24 +497,12 @@ namespace Reproductor
 
         }
 
-
         private void bPlayClick(object sender, EventArgs e) {
             playPause();
         }
 
-
         private void bNextVideoClick(object sender, EventArgs e) {
             nextVideo();
-        }
-
-
-        private void timeLine_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
-            isClicking = true;
-        }
-
-
-        private void timeLine_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
-            isClicking = false;
         }
 
         private void TrackVolume_ValueChanged(object sender, EventArgs e) {
@@ -526,12 +559,7 @@ namespace Reproductor
 
         }
 
-        private void timeLine_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
-            isClicking = false;
-            dp.Start();
-            control.SourceProvider.MediaPlayer.Time = (long)timeLine.Value;
-            setTimeLabel();
-        }
+        
 
         private void gridControles_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) {
             gridControles.Focus();
@@ -546,22 +574,12 @@ namespace Reproductor
             gridOthers.Visibility = Visibility.Visible;
         }
 
-        private void timeLine_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
-            dp.Stop();
-            isClicking = true;
-            control.SourceProvider.MediaPlayer.Time = (long)timeLine.Value;
-        }
-
         public GradientStop getLastColorStop() {
             return lastColor;
         }
 
         public RowDefinition getRowClose() {
             return closeGrid;
-        }
-
-        public void setVIGallery(Grid grid) {
-            this.gridVIGallery = grid;
         }
 
         public void setListaNombres(string[] titles) {
@@ -579,12 +597,12 @@ namespace Reproductor
                         ConexionServer.updateTiempoActualPel(_peliculas[0], time);
                     }
                 }
-                
-            }catch(Exception ex) {
+
+            } catch (Exception ex) {
 
             }
             control.Dispose();
-            gridVIGallery.Children.Remove(this);
+            main.hideControl();
         }
     }
 }

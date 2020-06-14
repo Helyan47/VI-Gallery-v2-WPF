@@ -9,7 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Vlc.DotNet.Wpf;
 
-namespace Reproductor {
+namespace ProyectoWPF.Reproductor {
     public class KeyList {
         private ICollection<PlayerProperty> listaKeyEvents;
 
