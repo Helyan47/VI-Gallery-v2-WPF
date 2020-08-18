@@ -127,6 +127,12 @@
     <Compile Include="Components\Archivo.xaml.cs">
       <DependentUpon>Archivo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\GenderButton.xaml.cs">
+      <DependentUpon>GenderButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\GenderSelection.xaml.cs">
+      <DependentUpon>GenderSelection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Online\ArchivoComponent.xaml.cs">
       <DependentUpon>ArchivoComponent.xaml</DependentUpon>
     </Compile>
@@ -218,6 +224,14 @@
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="Components\Archivo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\GenderButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\GenderSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

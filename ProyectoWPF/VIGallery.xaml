@@ -397,40 +397,8 @@
                                             <ColumnDefinition Width="0.25*"/>
                                             <ColumnDefinition Width="0.25*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label Content="Género:" Foreground="White" Grid.Column="1" HorizontalAlignment="Right"/>
-                                        <ComboBox Name="bComboGenero" Margin="5" Grid.Column="2" SelectedValue="0" SelectionChanged="bComboGenero_SelectionChanged">
-                                            <ComboBoxItem Content="Todos" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" IsSelected="True"/>
-                                            <ComboBoxItem Content="Acción" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14" />
-                                            <ComboBoxItem Content="Artes Marciales" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Aventuras" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Carreras" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Ciencia Ficción" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Comedia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Crimen" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Demencia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Demonios" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Deportes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Drama" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Escolares" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Espacial" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Fantasía" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Historico" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Juegos" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Magia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Militar" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Misterio" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Música" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Parodia" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Policía" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Psicológico" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Romance" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Samurai" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Sobrenatural" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Superpoderes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Suspenso" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Terror" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                            <ComboBoxItem Content="Vampiros" Grid.Column="1" HorizontalAlignment="Left" Margin="10,2,10,0" Grid.Row="4" VerticalAlignment="Top" FontSize="14"/>
-                                        </ComboBox>
+                                        <Label Content="Gender:" Foreground="White" Grid.Column="1" HorizontalAlignment="Right"/>
+                                        <Button Name="bButtonGender" Content="..." Margin="5" Grid.Column="2" Click="bButtonGender_Click" />
                                     </Grid>
 
                                     <TextBox x:Name="textOfflineMain" MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Visible" KeyUp="onSearchValueChanged"/>

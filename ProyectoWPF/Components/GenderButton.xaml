@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="ProyectoWPF.Components.GenderButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ProyectoWPF.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="75" d:DesignWidth="100" Width="Auto">
+    <Border x:Name="border" BorderThickness="4" BorderBrush="White" CornerRadius="35" Background="#FF171717">
+        <Grid>
+            <Label x:Name="text" FontSize="15" Foreground="White" Content="AAAAAA" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0"/>
+            <Button x:Name="bClick" Opacity="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="changeSelection"/>
+        </Grid>
+        
+    </Border>
+    
+</UserControl>

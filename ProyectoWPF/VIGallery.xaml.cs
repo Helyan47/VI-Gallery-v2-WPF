@@ -41,6 +41,7 @@ namespace ProyectoWPF {
         public static bool changedProfile = false;
         public static UsuarioClass _user { get; set; }
         private bool panelPrincSelected = true;
+        public static bool isPrivateMode = false;
         public VIGallery(PerfilClass profile) {
             InitializeComponent();
             _profile = profile;
@@ -1312,9 +1313,16 @@ namespace ProyectoWPF {
         /**
          * Filtra por genero el panel seleccionado
          */
-        private void bComboGenero_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            ComboBox cb = (ComboBox)sender;
-            string content = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
+        private void bButtonGender_Click(object sender, EventArgs e) {
+            Button cb = (Button)sender;
+            List<string> generos = null;
+            if (conexionMode) {
+                generos = Conexion.loadGenders(isPrivateMode);
+                if(generos != null) {
+
+                }
+            }
+            /*string content = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
             if (content.Equals("Todos")) {
                 WrapPanelPrincipal wp = Lista.getWrapVisible();
                 if (wp != null) {
@@ -1327,7 +1335,7 @@ namespace ProyectoWPF {
                     wp.showFoldersByGender(content);
                 }
                 
-            }
+            }*/
         }
 
         /**

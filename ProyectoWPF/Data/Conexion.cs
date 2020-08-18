@@ -787,5 +787,37 @@ namespace ProyectoWPF.Data {
             }
         }
 
+        public static List<string> loadGenders(bool isPrivateMode) {
+            List<string> generos = null;
+            MySqlConnection conexion = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                MySqlTransaction myTrans = conexion.BeginTransaction();
+
+                MySqlCommand comando = new MySqlCommand("SELECT nombre FROM Genero WHERE isSecret=@isSecret", conexion);
+                comando.Parameters.AddWithValue("@isSecret", isPrivateMode);
+                MySqlDataReader reader = comando.ExecuteReader();
+
+                if (reader.HasRows) {
+                    generos = new List<string>();
+                    while (reader.Read()) {
+                        generos.Add(reader["nombre"].ToString());
+                    }
+                    reader.Close();
+                }
+
+            } catch (MySqlException e) {
+                Console.WriteLine("Error al cargar los perfiles:\n" + e);
+                throw e;
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+            return generos;
+        }
+
     }
 }
