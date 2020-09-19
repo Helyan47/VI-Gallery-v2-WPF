@@ -82,6 +82,18 @@ namespace ProyectoWPF.Data {
                 return null;
             }
         }
+
+        public static Dictionary<string, bool> orderDictionary(Dictionary<string, bool> diccionario) {
+            if (diccionario != null) {
+                Dictionary<string, bool> generos = new Dictionary<string, bool>();
+                foreach(KeyValuePair<string,bool> gender in diccionario.OrderBy(i => i.Key, comparadorStrings)){
+                    generos.Add(gender.Key, gender.Value);
+                }
+                return generos;
+                
+            }
+            return null;
+        }
     }
 
     [SuppressUnmanagedCodeSecurity]
@@ -113,6 +125,7 @@ namespace ProyectoWPF.Data {
             return SafeNativeMethods.StrCmpLogicalW(a.nombre, b.nombre);
         }
     }
+
     /*
     public class DateComparer : IComparer<object> {
         public int Compare(object a, object b) {

@@ -22,7 +22,8 @@ namespace ProyectoWPF.Components {
     public partial class GenderSelection : UserControl {
 
         private Dictionary<string, bool> genders;
-        private List<GenderCheck> buttonGroup;
+        private List<GenderCheck> checkGroup;
+        private Dictionary<string, bool> gendersFiltered;
         private Dictionary<string, bool> gendersSelected;
         private string rutaFolder = "";
         private int genderMode = -1;
@@ -32,9 +33,9 @@ namespace ProyectoWPF.Components {
             bAddGender.getButton().Click += addGenderWindow;
         }
 
-        private void loadGenders() {
+        public void loadGenders() {
             genders = new Dictionary<string, bool>();
-            buttonGroup = new List<GenderCheck>();
+            checkGroup = new List<GenderCheck>();
             if (genderMode == 0) {
                 genders = Conexion.loadAllGenders(false);
             } else if (genderMode == 1) {
@@ -48,18 +49,24 @@ namespace ProyectoWPF.Components {
                 foreach (KeyValuePair<string, bool> gender in genders) {
                     GenderCheck gb = new GenderCheck(gender.Key, gender.Value);
                     gb.Margin = new Thickness(5);
-                    buttonGroup.Add(gb);
+                    if(genderMode == 2) {
+                        foreach(KeyValuePair<string, bool> gen in gendersFiltered) {
+                            if (gen.Key.Equals(gender.Key)) {
+                                gb.changeSelection(gen.Value);
+                            }
+                        }
+                    }
+                    checkGroup.Add(gb);
                 }
-                reloadButtons(buttonGroup);
+                reloadButtons(checkGroup);
             }
         }
 
         private void addGenderWindow(object sender, EventArgs e) {
             AddGender ag = new AddGender();
-            if (ag.ShowDialog() == true) {
-                if (ag.isAdded()) {
-                    loadGenders();
-                }
+            ag.ShowDialog();
+            if (ag.isAdded() == true) {
+                loadGenders();
             }
         }
 
@@ -72,6 +79,7 @@ namespace ProyectoWPF.Components {
                         gendersWrapPanel.Children.Add(gb);
                     }
                 }
+                checkGroup = genderButtons;
             }
         }
 
@@ -89,7 +97,7 @@ namespace ProyectoWPF.Components {
         }
 
         private GenderCheck getButtonByTag(string name) {
-            foreach(GenderCheck gb in buttonGroup) {
+            foreach(GenderCheck gb in checkGroup) {
                 if (gb.getText().Equals(name)) {
                     return gb;
                 }
@@ -97,7 +105,7 @@ namespace ProyectoWPF.Components {
             return null;
         }
 
-        public void changeMode(string mode, string rutaCarpeta, Dictionary<string,bool> selectedGenders) {
+        public void setMode(string mode, string rutaCarpeta, Dictionary<string,bool> filteredGenders) {
             if (mode.Equals("NEW")) {
                 this.genderMode = 0;
             } else if (mode.Equals("FOLDER")) {
@@ -105,8 +113,38 @@ namespace ProyectoWPF.Components {
                 this.rutaFolder = rutaCarpeta;
             } else if (mode.Equals("FILTER")) {
                 this.genderMode = 2;
-                this.gendersSelected = selectedGenders;
+                this.gendersFiltered = filteredGenders;
             }
+        }
+
+        public Dictionary<string,bool> getGendersSelected() {
+            gendersSelected = new Dictionary<string, bool>();
+            foreach(GenderCheck gb in checkGroup) {
+                if (gb.isSelected()) {
+                    gendersSelected.Add(gb.getText(), gb.isSelected());
+                }
+                
+            }
+            return gendersSelected;
+        }
+
+        private void Button_MouseEnter(object sender, MouseEventArgs e) {
+            bAccept.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+            bAccept.Background = new SolidColorBrush(Colors.White);
+        }
+
+        private void Button_MouseLeave(object sender, MouseEventArgs e) {
+            bAccept.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            bAccept.Background = new SolidColorBrush(Color.FromRgb(23, 23, 23));
+        }
+
+        private void bAccept_Click(object sender, RoutedEventArgs e) {
+            Metodos.notifyGenderFilter();
+        }
+
+        public void clear() {
+            gendersSelected = null;
+            gendersWrapPanel.Children.Clear();
         }
     }
 }

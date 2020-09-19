@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ProyectoWPF.Components"
              mc:Ignorable="d" Width="Auto" Height="Auto" SnapsToDevicePixels="True">
     <UserControl.Resources>
-        <Style x:Key="prueba" TargetType="{x:Type Button}">
+        <Style x:Key="buttonStyleCustom" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -32,6 +32,6 @@
         </Grid>
         
     </Border>-->
-    <Button x:Name="button" Content="Add Gender" Style="{StaticResource prueba}" Margin="5" Background="#FF171717" BorderBrush="White" Foreground="White" FontSize="15" SnapsToDevicePixels="True" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"/>
+    <Button x:Name="button" Content="Add Gender" Style="{StaticResource buttonStyleCustom}" Margin="5" Background="#FF171717" BorderBrush="White" Foreground="White" FontSize="15" SnapsToDevicePixels="True" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"/>
 
 </UserControl>

@@ -188,7 +188,7 @@ namespace ProyectoWPF {
             return wrapPanel;
         }
 
-        public void showFoldersByGender(string gender) {
+        public void showFoldersByGender(List<string> gender) {
             foreach(UIElement ui in hijos) {
                 if(ui is Carpeta) {
                     Carpeta aux = (Carpeta)ui;
@@ -197,21 +197,7 @@ namespace ProyectoWPF {
                     } else {
                         ui.Visibility = Visibility.Collapsed;
                     }
-                }/*else if(ui is SerieComponent) {
-                    SerieComponent aux = (SerieComponent)ui;
-                    if (aux.checkGender(gender)) {
-                        ui.Visibility = Visibility.Visible;
-                    } else {
-                        ui.Visibility = Visibility.Collapsed;
-                    }
-                }else if(ui is ArchivoComponent) {
-                    ArchivoComponent aux = (ArchivoComponent)ui;
-                    if (aux.checkGender(gender)) {
-                        ui.Visibility = Visibility.Visible;
-                    } else {
-                        ui.Visibility = Visibility.Collapsed;
-                    }
-                }*/
+                }
             }
         }
 
@@ -225,19 +211,7 @@ namespace ProyectoWPF {
                 }else if(ui is Archivo) {
                     Archivo aux = (Archivo)ui;
                     lista.Add(aux._archivoClass.nombre);
-                }/*else if(ui is ArchivoComponent) {
-                    ArchivoComponent aux = (ArchivoComponent)ui;
-                    string nombre = aux.getNombre();
-                    if (nombre != null) {
-                        lista.Add(nombre);
-                    }
-                }else if(ui is SerieComponent) {
-                    SerieComponent aux = (SerieComponent)ui;
-                    lista.Add(aux.getSerie().nombre);
-                }else if(ui is TemporadaComponent) {
-                    TemporadaComponent aux = (TemporadaComponent)ui;
-                    lista.Add("Temporada "+ aux.getTemporada().numTemporada);
-                }*/
+                }
             }
 
             if (lista.Count != 0) {
@@ -257,29 +231,7 @@ namespace ProyectoWPF {
                         } else {
                             aux.Visibility = Visibility.Collapsed;
                         }
-                    }/* else if (ui is ArchivoComponent) {
-                        ArchivoComponent aux = (ArchivoComponent)ui;
-                        string nombre = aux.getNombre();
-                        if (resultados.Contains(nombre)) {
-                            aux.Visibility = Visibility.Visible;
-                        } else {
-                            aux.Visibility = Visibility.Collapsed;
-                        }
-                    } else if (ui is SerieComponent) {
-                        SerieComponent aux = (SerieComponent)ui;
-                        if (resultados.Contains(aux.getSerie().nombre)) {
-                            aux.Visibility = Visibility.Visible;
-                        } else {
-                            aux.Visibility = Visibility.Collapsed;
-                        }
-                    } else if (ui is TemporadaComponent) {
-                        TemporadaComponent aux = (TemporadaComponent)ui;
-                        if (resultados.Contains("Temporada " + aux.getTemporada().numTemporada)) {
-                            aux.Visibility = Visibility.Visible;
-                        } else {
-                            aux.Visibility = Visibility.Collapsed;
-                        }
-                    }*/
+                    }
                 }
             }
         }

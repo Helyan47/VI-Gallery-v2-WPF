@@ -239,7 +239,7 @@ namespace ProyectoWPF {
             _gridSecundario.SetValue(Grid.RowProperty, 0);
             _gridPrincipal.SetValue(Grid.RowProperty, 1);
 
-            _ventanaMain.clearTextBox();
+            _ventanaMain.clearTextBoxAndSelection();
 
             _ventanaMain.ReturnVisibility(true);
            
@@ -353,7 +353,7 @@ namespace ProyectoWPF {
                     _carpetasHijo = null;
                 }
 
-
+                _primerPanel.removeFolder(this);
 
                 Lista.removeCarpetaClass(_carpeta.id);
             } catch (MySqlException exc) {
@@ -361,12 +361,13 @@ namespace ProyectoWPF {
             }
         }
 
-        public bool checkGender(string s) {
-            if (_carpeta.generos.Contains(s)) {
-                return true;
-            } else {
-                return false;
+        public bool checkGender(List<string> genders) {
+            foreach(string gender in genders) {
+                if (!_carpeta.generos.Contains(gender)) {
+                    return false;
+                }
             }
+            return true;
         }
 
         public void changeName(string newName, string newDescripcion, string newImg, ICollection<string> generos) {
@@ -395,7 +396,7 @@ namespace ProyectoWPF {
                     }
                 }
                 Title.SetText(newName);
-                Conexion.updateFolderName(_carpeta);
+                Conexion.updateFolder(_carpeta);
                 Lista.orderWrap(_primerPanel);
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
@@ -425,7 +426,7 @@ namespace ProyectoWPF {
                     }
                 }
                 Title.SetText(newName);
-                Conexion.updateFolderName(_carpeta);
+                Conexion.updateFolder(_carpeta);
                 Lista.orderWrap(_primerPanel);
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
@@ -439,7 +440,7 @@ namespace ProyectoWPF {
                 string rutaAntiguaSub = _carpeta.ruta;
                 _carpeta.ruta = _carpeta.ruta.Replace(rutaAntigua, rutaNueva);
 
-                Conexion.updateFolderName(_carpeta);
+                Conexion.updateFolder(_carpeta);
                 Lista.changeSubFoldersName(rutaAntiguaSub, _carpeta.ruta);
 
                 if (_archivos != null) {

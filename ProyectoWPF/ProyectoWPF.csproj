@@ -158,6 +158,7 @@
     <Compile Include="Data\Base\PerfilClass.cs" />
     <Compile Include="Data\Base\UsuarioClass.cs" />
     <Compile Include="Data\Filters.cs" />
+    <Compile Include="Data\Metodos.cs" />
     <Compile Include="Data\OrderClass.cs" />
     <Compile Include="LoginUser\InputTextLoL.xaml.cs">
       <DependentUpon>InputTextLoL.xaml</DependentUpon>

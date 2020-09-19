@@ -6,6 +6,25 @@
              xmlns:local="clr-namespace:ProyectoWPF.Components"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920" Background="#7F1F1F1F">
+    <UserControl.Resources>
+        <Style x:Key="buttonStyleCustom" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border x:Name="Fondo" Margin="2" Background="{TemplateBinding Background}" CornerRadius="5">
+                                <ContentPresenter x:Name="Content" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}" Margin="10"/>
+                            </Border>
+                            <Border x:Name="Grid" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="10" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -22,6 +41,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="75px"/>
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -34,6 +54,7 @@
                 </Grid>
                 
                 <WrapPanel x:Name="gendersWrapPanel" HorizontalAlignment="Center" VerticalAlignment="Stretch" Orientation="Horizontal" Grid.Row="1"/>
+                <Button x:Name="bAccept" Content="Select" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" Style="{StaticResource buttonStyleCustom}" Background="#FF171717" BorderBrush="White" Foreground="White" FontSize="15" SnapsToDevicePixels="True" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Click="bAccept_Click"/>
             </Grid>
         </ScrollViewer>
         

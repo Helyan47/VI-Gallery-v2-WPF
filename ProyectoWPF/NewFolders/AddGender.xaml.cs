@@ -21,8 +21,6 @@ namespace ProyectoWPF.NewFolders {
     public partial class AddGender : Window {
 
         private bool added = false;
-        private string text = "";
-
         public AddGender() {
             InitializeComponent();
         }
@@ -31,8 +29,7 @@ namespace ProyectoWPF.NewFolders {
             if (Title.Text.CompareTo("") != 0) {
                 Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
                 if (!containsABadCharacter.IsMatch(Title.Text)) {
-                    if (!Conexion.checkAndCreateGender(Title.Text)) {
-                        text = Title.Text;
+                    if (Conexion.checkAndCreateGender(Title.Text,false)) {
                         added = true;
                         this.Close();
                     } else {
@@ -52,7 +49,7 @@ namespace ProyectoWPF.NewFolders {
             this.Close();
         }
 
-        public bool isAdded() {
+        public bool isAdded(){
             return added;
         }
     }

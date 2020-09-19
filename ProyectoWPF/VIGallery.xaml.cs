@@ -45,6 +45,7 @@ namespace ProyectoWPF {
             Lista.clearListas();
             _botones = menu.Items;
             _newSelectedProfile = _profile;
+            Metodos.setVIGallery(this);
             _botonesMenu = new List<ComboBoxItem>();
             changedProfile = false;
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
@@ -57,23 +58,49 @@ namespace ProyectoWPF {
         * Oculta los paneles de cada menu y muestra el seleccionado
         */
         public void onClickButtonMenu(object sender,EventArgs e) {
-            ComboBox b = (ComboBox)sender;
-            ComboBoxItem selected = (ComboBoxItem) b.SelectedItem;
-            MenuClass mc = Lista.getMenuFromText(selected.Content.ToString());
-            WrapPanelPrincipal wp = Lista.getWrapVisible();
-            clearTextBox();
-            if (Lista.buttonInButtons(mc)) {
-                Lista.hideAll();
-                menuCarpetas.Visibility = Visibility.Hidden;
-                GridSecundario.SetValue(Grid.RowProperty, 1);
-                GridPrincipal.SetValue(Grid.RowProperty, 0);
-                Lista.showWrapFromMenu(mc);
+            try {
+                ComboBox b = (ComboBox)sender;
+                ComboBoxItem selected = (ComboBoxItem)b.SelectedItem;
+                if (selected != null) {
+                    MenuClass mc = Lista.getMenuFromText(selected.Content.ToString());
+                    WrapPanelPrincipal wp = Lista.getWrapVisible();
+                    clearTextBoxAndSelection();
+                    if (Lista.buttonInButtons(mc)) {
+                        Lista.hideAll();
+                        menuCarpetas.Visibility = Visibility.Hidden;
+                        GridSecundario.SetValue(Grid.RowProperty, 1);
+                        GridPrincipal.SetValue(Grid.RowProperty, 0);
+                        Lista.showWrapFromMenu(mc);
+                    }
 
+                    _activatedButton = selected;
+                    menu.SelectedItem = selected;
+                    Return.Visibility = Visibility.Hidden;
+                    borderEnter.Visibility = Visibility.Hidden;
+                }
+            } catch (Exception ) {
+                ComboBoxItem selected = (ComboBoxItem)sender;
+                if (selected != null) {
+                    MenuClass mc = Lista.getMenuFromText(selected.Content.ToString());
+                    WrapPanelPrincipal wp = Lista.getWrapVisible();
+                    clearTextBoxAndSelection();
+                    if (Lista.buttonInButtons(mc)) {
+                        Lista.hideAll();
+                        menuCarpetas.Visibility = Visibility.Hidden;
+                        GridSecundario.SetValue(Grid.RowProperty, 1);
+                        GridPrincipal.SetValue(Grid.RowProperty, 0);
+                        Lista.showWrapFromMenu(mc);
+
+                    }
+
+                    _activatedButton = selected;
+                    menu.SelectedItem = selected;
+                    Return.Visibility = Visibility.Hidden;
+                    borderEnter.Visibility = Visibility.Hidden;
+                }
             }
-
-            _activatedButton = selected;
-            Return.Visibility = Visibility.Hidden;
-            borderEnter.Visibility = Visibility.Hidden;
+            
+            
         }
 
         /**
@@ -95,6 +122,7 @@ namespace ProyectoWPF {
                         folderDialog.IsFolderPicker = true;
                         firstFolder = 0;
                         if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
+                            clearTextBoxAndSelection();
                             Dispatcher.Invoke(new Action(() => {
                                 _folders = OrderClass.orderArrayOfString(Directory.GetDirectories(folderDialog.FileName));
                                 for (int i = 0; i < _folders.Length; i++) {
@@ -150,6 +178,8 @@ namespace ProyectoWPF {
 
                 n.ShowDialog();
                 if (n.getNombre() != "") {
+                    clearTextBoxAndSelection();
+
                     CarpetaClass s = new CarpetaClass(n.getNombre(), "", true);
                     c.setClass(s);
                     c.getClass().idMenu = Lista.getMenuFromText(_activatedButton.Content.ToString()).id;
@@ -188,7 +218,7 @@ namespace ProyectoWPF {
                 string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
                 ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
                 Archivo a = new Archivo(ac, this, null);
-
+                clearTextBoxAndSelection();
                 a.setCarpetaPadre(c);
                 Conexion.saveFile(ac);
                 c.addFile(a);
@@ -212,6 +242,7 @@ namespace ProyectoWPF {
 
 
             if (fileDialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(fileDialog.FileName)) {
+                clearTextBoxAndSelection();
                 List<string> _files = OrderClass.orderListOfString(fileDialog.FileNames.ToList());
                 Carpeta c = menuCarpetas.getCarpeta();
                 bool? flag = null;
@@ -419,6 +450,7 @@ namespace ProyectoWPF {
                 newSerie.ShowDialog();
 
                 if (newSerie.createdSerie()) {
+                    clearTextBoxAndSelection();
                     Lista.addCarpeta(p1);
                     WrapPanelPrincipal aux = Lista.getWrapVisible();
 
@@ -473,6 +505,8 @@ namespace ProyectoWPF {
             Lista.addCarpeta(c);
 
             c.setClass(cc);
+
+            c.SetGridsOpciones(GridPrincipal, GridSecundario);
 
             c.actualizar();
 
@@ -560,10 +594,7 @@ namespace ProyectoWPF {
          */
         public void addMenuFromClass(MenuClass m) {
             ComboBoxItem newButton = new ComboBoxItem();
-            newButton.Content = m.nombre;
-            newButton.FontWeight = FontWeights.Bold;
-            newButton.Foreground = Brushes.White;
-            newButton.Visibility = Visibility.Visible;
+            newButton.Content = m.nombre;;
 
             _botonesMenu.Add(newButton);
             Lista.addMenu(m);
@@ -573,6 +604,7 @@ namespace ProyectoWPF {
 
             string name = newButton.Content.ToString();
             WrapPanelPrincipal wp = new WrapPanelPrincipal();
+            wp.Focusable = false;
             Grid.SetRow(wp, 1);
             wp.name = name;
             gridPrincipal.Children.Add(wp);
@@ -602,7 +634,6 @@ namespace ProyectoWPF {
             menu.SelectedItem = b;
 
             _activatedButton = b;
-            b.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
             Return.Visibility = Visibility.Hidden;
         }
 
@@ -616,11 +647,7 @@ namespace ProyectoWPF {
                 AddButton a = new AddButton(newButton);
                 a.ShowDialog();
                 if (a.isAdded()) {
-                    newButton.Foreground = Brushes.Black;
-                    newButton.Visibility = Visibility.Visible;
-                    newButton.Style = (Style)Application.Current.Resources["CustomButtonStyle"];
-
-
+                    clearTextBoxAndSelection();
                     _botonesMenu.Add(newButton);
                     MenuClass mc = new MenuClass(newButton.Content.ToString(), _profile.id);
                     mc = Conexion.saveMenu(mc);
@@ -629,7 +656,9 @@ namespace ProyectoWPF {
                         menu.Items.Add(newButton);
                         string name = newButton.Content.ToString();
                         WrapPanelPrincipal wp = new WrapPanelPrincipal();
+                        wp.Focusable = false;
                         wp.name = name;
+                        Grid.SetRow(wp, 1);
                         gridPrincipal.Children.Add(wp);
                         wp.Visibility = Visibility.Visible;
                         _activatedButton = newButton;
@@ -684,7 +713,7 @@ namespace ProyectoWPF {
                     }
 
                 }
-                clearTextBox();
+                clearTextBoxAndSelection();
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
@@ -963,6 +992,9 @@ namespace ProyectoWPF {
          */
         private void bButtonGender_Click(object sender, EventArgs e) {
             Button cb = (Button)sender;
+            genderSelection.setMode("FILTER",null,filteredGenders);
+            genderSelection.Visibility = Visibility.Visible;
+            genderSelection.loadGenders();
             //pasar filteredGenders al genderSelection y marcar los filtrados anteriormente
             //showGenderSelection modo ALL
 
@@ -1013,10 +1045,11 @@ namespace ProyectoWPF {
         /**
          * Vacia el buscador
          */
-        public void clearTextBox() {
-            //if (wp != null) {
-            //    wp.showAll();
-            //}
+        public void clearTextBoxAndSelection() {
+            WrapPanelPrincipal wp = Lista.getWrapVisible();
+            if(wp != null) {
+                wp.showAll();
+            }
             
             textOfflineMain.Text = "";
             textOfflineSubFolder.Text = "";
@@ -1046,6 +1079,13 @@ namespace ProyectoWPF {
 
         public VI_Reproductor getReproductor() {
             return reproductorControl;
+        }
+
+        public void notifyGenderFilter() {
+            genderSelection.Visibility = Visibility.Hidden;
+            filteredGenders = genderSelection.getGendersSelected();
+            Lista.getWrapVisible().showFoldersByGender(filteredGenders.Keys.ToList<string>());
+            genderSelection.clear();
         }
     }
 }

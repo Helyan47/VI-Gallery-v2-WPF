@@ -48,8 +48,13 @@ namespace ProyectoWPF.Components {
             }
         }
 
-        public bool? isSelected() {
-            return genero.IsChecked;
+        public bool isSelected() {
+            if(genero.IsChecked == true) {
+                return true;
+            }else if(genero.IsChecked == false) {
+                return false;
+            }
+            return false;
         }
 
         public string getName() {
@@ -59,7 +64,7 @@ namespace ProyectoWPF.Components {
         private void mouseEnter(object sender, EventArgs e) {
             if (genero.IsChecked == false) {
                 genero.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-                genero.Background = new SolidColorBrush(Colors.White);
+                genero.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
             }
         }
 

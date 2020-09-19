@@ -231,13 +231,12 @@
                                 </Grid.RowDefinitions>
                                 <Grid x:Name="GridPrincipal" Grid.Row="0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.2*"/>
                                         <ColumnDefinition Width="0.5*"/>
                                         <ColumnDefinition Width="0.075*"/>
                                         <ColumnDefinition Width="0.75*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="4" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
                                         <!--<Button Content="Button" Style="{StaticResource CustomButtonStyle}"  BorderThickness="0" Foreground="White" Margin="2" Visibility="Hidden"/>-->
                                         <Viewbox Width="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
                                             <Button Content="{StaticResource ChangeModeIcon}" Style="{StaticResource CustomButtonStyle}" Padding="1" BorderThickness="0" Foreground="White" Margin="2" Click="ChangeMode"/>
@@ -252,7 +251,7 @@
                                         </Viewbox>
                                         <Rectangle Stroke="Gray" Margin="5"/>
                                     </StackPanel>
-                                    <Grid Grid.Column="3">
+                                    <Grid Grid.Column="2">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="0.25*"/>
@@ -261,7 +260,7 @@
                                         <Label Content="Gender:" Foreground="White" Grid.Column="1" HorizontalAlignment="Right"/>
                                         <Button Name="bButtonGender" Content="..." Margin="5" Grid.Column="2" Click="bButtonGender_Click" />
                                     </Grid>
-                                    <Grid Grid.Column="1" HorizontalAlignment="Stretch">
+                                    <Grid Grid.Column="0" HorizontalAlignment="Stretch">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
@@ -273,13 +272,12 @@
 
                                 <Grid x:Name="GridSecundario" Grid.Row="1">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.3*"/>
                                         <ColumnDefinition Width="0.5*"/>
                                         <ColumnDefinition Width="0.075*"/>
                                         <ColumnDefinition Width="0.25*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="4" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" FlowDirection="RightToLeft" >
                                         <!--<Button Content="Button" Padding="1" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White"/>
                                         <Button Content="Button" Padding="1" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="ChangeMode"/>-->
                                         <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
@@ -293,7 +291,7 @@
                                             <Button x:Name="addSubCarp" Content="{StaticResource Folder}" Style="{StaticResource CustomButtonStyle}" BorderThickness="0" Foreground="White" Click="NewTemp_Click" Margin="20"/>
                                         </Viewbox>
                                     </StackPanel>
-                                    <TextBox x:Name="textOfflineSubFolder" Grid.Column="1" MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Visible" KeyUp="onSearchValueChanged"/>
+                                    <TextBox x:Name="textOfflineSubFolder" Grid.Column="0" MaxLines="1" VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Visible" KeyUp="onSearchValueChanged"/>
                                     
                                 </Grid>
                             </Grid>
@@ -303,15 +301,15 @@
                                     <RowDefinition Height="50px"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Grid Grid.Column="1" Panel.ZIndex="10" Height="35" Width="350" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0">
+                                <Grid Grid.Column="1" Panel.ZIndex="10" Height="35" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <ComboBox x:Name="menu" Width="330" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,5,10,5" SelectionChanged="onClickButtonMenu"/>
-                                    <!--<Button Content="+" Grid.Column="0" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="20" BorderThickness="0" Width="50" Click="addMenuClick" FontWeight="Bold"/>
-                                    <Button Content="-" Grid.Column="2" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="30" BorderThickness="0" Width="50" Click="removeMenu" VerticalContentAlignment="Center"/>-->
+                                    <ComboBox x:Name="menu" Width="330" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,5,10,5" SelectionChanged="onClickButtonMenu"/>
+                                    <Button Content="+" Grid.Column="1" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="20" BorderThickness="0" Width="50" Click="addMenuClick" FontWeight="Bold"/>
+                                    <Button Content="-" Grid.Column="2" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="30" BorderThickness="0" Width="50" Click="removeMenu" VerticalContentAlignment="Center"/>
                                 </Grid>
                             </Grid>
                             <local:Menu x:Name="menuCarpetas" Grid.Row="1" Visibility="Hidden"></local:Menu>
@@ -461,5 +459,6 @@
             
         </DockPanel>
         <reproductor:VI_Reproductor x:Name="reproductorControl" Visibility="Hidden"/>
+        <componentes:GenderSelection x:Name="genderSelection" Visibility="Hidden"></componentes:GenderSelection>
     </Grid>
 </Window>
