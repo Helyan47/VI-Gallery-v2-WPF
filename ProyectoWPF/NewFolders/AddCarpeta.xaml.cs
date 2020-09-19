@@ -22,9 +22,9 @@ namespace ProyectoWPF {
 
         private CarpetaClass carpeta;
         private Carpeta padre;
-        private Button button;
+        private ComboBoxItem button;
         private bool created = false;
-        public AddCarpeta(Carpeta p,Button b) {
+        public AddCarpeta(Carpeta p,ComboBoxItem b) {
             InitializeComponent();
             padre = p;
             carpeta = new CarpetaClass("", "",true);
@@ -54,7 +54,7 @@ namespace ProyectoWPF {
 
                             if (!dirImg.Equals("")) {
                                 carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, col, true);
-                                carpeta.idMenu = Lista.getMenuFromButton(button).id;
+                                carpeta.idMenu = Lista.getMenuFromText(button.Content.ToString()).id;
                             }
                         } else {
                             if (!dirImg.Equals("")) {
@@ -62,7 +62,7 @@ namespace ProyectoWPF {
 
                             }
                         }
-                        carpeta.idMenu = Lista.getMenuFromButton(button).id;
+                        carpeta.idMenu = Lista.getMenuFromText(button.Content.ToString()).id;
                         carpeta.ruta = "C/" + button.Content + "/" + padre.getTitle();
                         padre.setClass(carpeta);
                         Lista.addCarpetaClass(carpeta);

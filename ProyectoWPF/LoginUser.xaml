@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProyectoWPF"
+        xmlns:components="clr-namespace:ProyectoWPF.Components"
         mc:Ignorable="d"
         Title="Login" Height="800" Width="600" WindowStyle="None" ResizeMode="NoResize" FontWeight="Bold" WindowStartupLocation="CenterScreen">
     <Grid Background="#FF121212">
@@ -45,7 +46,7 @@
             <local:InputTextLoL x:Name="inputUser" Margin="0" Grid.Column="1" Grid.Row="2" KeyUp="inputUser_KeyUp"/>
             <local:InputTextLoL x:Name="inputPass" Grid.Column="1" Margin="0" Grid.Row="4" KeyUp="inputPass_KeyUp"/>
             <Label Content="SIGN IN" Grid.Column="1" Grid.Row="1"  Margin="0" FontSize="50" VerticalContentAlignment="Center" Foreground="White" FontFamily="Segoe UI Black"/>
-            <Grid Grid.Column="1" Grid.Row="7">
+            <Grid x:Name="panelInferior" Grid.Column="1" Grid.Row="7">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100px"/>

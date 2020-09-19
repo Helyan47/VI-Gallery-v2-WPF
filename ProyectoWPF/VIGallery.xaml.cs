@@ -26,13 +26,13 @@ namespace ProyectoWPF {
     public partial class VIGallery : Window {
 
         private ICollection<WrapPanelPrincipal> _wrapsPrincipales;
-        private ICollection<Button> _botonesMenu;
+        private ICollection<ComboBoxItem> _botonesMenu;
         string[] _folders;
         private Carpeta _aux;
         private Carpeta _aux2;
         List<string> _rutas = new List<string>();
-        private UIElementCollection _botones;
-        private Button _activatedButton;
+        private ItemCollection _botones;
+        private ComboBoxItem _activatedButton;
         public int firstFolder = 0;
         //Establece si se ha iniciado con conexion o sin conexion
         public static bool conexionMode = false;
@@ -42,19 +42,17 @@ namespace ProyectoWPF {
         public static UsuarioClass _user { get; set; }
         private bool panelPrincSelected = true;
         public static bool isPrivateMode = false;
+        private Dictionary<string, bool> filteredGenders = new Dictionary<string, bool>();
         public VIGallery(PerfilClass profile) {
             InitializeComponent();
             _profile = profile;
             Lista.clearListas();
-            _botones = buttonStack.Children;
+            _botones = menu.Items;
             _newSelectedProfile = _profile;
-            _botonesMenu = new List<Button>();
+            _botonesMenu = new List<ComboBoxItem>();
             changedProfile = false;
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
             menuReciente.setMain(this);
-            if (!conexionMode) {
-                rowOnline.Height = new GridLength(0,GridUnitType.Star);
-            }
             reproductorControl.setVIGallery(this);
         }
 
@@ -63,8 +61,8 @@ namespace ProyectoWPF {
         * Oculta los paneles de cada menu y muestra el seleccionado
         */
         public void onClickButtonMenu(object sender,EventArgs e) {
-            Button b = (Button)sender;
-            MenuClass mc = Lista.getMenuFromButton(b);
+            ComboBoxItem b = (ComboBoxItem)sender;
+            MenuClass mc = Lista.getMenuFromText(b.Content.ToString());
             WrapPanelPrincipal wp = Lista.getWrapVisible();
             clearTextBox();
             if (Lista.buttonInButtons(mc)) {
@@ -141,9 +139,7 @@ namespace ProyectoWPF {
                     }));
 
                 } else {
-                    menuButtons.BorderThickness = new Thickness(5);
                     MessageBox.Show("No has creado ningún menú");
-                    menuButtons.BorderThickness = new Thickness(0);
                 }
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
@@ -168,7 +164,7 @@ namespace ProyectoWPF {
                 if (n.getNombre() != "") {
                     CarpetaClass s = new CarpetaClass(n.getNombre(), "", true);
                     c.setClass(s);
-                    c.getClass().idMenu = Lista.getMenuFromButton(_activatedButton).id;
+                    c.getClass().idMenu = Lista.getMenuFromText(_activatedButton.Content.ToString()).id;
                     c.getClass().img = padre.getClass().img;
                     c.getClass().rutaPadre = padre.getClass().ruta;
                     c.setRutaPrograma(padre.getClass().ruta + "/" + c.getClass().nombre);
@@ -279,7 +275,7 @@ namespace ProyectoWPF {
 
                 CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(filename), "", true);
                 p1.setClass(s);
-                s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
+                s.idMenu = Lista.getMenuFromText(_activatedButton.Content.ToString()).id;
                 s.rutaPadre = "";
                 p1.actualizar();
 
@@ -324,7 +320,7 @@ namespace ProyectoWPF {
 
                 CarpetaClass s = new CarpetaClass(System.IO.Path.GetFileName(filename), "", false);
                 p1.setClass(s);
-                s.idMenu = Lista.getMenuFromButton(_activatedButton).id;
+                s.idMenu = Lista.getMenuFromText(_activatedButton.Content.ToString()).id;
                 s.rutaPadre = "";
                 p1.actualizar();
 
@@ -436,9 +432,7 @@ namespace ProyectoWPF {
                     ConexionOffline.closeConnection();
 
                 } else {
-                    menuButtons.BorderThickness = new Thickness(5);
                     MessageBox.Show("No has creado ninguno menú");
-                    menuButtons.BorderThickness = new Thickness(0);
                 }
             } catch (SQLiteException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
@@ -528,23 +522,12 @@ namespace ProyectoWPF {
          * Controla la opcion de volver atras en las subcarpetas
          */
         private void Return_MouseLeftButtonUp(object sender, EventArgs e) {
-            if (menuOnline.Visibility == Visibility.Visible) {
-                if (!panelPrincSelected) {
-                    MenuComponent mc = ListaOnline.getMenuVisible();
-                    ReturnVisibility(mc.onReturn());
-                }
+            Carpeta p1 = menuCarpetas.getCarpeta();
+            if (p1 != null) {
+                p1.clickInverso();
             } else {
-                Carpeta p1 = menuCarpetas.getCarpeta();
-                if (p1 != null) {
-                    p1.clickInverso();
-                } else {
-                    MessageBox.Show("null");
-                }
+                MessageBox.Show("null");
             }
-                
-            
-            
-            
         }
 
         /**
@@ -679,22 +662,16 @@ namespace ProyectoWPF {
          * Añade un menu a partir de un registro
          */
         public void addMenuFromClass(MenuClass m) {
-            Button newButton = new Button();
+            ComboBoxItem newButton = new ComboBoxItem();
             newButton.Content = m.nombre;
-            newButton.Height = 100;
-            newButton.FontSize = 30;
-            newButton.BorderThickness = new System.Windows.Thickness(0);
             newButton.FontWeight = FontWeights.Bold;
             newButton.Foreground = Brushes.White;
             newButton.Visibility = Visibility.Visible;
-            newButton.Style = (Style)Application.Current.Resources["CustomButtonStyle"];
-            newButton.Click += onClickButtonMenu;
-
 
             _botonesMenu.Add(newButton);
             Lista.addMenu(m);
             Lista.addButtonMenu(newButton);
-            buttonStack.Children.Add(newButton);
+            menu.Items.Add(newButton);
             string name = newButton.Content.ToString();
             WrapPanelPrincipal wp = new WrapPanelPrincipal();
             wp.name = name;
@@ -713,8 +690,8 @@ namespace ProyectoWPF {
          * Evento que se añadira a un menu cargado
          */
         public void onClickButtonMenuEspecial(object sender) {
-            Button b = (Button)sender;
-            MenuClass mc = Lista.getMenuFromButton(b);
+            ComboBoxItem b = (ComboBoxItem)sender;
+            MenuClass mc = Lista.getMenuFromText(b.Content.ToString());
             if (Lista.buttonInButtons(mc)) {
                 Lista.hideAll();
                 GridSecundario.SetValue(Grid.RowProperty, 1);
@@ -735,19 +712,14 @@ namespace ProyectoWPF {
          */
         private void addMenuClick(object sender, EventArgs e) {
             try {
-                Button newButton = new Button();
+                ComboBoxItem newButton = new ComboBoxItem();
                 newButton.Content = "";
                 AddButton a = new AddButton(newButton);
                 a.ShowDialog();
                 if (a.isAdded()) {
-                    newButton.Height = 100;
-                    newButton.FontSize = 30;
-                    newButton.BorderThickness = new System.Windows.Thickness(0);
-                    newButton.FontWeight = FontWeights.Bold;
-                    newButton.Foreground = Brushes.White;
+                    newButton.Foreground = Brushes.Black;
                     newButton.Visibility = Visibility.Visible;
                     newButton.Style = (Style)Application.Current.Resources["CustomButtonStyle"];
-                    newButton.Click += onClickButtonMenu;
 
 
                     _botonesMenu.Add(newButton);
@@ -756,7 +728,7 @@ namespace ProyectoWPF {
                         mc = Conexion.saveMenu(mc);
                         if (mc != null) {
                             Lista.addMenu(mc);
-                            buttonStack.Children.Add(newButton);
+                            menu.Items.Add(newButton);
                             string name = newButton.Content.ToString();
                             WrapPanelPrincipal wp = new WrapPanelPrincipal();
                             wp.name = name;
@@ -778,7 +750,7 @@ namespace ProyectoWPF {
                         ConexionOffline.closeConnection();
                         if (mc != null) {
                             Lista.addMenu(mc);
-                            buttonStack.Children.Add(newButton);
+                            menu.Items.Add(newButton);
                             string name = newButton.Content.ToString();
                             WrapPanelPrincipal wp = new WrapPanelPrincipal();
                             wp.name = name;
@@ -809,12 +781,12 @@ namespace ProyectoWPF {
             try {
                 if (_activatedButton != null) {
                     if (conexionMode) {
-                        long id = Lista.getMenuFromButton(_activatedButton).id;
+                        long id = Lista.getMenuFromText(_activatedButton.Content.ToString()).id;
 
-                        WrapPanelPrincipal wp = Lista.getWrapFromMenu(Lista.getMenuFromButton(_activatedButton));
+                        WrapPanelPrincipal wp = Lista.getWrapFromMenu(Lista.getMenuFromText(_activatedButton.Content.ToString()));
                         if (id != 0) {
                             Conexion.deleteMenu(id);
-                            Lista.removeMenu(_activatedButton);
+                            Lista.removeMenu(_activatedButton.Content.ToString());
 
                             if (_botonesMenu.Contains(_activatedButton)) {
                                 _botonesMenu.Remove(_activatedButton);
@@ -826,7 +798,7 @@ namespace ProyectoWPF {
                                 gridPrincipal.Children.Remove(wp);
                             }
                             if (_botonesMenu.Count != 0) {
-                                foreach (Button b in _botonesMenu) {
+                                foreach (ComboBoxItem b in _botonesMenu) {
                                     onClickButtonMenu(b, e);
                                     break;
                                 }
@@ -837,11 +809,11 @@ namespace ProyectoWPF {
                         }
 
                     } else {
-                        long id = Lista.getMenuFromButton(_activatedButton).id;
-                        WrapPanelPrincipal wp = Lista.getWrapFromMenu(Lista.getMenuFromButton(_activatedButton));
+                        long id = Lista.getMenuFromText(_activatedButton.Content.ToString()).id;
+                        WrapPanelPrincipal wp = Lista.getWrapFromMenu(Lista.getMenuFromText(_activatedButton.Content.ToString()));
                         if (id != 0) {
                             ConexionOffline.deleteMenu(id);
-                            Lista.removeMenu(_activatedButton);
+                            Lista.removeMenu(_activatedButton.Content.ToString());
                             if (_botonesMenu.Contains(_activatedButton)) {
                                 _botonesMenu.Remove(_activatedButton);
                             }
@@ -852,7 +824,7 @@ namespace ProyectoWPF {
                                 gridPrincipal.Children.Remove(wp);
                             }
                             if (_botonesMenu.Count != 0) {
-                                foreach (Button b in _botonesMenu) {
+                                foreach (ComboBoxItem b in _botonesMenu) {
                                     onClickButtonMenu(b, e);
                                     break;
                                 }
@@ -1154,174 +1126,18 @@ namespace ProyectoWPF {
         }
 
         /**
-         * Si el menu online no se ha mostrado, se muestra y carga las peliculas y series que hay en el servidor, 
-         * si por el contrario se pulsa en el otro boton, borra los datos del menu online y muestra el panel de carpetas del usuario
-         */
-        private void onChangeMenuClick(object sender, EventArgs e) {
-            
-                Button aux = (Button)sender;
-            if (aux.Name.Equals("bOnlineMenu")) {
-                if (menuOnline.Visibility == Visibility.Hidden) {
-
-                    if (checkConnection()) {
-
-                        menuOnline.Visibility = Visibility.Visible;
-                        rectOnline.Visibility = Visibility.Visible;
-
-                        buscadorOnline.Visibility = Visibility.Visible;
-
-                        rectOffline.Visibility = Visibility.Hidden;
-                        gridPrincipal.Visibility = Visibility.Hidden;
-                        menuOffline.Visibility = Visibility.Hidden;
-                        buscadorOffline.Visibility = Visibility.Hidden;
-                        panelPrincSelected = true;
-
-                        if (panelPrincSelected) {
-                            buscadorOnline.Visibility = Visibility.Hidden;
-                            rowBuscador.Height = new GridLength(0, GridUnitType.Star);
-                            gridOnlinePanelPrinc.Visibility = Visibility.Visible;
-                            gridOnlineShowAll.Visibility = Visibility.Hidden;
-                            bPanelPrinc.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
-                            bShowAll.ClearValue(Button.BackgroundProperty);
-                            ReturnVisibility(false);
-                        }
-                        try {
-                            ListaOnline.loadData();
-                            List<Capitulo> capitulosRecientes = ConexionServer.getCapitulosMasRecientes();
-                            List<Pelicula> peliculasRecientes = ConexionServer.getPeliculasMasRecientes();
-                            List<object> listaRecientes = new List<object>();
-                            if (capitulosRecientes != null) {
-                                listaRecientes.AddRange(capitulosRecientes);
-                            }
-                            if (peliculasRecientes != null) {
-                                listaRecientes.AddRange(peliculasRecientes);
-                            }
-                            listaRecientes = OrderClass.orderDates(listaRecientes);
-                            if (listaRecientes != null & listaRecientes.Count >= 8) {
-                                listaRecientes = listaRecientes.GetRange(0, 8);
-                            }
-
-                            menuReciente.setList(listaRecientes);
-
-                            List<Capitulo> capitulos2019 = ConexionServer.getTopEpisodios2019();
-                            List<Pelicula> peliculas2019 = ConexionServer.getTopPeliculas2019();
-                            List<object> listaTop2019 = new List<object>();
-                            if (capitulos2019 != null) {
-                                listaTop2019.AddRange(capitulos2019);
-                            }
-                            if (peliculas2019 != null) {
-                                listaTop2019.AddRange(peliculas2019);
-                            }
-                            listaTop2019 = OrderClass.orderTops(listaTop2019);
-                            if (listaTop2019 != null & listaTop2019.Count >= 10) {
-                                listaTop2019 = listaTop2019.GetRange(0, 10);
-                            }
-
-                            top2019.setLista(ListaOnline.listToVideoElement(listaTop2019, this));
-
-                            List<VideoElement> videoElements = ListaOnline.listCapituloToVideoElement(ConexionServer.getCapitulosMasVistos(), this);
-                            if (videoElements != null) {
-                                episodiosVistos.setLista(videoElements);
-                            }
-
-                            List<VideoElement> videoElements2 = ListaOnline.listPeliculaToVideoElement(ConexionServer.getPeliculasMasVistas(), this);
-                            if (videoElements != null) {
-                                peliculasVistas.setLista(videoElements2);
-                            }
-                        } catch (MySqlException exc) {
-                            MessageBox.Show("No se ha podido conectar a la base de datos");
-                        }
-
-                        ListaOnline.createAllFolders(gridOnlineShowAll, wrapShowAll, this);
-
-                        textOnline.Text = "";
-
-                        rowAddMenu.Height = new GridLength(0, GridUnitType.Star);
-
-
-
-                    } else {
-                        MessageBox.Show("No se ha podido conectar con el servidor");
-                    }
-                }
-            } else if (aux.Name.Equals("bOfflineMenu")) {
-                if (menuOffline.Visibility == Visibility.Hidden) {
-                    menuOnline.Visibility = Visibility.Hidden;
-                    rectOnline.Visibility = Visibility.Hidden;
-                    gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
-                    gridOnlineShowAll.Visibility = Visibility.Hidden;
-                    buscadorOnline.Visibility = Visibility.Hidden;
-
-                    menuOffline.Visibility = Visibility.Visible;
-                    rectOffline.Visibility = Visibility.Visible;
-                    gridPrincipal.Visibility = Visibility.Visible;
-                    buscadorOffline.Visibility = Visibility.Visible;
-
-                    menuReciente.clear();
-                    episodiosVistos.clear();
-                    peliculasVistas.clear();
-                    top2019.clear();
-
-                    ListaOnline.removeComponents(wrapShowAll);
-
-                    rowBuscador.Height = new GridLength(30, GridUnitType.Auto);
-
-                    rowAddMenu.Height = new GridLength(0.05, GridUnitType.Star);
-                    if (Lista.getMenuVisible() != null) {
-                        ReturnVisibility(true);
-                    }
-                }
-            }
-            
-
-        }
-
-        /**
-         * Evento que permite cambiar entre el panel principal del menu online y el panel donde estan todas las series y peliculas
-         */
-        private void changeOnlinePanel(object sender, EventArgs e) {
-            Button b = (Button)sender;
-            if (b.Content.ToString().CompareTo("Panel Principal") == 0) {
-                panelPrincSelected = true;
-                buscadorOnline.Visibility = Visibility.Hidden;
-                buscadorOffline.Visibility = Visibility.Visible;
-                rowBuscador.Height = new GridLength(0, GridUnitType.Star);
-                gridOnlinePanelPrinc.Visibility = Visibility.Visible;
-                gridOnlineShowAll.Visibility = Visibility.Hidden;
-
-                bPanelPrinc.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
-                bShowAll.ClearValue(Button.BackgroundProperty);
-
-                ReturnVisibility(false);
-            } else {
-                panelPrincSelected = false;
-                buscadorOnline.Visibility = Visibility.Visible;
-                buscadorOffline.Visibility = Visibility.Hidden;
-                rowBuscador.Height = new GridLength(30, GridUnitType.Auto);
-                gridOnlinePanelPrinc.Visibility = Visibility.Hidden;
-                gridOnlineShowAll.Visibility = Visibility.Visible;
-
-                bShowAll.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
-                bPanelPrinc.ClearValue(Button.BackgroundProperty);
-                MenuComponent mc = ListaOnline.getMenuVisible();
-                if (mc != null) {
-                    ReturnVisibility(true);
-                }
-            }
-        }
-
-        /**
          * Filtra por genero el panel seleccionado
          */
         private void bButtonGender_Click(object sender, EventArgs e) {
             Button cb = (Button)sender;
-            List<string> generos = null;
             if (conexionMode) {
-                generos = Conexion.loadGenders(isPrivateMode);
-                if(generos != null) {
-
-                }
+                //pasar filteredGenders al genderSelection y marcar los filtrados anteriormente
+                //showGenderSelection modo ALL
+            } else {
+                //pasar filteredGenders al genderSelection y marcar los filtrados anteriormente
+                //showGenderSelection modo ALL
             }
+
             /*string content = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
             if (content.Equals("Todos")) {
                 WrapPanelPrincipal wp = Lista.getWrapVisible();
@@ -1372,14 +1188,6 @@ namespace ProyectoWPF {
                         WrapPanelPrincipal wp = menuCarpetas.getWrap();
                         wp.showFoldersBySearch(textBox.Text);
                     }
-                }else if(buscadorOnline.Visibility == Visibility.Visible) {
-                    if(wrapShowAll.Visibility == Visibility.Visible) {
-                        wrapShowAll.showFoldersBySearch(textBox.Text);
-                    } else {
-                        MenuComponent mc = ListaOnline.getMenuVisible();
-                        WrapPanelPrincipal wp = mc.getWrapVisible();
-                        wp.showFoldersBySearch(textBox.Text);
-                    }
                 }
             } else {
                 if (buscadorOffline.Visibility == Visibility.Visible) {
@@ -1388,14 +1196,6 @@ namespace ProyectoWPF {
                         wp.showAll();
                     } else if (textBox.Name.Equals("textOfflineSubFolder")) {
                         WrapPanelPrincipal wp = menuCarpetas.getWrap();
-                        wp.showAll();
-                    }
-                } else if (buscadorOnline.Visibility == Visibility.Visible) {
-                    if (wrapShowAll.Visibility == Visibility.Visible) {
-                        wrapShowAll.showAll();
-                    } else {
-                        MenuComponent mc = ListaOnline.getMenuVisible();
-                        WrapPanelPrincipal wp = mc.getWrapVisible();
                         wp.showAll();
                     }
                 }
@@ -1412,7 +1212,6 @@ namespace ProyectoWPF {
             
             textOfflineMain.Text = "";
             textOfflineSubFolder.Text = "";
-            textOnline.Text = "";
         }
 
         /**

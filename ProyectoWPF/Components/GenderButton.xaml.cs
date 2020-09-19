@@ -19,30 +19,30 @@ namespace ProyectoWPF.Components {
     /// </summary>
     public partial class GenderButton : UserControl {
 
-        private bool selected = false;
-        public GenderButton(string name) {
+        public GenderButton() {
             InitializeComponent();
-            text.Content = name;
         }
 
-        private void changeSelection(object sender, EventArgs e) {
-            if (selected) {
-                selected = false;
-                text.Foreground = new SolidColorBrush(Colors.White);
-                border.Background = new SolidColorBrush(Color.FromRgb(23, 23, 23));
-            } else {
-                selected = true;
-                text.Foreground = new SolidColorBrush(Colors.Black);
-                border.Background = new SolidColorBrush(Colors.White);
-            }
+        public string getText() {
+            return button.Content.ToString(); ;
         }
 
-        public bool isSelected() {
-            return selected;
+        public void setContent(string name) {
+            button.Content = name;
         }
 
-        public string getName() {
-            return text.Content.ToString();
+        private void Button_MouseEnter(object sender, MouseEventArgs e) {
+            button.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+            button.Background = new SolidColorBrush(Colors.White);
+        }
+
+        private void Button_MouseLeave(object sender, MouseEventArgs e) {
+            button.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            button.Background = new SolidColorBrush(Color.FromRgb(23, 23, 23));
+        }
+
+        public Button getButton() {
+            return button;
         }
     }
 }

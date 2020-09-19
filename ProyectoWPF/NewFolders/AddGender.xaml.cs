@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProyectoWPF.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,36 +13,49 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using VIGallery.Data;
 
 namespace ProyectoWPF.NewFolders {
     /// <summary>
-    /// Lógica de interacción para AddButton.xaml
+    /// Lógica de interacción para AddGender.xaml
     /// </summary>
-    public partial class AddButton : Window {
-        private ComboBoxItem aux;
+    public partial class AddGender : Window {
+
         private bool added = false;
-        public AddButton(ComboBoxItem b) {
+        private string text = "";
+
+        public AddGender() {
             InitializeComponent();
-            aux = b;
         }
 
         private void onClickAccept(object sender, EventArgs e) {
             if (Title.Text.CompareTo("") != 0) {
                 Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
                 if (!containsABadCharacter.IsMatch(Title.Text)) {
-                    if (!Lista.checkMenu(Title.Text)) {
-                        aux.Content = Title.Text;
-                        added = true;
-                        this.Close();
+                    if (VIGallery.conexionMode) {
+                        if (!Conexion.checkAndCreateGender(Title.Text)) {
+                            text = Title.Text;
+                            added = true;
+                            this.Close();
+                        } else {
+                            MessageBox.Show("Ya existe el género");
+                        }
                     } else {
-                        MessageBox.Show("Ya existe el menu");
+                        if (!ConexionOffline.checkAndCreateGender(Title.Text)) {
+                            text = Title.Text;
+                            added = true;
+                            this.Close();
+                        } else {
+                            MessageBox.Show("Ya existe el género");
+                        }
                     }
                     
+
                 } else {
                     MessageBox.Show("El nombre contiene caractéres no permitidos: " + new string(System.IO.Path.GetInvalidFileNameChars()));
                 }
             } else {
-                MessageBox.Show("No has introducido un titulo");
+                MessageBox.Show("No has introducido un nombre");
             }
         }
 

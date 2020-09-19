@@ -9,12 +9,12 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="1250"/>
+            <ColumnDefinition Width="3.5*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="750"/>
+            <RowDefinition Height="3.5*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
@@ -23,11 +23,17 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Label Content="Select the genders" Foreground="White" FontSize="54" Grid.Row="0" Grid.Column="0" FontWeight="Bold" Margin="10,10,0,0"/>
-                <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Stretch" Orientation="Vertical" Grid.Row="1">
-                    <!--<ToggleButton Content="Holaaaa" FontSize="24" IsChecked="True" Foreground="White" Width="Auto" Height="75px"/>-->
-                    
-                </WrapPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="20px"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Select the genders" Foreground="White" FontSize="54" Grid.Row="0" Grid.Column="0" FontWeight="Bold" Margin="10,10,0,0"/>
+                    <local:GenderButton x:Name="bAddGender" Grid.Column="1" Margin="0,20,0,20"></local:GenderButton>
+                </Grid>
+                
+                <WrapPanel x:Name="gendersWrapPanel" HorizontalAlignment="Center" VerticalAlignment="Stretch" Orientation="Horizontal" Grid.Row="1"/>
             </Grid>
         </ScrollViewer>
         

@@ -27,9 +27,9 @@ namespace ProyectoWPF {
         private Carpeta carpeta;
         private SerieComponent serie;
         private TemporadaComponent temporada;
-        public String tipo = "";
+        public string tipo = "";
         private Grid gridCarpeta;
-        private Button buttonPrincipal;
+        private ComboBoxItem buttonPrincipal;
         public List<UIElement> hijos { get; set; }
         public string name { get; set; }
         public long menu { get; set; }
@@ -179,7 +179,7 @@ namespace ProyectoWPF {
             }
         }
 
-        public void setButton(Button b) {
+        public void setButton(ComboBoxItem b) {
             buttonPrincipal = b;
         }
 

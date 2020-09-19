@@ -787,8 +787,41 @@ namespace ProyectoWPF.Data {
             }
         }
 
-        public static List<string> loadGenders(bool isPrivateMode) {
-            List<string> generos = null;
+        public static Dictionary<string, bool> loadGenders(bool isPrivateMode, string rutaFolder) {
+            Dictionary<string, bool> generos = null;
+            //añadir requerimiento por usuario
+            MySqlConnection conexion = null;
+            try {
+                conexion = getConnection();
+                conexion.Open();
+
+                MySqlTransaction myTrans = conexion.BeginTransaction();
+
+                MySqlCommand comando = new MySqlCommand("SELECT nombre, value FROM GeneroCarpeta WHERE isSecret=@isSecret", conexion);
+                comando.Parameters.AddWithValue("@isSecret", isPrivateMode);
+                MySqlDataReader reader = comando.ExecuteReader();
+
+                if (reader.HasRows) {
+                    generos = new Dictionary<string, bool>();
+                    while (reader.Read()) {
+                        generos.Add(reader["nombre"].ToString(), reader.GetBoolean("value"));
+                    }
+                    reader.Close();
+                }
+
+            } catch (MySqlException e) {
+                Console.WriteLine("Error al leer los generos:\n" + e);
+                throw e;
+            } finally {
+                if (conexion != null) {
+                    conexion.Close();
+                }
+            }
+            return generos;
+        }
+
+        public static Dictionary<string, bool> loadAllGenders(bool isPrivateMode) {
+            Dictionary<string, bool> generos = null;
             MySqlConnection conexion = null;
             try {
                 conexion = getConnection();
@@ -801,15 +834,15 @@ namespace ProyectoWPF.Data {
                 MySqlDataReader reader = comando.ExecuteReader();
 
                 if (reader.HasRows) {
-                    generos = new List<string>();
+                    generos = new Dictionary<string, bool>();
                     while (reader.Read()) {
-                        generos.Add(reader["nombre"].ToString());
+                        generos.Add(reader["nombre"].ToString(), false);
                     }
                     reader.Close();
                 }
 
             } catch (MySqlException e) {
-                Console.WriteLine("Error al cargar los perfiles:\n" + e);
+                Console.WriteLine("Error al leer los generos:\n" + e);
                 throw e;
             } finally {
                 if (conexion != null) {
@@ -819,5 +852,9 @@ namespace ProyectoWPF.Data {
             return generos;
         }
 
+        public static bool checkAndCreateGender(string gender) {
+            return true;
+        }
     }
+    
 }

@@ -11,7 +11,7 @@ namespace ProyectoWPF {
         private static ICollection<WrapPanelPrincipal> _wrapsPrincipales = new List<WrapPanelPrincipal>();
         private static ICollection<Menu> _menus = new List<Menu>();
         private static ICollection<MenuClass> _menusClass = new List<MenuClass>();
-        private static ICollection<Button> _buttonsMenu = new List<Button>();
+        private static ICollection<ComboBoxItem> _buttonsMenu = new List<ComboBoxItem>();
         private static ICollection<Carpeta> _carpetas = new List<Carpeta>();
         private static ICollection<CarpetaClass> _carpetasClase = new List<CarpetaClass>();
         private static List<PerfilClass> _perfiles = new List<PerfilClass>();
@@ -28,7 +28,7 @@ namespace ProyectoWPF {
             _bPerfiles = new List<Button>();
         }
 
-        public static void addButtonMenu(Button b) {
+        public static void addButtonMenu(ComboBoxItem b) {
             _buttonsMenu.Add(b);
         }
 
@@ -99,8 +99,7 @@ namespace ProyectoWPF {
             return false;
         }
 
-        public static MenuClass getMenuFromButton(Button b) {
-            string s = b.Content.ToString();
+        public static MenuClass getMenuFromText(string s) {
             foreach(MenuClass m in _menusClass) {
                 if (m.nombre.CompareTo(s) == 0) {
                     return m;
@@ -399,8 +398,8 @@ namespace ProyectoWPF {
             }
         }
 
-        public static void removeMenu(Button b) {
-            string name = b.Content.ToString();
+        public static void removeMenu(string s) {
+            string name = s;
             long id = 0;
             MenuClass aux = null;
             foreach (MenuClass m in _menusClass) {
@@ -410,9 +409,20 @@ namespace ProyectoWPF {
                     break;
                 }
             }
-            if (_buttonsMenu.Contains(b)) {
-                _buttonsMenu.Remove(b);
+            List<ComboBoxItem> removed = new List<ComboBoxItem>();
+            foreach (ComboBoxItem ci in _buttonsMenu) {
+                if (ci.Content.Equals(name)) {
+                    removed.Add(ci);
+                    
+                }
             }
+            foreach(ComboBoxItem ci in removed) {
+                if (_buttonsMenu.Contains(ci)) {
+                    _buttonsMenu.Remove(ci);
+                }
+                
+            }
+
             if (id != 0) {
                 removeFolderByMenu(id);
                 removeWrapPanelPrincipal(getWrapFromMenu(aux));

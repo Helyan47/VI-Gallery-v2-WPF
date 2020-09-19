@@ -330,5 +330,18 @@ namespace VIGallery.Data {
                 throw e;
             }
         }
+
+        public static Dictionary<string,bool> loadGenders(bool isPrivateMode, string rutaFolder) {
+            //añadir requerimientos usuario
+            return null;
+        }
+
+        public static Dictionary<string, bool> loadAllGenders(bool isPrivateMode) {
+            return null;
+        }
+
+        public static bool checkAndCreateGender(string gender) {
+            return true;
+        }
     }
 }

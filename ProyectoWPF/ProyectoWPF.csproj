@@ -130,6 +130,9 @@
     <Compile Include="Components\GenderButton.xaml.cs">
       <DependentUpon>GenderButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\GenderCheck.xaml.cs">
+      <DependentUpon>GenderCheck.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\GenderSelection.xaml.cs">
       <DependentUpon>GenderSelection.xaml</DependentUpon>
     </Compile>
@@ -194,6 +197,9 @@
     <Compile Include="Components\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewFolders\AddGender.xaml.cs">
+      <DependentUpon>AddGender.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewFolders\ChangeName.xaml.cs">
       <DependentUpon>ChangeName.xaml</DependentUpon>
     </Compile>
@@ -228,6 +234,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\GenderButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\GenderCheck.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -311,6 +321,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="NewFolders\AddGender.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NewFolders\ChangeName.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -320,6 +334,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewFolders\NewProfile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pruebas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -338,6 +356,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pruebas.xaml.cs">
+      <DependentUpon>Pruebas.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reproductor\KeyList.cs" />
     <Compile Include="Reproductor\PlayerProperty.cs" />
