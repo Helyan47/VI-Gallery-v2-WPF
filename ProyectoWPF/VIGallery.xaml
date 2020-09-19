@@ -209,7 +209,7 @@
                         </Path>
                     </Canvas>
                 </Viewbox>
-                <Button Content="" Grid.Row="0" Grid.Column="0" Width="75" Height="75" Margin="0,0,0,10" Style="{StaticResource CustomButtonStyle}" Opacity="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Click="showOptions" Visibility="Visible"/>
+                <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Width="20" Height="20" Margin="10,10,0,10" Style="{StaticResource CustomButtonStyle}" Opacity="0" Click="showOptions" Visibility="Visible"/>
 
                 <Button Content="_" Style="{StaticResource CustomButtonStyle}" Grid.Column="1" Padding="0" Foreground="White" FontWeight="ExtraBlack" BorderThickness="0" Click="MinimizeApp" />
                 <Button Content="[ ]" Style="{StaticResource CustomButtonStyle}" Grid.Column="2" Padding="0" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="MaximizeApp"/>
@@ -269,16 +269,6 @@
                                         <Label Content="Buscador: " Foreground="White" Padding="0" VerticalContentAlignment="Center" Margin="5,0"/>
                                         <TextBox x:Name="textOfflineMain" Grid.Column="1" MaxLines="1" HorizontalAlignment="Stretch" Width="Auto"  VerticalAlignment="Center" Margin="10,0" Padding="5,0,0,0" Visibility="Visible" KeyUp="onSearchValueChanged"/>
                                     </Grid>
-                                    <Grid Grid.Column="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <ComboBox x:Name="menu" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,5,10,5" SelectionChanged="onClickButtonMenu"/>
-                                        <Button Content="+" Grid.Column="0" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="20" BorderThickness="0" Width="50" Click="addMenuClick" FontWeight="Bold"/>
-                                        <Button Content="-" Grid.Column="2" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="30" BorderThickness="0" Width="50" Click="removeMenu" VerticalContentAlignment="Center"/>
-                                    </Grid>
                                 </Grid>
 
                                 <Grid x:Name="GridSecundario" Grid.Row="1">
@@ -308,39 +298,29 @@
                                 </Grid>
                             </Grid>
 
-                            <Grid x:Name="gridPrincipal" Grid.Row="1" Background="#FF262626" Visibility="Visible"/>
+                            <Grid x:Name="gridPrincipal" Grid.Row="1" Background="#FF262626" Visibility="Visible" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50px"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Column="1" Panel.ZIndex="10" Height="35" Width="350" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ComboBox x:Name="menu" Width="330" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,5,10,5" SelectionChanged="onClickButtonMenu"/>
+                                    <!--<Button Content="+" Grid.Column="0" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="20" BorderThickness="0" Width="50" Click="addMenuClick" FontWeight="Bold"/>
+                                    <Button Content="-" Grid.Column="2" Style="{StaticResource CustomButtonStyle}" Foreground="White" Margin="0" FontSize="30" BorderThickness="0" Width="50" Click="removeMenu" VerticalContentAlignment="Center"/>-->
+                                </Grid>
+                            </Grid>
                             <local:Menu x:Name="menuCarpetas" Grid.Row="1" Visibility="Hidden"></local:Menu>
                             
-                            <Grid x:Name="gridOnlinePanelPrinc" Grid.Row="1" Background="#FF262626" Visibility="Hidden">
-                                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="450"/>
-                                            <RowDefinition Height="0.1*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <componentes:MenuReciente x:Name="menuReciente"></componentes:MenuReciente>
-                                        <Label Content="Más recientes" Foreground="White" FontSize="24" Grid.Row="1"/>
-
-                                        <StackPanel Orientation="Vertical" Grid.Row="2">
-                                            <componentes:ListaArchivos x:Name="episodiosVistos" Height="400"/>
-                                            <!-- Titulo="Episodios más vistos"  -->
-                                            <componentes:ListaArchivos x:Name="peliculasVistas"  Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
-                                            <!-- Titulo="Películas más vistas"  -->
-                                            <componentes:ListaArchivos x:Name="top2019" Height="400" Margin="0,20,0,0"></componentes:ListaArchivos>
-                                            <!-- Titulo="Más vistas 2019" -->
-                                        </StackPanel>
-                                    </Grid>
-                                </ScrollViewer>
-                            </Grid>
-                            <Grid x:Name="gridOnlineShowAll" Grid.Row="1" Background="#FF262626" Visibility="Hidden">
-                                <local:WrapPanelPrincipal x:Name="wrapShowAll"/>
-                            </Grid>
                         </Grid>
 
                     </Border>
                 </DockPanel>
-                <Grid x:Name="gridReturn" HorizontalAlignment="Left" VerticalAlignment="Bottom" >
+                <Grid x:Name="gridReturn" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,10,10,10">
                     <!--MouseEnter="dasdas" MouseLeave="dasdsa" -->
                     
                     <Border x:Name="borderEnter" Margin="0,0,0,10" CornerRadius="15" BorderThickness="3" Width="75" Height="75" BorderBrush="#FF3C3C3C" VerticalAlignment="Bottom" Visibility="Hidden">

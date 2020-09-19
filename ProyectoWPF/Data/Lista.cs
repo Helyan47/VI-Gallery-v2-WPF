@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using ProyectoWPF.Data;
-using VIGallery.Data;
 
 namespace ProyectoWPF {
     public static class Lista {
@@ -56,11 +55,7 @@ namespace ProyectoWPF {
         }
 
         public static void reloadProfiles() {
-            if (VIGallery.conexionMode) {
-                _perfiles = Conexion.loadProfiles(VIGallery.getUser().id);
-            } else {
-                _perfiles = ConexionOffline.LoadProfiles();
-            }
+            _perfiles = Conexion.loadProfiles(VIGallery.getUser().id);
         }
 
         public static bool checkProfile(string s) {

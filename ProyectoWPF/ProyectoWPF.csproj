@@ -136,9 +136,6 @@
     <Compile Include="Components\GenderSelection.xaml.cs">
       <DependentUpon>GenderSelection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\Online\ArchivoComponent.xaml.cs">
-      <DependentUpon>ArchivoComponent.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Components\Online\ListaArchivos.xaml.cs">
       <DependentUpon>ListaArchivos.xaml</DependentUpon>
     </Compile>
@@ -147,12 +144,6 @@
     </Compile>
     <Compile Include="Components\Online\MenuReciente.xaml.cs">
       <DependentUpon>MenuReciente.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Components\Online\SerieComponent.xaml.cs">
-      <DependentUpon>SerieComponent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Components\Online\TemporadaComponent.xaml.cs">
-      <DependentUpon>TemporadaComponent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Online\VideoElement.xaml.cs">
       <DependentUpon>VideoElement.xaml</DependentUpon>
@@ -166,14 +157,7 @@
     <Compile Include="Data\Base\MenuClass.cs" />
     <Compile Include="Data\Base\PerfilClass.cs" />
     <Compile Include="Data\Base\UsuarioClass.cs" />
-    <Compile Include="Data\ConexionOffline.cs" />
     <Compile Include="Data\Filters.cs" />
-    <Compile Include="Data\Online\Capitulo.cs" />
-    <Compile Include="Data\Online\ConexionServer.cs" />
-    <Compile Include="Data\Online\ListaOnline.cs" />
-    <Compile Include="Data\Online\Pelicula.cs" />
-    <Compile Include="Data\Online\Serie.cs" />
-    <Compile Include="Data\Online\Temporada.cs" />
     <Compile Include="Data\OrderClass.cs" />
     <Compile Include="LoginUser\InputTextLoL.xaml.cs">
       <DependentUpon>InputTextLoL.xaml</DependentUpon>
@@ -245,10 +229,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\Online\ArchivoComponent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Components\Online\ListaArchivos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -258,14 +238,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Online\MenuReciente.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Components\Online\SerieComponent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Components\Online\TemporadaComponent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

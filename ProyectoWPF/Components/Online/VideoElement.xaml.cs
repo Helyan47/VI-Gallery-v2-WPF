@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ProyectoWPF.Data.Online;
 using ProyectoWPF.Reproductor;
 
 namespace ProyectoWPF.Components
@@ -15,8 +14,6 @@ namespace ProyectoWPF.Components
     public partial class VideoElement : UserControl
     {
 
-        private Capitulo _capitulo = null;
-        private Pelicula _pelicula = null;
         bool noImg = false;
         private VIGallery main;
 
@@ -41,11 +38,10 @@ namespace ProyectoWPF.Components
         private void onClickReproducir(object sender, EventArgs e) {
             VI_Reproductor reproductor = main.getReproductor();
             reproductor.Visibility = Visibility.Visible;
-            reproductor.setOnline(true);
             List<Uri> listaArchivos = new List<Uri>();
             List<long> listaId = new List<long>();
             List<string> listaNombre = new List<string>();
-            if (_capitulo != null) {
+            /*if (_capitulo != null) {
                 Uri u = new Uri(_capitulo.rutaWeb);
                 listaArchivos.Add(u);
                 listaId.Add(_capitulo.id);
@@ -66,8 +62,9 @@ namespace ProyectoWPF.Components
                 reproductor.setListaPeliculas(listaArchivos.ToArray(), listaId.ToArray());
                 reproductor.setVIGallery(main);
             }
+            */
         }
-
+        /*
         public void setCapitulo(Capitulo c) {
             this._capitulo = c;
             actualizar();
@@ -150,5 +147,6 @@ namespace ProyectoWPF.Components
         public void setTitle(string title) {
             videoTitle.Content = title;
         }
+        */
     }
 }

@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using VIGallery.Data;
 
 namespace ProyectoWPF.SelectProfile {
     /// <summary>
@@ -17,51 +16,18 @@ namespace ProyectoWPF.SelectProfile {
     public partial class SelectProfile : Window {
 
         public static string loadNewProfile = "";
-        public static bool conn;
         public List<PerfilClass> _profiles = null;
         private List<Button> _buttons = new List<Button>();
         private PerfilClass _selectedProfile = null;
-        public SelectProfile(bool connection, UsuarioClass user) {
+        public SelectProfile(UsuarioClass user) {
             InitializeComponent();
-
-            conn = connection;
-            VIGallery.conexionMode = connection;
-
-            if (connection) {
-                VIGallery._user = user;
-            } else {
-                VIGallery._user = null;
-            }
-            if (conn) {
-                _profiles = Conexion.loadProfiles(user.id);
-                if (_profiles != null) {
-                    foreach (PerfilClassOnline p in _profiles) {
-                        addButton(p);
-                        Lista.addProfile(p);
-                    }
+            VIGallery._user = user;
+            _profiles = Conexion.loadProfiles(user.id);
+            if (_profiles != null) {
+                foreach (PerfilClassOnline p in _profiles) {
+                    addButton(p);
+                    Lista.addProfile(p);
                 }
-            } else {
-                ConexionOffline.startConnection();
-                _profiles = ConexionOffline.LoadProfiles();
-                if (_profiles.Count != 0) {
-                    foreach (PerfilClass p in _profiles) {
-
-                        addButton(p);
-                        Lista.addProfile(p);
-
-                    }
-                } else {
-                    ConexionOffline.addProfile(new PerfilClass("Perfil 1"));
-                    _profiles = ConexionOffline.LoadProfiles();
-                    foreach (PerfilClass p in _profiles) {
-
-                        addButton(p);
-                        Lista.addProfile(p);
-
-                    }
-                    ConexionOffline.closeConnection();
-                }
-
             }
         }
 
@@ -136,17 +102,9 @@ namespace ProyectoWPF.SelectProfile {
         private void onClick(object sender, RoutedEventArgs e) {
             if (_selectedProfile != null) {
                 Dispatcher.Invoke(new Action(() => {
-                    if (conn) {
-                        VIGallery vi = new VIGallery(_selectedProfile);
-                        vi.loadDataConexion(_selectedProfile.id);
-                        vi.Show();
-
-                    } else {
-                        VIGallery vi = new VIGallery(_selectedProfile);
-                        vi.LoadProfileOffline(_selectedProfile);
-                        vi.Show();
-
-                    }
+                    VIGallery vi = new VIGallery(_selectedProfile);
+                    vi.loadDataConexion(_selectedProfile.id);
+                    vi.Show();
                 }));
                 //Task task1 = Task.Factory.StartNew(() => loadProfile());
                 //Task.WaitAll(task1);
@@ -194,21 +152,11 @@ namespace ProyectoWPF.SelectProfile {
 
         private void removeProfile(object sender, RoutedEventArgs e) {
             if (_selectedProfile != null) {
-                if (conn) {
-                    Conexion.deleteProfile(_selectedProfile.id);
-                    Button b = Lista.getProfileButton(_selectedProfile.nombre);
-                    Lista.removeProfile(_selectedProfile.nombre);
-                    if (b != null) {
-                        perfiles.Children.Remove(b);
-                    }
-
-                } else {
-                    ConexionOffline.deleteProfile(_selectedProfile.id);
-                    Button b = Lista.getProfileButton(_selectedProfile.nombre);
-                    Lista.removeProfile(_selectedProfile.nombre);
-                    if (b != null) {
-                        perfiles.Children.Remove(b);
-                    }
+                Conexion.deleteProfile(_selectedProfile.id);
+                Button b = Lista.getProfileButton(_selectedProfile.nombre);
+                Lista.removeProfile(_selectedProfile.nombre);
+                if (b != null) {
+                    perfiles.Children.Remove(b);
                 }
 
             }

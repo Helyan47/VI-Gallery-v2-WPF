@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ProyectoWPF.Data.Online;
 using ProyectoWPF.Reproductor;
 
 namespace ProyectoWPF.Components {
@@ -12,8 +11,8 @@ namespace ProyectoWPF.Components {
     /// </summary>
     public partial class VideoReciente : UserControl {
 
-        private Capitulo _capitulo = null;
-        private Pelicula _pelicula = null;
+        /*private Capitulo _capitulo = null;
+        private Pelicula _pelicula = null;*/
         private VIGallery main;
 
         public double TitleSize {
@@ -28,7 +27,9 @@ namespace ProyectoWPF.Components {
             main = vi;
         }
 
+        
         private void onClickReproducir(object sender, EventArgs e) {
+            /*
             VI_Reproductor reproductor = main.getReproductor();
             reproductor.Visibility = System.Windows.Visibility.Visible;
             reproductor.setOnline(true);
@@ -56,8 +57,9 @@ namespace ProyectoWPF.Components {
                 reproductor.setListaPeliculas(listaArchivos.ToArray(),listaId.ToArray());
                 reproductor.setVIGallery(main);
             }
+            */
         }
-
+        /*
         public void setCapitulo(Capitulo c) {
             this._capitulo = c;
             actualizar();
@@ -130,5 +132,6 @@ namespace ProyectoWPF.Components {
             _pelicula = null;
             title.Content = "Title";
         }
+        */
     }
 }

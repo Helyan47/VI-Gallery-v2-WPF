@@ -13,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using VIGallery.Data;
 
 namespace ProyectoWPF.NewFolders {
     /// <summary>
@@ -32,24 +31,14 @@ namespace ProyectoWPF.NewFolders {
             if (Title.Text.CompareTo("") != 0) {
                 Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
                 if (!containsABadCharacter.IsMatch(Title.Text)) {
-                    if (VIGallery.conexionMode) {
-                        if (!Conexion.checkAndCreateGender(Title.Text)) {
-                            text = Title.Text;
-                            added = true;
-                            this.Close();
-                        } else {
-                            MessageBox.Show("Ya existe el género");
-                        }
+                    if (!Conexion.checkAndCreateGender(Title.Text)) {
+                        text = Title.Text;
+                        added = true;
+                        this.Close();
                     } else {
-                        if (!ConexionOffline.checkAndCreateGender(Title.Text)) {
-                            text = Title.Text;
-                            added = true;
-                            this.Close();
-                        } else {
-                            MessageBox.Show("Ya existe el género");
-                        }
+                        MessageBox.Show("Ya existe el género");
                     }
-                    
+
 
                 } else {
                     MessageBox.Show("El nombre contiene caractéres no permitidos: " + new string(System.IO.Path.GetInvalidFileNameChars()));

@@ -25,8 +25,8 @@ namespace ProyectoWPF {
 
         private System.Windows.Media.Color colorGridPadre;
         private Carpeta carpeta;
-        private SerieComponent serie;
-        private TemporadaComponent temporada;
+        //private SerieComponent serie;
+        //private TemporadaComponent temporada;
         public string tipo = "";
         private Grid gridCarpeta;
         private ComboBoxItem buttonPrincipal;
@@ -39,7 +39,7 @@ namespace ProyectoWPF {
             InitializeComponent();
             hijos = new List<UIElement>();
         }
-
+        
         public void addCarpeta(Carpeta c) {
             c.Width = 250;
             c.Height = 400;
@@ -54,7 +54,7 @@ namespace ProyectoWPF {
             hijos.Add(c);
             
         }
-
+        /*
         public void addSerie(SerieComponent s) {
             s.Width = 250;
             s.Height = 400;
@@ -97,6 +97,7 @@ namespace ProyectoWPF {
             wrapPanel.Children.Add(ac);
             hijos.Add(ac);
         }
+        */
 
         public void setColorGridPadre(Color grid) {
             this.colorGridPadre = grid;
@@ -196,7 +197,7 @@ namespace ProyectoWPF {
                     } else {
                         ui.Visibility = Visibility.Collapsed;
                     }
-                }else if(ui is SerieComponent) {
+                }/*else if(ui is SerieComponent) {
                     SerieComponent aux = (SerieComponent)ui;
                     if (aux.checkGender(gender)) {
                         ui.Visibility = Visibility.Visible;
@@ -210,7 +211,7 @@ namespace ProyectoWPF {
                     } else {
                         ui.Visibility = Visibility.Collapsed;
                     }
-                }
+                }*/
             }
         }
 
@@ -224,7 +225,7 @@ namespace ProyectoWPF {
                 }else if(ui is Archivo) {
                     Archivo aux = (Archivo)ui;
                     lista.Add(aux._archivoClass.nombre);
-                }else if(ui is ArchivoComponent) {
+                }/*else if(ui is ArchivoComponent) {
                     ArchivoComponent aux = (ArchivoComponent)ui;
                     string nombre = aux.getNombre();
                     if (nombre != null) {
@@ -236,7 +237,7 @@ namespace ProyectoWPF {
                 }else if(ui is TemporadaComponent) {
                     TemporadaComponent aux = (TemporadaComponent)ui;
                     lista.Add("Temporada "+ aux.getTemporada().numTemporada);
-                }
+                }*/
             }
 
             if (lista.Count != 0) {
@@ -256,7 +257,7 @@ namespace ProyectoWPF {
                         } else {
                             aux.Visibility = Visibility.Collapsed;
                         }
-                    } else if (ui is ArchivoComponent) {
+                    }/* else if (ui is ArchivoComponent) {
                         ArchivoComponent aux = (ArchivoComponent)ui;
                         string nombre = aux.getNombre();
                         if (resultados.Contains(nombre)) {
@@ -278,7 +279,7 @@ namespace ProyectoWPF {
                         } else {
                             aux.Visibility = Visibility.Collapsed;
                         }
-                    }
+                    }*/
                 }
             }
         }

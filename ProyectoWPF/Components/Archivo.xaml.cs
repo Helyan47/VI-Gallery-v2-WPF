@@ -16,7 +16,6 @@ using System.Windows.Shapes;
 using System.Data.SQLite;
 using MySql.Data.MySqlClient;
 using ProyectoWPF.Data;
-using VIGallery.Data;
 using ProyectoWPF.NewFolders;
 using ProyectoWPF.Reproductor;
 
@@ -154,16 +153,12 @@ namespace ProyectoWPF.Components {
                 }
             }
             _archivoClass.rutaPrograma = rutaNueva;
-            if (VIGallery.conexionMode) {
-                Conexion.updateFile(_archivoClass);
-            } else {
-                ConexionOffline.updateFile(_archivoClass);
-            }
+            Conexion.updateFile(_archivoClass);
             Title.SetText(newName);
             if (_carpetaPadre != null) {
                 Lista.orderWrap(_wrapMenu);
             }
-            
+
         }
 
         private void showNewNamePanel(object sender, EventArgs e) {
@@ -188,11 +183,7 @@ namespace ProyectoWPF.Components {
 
         public void deleteFile(object sender, EventArgs e) {
             try {
-                if (VIGallery.conexionMode) {
-                    Conexion.deleteFile(_archivoClass);
-                } else {
-                    ConexionOffline.deleteFile(_archivoClass.id);
-                }
+                Conexion.deleteFile(_archivoClass);
                 if (_carpetaPadre != null) {
                     _carpetaPadre.removeFile(this);
                 }
@@ -208,14 +199,8 @@ namespace ProyectoWPF.Components {
             try {
                 rutaAntigua = rutaAntigua.Replace("|C", "|F");
                 _archivoClass.rutaPrograma = _archivoClass.rutaPrograma.Replace(rutaAntigua, rutaNueva);
-                if (VIGallery.conexionMode) {
-                    Conexion.updateFile(_archivoClass);
-                } else {
-                    ConexionOffline.updateFile(_archivoClass);
-                }
+                Conexion.updateFile(_archivoClass);
             } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }

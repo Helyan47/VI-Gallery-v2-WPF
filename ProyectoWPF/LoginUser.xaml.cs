@@ -91,7 +91,7 @@ namespace ProyectoWPF {
                         UsuarioClass user = Conexion.checkUser(inputUser.getText(), inputPass.getText());
 
                         if (user != null) {
-                            SelectProfile.SelectProfile selectProf = new SelectProfile.SelectProfile(true, user);
+                            SelectProfile.SelectProfile selectProf = new SelectProfile.SelectProfile(user);
                             this.Hide();
                             selectProf.Show();
                             this.Close();
@@ -228,10 +228,6 @@ namespace ProyectoWPF {
         }
 
         private void OfflineMode_Click(object sender, MouseButtonEventArgs e) {
-            SelectProfile.SelectProfile selectProf = new SelectProfile.SelectProfile(false, null);
-            this.Hide();
-            selectProf.Show();
-            this.Close();
         }
 
         private void showCreateUser(object sender, EventArgs e) {

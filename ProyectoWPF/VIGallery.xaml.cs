@@ -13,11 +13,10 @@ using System.Net;
 using MySql.Data.MySqlClient;
 using System.Data.SQLite;
 using ProyectoWPF.Data;
-using VIGallery.Data;
 using ProyectoWPF.Components;
-using ProyectoWPF.Data.Online;
 using ProyectoWPF.Components.Online;
 using ProyectoWPF.Reproductor;
+using System.Collections.ObjectModel;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -34,13 +33,10 @@ namespace ProyectoWPF {
         private ItemCollection _botones;
         private ComboBoxItem _activatedButton;
         public int firstFolder = 0;
-        //Establece si se ha iniciado con conexion o sin conexion
-        public static bool conexionMode = false;
         public static PerfilClass _profile = null;
         private static PerfilClass _newSelectedProfile = null;
         public static bool changedProfile = false;
         public static UsuarioClass _user { get; set; }
-        private bool panelPrincSelected = true;
         public static bool isPrivateMode = false;
         private Dictionary<string, bool> filteredGenders = new Dictionary<string, bool>();
         public VIGallery(PerfilClass profile) {
@@ -52,7 +48,7 @@ namespace ProyectoWPF {
             _botonesMenu = new List<ComboBoxItem>();
             changedProfile = false;
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
-            menuReciente.setMain(this);
+            //menuReciente.setMain(this);
             reproductorControl.setVIGallery(this);
         }
 
@@ -61,8 +57,9 @@ namespace ProyectoWPF {
         * Oculta los paneles de cada menu y muestra el seleccionado
         */
         public void onClickButtonMenu(object sender,EventArgs e) {
-            ComboBoxItem b = (ComboBoxItem)sender;
-            MenuClass mc = Lista.getMenuFromText(b.Content.ToString());
+            ComboBox b = (ComboBox)sender;
+            ComboBoxItem selected = (ComboBoxItem) b.SelectedItem;
+            MenuClass mc = Lista.getMenuFromText(selected.Content.ToString());
             WrapPanelPrincipal wp = Lista.getWrapVisible();
             clearTextBox();
             if (Lista.buttonInButtons(mc)) {
@@ -73,11 +70,8 @@ namespace ProyectoWPF {
                 Lista.showWrapFromMenu(mc);
 
             }
-            foreach(Button h in _botones) {
-                h.ClearValue(Button.BackgroundProperty);
-            }
-            _activatedButton = b;
-            b.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
+
+            _activatedButton = selected;
             Return.Visibility = Visibility.Hidden;
             borderEnter.Visibility = Visibility.Hidden;
         }
@@ -115,13 +109,7 @@ namespace ProyectoWPF {
 
                             Dispatcher.Invoke(new Action(() => {
                                 if (_folders != null) {
-                                    if (!conexionMode) {
-                                        ConexionOffline.startConnection();
-                                    }
                                     addText(_folders);
-                                    if (!conexionMode) {
-                                        ConexionOffline.closeConnection();
-                                    }
                                 }
                             }));
 
@@ -170,13 +158,7 @@ namespace ProyectoWPF {
                     c.setRutaPrograma(padre.getClass().ruta + "/" + c.getClass().nombre);
                     padre.addCarpetaHijo(c);
                     Lista.addCarpeta(c);
-                    if (conexionMode) {
-                        Conexion.saveSubFolder(c);
-                    } else {
-                        ConexionOffline.startConnection();
-                        ConexionOffline.addCarpeta(c.getClass());
-                        ConexionOffline.closeConnection();
-                    }
+                    Conexion.saveSubFolder(c);
 
                     c.actualizar();
                     menuCarpetas.actualizar(padre);
@@ -208,12 +190,7 @@ namespace ProyectoWPF {
                 Archivo a = new Archivo(ac, this, null);
 
                 a.setCarpetaPadre(c);
-
-                if (conexionMode) {
-                    Conexion.saveFile(ac);
-                } else {
-                    ConexionOffline.addArchivo(ac);
-                }
+                Conexion.saveFile(ac);
                 c.addFile(a);
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
@@ -291,12 +268,9 @@ namespace ProyectoWPF {
                         p1.getClass().img = files[0];
                     }
 
+                    p1._primerPanel.addCarpeta(p1);
 
-                    if (conexionMode) {
-                        Conexion.saveFolder(p1);
-                    } else {
-                        ConexionOffline.addCarpeta(p1.getClass());
-                    }
+                    Conexion.saveFolder(p1);
 
                     p1.setRutaDirectorio(filename);
 
@@ -338,12 +312,7 @@ namespace ProyectoWPF {
                         p1.getClass().img = c.getClass().img;
                     }
 
-
-                    if (conexionMode) {
-                        Conexion.saveFolder(p1);
-                    } else {
-                        ConexionOffline.addCarpeta(p1.getClass());
-                    }
+                    Conexion.saveFolder(p1);
 
                     p1.setRutaDirectorio(filename);
 
@@ -355,8 +324,6 @@ namespace ProyectoWPF {
                 }
                 return p1;
             } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
             return null;
@@ -427,9 +394,7 @@ namespace ProyectoWPF {
         private void Button_AddCarpeta(object sender, EventArgs e) {
             try {
                 if (_activatedButton != null) {
-                    ConexionOffline.startConnection();
                     addCarpeta();
-                    ConexionOffline.closeConnection();
 
                 } else {
                     MessageBox.Show("No has creado ninguno menú");
@@ -462,12 +427,8 @@ namespace ProyectoWPF {
                     string name = _activatedButton.Content.ToString();
                     p1.getClass().rutaPadre = _profile.nombre + "|C/" + name;
                     p1.setRutaPrograma(_profile.nombre + "|C/" + name + "/" + p1.getClass().nombre);
-
-                    if (conexionMode) {
-                        Conexion.saveFolder(p1);
-                    } else {
-                        ConexionOffline.addCarpeta(p1.getClass());
-                    }
+                    
+                    Conexion.saveFolder(p1);
 
                     aux.addCarpeta(p1);
                     p1.SetGridsOpciones(GridPrincipal, GridSecundario);
@@ -531,32 +492,6 @@ namespace ProyectoWPF {
         }
 
         /**
-         * Carga un perfil de la base de datos offline
-         */
-        public void LoadProfileOffline(PerfilClass perfil) {
-            try {
-                List<MenuClass> menus = ConexionOffline.LoadMenus(perfil);
-
-                foreach (MenuClass m in menus) {
-                    addMenuFromClass(m);
-                    List<CarpetaClass> carpetas = ConexionOffline.LoadCarpetasFromMenu(m);
-                    if (carpetas != null) {
-                        foreach (CarpetaClass c in carpetas) {
-                            addCarpetaFromLoad(c);
-                            loadFilesOffline(c);
-                            loadSubCarpetasOffline(c);
-                        }
-                    }
-                }
-                Lista.orderWrapsPrincipales();
-                Lista.modifyMode(_profile.mode);
-                Lista.orderWrap(menuCarpetas.getWrap());
-            } catch (SQLiteException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            }
-        }
-
-        /**
          * Carga los archivos de la base de datos online
          */
         private void loadFiles(CarpetaClass c) {
@@ -571,25 +506,6 @@ namespace ProyectoWPF {
                     }
                 }
             } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            }
-        }
-
-        /**
-         * Carga los archivos de la base de datos offline
-         */
-        private void loadFilesOffline(CarpetaClass c) {
-            try {
-                Carpeta carpeta = Lista.getCarpetaById(c.id);
-                List<ArchivoClass> archivos = OrderClass.orderListOfArchivoClass(ConexionOffline.loadFiles(c));
-                if (archivos != null) {
-                    foreach (ArchivoClass ac in archivos) {
-                        Archivo a = new Archivo(ac, this, menuCarpetas.getWrap());
-                        carpeta.addFile(a);
-                        a.setCarpetaPadre(carpeta);
-                    }
-                }
-            } catch (SQLiteException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
@@ -640,25 +556,6 @@ namespace ProyectoWPF {
         }
 
         /**
-         * Carga las subcarpetas de una carpeta de la base de datos online
-         */
-        public void loadSubCarpetasOffline(CarpetaClass c) {
-            try {
-                Carpeta aux = Lista.getCarpetaById(c.id);
-                List<CarpetaClass> carpetas = OrderClass.orderListOfCarpetaClass(ConexionOffline.loadSubCarpetasFromCarpeta(c));
-                if (carpetas != null) {
-                    foreach (CarpetaClass cc in carpetas) {
-                        addSubCarpetaFromLoad(cc,aux);
-                        loadFilesOffline(cc);
-                        loadSubCarpetasOffline(cc);
-                    }
-                }
-            } catch (SQLiteException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            }
-        }
-
-        /**
          * Añade un menu a partir de un registro
          */
         public void addMenuFromClass(MenuClass m) {
@@ -671,9 +568,12 @@ namespace ProyectoWPF {
             _botonesMenu.Add(newButton);
             Lista.addMenu(m);
             Lista.addButtonMenu(newButton);
+
             menu.Items.Add(newButton);
+
             string name = newButton.Content.ToString();
             WrapPanelPrincipal wp = new WrapPanelPrincipal();
+            Grid.SetRow(wp, 1);
             wp.name = name;
             gridPrincipal.Children.Add(wp);
             wp.Visibility = Visibility.Visible;
@@ -699,9 +599,8 @@ namespace ProyectoWPF {
                 Lista.showWrapFromMenu(mc);
 
             }
-            foreach (Button h in _botones) {
-                h.ClearValue(Button.BackgroundProperty);
-            }
+            menu.SelectedItem = b;
+
             _activatedButton = b;
             b.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF595959"));
             Return.Visibility = Visibility.Hidden;
@@ -724,51 +623,28 @@ namespace ProyectoWPF {
 
                     _botonesMenu.Add(newButton);
                     MenuClass mc = new MenuClass(newButton.Content.ToString(), _profile.id);
-                    if (conexionMode) {
-                        mc = Conexion.saveMenu(mc);
-                        if (mc != null) {
-                            Lista.addMenu(mc);
-                            menu.Items.Add(newButton);
-                            string name = newButton.Content.ToString();
-                            WrapPanelPrincipal wp = new WrapPanelPrincipal();
-                            wp.name = name;
-                            gridPrincipal.Children.Add(wp);
-                            wp.Visibility = Visibility.Visible;
-                            _activatedButton = newButton;
-                            _wrapsPrincipales.Add(wp);
+                    mc = Conexion.saveMenu(mc);
+                    if (mc != null) {
+                        Lista.addMenu(mc);
+                        menu.Items.Add(newButton);
+                        string name = newButton.Content.ToString();
+                        WrapPanelPrincipal wp = new WrapPanelPrincipal();
+                        wp.name = name;
+                        gridPrincipal.Children.Add(wp);
+                        wp.Visibility = Visibility.Visible;
+                        _activatedButton = newButton;
+                        _wrapsPrincipales.Add(wp);
 
-                            Lista.addWrapPrincipal(wp);
-                            wp.setButton(newButton);
+                        Lista.addWrapPrincipal(wp);
+                        wp.setButton(newButton);
 
-                            onClickButtonMenu(newButton, e);
-                        } else {
-                            MessageBox.Show("No se ha podido crear el Menu");
-                        }
+                        onClickButtonMenu(newButton, e);
                     } else {
-                        ConexionOffline.startConnection();
-                        mc = ConexionOffline.addMenu(mc);
-                        ConexionOffline.closeConnection();
-                        if (mc != null) {
-                            Lista.addMenu(mc);
-                            menu.Items.Add(newButton);
-                            string name = newButton.Content.ToString();
-                            WrapPanelPrincipal wp = new WrapPanelPrincipal();
-                            wp.name = name;
-                            gridPrincipal.Children.Add(wp);
-                            wp.Visibility = Visibility.Visible;
-                            _activatedButton = newButton;
-                            _wrapsPrincipales.Add(wp);
-
-                            Lista.addWrapPrincipal(wp);
-                            wp.setButton(newButton);
-
-                            onClickButtonMenu(newButton, e);
-                        }
+                        MessageBox.Show("No se ha podido crear el Menu");
                     }
+
                 }
             } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
 
@@ -780,66 +656,36 @@ namespace ProyectoWPF {
         private void removeMenu(object sender, EventArgs e) {
             try {
                 if (_activatedButton != null) {
-                    if (conexionMode) {
-                        long id = Lista.getMenuFromText(_activatedButton.Content.ToString()).id;
+                    long id = Lista.getMenuFromText(_activatedButton.Content.ToString()).id;
 
-                        WrapPanelPrincipal wp = Lista.getWrapFromMenu(Lista.getMenuFromText(_activatedButton.Content.ToString()));
-                        if (id != 0) {
-                            Conexion.deleteMenu(id);
-                            Lista.removeMenu(_activatedButton.Content.ToString());
+                    WrapPanelPrincipal wp = Lista.getWrapFromMenu(Lista.getMenuFromText(_activatedButton.Content.ToString()));
+                    if (id != 0) {
+                        Conexion.deleteMenu(id);
+                        Lista.removeMenu(_activatedButton.Content.ToString());
 
-                            if (_botonesMenu.Contains(_activatedButton)) {
-                                _botonesMenu.Remove(_activatedButton);
-                            }
-                            if (_botones.Contains(_activatedButton)) {
-                                _botones.Remove(_activatedButton);
-                            }
-                            if (gridPrincipal.Children.Contains(wp)) {
-                                gridPrincipal.Children.Remove(wp);
-                            }
-                            if (_botonesMenu.Count != 0) {
-                                foreach (ComboBoxItem b in _botonesMenu) {
-                                    onClickButtonMenu(b, e);
-                                    break;
-                                }
-                            } else {
-                                _activatedButton = null;
-                            }
-                            ReturnVisibility(false);
+                        if (_botonesMenu.Contains(_activatedButton)) {
+                            _botonesMenu.Remove(_activatedButton);
                         }
-
-                    } else {
-                        long id = Lista.getMenuFromText(_activatedButton.Content.ToString()).id;
-                        WrapPanelPrincipal wp = Lista.getWrapFromMenu(Lista.getMenuFromText(_activatedButton.Content.ToString()));
-                        if (id != 0) {
-                            ConexionOffline.deleteMenu(id);
-                            Lista.removeMenu(_activatedButton.Content.ToString());
-                            if (_botonesMenu.Contains(_activatedButton)) {
-                                _botonesMenu.Remove(_activatedButton);
-                            }
-                            if (_botones.Contains(_activatedButton)) {
-                                _botones.Remove(_activatedButton);
-                            }
-                            if (gridPrincipal.Children.Contains(wp)) {
-                                gridPrincipal.Children.Remove(wp);
-                            }
-                            if (_botonesMenu.Count != 0) {
-                                foreach (ComboBoxItem b in _botonesMenu) {
-                                    onClickButtonMenu(b, e);
-                                    break;
-                                }
-                            } else {
-                                _activatedButton = null;
-                            }
-                            ReturnVisibility(false);
+                        if (_botones.Contains(_activatedButton)) {
+                            _botones.Remove(_activatedButton);
                         }
+                        if (gridPrincipal.Children.Contains(wp)) {
+                            gridPrincipal.Children.Remove(wp);
+                        }
+                        if (_botonesMenu.Count != 0) {
+                            foreach (ComboBoxItem b in _botonesMenu) {
+                                onClickButtonMenu(b, e);
+                                break;
+                            }
+                        } else {
+                            _activatedButton = null;
+                        }
+                        ReturnVisibility(false);
                     }
 
                 }
                 clearTextBox();
             } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
@@ -907,14 +753,9 @@ namespace ProyectoWPF {
         public static void updateMode(long mode) {
             try {
                 _profile.mode = mode;
-                if (conexionMode) {
-                    Conexion.updateMode(mode, _profile);
-                } else {
-                    ConexionOffline.updateMode(mode, _profile);
-                }
+                Conexion.updateMode(mode, _profile);
+                
             } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
@@ -999,11 +840,8 @@ namespace ProyectoWPF {
                 _profile = _newSelectedProfile;
                 changedProfile = true;
                 VIGallery vi = new VIGallery(_profile);
-                if (conexionMode) {
-                    vi.loadDataConexion(_profile.id);
-                } else {
-                    vi.LoadProfileOffline(_profile);
-                }
+                
+                vi.loadDataConexion(_profile.id);
                 
                 vi.Show();
                 this.Close();
@@ -1054,11 +892,8 @@ namespace ProyectoWPF {
         private void removeProfile(object sender, RoutedEventArgs e) {
             try {
                 if (_profile.nombre.CompareTo(_newSelectedProfile.nombre) != 0) {
-                    if (conexionMode) {
-                        Conexion.deleteProfile(_newSelectedProfile.id);
-                    } else {
-                        ConexionOffline.deleteProfile(_newSelectedProfile.id);
-                    }
+                    Conexion.deleteProfile(_newSelectedProfile.id);
+                    
 
                     Button b = Lista.getProfileButton(_newSelectedProfile.nombre);
                     if (perfiles.Children.Contains(b)) {
@@ -1072,8 +907,6 @@ namespace ProyectoWPF {
                     MessageBox.Show("No puedes borrrar el perfil seleccionado");
                 }
             } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
@@ -1130,13 +963,8 @@ namespace ProyectoWPF {
          */
         private void bButtonGender_Click(object sender, EventArgs e) {
             Button cb = (Button)sender;
-            if (conexionMode) {
-                //pasar filteredGenders al genderSelection y marcar los filtrados anteriormente
-                //showGenderSelection modo ALL
-            } else {
-                //pasar filteredGenders al genderSelection y marcar los filtrados anteriormente
-                //showGenderSelection modo ALL
-            }
+            //pasar filteredGenders al genderSelection y marcar los filtrados anteriormente
+            //showGenderSelection modo ALL
 
             /*string content = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
             if (content.Equals("Todos")) {
@@ -1152,26 +980,6 @@ namespace ProyectoWPF {
                 }
                 
             }*/
-        }
-
-        /**
-         * Filtra por genero el panel online
-         */
-        private void bComboGenero_SelectionChangedOnline(object sender, SelectionChangedEventArgs e) {
-            ComboBox cb = (ComboBox)sender;
-            string content = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
-            if (content.Equals("Todos")) {
-                if (wrapShowAll != null) {
-                    if (wrapShowAll.Visibility == Visibility.Visible) {
-                        wrapShowAll.showAll();
-                    }
-                }
-                
-            } else {
-                if (wrapShowAll != null & wrapShowAll.Visibility == Visibility.Visible) {
-                    wrapShowAll.showFoldersByGender(content);
-                }
-            }
         }
 
         /**

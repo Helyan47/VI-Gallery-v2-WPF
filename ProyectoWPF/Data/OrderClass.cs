@@ -1,5 +1,6 @@
-﻿using ProyectoWPF.Components;
-using ProyectoWPF.Data.Online;
+﻿using ProyectoWPF;
+using ProyectoWPF.Components;
+using ProyectoWPF.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,8 +17,8 @@ namespace ProyectoWPF.Data {
         static NaturalArchivoClassComparer comparadorArchivoClass = new NaturalArchivoClassComparer();
         static NaturalCarpetaClassComparer comparadorCarpetaClass = new NaturalCarpetaClassComparer();
         static NaturalWrapCarpetaNameComparer comparadorWrapCarpeta = new NaturalWrapCarpetaNameComparer();
-        static DateComparer comparadorFechas = new DateComparer();
-        static VisitsComparer comparadorVisitas = new VisitsComparer();
+        //static DateComparer comparadorFechas = new DateComparer();
+        //static VisitsComparer comparadorVisitas = new VisitsComparer();
         public static List<string> orderListOfString(List<string> lista) {
             if (lista != null) {
                 lista.Sort(comparadorStrings);
@@ -43,7 +44,7 @@ namespace ProyectoWPF.Data {
             } else {
                 return null;
             }
-            
+
         }
         public static List<CarpetaClass> orderListOfCarpetaClass(List<CarpetaClass> lista) {
             if (lista != null) {
@@ -52,7 +53,7 @@ namespace ProyectoWPF.Data {
             } else {
                 return null;
             }
-            
+
         }
 
         public static List<UIElement> orderChildOfWrap(List<UIElement> lista) {
@@ -66,7 +67,7 @@ namespace ProyectoWPF.Data {
 
         public static List<object> orderDates(List<object> lista) {
             if (lista != null) {
-                lista.Sort(comparadorFechas);
+                //lista.Sort(comparadorFechas);
                 return lista;
             } else {
                 return null;
@@ -75,7 +76,7 @@ namespace ProyectoWPF.Data {
 
         public static List<object> orderTops(List<object> lista) {
             if (lista != null) {
-                lista.Sort(comparadorVisitas);
+                //lista.Sort(comparadorVisitas);
                 return lista;
             } else {
                 return null;
@@ -112,9 +113,10 @@ namespace ProyectoWPF.Data {
             return SafeNativeMethods.StrCmpLogicalW(a.nombre, b.nombre);
         }
     }
-
+    /*
     public class DateComparer : IComparer<object> {
         public int Compare(object a, object b) {
+            
             if((a is Capitulo) && (b is Capitulo)) {
                 Capitulo aux1 = (Capitulo)a;
                 Capitulo aux2 = (Capitulo)b;
@@ -134,11 +136,13 @@ namespace ProyectoWPF.Data {
             } else {
                 return 0;
             }
+            
         }
     }
 
     public class VisitsComparer : IComparer<object> {
         public int Compare(object a, object b) {
+            
             if ((a is Capitulo) && (b is Capitulo)) {
                 Capitulo aux1 = (Capitulo)a;
                 Capitulo aux2 = (Capitulo)b;
@@ -182,8 +186,10 @@ namespace ProyectoWPF.Data {
             } else {
                 return 0;
             }
+            
         }
-    }
+        
+    }*/
 
     public sealed class NaturalWrapCarpetaNameComparer : IComparer<UIElement> {
 
@@ -211,7 +217,7 @@ namespace ProyectoWPF.Data {
                 } else {
                     return SafeNativeMethods.StrCmpLogicalW(aux2.getClass().nombre, aux1.getClass().nombre);
                 }
-            } else { 
+            } else {
                 if (isAscending) {
                     return 1;
                 } else {

@@ -12,23 +12,23 @@ namespace ProyectoWPF.Components.Online {
     /// </summary>
     public partial class MenuComponent : UserControl {
         private WrapPanelPrincipal _wrapSeries;
-        private SerieComponent _serie;
-        private List<TemporadaComponent> _tempComponents = new List<TemporadaComponent>();
+        /*private SerieComponent _serie;
+        private List<TemporadaComponent> _tempComponents = new List<TemporadaComponent>();*/
         private Canvas _defaultCanvas;
         private VIGallery _ventanaMain;
         private Grid _gridPrincipal;
         public bool isVisible { get; set; }
 
-        public MenuComponent(WrapPanelPrincipal wp, SerieComponent s, VIGallery vi, Grid gridPrincipal) {
+        public MenuComponent(WrapPanelPrincipal wp, /*SerieComponent s, */VIGallery vi, Grid gridPrincipal) {
             InitializeComponent();
             _defaultCanvas = canvasFolder;
             _wrapSeries = wp;
-            setSerie(s);
+            //setSerie(s);
             isVisible = false;
             _ventanaMain = vi;
             _gridPrincipal = gridPrincipal;
         }
-
+        /*
         public void setSerie(SerieComponent s) {
             if (s != null) {
                 _serie = s;
@@ -36,7 +36,7 @@ namespace ProyectoWPF.Components.Online {
                 actualizar();
             }
         }
-
+        
         public void actualizar() {
             Title.Content = _serie.getSerie().nombre;
             Descripcion.Content = _serie.getSerie().descripcion;
@@ -57,7 +57,7 @@ namespace ProyectoWPF.Components.Online {
                 Generos.Visibility = Visibility.Hidden;
                 listaGeneros.Visibility = Visibility.Hidden;
             }
-
+            
             if (_serie.getSerie().img != "") {
                 try {
                     BitmapImage bm = new BitmapImage(new Uri(@_serie.getSerie().img, UriKind.Absolute));
@@ -156,5 +156,6 @@ namespace ProyectoWPF.Components.Online {
             }
             return null;
         }
+        */
     }
 }

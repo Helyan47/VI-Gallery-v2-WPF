@@ -1,5 +1,4 @@
-﻿using ProyectoWPF.Data.Online;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,11 +24,8 @@ namespace ProyectoWPF.Reproductor {
     public partial class VI_Reproductor : UserControl {
 
         private object[] lista;
-        private long[] _capitulos = null;
-        private long[] _peliculas = null;
         private object[] names;
         public int currentVideoPosition { get; set; }
-        public static bool isOnline = false;
 
         public static int volumen = 100;
         object actualVideo { get; set; }
@@ -66,10 +62,6 @@ namespace ProyectoWPF.Reproductor {
             } catch (Exception e) {
                 Console.WriteLine(e.ToString());
             }
-        }
-
-        public void setOnline(bool online) {
-            isOnline = online;
         }
 
         public void setVIGallery(VIGallery vi) {
@@ -191,65 +183,6 @@ namespace ProyectoWPF.Reproductor {
             }
         }
 
-        public void setListaCapitulos(object[] args, long[] capitulos, int position) {
-            try {
-                if (args != null & capitulos != null & args.Length != 0) {
-                    lista = args;
-                    _capitulos = capitulos;
-                    currentVideoPosition = position;
-                    videoTitle.Content = names[currentVideoPosition];
-                    setVideo(lista[position]);
-                    control.Focus();
-                }
-            } catch (Exception e) {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
-        public void setListaCapitulos(object[] args, long[] capitulos) {
-            try {
-                if (args != null & capitulos != null & args.Length != 0) {
-                    lista = args;
-                    _capitulos = capitulos;
-                    currentVideoPosition = 0;
-                    videoTitle.Content = names[currentVideoPosition];
-                    setVideo(lista[0]);
-                    control.Focus();
-                }
-            } catch (Exception e) {
-                MessageBox.Show(e.ToString());
-            }
-        }
-        public void setListaPeliculas(object[] args, long[] peliculas, int position) {
-            try {
-                if (args != null & peliculas != null & args.Length != 0) {
-                    lista = args;
-                    _peliculas = peliculas;
-                    currentVideoPosition = position;
-                    videoTitle.Content = names[currentVideoPosition];
-                    setVideo(lista[position]);
-                    control.Focus();
-                }
-            } catch (Exception e) {
-                MessageBox.Show(e.ToString());
-            }
-        }
-
-        public void setListaPeliculas(object[] args, long[] peliculas) {
-            try {
-                if (args != null & peliculas != null & args.Length != 0) {
-                    lista = args;
-                    _peliculas = peliculas;
-                    currentVideoPosition = 0;
-                    videoTitle.Content = names[currentVideoPosition];
-                    setVideo(lista[0]);
-                    control.Focus();
-                }
-            } catch (Exception e) {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
         public void setLista(object[] args, int position) {
             try {
                 if (args != null & args.Length != 0) {
@@ -310,26 +243,6 @@ namespace ProyectoWPF.Reproductor {
                 } else {
                     MessageBox.Show("Tipo de archivo no soportado");
                 }
-                if (isOnline) {
-                    if (_capitulos != null) {
-                        try {
-                            ConexionServer.increaseNumVisitasCap(_capitulos[currentVideoPosition]);
-                            long time = ConexionServer.getTimeCapitulo(_capitulos[currentVideoPosition]);
-                            control.SourceProvider.MediaPlayer.Time = time;
-                        } catch (Exception e) {
-                            control.SourceProvider.MediaPlayer.Time = 0;
-                        }
-                    } else if (_peliculas != null) {
-                        try {
-                            ConexionServer.increaseNumVisitasPelicula(_peliculas[0]);
-                            long time = ConexionServer.getTimePelicula(_peliculas[0]);
-                            control.SourceProvider.MediaPlayer.Time = time;
-                        } catch (Exception e) {
-                            control.SourceProvider.MediaPlayer.Time = 0;
-                        }
-                    }
-
-                }
                 control.SourceProvider.MediaPlayer.Audio.Volume = volumen;
                 dp.Start();
                 setTimeLabel();
@@ -346,14 +259,6 @@ namespace ProyectoWPF.Reproductor {
             try {
                 dp.Stop();
                 long time = control.SourceProvider.MediaPlayer.Time;
-                if (isOnline) {
-                    if (_capitulos != null) {
-                        ConexionServer.updateTiempoActualCap(_capitulos[currentVideoPosition], time);
-                    } else if (_peliculas != null) {
-                        ConexionServer.updateTiempoActualPel(_peliculas[currentVideoPosition], time);
-                    }
-
-                }
                 cont = 0;
                 if (lista != null) {
                     if (currentVideoPosition == lista.Length - 1) {
@@ -375,14 +280,6 @@ namespace ProyectoWPF.Reproductor {
         public void previousVideo() {
             dp.Stop();
             long time = control.SourceProvider.MediaPlayer.Time;
-            if (isOnline) {
-                if (_capitulos != null) {
-                    ConexionServer.updateTiempoActualCap(_capitulos[currentVideoPosition], time);
-                } else if (_peliculas != null) {
-                    ConexionServer.updateTiempoActualPel(_peliculas[currentVideoPosition], time);
-                }
-
-            }
             cont = 0;
             if (currentVideoPosition == 0) {
                 currentVideoPosition = lista.Length - 1;
@@ -590,13 +487,6 @@ namespace ProyectoWPF.Reproductor {
             try {
                 dp.Stop();
                 long time = control.SourceProvider.MediaPlayer.Time;
-                if (isOnline) {
-                    if (_capitulos != null) {
-                        ConexionServer.updateTiempoActualCap(_capitulos[currentVideoPosition], time);
-                    } else if (_peliculas != null) {
-                        ConexionServer.updateTiempoActualPel(_peliculas[0], time);
-                    }
-                }
 
             } catch (Exception ex) {
 

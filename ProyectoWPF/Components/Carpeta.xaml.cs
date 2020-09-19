@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using VIGallery.Data;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -339,26 +338,22 @@ namespace ProyectoWPF {
 
         public void remove() {
             try {
-                if (VIGallery.conexionMode) {
-                    Conexion.deleteFolder(_carpeta);
-                } else {
-                    ConexionOffline.deleteFolder(_carpeta.id);
-                }
+                Conexion.deleteFolder(_carpeta);
                 if (_archivos != null) {
-                    foreach(Archivo a in _archivos) {
+                    foreach (Archivo a in _archivos) {
                         removeFile(a);
                     }
                     _archivos = null;
                 }
-                
+
                 if (_carpetasHijo != null) {
                     foreach (Carpeta c in _carpetasHijo) {
                         c.remove();
                     }
                     _carpetasHijo = null;
                 }
-                
-                
+
+
 
                 Lista.removeCarpetaClass(_carpeta.id);
             } catch (MySqlException exc) {
@@ -400,11 +395,7 @@ namespace ProyectoWPF {
                     }
                 }
                 Title.SetText(newName);
-                if (VIGallery.conexionMode) {
-                    Conexion.updateFolderName(_carpeta);
-                } else {
-                    ConexionOffline.updateFolderName(_carpeta);
-                }
+                Conexion.updateFolderName(_carpeta);
                 Lista.orderWrap(_primerPanel);
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
@@ -434,11 +425,7 @@ namespace ProyectoWPF {
                     }
                 }
                 Title.SetText(newName);
-                if (VIGallery.conexionMode) {
-                    Conexion.updateFolderName(_carpeta);
-                } else {
-                    ConexionOffline.updateFolderName(_carpeta);
-                }
+                Conexion.updateFolderName(_carpeta);
                 Lista.orderWrap(_primerPanel);
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
@@ -451,11 +438,8 @@ namespace ProyectoWPF {
                 _carpeta.rutaPadre = rutaNueva;
                 string rutaAntiguaSub = _carpeta.ruta;
                 _carpeta.ruta = _carpeta.ruta.Replace(rutaAntigua, rutaNueva);
-                if (VIGallery.conexionMode) {
-                    Conexion.updateFolderName(_carpeta);
-                } else {
-                    ConexionOffline.updateFolderName(_carpeta);
-                }
+
+                Conexion.updateFolderName(_carpeta);
                 Lista.changeSubFoldersName(rutaAntiguaSub, _carpeta.ruta);
 
                 if (_archivos != null) {

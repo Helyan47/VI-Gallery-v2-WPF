@@ -14,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using VIGallery.Data;
 
 namespace ProyectoWPF.Components {
     /// <summary>
@@ -26,7 +25,7 @@ namespace ProyectoWPF.Components {
         private List<GenderCheck> buttonGroup;
         private Dictionary<string, bool> gendersSelected;
         private string rutaFolder = "";
-        private int genderMode = 0;
+        private int genderMode = -1;
         public GenderSelection() {
             InitializeComponent();
             loadGenders();
@@ -36,24 +35,12 @@ namespace ProyectoWPF.Components {
         private void loadGenders() {
             genders = new Dictionary<string, bool>();
             buttonGroup = new List<GenderCheck>();
-            if(genderMode == 0) {
-                if (VIGallery.conexionMode) {
-                    genders = Conexion.loadAllGenders(false);
-                } else {
-                    genders = ConexionOffline.loadAllGenders(false);
-                }
-            }else if(genderMode == 1) {
-                if (VIGallery.conexionMode) {
-                    genders = Conexion.loadGenders(false, rutaFolder);
-                } else {
-                    genders = ConexionOffline.loadGenders(false, rutaFolder);
-                }
-            }else if(genderMode == 2) {
-                if (VIGallery.conexionMode) {
-                    genders = Conexion.loadAllGenders(false);
-                } else {
-                    genders = ConexionOffline.loadAllGenders(false);
-                }
+            if (genderMode == 0) {
+                genders = Conexion.loadAllGenders(false);
+            } else if (genderMode == 1) {
+                genders = Conexion.loadGenders(false, rutaFolder);
+            } else if (genderMode == 2) {
+                genders = Conexion.loadAllGenders(false);
                 //getSelectedGenders
             }
             
