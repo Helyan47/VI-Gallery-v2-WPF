@@ -993,9 +993,9 @@ namespace ProyectoWPF {
          */
         private void bButtonGender_Click(object sender, EventArgs e) {
             Button cb = (Button)sender;
-            genderSelection.setMode(ActionPanel.FILTER_MODE,null,filteredGenders);
-            genderSelection.Visibility = Visibility.Visible;
-            genderSelection.loadGenders();
+            actionPanel.setMode(ActionPanel.FILTER_MODE,null,filteredGenders);
+            actionPanel.Visibility = Visibility.Visible;
+            actionPanel.getGenderSelection().loadGenders();
         }
 
         /**
@@ -1066,10 +1066,10 @@ namespace ProyectoWPF {
         }
 
         private void notifyGenderFilter(object sender, RoutedEventArgs e) {
-            genderSelection.Visibility = Visibility.Hidden;
-            filteredGenders = genderSelection.getGendersSelected();
+            actionPanel.Visibility = Visibility.Hidden;
+            filteredGenders = actionPanel.getGenderSelection().getGendersSelected();
             Lista.getWrapVisible().showFoldersByGender(filteredGenders.Keys.ToList<string>());
-            genderSelection.clear();
+            actionPanel.getGenderSelection().clear();
         }
     }
 }
