@@ -17,9 +17,6 @@
                             </Border>
                             <Border x:Name="Grid" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="10" />
                         </Grid>
-                        <ControlTemplate.Triggers>
-
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>

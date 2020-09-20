@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using ProyectoWPF.NewFolders;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -27,30 +28,39 @@ namespace ProyectoWPF.Components {
         public const long NEW_MENU = 6L;
         public const long NEW_MULTI_FOLDER = 7L;
         private static long actionMode = -1;
+        private bool closed = false;
         public ActionPanel() {
             InitializeComponent();
+            genderSelection._actionPanel = this;
+            newFolder._actionPanel = this;
         }
 
         public void setMode(long mode, string rutaCarpeta, Dictionary<string, bool> filteredGenders) {
+            hideAll();
             if (mode == NEW_FOLDER_GENDER_MODE) {
                 actionMode = mode;
+                newFolder.Visibility = Visibility.Visible;
                 genderSelection.setMode(mode, rutaCarpeta, filteredGenders);
-                filaDerecha.Height = new GridLength(0, GridUnitType.Star);
-                filaIzquierda.Height = new GridLength(0, GridUnitType.Star);
-                columnaSuperior.Width = new GridLength(0, GridUnitType.Star);
-                columnaInferior.Width = new GridLength(0, GridUnitType.Star);
+                
+                filaDerecha.Height = new GridLength(0.5, GridUnitType.Star);
+                filaIzquierda.Height = new GridLength(0.5, GridUnitType.Star);
+                columnaSuperior.Width = new GridLength(1, GridUnitType.Star);
+                columnaInferior.Width = new GridLength(1, GridUnitType.Star);
             } else if (mode == MODIFY_FOLDER_MODE) {
                 actionMode = mode;
                 genderSelection.setMode(mode,rutaCarpeta,filteredGenders);
-                filaDerecha.Height = new GridLength(0, GridUnitType.Star);
-                filaIzquierda.Height = new GridLength(0, GridUnitType.Star);
-                columnaSuperior.Width = new GridLength(0, GridUnitType.Star);
-                columnaInferior.Width = new GridLength(0, GridUnitType.Star);
+                
+                filaDerecha.Height = new GridLength(0.5, GridUnitType.Star);
+                filaIzquierda.Height = new GridLength(0.5, GridUnitType.Star);
+                columnaSuperior.Width = new GridLength(1, GridUnitType.Star);
+                columnaInferior.Width = new GridLength(1, GridUnitType.Star);
             } else if (mode == MODIFY_FILE_MODE) {
                 actionMode = mode;
             } else if (mode == FILTER_MODE) {
                 actionMode = mode;
                 genderSelection.setMode(mode, rutaCarpeta, filteredGenders);
+                genderSelection.Visibility = Visibility.Visible;
+                
                 filaDerecha.Height = new GridLength(1, GridUnitType.Star);
                 filaIzquierda.Height = new GridLength(1, GridUnitType.Star);
                 columnaSuperior.Width = new GridLength(1, GridUnitType.Star);
@@ -68,6 +78,23 @@ namespace ProyectoWPF.Components {
 
         public GenderSelection getGenderSelection() {
             return genderSelection;
+        }
+
+        public NewFolder getNewFolder() {
+            return newFolder;
+        }
+
+        private void hideAll() {
+            genderSelection.Visibility = Visibility.Hidden;
+            newFolder.Visibility = Visibility.Hidden;
+        }
+
+        public void close() {
+            closed = true;
+        }
+
+        public bool isClosed() {
+            return closed;
         }
     }
 

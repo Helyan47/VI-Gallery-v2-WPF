@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ProyectoWPF.Components"
              mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="1920" Background="#7F1F1F1F">
+             d:DesignHeight="550" d:DesignWidth="1000" Background="#7F1F1F1F">
     <UserControl.Resources>
         <Style x:Key="buttonStyleCustom" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -26,29 +26,59 @@
         </Style>
     </UserControl.Resources>
     <Grid Background="#FF171717">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="75px"/>
-        </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="20px"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="Select the genders" Foreground="White" FontSize="54" Grid.Row="0" Grid.Column="0" FontWeight="Bold" Margin="10,10,0,0"/>
-            <local:CutomButton x:Name="bAddGender" Text="Add Gender" Grid.Column="1" Margin="0,20,0,20"></local:CutomButton>
-        </Grid>
+        <Grid x:Name="genderSelection">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="75px"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="20px"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Select the genders" Foreground="White" FontSize="54" Grid.Row="0" Grid.Column="0" FontWeight="Bold" Margin="10,10,0,0"/>
+                <local:CutomButton x:Name="bAddGender" Text="Add Gender" Grid.Column="1" BackColorOver="White" BackColor="Transparent" ForColor="White" ForColorOver="Black" BorderColor="White" Margin="0,20,0,20"></local:CutomButton>
+            </Grid>
 
-        <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Hidden" Grid.Row="1">
-            <local:AlignableWrapPanel x:Name="wrapPanel" HorizontalContentAlignment="Center" Margin="20,0,20,0" VerticalAlignment="Center"/>
-        </ScrollViewer>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
-            <local:CutomButton x:Name="bCancel" Text="Cancel" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5"/>
-            <local:CutomButton x:Name="bAccept" Text="Filter" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5"/>
-        </StackPanel>
-        <local:CutomButton x:Name="bClearValues" Text="Clear Filters" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
+            <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                <local:AlignableWrapPanel x:Name="wrapPanel" HorizontalContentAlignment="Center" Margin="20,0,20,0" VerticalAlignment="Center"/>
+            </ScrollViewer>
+            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+                <local:VIGalleryButton x:Name="bCancel" Content="Cancel" BackColor="Transparent" BackColorOver="Red" ForColor="Red" ForColorOver="Black" BorderBrush="Red" Foreground="Red" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" IsCancel="True" Click="bCancel_Click"/>
+                <local:VIGalleryButton x:Name="bAccept" Content="Filter" BackColor="Transparent" BackColorOver="White" ForColor="White" ForColorOver="Black" Foreground="White" BorderBrush="White" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" IsDefault="True" Click="bAccept_Click"/>
+            </StackPanel>
+            <local:VIGalleryButton x:Name="bClearValues" Content="Clear Filters" Grid.Row="2" BackColorOver="White" BackColor="Transparent" ForColor="White" ForColorOver="Black" BorderBrush="White" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" Click="bClearValues_Click"/>
+            
+        </Grid>
+        
+        <Grid x:Name="addGender" Background="#FF171717" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.6*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.6*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Nombre Género: " Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" Foreground="White" FontSize="14" Height="29" Margin="0,9"/>
+                <TextBox x:Name="Title"  Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" TextWrapping="NoWrap" MaxLines="1" VerticalAlignment="Center" FontSize="18" Height="25" Margin="10,0,10,0"/>
+            </Grid>
+            <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="2" >
+                <local:CutomButton Content="Cancelar"  HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Height="20" Grid.Row="3" />
+                <Button Content="Aceptar" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Height="20" Grid.Row="3" />
+                
+            </StackPanel>
+        </Grid>
     </Grid>
-    
+
 </UserControl>

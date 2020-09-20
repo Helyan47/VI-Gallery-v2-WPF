@@ -51,7 +51,6 @@ namespace ProyectoWPF {
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
             //menuReciente.setMain(this);
             reproductorControl.setVIGallery(this);
-            actionPanel.getGenderSelection().getAcceptButton().Click += notifyGenderFilter;
         }
 
         /**
@@ -443,41 +442,60 @@ namespace ProyectoWPF {
          * Añade una carpeta al menu
          */
         private void addCarpeta() {
+            Carpeta p1 = new Carpeta(this, Lista.getWrapVisible(), menuCarpetas, null);
+
+            NewFolder newFolder = actionPanel.getNewFolder();
+            newFolder.setData(p1, _activatedButton);
+            actionPanel.setMode(ActionPanel.NEW_FOLDER_GENDER_MODE, null, null);
+            actionPanel.Visibility = Visibility.Visible;
+            
+
+        }
+
+        public void notifyNewGendersSelected() {
+            actionPanel.getNewFolder().hideGenderSelection();
+        }
+
+        public void notifyNewFolder() {
+
             try {
-                
-                Carpeta p1 = new Carpeta(this, Lista.getWrapVisible(), menuCarpetas, null);
 
-                AddCarpeta newSerie = new AddCarpeta(p1, _activatedButton);
-                newSerie.ShowDialog();
+                NewFolder newFolder = actionPanel.getNewFolder();
+                actionPanel.Visibility = Visibility.Hidden;
+                Carpeta p1 = null;
+                if (newFolder.checkNewData()) {
+                    if((p1 = newFolder.getBuildedFolder()) != null) {
+                        clearTextBoxAndSelection();
+                        Lista.addCarpeta(p1);
+                        WrapPanelPrincipal aux = Lista.getWrapVisible();
 
-                if (newSerie.createdSerie()) {
-                    clearTextBoxAndSelection();
-                    Lista.addCarpeta(p1);
-                    WrapPanelPrincipal aux = Lista.getWrapVisible();
+                        p1.actualizar();
 
-                    p1.actualizar();
+                        string name = _activatedButton.Content.ToString();
+                        p1.getClass().rutaPadre = _profile.nombre + "|C/" + name;
+                        p1.setRutaPrograma(_profile.nombre + "|C/" + name + "/" + p1.getClass().nombre);
 
-                    string name = _activatedButton.Content.ToString();
-                    p1.getClass().rutaPadre = _profile.nombre + "|C/" + name;
-                    p1.setRutaPrograma(_profile.nombre + "|C/" + name + "/" + p1.getClass().nombre);
-                    
-                    Conexion.saveFolder(p1);
+                        Conexion.saveFolder(p1);
 
-                    aux.addCarpeta(p1);
-                    p1.SetGridsOpciones(GridPrincipal, GridSecundario);
-                    Lista.orderWrap(aux);
-                } else {
-                    p1 = null;
+                        aux.addCarpeta(p1);
+                        p1.SetGridsOpciones(GridPrincipal, GridSecundario);
+                        Lista.orderWrap(aux);
+                    }
                 }
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             } catch (SQLiteException exc2) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
-
         }
 
-        
+        public void notifyCanceled() {
+
+            actionPanel.Visibility = Visibility.Hidden;
+            actionPanel.getNewFolder().clearData();
+            actionPanel.getGenderSelection().clearData();
+            
+        }
 
         /**
          * Añade una carpeta a partir de un registro en la base de datos
@@ -1065,11 +1083,13 @@ namespace ProyectoWPF {
             return reproductorControl;
         }
 
-        private void notifyGenderFilter(object sender, RoutedEventArgs e) {
+        public void notifyGenderFilter() {
             actionPanel.Visibility = Visibility.Hidden;
             filteredGenders = actionPanel.getGenderSelection().getGendersSelected();
             Lista.getWrapVisible().showFoldersByGender(filteredGenders.Keys.ToList<string>());
-            actionPanel.getGenderSelection().clear();
+            actionPanel.getGenderSelection().clearData();
         }
+
+        
     }
 }

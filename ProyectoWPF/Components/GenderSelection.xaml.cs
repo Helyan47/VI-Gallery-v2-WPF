@@ -31,17 +31,17 @@ namespace ProyectoWPF.Components {
         public GenderSelection() {
             InitializeComponent();
             loadGenders();
-            bAddGender.getButton().Click += addGenderWindow;
+            bAddGender.addButtonEvent(addGenderWindow);
         }
 
         public void loadGenders() {
             genders = new Dictionary<string, bool>();
             checkGroup = new List<GenderCheck>();
-            if (genderMode == 0L) {
+            if (genderMode == ActionPanel.NEW_FOLDER_GENDER_MODE) {
                 genders = Conexion.loadAllGenders(false);
-            } else if (genderMode == 1L) {
+            } else if (genderMode == ActionPanel.MODIFY_FOLDER_MODE) {
                 genders = Conexion.loadGenders(false, rutaFolder);
-            } else if (genderMode == 3L) {
+            } else if (genderMode == ActionPanel.FILTER_MODE) {
                 genders = Conexion.loadAllGenders(false);
             }
             
@@ -49,9 +49,15 @@ namespace ProyectoWPF.Components {
                 foreach (KeyValuePair<string, bool> gender in genders) {
                     GenderCheck gb = new GenderCheck(gender.Key, gender.Value);
                     gb.Margin = new Thickness(5);
-                    if(genderMode == 2) {
+                    if(genderMode == ActionPanel.FILTER_MODE) {
                         foreach(KeyValuePair<string, bool> gen in gendersFiltered) {
-                            if (gen.Equals(gender.Key)) {
+                            if (gen.Key.Equals(gender.Key)) {
+                                gb.changeSelection(true);
+                            }
+                        }
+                    }else if((genderMode == ActionPanel.NEW_FOLDER_GENDER_MODE) && (gendersFiltered != null)) {
+                        foreach (KeyValuePair<string, bool> gen in gendersFiltered) {
+                            if (gen.Key.Equals(gender.Key)) {
                                 gb.changeSelection(true);
                             }
                         }
@@ -108,12 +114,16 @@ namespace ProyectoWPF.Components {
         public void setMode(long mode, string rutaCarpeta, Dictionary<string,bool> filteredGenders) {
             if (mode == ActionPanel.NEW_FOLDER_GENDER_MODE) {
                 this.genderMode = mode;
+                this.gendersFiltered = filteredGenders;
+                bAccept.Content = "Accept";
             } else if (mode == ActionPanel.MODIFY_FOLDER_MODE) {
                 this.genderMode = mode;
                 this.rutaFolder = rutaCarpeta;
+                bAccept.Content = "Accept";
             } else if (mode == ActionPanel.FILTER_MODE) {
                 this.genderMode = mode;
                 this.gendersFiltered = filteredGenders;
+                bAccept.Text = "Filter";
             }
         }
 
@@ -138,13 +148,35 @@ namespace ProyectoWPF.Components {
             bAccept.Background = new SolidColorBrush(Color.FromRgb(23, 23, 23));
         }
 
-        public void clear() {
+        public void clearData() {
             gendersSelected = null;
             wrapPanel.Children.Clear();
         }
 
-        public Button getAcceptButton() {
-            return bAccept.getButton();
+        public void addAcceptButtonEvent(RoutedEventHandler e) {
+            bAccept.Click+=e;
+        }
+
+        private void bClearValues_Click(object sender, RoutedEventArgs e) {
+            foreach(GenderCheck gc in checkGroup) {
+                gc.changeSelection(false);
+            }
+        }
+
+        private void bCancel_Click(object sender, RoutedEventArgs e) {
+            if (addGender.Visibility == Visibility.Hidden && this.genderMode == ActionPanel.NEW_FOLDER_GENDER_MODE) {
+                Metodos.notifyNewGendersSelected();
+            } else if (addGender.Visibility == Visibility.Hidden && this.genderMode == ActionPanel.FILTER_MODE) {
+                Metodos.notifyCanceled();
+            }
+        }
+
+        private void bAccept_Click(object sender, RoutedEventArgs e) {
+            if (addGender.Visibility == Visibility.Hidden && this.genderMode == ActionPanel.NEW_FOLDER_GENDER_MODE) {
+                Metodos.notifyNewGendersSelected();
+            } else if (addGender.Visibility == Visibility.Hidden && this.genderMode == ActionPanel.FILTER_MODE) {
+                Metodos.notifyGenderFilter();
+            }
         }
     }
 }

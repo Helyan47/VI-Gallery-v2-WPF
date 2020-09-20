@@ -155,6 +155,7 @@
     <Compile Include="Components\Online\VideoReciente.xaml.cs">
       <DependentUpon>VideoReciente.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\VIGalleryButton.cs" />
     <Compile Include="Data\Base\ArchivoClass.cs" />
     <Compile Include="Data\Base\PerfilClassOnline.cs" />
     <Compile Include="Data\Conexion.cs" />
@@ -172,9 +173,6 @@
     </Compile>
     <Compile Include="NewFolders\AddButton.xaml.cs">
       <DependentUpon>AddButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="NewFolders\AddCarpeta.xaml.cs">
-      <DependentUpon>AddCarpeta.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Carpeta.xaml.cs">
       <DependentUpon>Carpeta.xaml</DependentUpon>
@@ -194,6 +192,9 @@
     </Compile>
     <Compile Include="NewFolders\ChangeNameFile.xaml.cs">
       <DependentUpon>ChangeNameFile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewFolders\NewFolder.xaml.cs">
+      <DependentUpon>NewFolder.xaml</DependentUpon>
     </Compile>
     <Compile Include="NewFolders\NewProfile.xaml.cs">
       <DependentUpon>NewProfile.xaml</DependentUpon>
@@ -270,10 +271,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewFolders\AddCarpeta.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Assets\ButtonImageStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -311,6 +308,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewFolders\ChangeNameFile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewFolders\NewFolder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

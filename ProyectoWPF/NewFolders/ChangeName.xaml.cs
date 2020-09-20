@@ -41,9 +41,9 @@ namespace ProyectoWPF.NewFolders {
                 rowGeneros.Height = new GridLength(3, GridUnitType.Star);
                 rowDescripcion.Height = new GridLength(2, GridUnitType.Star);
             }
-            genderSelection.getAcceptButton().Click += hideGenderSelection;
+            genderSelection.addAcceptButtonEvent(hideGenderSelection);
             genderSelection.setMode(ActionPanel.MODIFY_FOLDER_MODE, null, null);
-            bAccept.getButton().Click += BAceptar_Click;
+            bAccept.addButtonEvent(BAceptar_Click);
         }
 
         private void BAceptar_Click(object sender, EventArgs e) {

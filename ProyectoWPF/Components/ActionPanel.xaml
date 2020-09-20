@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ProyectoWPF.Components"
+             xmlns:main="clr-namespace:ProyectoWPF.NewFolders"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920" Background="#7F1F1F1F">
     <Grid>
@@ -17,6 +18,7 @@
             <RowDefinition Height="3.5*"/>
             <RowDefinition x:Name="filaDerecha" Height="*"/>
         </Grid.RowDefinitions>
-        <local:GenderSelection x:Name="genderSelection" Grid.Row="1" Grid.Column="1"></local:GenderSelection>
+        <local:GenderSelection x:Name="genderSelection" Grid.Row="1" Grid.Column="1" Visibility="Hidden"></local:GenderSelection>
+        <main:NewFolder x:Name="newFolder" Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Hidden"></main:NewFolder>
     </Grid>
 </UserControl>

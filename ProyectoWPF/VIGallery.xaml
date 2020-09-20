@@ -455,10 +455,11 @@
                         </Grid>
                     </ScrollViewer>
                 </Grid>
+                <componentes:ActionPanel x:Name="actionPanel" Visibility="Hidden"></componentes:ActionPanel>
             </Grid>
             
         </DockPanel>
         <reproductor:VI_Reproductor x:Name="reproductorControl" Visibility="Hidden"/>
-        <componentes:ActionPanel x:Name="actionPanel" Visibility="Hidden"></componentes:ActionPanel>
+        
     </Grid>
 </Window>
