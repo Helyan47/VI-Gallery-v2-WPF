@@ -29,6 +29,9 @@ namespace ProyectoWPF {
             padre = p;
             carpeta = new CarpetaClass("", "",true);
             padre.setClass(carpeta);
+            genderSelection.getAcceptButton().Click += hideGenderSelection;
+            genderSelection.setMode("NEW", null,null);
+            bAccept.getButton().Click += BAceptar_Click;
             button = b;
         }
 
@@ -38,29 +41,15 @@ namespace ProyectoWPF {
                 Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
                 if (!containsABadCharacter.IsMatch(Title.Text)) {
                     if (!Lista.Contains(VIGallery._profile.nombre + "|C/" + button.Content + "/" + Title.Text)) {
-                        ICollection<string> col = new List<string>();
 
-                        UIElementCollection coleccion = ListGeneros.Children;
-                        bool isCheked = false;
-                        foreach (CheckBox cb in coleccion) {
+                        List<string> genders = genderSelection.getGendersSelected().Keys.ToList<string>();
 
-                            if (cb.IsChecked == true) {
-                                col.Add((string)cb.Content);
-                                isCheked = true;
-                            }
-                        }
-
-                        if (isCheked) {
-
-                            if (!dirImg.Equals("")) {
-                                carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, col, true);
-                                carpeta.idMenu = Lista.getMenuFromText(button.Content.ToString()).id;
-                            }
+                        if (genders != null) {
+                            carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, genders, true);
+                            carpeta.idMenu = Lista.getMenuFromText(button.Content.ToString()).id;
                         } else {
-                            if (!dirImg.Equals("")) {
-                                carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, true);
-
-                            }
+                            carpeta = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, true);
+                            carpeta.idMenu = Lista.getMenuFromText(button.Content.ToString()).id;
                         }
                         carpeta.idMenu = Lista.getMenuFromText(button.Content.ToString()).id;
                         carpeta.ruta = "C/" + button.Content + "/" + padre.getTitle();
@@ -96,12 +85,27 @@ namespace ProyectoWPF {
         }
 
         public void setPadre(Carpeta padre1) {
-
             padre = padre1;
         }
 
         public bool createdSerie() {
             return created;
+        }
+
+        private void selectGender_Click(object sender, EventArgs e) {
+            genderSelection.Visibility = Visibility.Visible;
+            genderSelection.loadGenders();
+        }
+
+        public void hideGenderSelection(object sender, EventArgs e) {
+            genderSelection.Visibility = Visibility.Hidden;
+            List<string> genders = genderSelection.getGendersSelected().Keys.ToList<string>();
+            string cadena = "";
+            foreach(string s in genders) {
+                cadena += s + ", ";
+            }
+            cadena = cadena.Substring(0, cadena.Length - 2);
+            genderText.Text = cadena;
         }
     }
 }

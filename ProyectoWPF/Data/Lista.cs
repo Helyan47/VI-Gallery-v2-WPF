@@ -85,6 +85,14 @@ namespace ProyectoWPF {
             return false;
         }
 
+        public static MenuClass getMenuClassVisible() {
+            ComboBoxItem cb = VIGallery._activatedButton;
+            if(cb != null) {
+                return getMenuFromText(cb.Content.ToString());
+            }
+            return null;
+        }
+
         public static bool buttonInButtons(MenuClass m) {
             foreach(MenuClass mc in _menusClass) {
                 if (mc == m) {

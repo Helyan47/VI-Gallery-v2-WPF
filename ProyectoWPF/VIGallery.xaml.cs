@@ -31,7 +31,7 @@ namespace ProyectoWPF {
         private Carpeta _aux2;
         List<string> _rutas = new List<string>();
         private ItemCollection _botones;
-        private ComboBoxItem _activatedButton;
+        public static ComboBoxItem _activatedButton;
         public int firstFolder = 0;
         public static PerfilClass _profile = null;
         private static PerfilClass _newSelectedProfile = null;
@@ -51,6 +51,7 @@ namespace ProyectoWPF {
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
             //menuReciente.setMain(this);
             reproductorControl.setVIGallery(this);
+            genderSelection.getAcceptButton().Click += notifyGenderFilter;
         }
 
         /**
@@ -995,23 +996,6 @@ namespace ProyectoWPF {
             genderSelection.setMode("FILTER",null,filteredGenders);
             genderSelection.Visibility = Visibility.Visible;
             genderSelection.loadGenders();
-            //pasar filteredGenders al genderSelection y marcar los filtrados anteriormente
-            //showGenderSelection modo ALL
-
-            /*string content = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
-            if (content.Equals("Todos")) {
-                WrapPanelPrincipal wp = Lista.getWrapVisible();
-                if (wp != null) {
-                    wp.showAll();
-                }
-                
-            } else {
-                WrapPanelPrincipal wp = Lista.getWrapVisible();
-                if (wp != null) {
-                    wp.showFoldersByGender(content);
-                }
-                
-            }*/
         }
 
         /**
@@ -1081,7 +1065,7 @@ namespace ProyectoWPF {
             return reproductorControl;
         }
 
-        public void notifyGenderFilter() {
+        private void notifyGenderFilter(object sender, RoutedEventArgs e) {
             genderSelection.Visibility = Visibility.Hidden;
             filteredGenders = genderSelection.getGendersSelected();
             Lista.getWrapVisible().showFoldersByGender(filteredGenders.Keys.ToList<string>());

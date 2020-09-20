@@ -42,7 +42,6 @@ namespace ProyectoWPF.Components {
                 genders = Conexion.loadGenders(false, rutaFolder);
             } else if (genderMode == 2) {
                 genders = Conexion.loadAllGenders(false);
-                //getSelectedGenders
             }
             
             if (genders != null && genders.Count > 0) {
@@ -51,8 +50,8 @@ namespace ProyectoWPF.Components {
                     gb.Margin = new Thickness(5);
                     if(genderMode == 2) {
                         foreach(KeyValuePair<string, bool> gen in gendersFiltered) {
-                            if (gen.Key.Equals(gender.Key)) {
-                                gb.changeSelection(gen.Value);
+                            if (gen.Equals(gender.Key)) {
+                                gb.changeSelection(true);
                             }
                         }
                     }
@@ -71,12 +70,12 @@ namespace ProyectoWPF.Components {
         }
 
         private void reloadButtons(List<GenderCheck> genderButtons) {
-            gendersWrapPanel.Children.Clear();
+            wrapPanel.Children.Clear();
             if(genderButtons != null) {
                 foreach(GenderCheck gb in genderButtons) {
                     if(gb != null) {
                         //gb.getButtonClick().Click += changeSelection;
-                        gendersWrapPanel.Children.Add(gb);
+                        wrapPanel.Children.Add(gb);
                     }
                 }
                 checkGroup = genderButtons;
@@ -108,12 +107,24 @@ namespace ProyectoWPF.Components {
         public void setMode(string mode, string rutaCarpeta, Dictionary<string,bool> filteredGenders) {
             if (mode.Equals("NEW")) {
                 this.genderMode = 0;
+                filaDerecha.Height = new GridLength(0, GridUnitType.Star);
+                filaIzquierda.Height = new GridLength(0, GridUnitType.Star);
+                columnaSuperior.Width = new GridLength(0, GridUnitType.Star);
+                columnaInferior.Width = new GridLength(0, GridUnitType.Star);
             } else if (mode.Equals("FOLDER")) {
                 this.genderMode = 1;
                 this.rutaFolder = rutaCarpeta;
+                filaDerecha.Height = new GridLength(0, GridUnitType.Star);
+                filaIzquierda.Height = new GridLength(0, GridUnitType.Star);
+                columnaSuperior.Width = new GridLength(0, GridUnitType.Star);
+                columnaInferior.Width = new GridLength(0, GridUnitType.Star);
             } else if (mode.Equals("FILTER")) {
                 this.genderMode = 2;
                 this.gendersFiltered = filteredGenders;
+                filaDerecha.Height = new GridLength(1, GridUnitType.Star);
+                filaIzquierda.Height = new GridLength(1, GridUnitType.Star);
+                columnaSuperior.Width = new GridLength(1, GridUnitType.Star);
+                columnaInferior.Width = new GridLength(1, GridUnitType.Star);
             }
         }
 
@@ -138,13 +149,13 @@ namespace ProyectoWPF.Components {
             bAccept.Background = new SolidColorBrush(Color.FromRgb(23, 23, 23));
         }
 
-        private void bAccept_Click(object sender, RoutedEventArgs e) {
-            Metodos.notifyGenderFilter();
-        }
-
         public void clear() {
             gendersSelected = null;
-            gendersWrapPanel.Children.Clear();
+            wrapPanel.Children.Clear();
+        }
+
+        public Button getAcceptButton() {
+            return bAccept.getButton();
         }
     }
 }

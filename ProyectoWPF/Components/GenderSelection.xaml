@@ -27,36 +27,36 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition x:Name="columnaSuperior" Width="*"/>
             <ColumnDefinition Width="3.5*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition x:Name="columnaInferior" Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition x:Name="filaIzquierda" Height="*"/>
             <RowDefinition Height="3.5*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition x:Name="filaDerecha" Height="*"/>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF171717">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="75px"/>
-                </Grid.RowDefinitions>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="20px"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Select the genders" Foreground="White" FontSize="54" Grid.Row="0" Grid.Column="0" FontWeight="Bold" Margin="10,10,0,0"/>
-                    <local:GenderButton x:Name="bAddGender" Grid.Column="1" Margin="0,20,0,20"></local:GenderButton>
-                </Grid>
-                
-                <WrapPanel x:Name="gendersWrapPanel" HorizontalAlignment="Center" VerticalAlignment="Stretch" Orientation="Horizontal" Grid.Row="1"/>
-                <Button x:Name="bAccept" Content="Select" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" Style="{StaticResource buttonStyleCustom}" Background="#FF171717" BorderBrush="White" Foreground="White" FontSize="15" SnapsToDevicePixels="True" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Click="bAccept_Click"/>
+        <Grid HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" Background="#FF171717">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="75px"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="20px"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Select the genders" Foreground="White" FontSize="54" Grid.Row="0" Grid.Column="0" FontWeight="Bold" Margin="10,10,0,0"/>
+                <local:CutomButton x:Name="bAddGender" Text="Add Gender" Grid.Column="1" Margin="0,20,0,20"></local:CutomButton>
             </Grid>
-        </ScrollViewer>
-        
+
+            <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                <local:AlignableWrapPanel x:Name="wrapPanel" HorizontalContentAlignment="Center" Margin="20,0,20,0" VerticalAlignment="Center"/>
+            </ScrollViewer>
+            <local:CutomButton x:Name="bAccept" Text="Select" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5"/>
+        </Grid>
+
     </Grid>
 </UserControl>

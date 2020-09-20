@@ -21,10 +21,11 @@ namespace ProyectoWPF.NewFolders {
     public partial class ChangeName : Window {
 
         private string _rutaPadre = "";
-        private string name = null;
+        private string name = "";
         private string descripcion = "";
         private string img = "";
         private bool _isFolderMode = true;
+        private bool _nameChanged = false;
         private ICollection<string> generos = new List<string>();
         public ChangeName(string rutaPadre, bool isFolderMode) {
             InitializeComponent();
@@ -39,6 +40,9 @@ namespace ProyectoWPF.NewFolders {
                 rowGeneros.Height = new GridLength(3, GridUnitType.Star);
                 rowDescripcion.Height = new GridLength(2, GridUnitType.Star);
             }
+            genderSelection.getAcceptButton().Click += hideGenderSelection;
+            genderSelection.setMode("FOLDER", null, null);
+            bAccept.getButton().Click += BAceptar_Click;
         }
 
         private void BAceptar_Click(object sender, EventArgs e) {
@@ -46,16 +50,14 @@ namespace ProyectoWPF.NewFolders {
                 Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
                 if (!containsABadCharacter.IsMatch(Title.Text)) {
                     if (!Lista.Contains(_rutaPadre + "/" + Title.Text)) {
+                        if (!name.Equals(Title.Text)) {
+                            _nameChanged = true;
+                        }
                         name = Title.Text;
                         descripcion = DescBox.Text;
                         img = dirImg.Text;
-                        UIElementCollection coleccion = ListGeneros.Children;
-                        foreach (CheckBox cb in coleccion) {
+                        generos = genderSelection.getGendersSelected().Keys.ToList<string>();
 
-                            if (cb.IsChecked == true) {
-                                generos.Add((string)cb.Content);
-                            }
-                        }
                         this.Close();
                     } else {
                         MessageBox.Show("Una carpeta con ese nombre ya existe");
@@ -106,16 +108,32 @@ namespace ProyectoWPF.NewFolders {
             return generos;
         }
 
-        public void checkGeneros(ICollection<string> generosCarpeta) {
-            UIElementCollection coleccion = ListGeneros.Children;
-            foreach (CheckBox cb in coleccion) {
-                foreach(string s in generosCarpeta) {
-                    if (cb.Content.Equals(s)) {
-                        cb.IsChecked = true;
-                    }
-                }
-                
+        public bool isNameChanged() {
+            return _nameChanged;
+        }
+
+        private void selectGender_Click(object sender, EventArgs e) {
+            genderSelection.Visibility = Visibility.Visible;
+            genderSelection.loadGenders();
+        }
+
+        public void hideGenderSelection(object sender, EventArgs e) {
+            genderSelection.Visibility = Visibility.Hidden;
+            List<string> genders = genderSelection.getGendersSelected().Keys.ToList<string>();
+            string cadena = "";
+            foreach (string s in genders) {
+                cadena += s + ", ";
             }
+            try {
+                cadena = cadena.Substring(0, cadena.Length - 2);
+            } catch (Exception) {
+                cadena = "";
+            }
+            genderText.Text = cadena;
+        }
+
+        public void changeGenderMode(string mode,string rutaCarpeta, Dictionary<string, bool> selectedGenders) {
+            genderSelection.setMode(mode, rutaCarpeta, selectedGenders);
         }
     }
 }

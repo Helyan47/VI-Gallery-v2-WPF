@@ -403,6 +403,20 @@ namespace ProyectoWPF {
             }
         }
 
+        public void changeName(string newDescripcion, string newImg, ICollection<string> generos) {
+            try {
+                _carpeta.generos = generos;
+                _carpeta.desc = newDescripcion;
+                _carpeta.img = newImg;
+                setImg();
+                setDescripcion(newDescripcion);
+                Conexion.updateFolder(_carpeta);
+                Lista.orderWrap(_primerPanel);
+            } catch (MySqlException exc) {
+                MessageBox.Show("No se ha podido conectar a la base de datos");
+            }
+        }
+
         public void changeName(string newName, string newImg) {
             try {
                 _carpeta.nombre = newName;
@@ -461,7 +475,7 @@ namespace ProyectoWPF {
             if (_carpetaPadre == null) {
                cn = new ChangeName(folderRutaPadre, true);
                 cn.setDescripcion(_carpeta.desc);
-                cn.checkGeneros(_carpeta.generos);
+                cn.changeGenderMode("FOLDER",_carpeta.ruta, null);
             } else {
                 cn = new ChangeName(folderRutaPadre, false);
             }
@@ -473,7 +487,11 @@ namespace ProyectoWPF {
             cn.ShowDialog();
             if (cn.getNewName() != null) {
                 if (_carpetaPadre == null) {
-                    changeName(cn.getNewName(), cn.getDescripcion(), cn.getDirImg(), cn.getGeneros());
+                    if (cn.isNameChanged()) {
+                        changeName(cn.getNewName(), cn.getDescripcion(), cn.getDirImg(), cn.getGeneros());
+                    } else {
+                        changeName(cn.getDescripcion(), cn.getDirImg(), cn.getGeneros());
+                    }
                 } else {
                     changeName(cn.getNewName(), cn.getDirImg());
                 }

@@ -9,9 +9,6 @@ namespace ProyectoWPF.Data {
 
         private static VIGallery vigallery;
 
-        public static void notifyGenderFilter() {
-            vigallery.notifyGenderFilter();
-        }
 
         public static void setVIGallery(VIGallery main) {
             vigallery = main;

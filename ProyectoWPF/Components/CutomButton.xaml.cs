@@ -15,11 +15,18 @@ using System.Windows.Shapes;
 
 namespace ProyectoWPF.Components {
     /// <summary>
-    /// Lógica de interacción para GenderButton.xaml
+    /// Lógica de interacción para CutomButton.xaml
     /// </summary>
-    public partial class GenderButton : UserControl {
-
-        public GenderButton() {
+    public partial class CutomButton : UserControl {
+        public string Text {
+            get {
+                return button.Content.ToString();
+            }
+            set {
+                button.Content = value;
+            }
+        }
+        public CutomButton() {
             InitializeComponent();
         }
 
@@ -38,7 +45,7 @@ namespace ProyectoWPF.Components {
 
         private void Button_MouseLeave(object sender, MouseEventArgs e) {
             button.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-            button.Background = new SolidColorBrush(Color.FromRgb(23, 23, 23));
+            button.Background = new SolidColorBrush(Colors.Transparent);
         }
 
         public Button getButton() {

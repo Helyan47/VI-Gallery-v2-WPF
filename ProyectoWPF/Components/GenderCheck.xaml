@@ -60,6 +60,6 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <CheckBox x:Name="genero" Content="Hola" Style="{StaticResource StyleCheckBox}" IsChecked="False" Margin="5" Background="#FF171717" BorderBrush="White" Foreground="White" FontSize="15" Checked="checkedValue" Unchecked="uncheckedValue" SnapsToDevicePixels="True" MouseEnter="mouseEnter" MouseLeave="mouseLeave"/>
+        <CheckBox x:Name="genero" Content="Hola" Style="{StaticResource StyleCheckBox}" IsChecked="False" Margin="5" Background="#FF171717" FontWeight="Bold" BorderBrush="White" Foreground="White" FontSize="15" Checked="checkedValue" Unchecked="uncheckedValue" SnapsToDevicePixels="True" MouseEnter="mouseEnter" MouseLeave="mouseLeave"/>
     </Grid>
 </UserControl>
