@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using ProyectoWPF.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace ProyectoWPF {
             carpeta = new CarpetaClass("", "",true);
             padre.setClass(carpeta);
             genderSelection.getAcceptButton().Click += hideGenderSelection;
-            genderSelection.setMode("NEW", null,null);
+            genderSelection.setMode(ActionPanel.NEW_FOLDER_GENDER_MODE, null,null);
             bAccept.getButton().Click += BAceptar_Click;
             button = b;
         }

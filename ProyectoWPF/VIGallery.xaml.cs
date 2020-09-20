@@ -51,7 +51,7 @@ namespace ProyectoWPF {
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
             //menuReciente.setMain(this);
             reproductorControl.setVIGallery(this);
-            genderSelection.getAcceptButton().Click += notifyGenderFilter;
+            actionPanel.getGenderSelection().getAcceptButton().Click += notifyGenderFilter;
         }
 
         /**
@@ -993,7 +993,7 @@ namespace ProyectoWPF {
          */
         private void bButtonGender_Click(object sender, EventArgs e) {
             Button cb = (Button)sender;
-            genderSelection.setMode("FILTER",null,filteredGenders);
+            genderSelection.setMode(ActionPanel.FILTER_MODE,null,filteredGenders);
             genderSelection.Visibility = Visibility.Visible;
             genderSelection.loadGenders();
         }

@@ -124,6 +124,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\ActionPanel.xaml.cs">
+      <DependentUpon>ActionPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\AlignableWrapPanel.cs" />
     <Compile Include="Components\Archivo.xaml.cs">
       <DependentUpon>Archivo.xaml</DependentUpon>
@@ -214,6 +217,10 @@
     <Page Include="Assets\MultiFolderIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Components\ActionPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Archivo.xaml">
       <SubType>Designer</SubType>

@@ -475,7 +475,7 @@ namespace ProyectoWPF {
             if (_carpetaPadre == null) {
                cn = new ChangeName(folderRutaPadre, true);
                 cn.setDescripcion(_carpeta.desc);
-                cn.changeGenderMode("FOLDER",_carpeta.ruta, null);
+                cn.changeGenderMode(ActionPanel.MODIFY_FOLDER_MODE,_carpeta.ruta, null);
             } else {
                 cn = new ChangeName(folderRutaPadre, false);
             }

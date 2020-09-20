@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using ProyectoWPF.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace ProyectoWPF.NewFolders {
                 rowDescripcion.Height = new GridLength(2, GridUnitType.Star);
             }
             genderSelection.getAcceptButton().Click += hideGenderSelection;
-            genderSelection.setMode("FOLDER", null, null);
+            genderSelection.setMode(ActionPanel.MODIFY_FOLDER_MODE, null, null);
             bAccept.getButton().Click += BAceptar_Click;
         }
 
@@ -132,7 +133,7 @@ namespace ProyectoWPF.NewFolders {
             genderText.Text = cadena;
         }
 
-        public void changeGenderMode(string mode,string rutaCarpeta, Dictionary<string, bool> selectedGenders) {
+        public void changeGenderMode(long mode,string rutaCarpeta, Dictionary<string, bool> selectedGenders) {
             genderSelection.setMode(mode, rutaCarpeta, selectedGenders);
         }
     }

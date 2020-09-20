@@ -459,6 +459,6 @@
             
         </DockPanel>
         <reproductor:VI_Reproductor x:Name="reproductorControl" Visibility="Hidden"/>
-        <componentes:GenderSelection x:Name="genderSelection" Visibility="Hidden"></componentes:GenderSelection>
+        <componentes:ActionPanel x:Name="actionPanel" Visibility="Hidden"></componentes:ActionPanel>
     </Grid>
 </Window>

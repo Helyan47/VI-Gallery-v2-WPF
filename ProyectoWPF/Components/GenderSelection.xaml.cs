@@ -26,7 +26,8 @@ namespace ProyectoWPF.Components {
         private Dictionary<string, bool> gendersFiltered;
         private Dictionary<string, bool> gendersSelected;
         private string rutaFolder = "";
-        private int genderMode = -1;
+        private long genderMode = -1;
+        public ActionPanel _actionPanel { get; set; }
         public GenderSelection() {
             InitializeComponent();
             loadGenders();
@@ -36,11 +37,11 @@ namespace ProyectoWPF.Components {
         public void loadGenders() {
             genders = new Dictionary<string, bool>();
             checkGroup = new List<GenderCheck>();
-            if (genderMode == 0) {
+            if (genderMode == 0L) {
                 genders = Conexion.loadAllGenders(false);
-            } else if (genderMode == 1) {
+            } else if (genderMode == 1L) {
                 genders = Conexion.loadGenders(false, rutaFolder);
-            } else if (genderMode == 2) {
+            } else if (genderMode == 3L) {
                 genders = Conexion.loadAllGenders(false);
             }
             
@@ -104,27 +105,15 @@ namespace ProyectoWPF.Components {
             return null;
         }
 
-        public void setMode(string mode, string rutaCarpeta, Dictionary<string,bool> filteredGenders) {
-            if (mode.Equals("NEW")) {
-                this.genderMode = 0;
-                filaDerecha.Height = new GridLength(0, GridUnitType.Star);
-                filaIzquierda.Height = new GridLength(0, GridUnitType.Star);
-                columnaSuperior.Width = new GridLength(0, GridUnitType.Star);
-                columnaInferior.Width = new GridLength(0, GridUnitType.Star);
-            } else if (mode.Equals("FOLDER")) {
-                this.genderMode = 1;
+        public void setMode(long mode, string rutaCarpeta, Dictionary<string,bool> filteredGenders) {
+            if (mode == ActionPanel.NEW_FOLDER_GENDER_MODE) {
+                this.genderMode = mode;
+            } else if (mode == ActionPanel.MODIFY_FOLDER_MODE) {
+                this.genderMode = mode;
                 this.rutaFolder = rutaCarpeta;
-                filaDerecha.Height = new GridLength(0, GridUnitType.Star);
-                filaIzquierda.Height = new GridLength(0, GridUnitType.Star);
-                columnaSuperior.Width = new GridLength(0, GridUnitType.Star);
-                columnaInferior.Width = new GridLength(0, GridUnitType.Star);
-            } else if (mode.Equals("FILTER")) {
-                this.genderMode = 2;
+            } else if (mode == ActionPanel.FILTER_MODE) {
+                this.genderMode = mode;
                 this.gendersFiltered = filteredGenders;
-                filaDerecha.Height = new GridLength(1, GridUnitType.Star);
-                filaIzquierda.Height = new GridLength(1, GridUnitType.Star);
-                columnaSuperior.Width = new GridLength(1, GridUnitType.Star);
-                columnaInferior.Width = new GridLength(1, GridUnitType.Star);
             }
         }
 
