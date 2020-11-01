@@ -102,8 +102,13 @@ namespace ProyectoWPF.NewFolders {
             padre = null;
             carpeta = null;
             button = null;
+            gendersSelected = null;
             genderSelection.clearData();
             genderSelection.Visibility = Visibility.Hidden;
+            Title.Text = "";
+            DescBox.Text = "";
+            dirImg.Text = "";
+            genderText.Text = "";
         }
 
 

@@ -232,8 +232,9 @@ namespace ProyectoWPF.Data {
                     comando.Parameters.Clear();
                     ICollection<string> generos = p.getClass().generos;
                     foreach(string s in generos) {
-                        comando = new MySqlCommand("SELECT id FROM Genero where nombre=@nombre", conexion);
+                        comando = new MySqlCommand("SELECT id FROM Genero where nombre=@nombre and fk_Usuario = @user", conexion);
                         comando.Parameters.AddWithValue("@nombre", s);
+                        comando.Parameters.AddWithValue("@user", VIGallery._user.id);
                         reader = comando.ExecuteReader();
                         Int32 idGenero = 0;
                         if (reader.HasRows) {
@@ -489,27 +490,15 @@ namespace ProyectoWPF.Data {
                         Int32 numArchivos = (Int32)reader["numArchivos"];
                         carpeta = new CarpetaClass((long)idCarpeta, reader["nombre"].ToString(), reader["ruta"].ToString(), reader["rutaPadre"].ToString(), numSubCarp, numArchivos,
                             reader["descripcion"].ToString(), reader["img"].ToString(), "", true, id);
+                        carpeta.generos = loadFolderGenders(idCarpeta);
                         carpetas.Add(carpeta);
+
                     }
-
-                    comando.Parameters.Clear();
-                    reader.Close();
-
-                    comando = new MySqlCommand("SELECT gen.nombre genName FROM Genero gen,GeneroCarpeta gencarp WHERE gen.id = gencarp.fk_Genero and gencarp.fk_Carpeta=@idCarpeta", conexion);
-                    comando.Parameters.AddWithValue("@idCarpeta", carpeta.id);
-                    reader = comando.ExecuteReader();
-                    if (reader.HasRows) {
-                        List<string> generos = new List<string>();
-                        while (reader.Read()) {
-                            generos.Add(reader["genName"].ToString());
-                        }
-                        carpeta.generos = generos;
-                        try {
-                            reader.Close();
-                            conexion.Close();
-                        } catch (MySqlException h) {
-                            Console.WriteLine("Error al cerrar la conexion");
-                        }
+                    try {
+                        reader.Close();
+                        conexion.Close();
+                    } catch (MySqlException h) {
+                        Console.WriteLine("Error al cerrar la conexion");
                     }
 
 
@@ -768,7 +757,7 @@ namespace ProyectoWPF.Data {
         }
 
         public static void updateFolder(CarpetaClass c) {
-            List<string> gendersFolder = loadFolderGenders(false, c.id);
+            List<string> gendersFolder = loadFolderGenders(c.id);
             MySqlConnection conexion = null;
             try {
                 conexion = getConnection();
@@ -786,8 +775,10 @@ namespace ProyectoWPF.Data {
                 ICollection<string> generos = c.generos;
                 foreach (string s in generos) {
                     comando.Parameters.Clear();
-                    comando = new MySqlCommand("SELECT id FROM Genero where nombre=@nombre", conexion);
+                    comando = new MySqlCommand("SELECT id FROM Genero where nombre=@nombre and fk_Usuario = @user and isSecret=@isSecret", conexion);
                     comando.Parameters.AddWithValue("@nombre", s);
+                    comando.Parameters.AddWithValue("@user", VIGallery._user.id);
+                    comando.Parameters.AddWithValue("@isSecret", VIGallery._isPrivateMode);
                     MySqlDataReader reader = comando.ExecuteReader();
                     Int32 idGenero = 0;
                     if (reader.HasRows) {
@@ -879,9 +870,9 @@ namespace ProyectoWPF.Data {
             }
         }
 
-        public static Dictionary<string, bool> loadGenders(bool isPrivateMode, string rutaFolder) {
+        public static Dictionary<string, bool> loadGenders(string rutaFolder) {
 
-            Dictionary<string, bool> generos = loadAllGenders(isPrivateMode);
+            Dictionary<string, bool> generos = loadAllGenders();
             MenuClass menu = Lista.getMenuClassVisible();
             if (menu != null && generos != null) {
                 MySqlConnection conexion = null;
@@ -891,9 +882,10 @@ namespace ProyectoWPF.Data {
 
                     MySqlTransaction myTrans = conexion.BeginTransaction();
 
-                    MySqlCommand comando = new MySqlCommand("SELECT gen.nombre nombre FROM Genero gen, GeneroCarpeta gencarp, Carpeta c, Menu m WHERE m.id = c.fk_Menu and c.id = gencarp.fk_Carpeta and gen.id = gencarp.fk_Genero and c.ruta = @ruta and isSecret=@isSecret", conexion);
+                    MySqlCommand comando = new MySqlCommand("SELECT gen.nombre nombre FROM Genero gen, GeneroCarpeta gencarp, Carpeta c, Menu m WHERE m.id = c.fk_Menu and c.id = gencarp.fk_Carpeta and gen.id = gencarp.fk_Genero and c.ruta = @ruta and gen.fk_Usuario = @user", conexion);
                     comando.Parameters.AddWithValue("@ruta", rutaFolder);
-                    comando.Parameters.AddWithValue("@isSecret", isPrivateMode);
+                    //comando.Parameters.AddWithValue("@isSecret", VIGallery._isPrivateMode);
+                    comando.Parameters.AddWithValue("@user", VIGallery._user.id);
                     MySqlDataReader reader = comando.ExecuteReader();
 
                     if (reader.HasRows) {
@@ -920,7 +912,7 @@ namespace ProyectoWPF.Data {
             return generos;
         }
 
-        public static List<string> loadFolderGenders(bool isPrivateMode, long idFolder) {
+        public static List<string> loadFolderGenders(long idFolder) {
 
             MySqlConnection conexion = null;
             List<string> generos = new List<string>();
@@ -930,9 +922,10 @@ namespace ProyectoWPF.Data {
 
                 MySqlTransaction myTrans = conexion.BeginTransaction();
 
-                MySqlCommand comando = new MySqlCommand("SELECT gen.nombre nombre FROM Genero gen, GeneroCarpeta gencarp, Carpeta c WHERE c.id = gencarp.fk_Carpeta and gen.id = gencarp.fk_Genero and c.id = @id and isSecret=@isSecret", conexion);
+                MySqlCommand comando = new MySqlCommand("SELECT gen.nombre nombre FROM Genero gen, GeneroCarpeta gencarp, Carpeta c WHERE c.id = gencarp.fk_Carpeta and gen.id = gencarp.fk_Genero and c.id = @id and fk_Usuario = @user", conexion);
                 comando.Parameters.AddWithValue("@id", idFolder);
-                comando.Parameters.AddWithValue("@isSecret", isPrivateMode);
+                //comando.Parameters.AddWithValue("@isSecret", VIGallery._isPrivateMode);
+                comando.Parameters.AddWithValue("@user", VIGallery._user.id);
                 MySqlDataReader reader = comando.ExecuteReader();
 
                 if (reader.HasRows) {
@@ -957,7 +950,7 @@ namespace ProyectoWPF.Data {
             return generos;
         }
 
-        public static Dictionary<string, bool> loadAllGenders(bool isPrivateMode) {
+        public static Dictionary<string, bool> loadAllGenders() {
             Dictionary<string, bool> generos = null;
             MySqlConnection conexion = null;
             try {
@@ -966,8 +959,9 @@ namespace ProyectoWPF.Data {
 
                 MySqlTransaction myTrans = conexion.BeginTransaction();
 
-                MySqlCommand comando = new MySqlCommand("SELECT nombre FROM Genero WHERE isSecret=@isSecret", conexion);
-                comando.Parameters.AddWithValue("@isSecret", isPrivateMode);
+                MySqlCommand comando = new MySqlCommand("SELECT nombre FROM Genero WHERE fk_Usuario = @user", conexion);
+                //comando.Parameters.AddWithValue("@isSecret", VIGallery._isPrivateMode);
+                comando.Parameters.AddWithValue("@user", VIGallery._user.id);
                 MySqlDataReader reader = comando.ExecuteReader();
 
                 if (reader.HasRows) {
@@ -998,19 +992,21 @@ namespace ProyectoWPF.Data {
 
                 MySqlTransaction myTrans = conexion.BeginTransaction();
 
-                MySqlCommand comando = new MySqlCommand("SELECT id FROM Genero WHERE nombre=@nombre and isSecret=@isSecret", conexion);
+                MySqlCommand comando = new MySqlCommand("SELECT id FROM Genero WHERE nombre=@nombre and fk_Usuario = @user", conexion);
                 comando.Parameters.AddWithValue("@nombre", gender);
-                comando.Parameters.AddWithValue("@isSecret", isSecret == false ? 0 : 1);
+                //comando.Parameters.AddWithValue("@isSecret", isSecret);
+                comando.Parameters.AddWithValue("@user", VIGallery._user.id);
                 MySqlDataReader reader = comando.ExecuteReader();
 
                 if (!reader.HasRows) {
                     reader.Close();
 
-                    comando = new MySqlCommand("INSERT INTO Genero VALUES (null, @nombre, @isSecret)", conexion);
+                    comando = new MySqlCommand("INSERT INTO Genero VALUES (null, @nombre, @isSecret, @user)", conexion);
                     comando.Transaction = myTrans;
 
                     comando.Parameters.AddWithValue("@nombre", gender);
                     comando.Parameters.AddWithValue("@isSecret", isSecret);
+                    comando.Parameters.AddWithValue("@user", VIGallery._user.id);
                     comando.ExecuteNonQuery();
                     myTrans.Commit();
 

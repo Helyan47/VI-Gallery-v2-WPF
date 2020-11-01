@@ -460,6 +460,5 @@
             
         </DockPanel>
         <reproductor:VI_Reproductor x:Name="reproductorControl" Visibility="Hidden"/>
-        
     </Grid>
 </Window>

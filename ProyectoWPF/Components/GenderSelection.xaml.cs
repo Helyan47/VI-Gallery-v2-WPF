@@ -38,11 +38,16 @@ namespace ProyectoWPF.Components {
             genders = new Dictionary<string, bool>();
             checkGroup = new List<GenderCheck>();
             if (genderMode == ActionPanel.NEW_FOLDER_GENDER_MODE) {
-                genders = Conexion.loadAllGenders(false);
+                genders = Conexion.loadAllGenders();
             } else if (genderMode == ActionPanel.MODIFY_FOLDER_MODE) {
-                genders = Conexion.loadGenders(false, rutaFolder);
+                if(gendersFiltered != null) {
+                    genders = Conexion.loadAllGenders();
+                } else {
+                    genders = Conexion.loadGenders(rutaFolder);
+                }
+                
             } else if (genderMode == ActionPanel.FILTER_MODE) {
-                genders = Conexion.loadAllGenders(false);
+                genders = Conexion.loadAllGenders();
             }
             
             if (genders != null && genders.Count > 0) {
@@ -55,7 +60,7 @@ namespace ProyectoWPF.Components {
                                 gb.changeSelection(true);
                             }
                         }
-                    }else if((genderMode == ActionPanel.NEW_FOLDER_GENDER_MODE) && (gendersFiltered != null)) {
+                    }else if((genderMode == ActionPanel.NEW_FOLDER_GENDER_MODE || genderMode == ActionPanel.MODIFY_FOLDER_MODE) && (gendersFiltered != null)) {
                         foreach (KeyValuePair<string, bool> gen in gendersFiltered) {
                             if (gen.Key.Equals(gender.Key)) {
                                 gb.changeSelection(true);
@@ -154,7 +159,11 @@ namespace ProyectoWPF.Components {
         }
 
         public void addAcceptButtonEvent(RoutedEventHandler e) {
-            bAccept.Click+=e;
+            bAccept.Click += e;
+        }
+
+        public void addCancelButtonEvent(RoutedEventHandler e) {
+            bCancel.Click += e;
         }
 
         private void bClearValues_Click(object sender, RoutedEventArgs e) {

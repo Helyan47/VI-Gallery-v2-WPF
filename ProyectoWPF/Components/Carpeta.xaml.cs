@@ -70,6 +70,7 @@ namespace ProyectoWPF {
                 }
                 
                 ImgBorde.Background = ib;
+                ImgBorde.Visibility = Visibility.Visible;
                 Img.Visibility = Visibility.Hidden;
             }catch (Exception e) {
                 setDefaultSource();
@@ -471,31 +472,32 @@ namespace ProyectoWPF {
 
         public void showNewNamePanel(object sender, EventArgs e) {
             string folderRutaPadre = _carpeta.ruta.Split('/')[0] + "/";
-            ChangeName cn = null;
-            if (_carpetaPadre == null) {
-               cn = new ChangeName(folderRutaPadre, true);
-                cn.setDescripcion(_carpeta.desc);
-                cn.changeGenderMode(ActionPanel.MODIFY_FOLDER_MODE,_carpeta.ruta, null);
-            } else {
-                cn = new ChangeName(folderRutaPadre, false);
-            }
+            Metodos.notifyBeginFolderUpdate(this);
+        }
 
-            cn.setName(_carpeta.nombre);
-            
-            cn.setImg(_carpeta.img);
-            
-            cn.ShowDialog();
-            if (cn.getNewName() != null) {
-                if (_carpetaPadre == null) {
-                    if (cn.isNameChanged()) {
-                        changeName(cn.getNewName(), cn.getDescripcion(), cn.getDirImg(), cn.getGeneros());
-                    } else {
-                        changeName(cn.getDescripcion(), cn.getDirImg(), cn.getGeneros());
+        public void update(CarpetaClass c) {
+            try {
+                _carpeta.nombre = c.nombre;
+                _carpeta.desc = c.desc;
+                _carpeta.generos = c.generos;
+                _carpeta.img = c.img;
+                string[] splitted = _carpeta.ruta.Split('/');
+                splitted[splitted.Length - 1] = c.nombre;
+                string rutaAntigua = _carpeta.ruta;
+                string rutaNueva = "";
+                for (int i = 0; i < splitted.Length; i++) {
+                    rutaNueva += splitted[i];
+                    if (i != splitted.Length - 1) {
+                        rutaNueva += "/";
                     }
-                } else {
-                    changeName(cn.getNewName(), cn.getDirImg());
                 }
-                
+                _carpeta.ruta = rutaNueva;
+                actualizar();
+                Conexion.updateFolder(_carpeta);
+                Lista.orderWrap(_primerPanel);
+                Lista.changeSubFoldersName(rutaAntigua, _carpeta.ruta);
+            }catch (Exception e) {
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -505,7 +507,6 @@ namespace ProyectoWPF {
 
         public void removeFile(Archivo a) {
             if (_archivos.Contains(a)) {
-                _archivos.Remove(a);
                 _menu.getWrap().removeFile(a);
             }
         }

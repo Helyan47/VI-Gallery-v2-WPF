@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using ProyectoWPF.Components;
+using ProyectoWPF.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,56 +14,56 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace ProyectoWPF.NewFolders {
     /// <summary>
     /// Lógica de interacción para ChangeName.xaml
     /// </summary>
-    public partial class ChangeName : Window {
-
-        private string _rutaPadre = "";
-        private string name = "";
-        private string descripcion = "";
-        private string img = "";
-        private bool _isFolderMode = true;
-        private bool _nameChanged = false;
-        private ICollection<string> generos = new List<string>();
-        public ChangeName(string rutaPadre, bool isFolderMode) {
+    public partial class ChangeName : UserControl {
+        Carpeta _folder;
+        bool _mode;
+        bool _nameChanged = false;
+        Dictionary<string, bool> _generos = null;
+        public ChangeName() {
             InitializeComponent();
-            _rutaPadre = rutaPadre;
-            _isFolderMode = isFolderMode;
-            if (!_isFolderMode) {
-                this.Height = 250;
-                rowGeneros.Height = new GridLength(0, GridUnitType.Star);
-                rowDescripcion.Height = new GridLength(0, GridUnitType.Star);
-            } else {
-                this.Height = 735;
-                rowGeneros.Height = new GridLength(3, GridUnitType.Star);
-                rowDescripcion.Height = new GridLength(2, GridUnitType.Star);
-            }
+            _nameChanged = false;
             genderSelection.addAcceptButtonEvent(hideGenderSelection);
-            genderSelection.setMode(ActionPanel.MODIFY_FOLDER_MODE, null, null);
-            bAccept.addButtonEvent(BAceptar_Click);
+            genderSelection.addCancelButtonEvent(cancelGenderSelection);
         }
 
-        private void BAceptar_Click(object sender, EventArgs e) {
-            if (Title.Text.CompareTo("") != 0) {
+        public void setCarpeta(Carpeta c) {
+            this._folder = c;
+            Title.Text = c.getClass().nombre;
+            DescBox.Text = c.getClass().desc;
+            dirImg.Text = c.getClass().img;
+            genderText.Text = c.getClass().getGeneros();
+            genderSelection.setMode(ActionPanel.MODIFY_FOLDER_MODE, c.getClass().ruta, null);
+        }
+
+        public void setFolderMode(bool mode) {
+            this._mode = mode;
+            if (this._mode) {
+                rowGeneros.Height = new GridLength(3, GridUnitType.Star);
+                rowDescripcion.Height = new GridLength(2, GridUnitType.Star);
+            } else {
+                rowGeneros.Height = new GridLength(0, GridUnitType.Star);
+                rowDescripcion.Height = new GridLength(0, GridUnitType.Star);
+            }
+            
+        }
+
+        private void bAccept_Click(object sender, RoutedEventArgs e) {
+            if (Title.Text.CompareTo("") != 0 && _folder != null) {
                 Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars())) + "]");
                 if (!containsABadCharacter.IsMatch(Title.Text)) {
-                    if (!Lista.Contains(_rutaPadre + "/" + Title.Text)) {
-                        if (!name.Equals(Title.Text)) {
-                            _nameChanged = true;
-                        }
-                        name = Title.Text;
-                        descripcion = DescBox.Text;
-                        img = dirImg.Text;
-                        generos = genderSelection.getGendersSelected().Keys.ToList<string>();
-
-                        this.Close();
-                    } else {
-                        MessageBox.Show("Una carpeta con ese nombre ya existe");
+                    if (!_folder.getClass().nombre.Equals(Title.Text)) {
+                        _nameChanged = true;
                     }
+                    CarpetaClass c = new CarpetaClass(Title.Text, DescBox.Text, dirImg.Text, genderSelection.getGendersSelected().Keys.ToList<string>(), _folder.getClass().isFolder);
+
+                    Metodos.notifyEndFolderUpdate(true, c);
                 } else {
                     MessageBox.Show("El nombre contiene caractéres no permitidos: " + new string(System.IO.Path.GetInvalidFileNameChars()));
                 }
@@ -70,7 +71,14 @@ namespace ProyectoWPF.NewFolders {
             } else {
                 MessageBox.Show("No has introducido ningún nombre para la carpeta");
             }
-            
+
+        }
+
+        private void bCancel_Click(object sender, RoutedEventArgs e) {
+            clearData();
+            if (genderSelection.Visibility == Visibility.Hidden) {
+                Metodos.notifyCanceled();
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
@@ -79,43 +87,6 @@ namespace ProyectoWPF.NewFolders {
 
                 dirImg.Text = System.IO.Path.GetFullPath(f.FileName);
             }
-        }
-
-        public string getNewName() {
-            return name;
-        }
-
-        public void setName(string s) {
-            Title.Text = s;
-        }
-
-        public string getDescripcion() {
-            return descripcion;
-        }
-
-        public void setDescripcion(string s) {
-            DescBox.Text = s;
-        }
-
-        public string getDirImg() {
-            return img;
-        }
-
-        public void setImg(string s) {
-            dirImg.Text = s;
-        }
-
-        public ICollection<string> getGeneros() {
-            return generos;
-        }
-
-        public bool isNameChanged() {
-            return _nameChanged;
-        }
-
-        private void selectGender_Click(object sender, EventArgs e) {
-            genderSelection.Visibility = Visibility.Visible;
-            genderSelection.loadGenders();
         }
 
         public void hideGenderSelection(object sender, EventArgs e) {
@@ -131,10 +102,33 @@ namespace ProyectoWPF.NewFolders {
                 cadena = "";
             }
             genderText.Text = cadena;
+            _generos = genderSelection.getGendersSelected();
         }
 
-        public void changeGenderMode(long mode,string rutaCarpeta, Dictionary<string, bool> selectedGenders) {
+        public void cancelGenderSelection(object sender, EventArgs e) {
+            genderSelection.Visibility = Visibility.Hidden;
+            genderSelection.clearData();
+        }
+
+        private void selectGender_Click(object sender, EventArgs e) {
+            genderSelection.Visibility = Visibility.Visible;
+            if (_generos != null) {
+                genderSelection.setMode(ActionPanel.NEW_FOLDER_GENDER_MODE, null, _generos);
+            }
+            genderSelection.loadGenders();
+        }
+
+        public void changeGenderMode(long mode, string rutaCarpeta, Dictionary<string, bool> selectedGenders) {
             genderSelection.setMode(mode, rutaCarpeta, selectedGenders);
+        }
+
+        public void clearData() {
+            Title.Text = "";
+            DescBox.Text = "";
+            dirImg.Text = "";
+            genderText.Text = "";
+            _generos = null;
+            genderSelection.clearData();
         }
     }
 }

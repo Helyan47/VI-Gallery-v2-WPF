@@ -20,5 +20,6 @@
         </Grid.RowDefinitions>
         <local:GenderSelection x:Name="genderSelection" Grid.Row="1" Grid.Column="1" Visibility="Hidden"></local:GenderSelection>
         <main:NewFolder x:Name="newFolder" Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Hidden"></main:NewFolder>
+        <main:ChangeName x:Name="updateFolder" Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Hidden"></main:ChangeName>
     </Grid>
 </UserControl>

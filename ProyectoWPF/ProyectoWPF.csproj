@@ -140,6 +140,9 @@
     <Compile Include="Components\GenderSelection.xaml.cs">
       <DependentUpon>GenderSelection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\LoadingWindow.xaml.cs">
+      <DependentUpon>LoadingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Online\ListaArchivos.xaml.cs">
       <DependentUpon>ListaArchivos.xaml</DependentUpon>
     </Compile>
@@ -162,6 +165,7 @@
     <Compile Include="Data\Base\MenuClass.cs" />
     <Compile Include="Data\Base\PerfilClass.cs" />
     <Compile Include="Data\Base\UsuarioClass.cs" />
+    <Compile Include="Data\DataLogger.cs" />
     <Compile Include="Data\Filters.cs" />
     <Compile Include="Data\Metodos.cs" />
     <Compile Include="Data\OrderClass.cs" />
@@ -236,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\GenderSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\LoadingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

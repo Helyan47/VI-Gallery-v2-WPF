@@ -126,7 +126,7 @@ namespace ProyectoWPF {
             foreach(string s in generos) {
                 cadena += s;
                 if (cont < generos.Count-1) {
-                    cadena += "|";
+                    cadena += ", ";
                 }
                 cont++;
             }

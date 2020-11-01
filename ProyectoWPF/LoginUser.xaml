@@ -78,7 +78,7 @@
                         </Canvas>
                     </Viewbox>
                 </Border>
-                <Button Content="" Grid.Column="1" Grid.Row="1"  Margin="0" BorderThickness="0" Background="Black" BorderBrush="{x:Null}" Foreground="#FFEDEDED" Opacity="0" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Click="LoginClick"/>
+                <Button Content="" Grid.Column="1" Grid.Row="1"  Margin="0" BorderThickness="0" Background="Black" BorderBrush="{x:Null}" Foreground="#FFEDEDED" Opacity="0" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Click="LoginClick" IsDefault="True"/>
                 <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Bottom" Margin="0,0,0,10">
                     <Label x:Name="create" Content="Create account" Foreground="#FFD2D2D2" MouseEnter="create_MouseEnter" MouseLeave="create_MouseLeave" HorizontalAlignment="Left" MouseUp="showCreateUser"/>
 

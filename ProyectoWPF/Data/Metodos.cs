@@ -29,5 +29,21 @@ namespace ProyectoWPF.Data {
         public static void notifyNewGendersSelected() {
             vigallery.notifyNewGendersSelected();
         }
+
+        public static void notifyBeginFolderUpdate(Carpeta c) {
+            vigallery.notifyBeginFolderUpdate(c);
+        }
+
+        public static void notifyEndFolderUpdate(bool updated, CarpetaClass c) {
+            vigallery.notifyEndFolderUpdate(updated, c);
+        }
+
+        public static void clearTextBoxAndSelection() {
+            vigallery.clearTextBoxAndSelection();
+        }
+
+        public static void ReturnVisibility(bool state) {
+            vigallery.ReturnVisibility(state);
+        }
     }
 }

@@ -17,6 +17,9 @@ using ProyectoWPF.Components;
 using ProyectoWPF.Components.Online;
 using ProyectoWPF.Reproductor;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ProyectoWPF {
     /// <summary>
@@ -37,10 +40,13 @@ namespace ProyectoWPF {
         private static PerfilClass _newSelectedProfile = null;
         public static bool changedProfile = false;
         public static UsuarioClass _user { get; set; }
-        public static bool isPrivateMode = false;
+        public static bool _isPrivateMode = false;
         private Dictionary<string, bool> filteredGenders = new Dictionary<string, bool>();
+        private Carpeta _updateCarpeta;
+
         public VIGallery(PerfilClass profile) {
             InitializeComponent();
+            DataLogger.createAll();
             _profile = profile;
             Lista.clearListas();
             _botones = menu.Items;
@@ -49,7 +55,6 @@ namespace ProyectoWPF {
             _botonesMenu = new List<ComboBoxItem>();
             changedProfile = false;
             _wrapsPrincipales = new List<WrapPanelPrincipal>();
-            //menuReciente.setMain(this);
             reproductorControl.setVIGallery(this);
         }
 
@@ -119,48 +124,63 @@ namespace ProyectoWPF {
                     string[] files = new string[0];
                     using (var folderDialog = new CommonOpenFileDialog()) {
 
+                        LoadingWindow loadingWindow = null;
+                        
                         folderDialog.IsFolderPicker = true;
                         firstFolder = 0;
                         if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(folderDialog.FileName)) {
                             clearTextBoxAndSelection();
-                            Dispatcher.Invoke(new Action(() => {
-                                _folders = OrderClass.orderArrayOfString(Directory.GetDirectories(folderDialog.FileName));
-                                for (int i = 0; i < _folders.Length; i++) {
-                                    _rutas.Add(_folders[i]);
+                            Thread thread = new Thread(() =>
+                            {
+                                loadingWindow = new LoadingWindow();
+                                loadingWindow.setMode(LoadingWindow.MULTI_FOLDER_MODE, Path.GetFullPath(folderDialog.FileName));
+                                loadingWindow.Show();
 
-                                    string[] aux = Directory.GetDirectories(_folders[i]);
-                                    for (int j = 0; j < aux.Length; j++) {
-                                        _rutas.Add(aux[j]);
-                                    }
+                                loadingWindow.Closed += (sender2, e2) =>
+                                    loadingWindow.Dispatcher.InvokeShutdown();
+
+                                System.Windows.Threading.Dispatcher.Run();
+                            });
+                            thread.SetApartmentState(ApartmentState.STA);
+                            thread.Start();
+                            while(loadingWindow == null) {
+                                
+                            }
+                            
+                            _folders = OrderClass.orderArrayOfString(Directory.GetDirectories(folderDialog.FileName));
+                            for (int i = 0; i < _folders.Length; i++) {
+                                _rutas.Add(_folders[i]);
+
+                                string[] aux = Directory.GetDirectories(_folders[i]);
+                                for (int j = 0; j < aux.Length; j++) {
+                                    _rutas.Add(aux[j]);
                                 }
-                            }));
+                            }
 
-                            Dispatcher.Invoke(new Action(() => {
-                                if (_folders != null) {
-                                    addText(_folders);
-                                }
-                            }));
 
+                            if (_folders != null) {
+                                addText(_folders,loadingWindow);
+                            }
+                            Lista.modifyMode(_profile.mode);
+                            Lista.orderWrap(menuCarpetas.getWrap());
+                            WrapPanelPrincipal wp = Lista.getWrapVisible();
+                            if (wp != null) {
+                                Lista.orderWrap(wp);
+                            }
+                            Lista.hideAllExceptPrinc();
+                            ReturnVisibility(false);
+                            thread.Abort();
+                            //loadingWindow.Close();
                         }
                     }
-                    Dispatcher.Invoke(new Action(() => {
-                        Lista.modifyMode(_profile.mode);
-                        Lista.orderWrap(menuCarpetas.getWrap());
-                        WrapPanelPrincipal wp = Lista.getWrapVisible();
-                        if (wp != null) {
-                            Lista.orderWrap(wp);
-                        }
-                        Lista.hideAllExceptPrinc();
-                        ReturnVisibility(false);
-                    }));
-
+                    
                 } else {
                     MessageBox.Show("No has creado ningún menú");
                 }
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
+            }catch (Exception exc2) {
+                Console.WriteLine(exc2.Message);
             }
 
         }
@@ -213,18 +233,21 @@ namespace ProyectoWPF {
         /**
          * Añade un archivo a la carpeta que se le pase por argumentos
          */
-        private void addFileCarpeta(string fileName, Carpeta c) {
+        private void addFileCarpeta(string fileName, Carpeta c, LoadingWindow loadingWindow) {
             try {
                 string ruta = _profile.nombre + "|F" + c.getClass().ruta.Split('|')[1].Substring(1) + "/" + System.IO.Path.GetFileName(fileName);
                 ArchivoClass ac = new ArchivoClass(System.IO.Path.GetFileNameWithoutExtension(fileName), fileName, ruta, c.getClass().img, c.getClass().id);
                 Archivo a = new Archivo(ac, this, null);
+
+                try {
+                    loadingWindow.notifyNewFile(Path.GetFileName(fileName));
+                } catch (Exception) { }
+
                 clearTextBoxAndSelection();
                 a.setCarpetaPadre(c);
                 Conexion.saveFile(ac);
                 c.addFile(a);
             } catch (MySqlException exc) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
         }
@@ -255,7 +278,7 @@ namespace ProyectoWPF {
                     foreach (string s in Lista._extensiones) {
                         if (s.CompareTo(System.IO.Path.GetExtension(file)) == 0) {
                             if (flag == true) {
-                                addFileCarpeta(file, c);
+                                addFileCarpeta(file, c, null);
                                 menuCarpetas.actualizar(c);
                             } else {
                                 MessageBox.Show("No se ha podido añadir el archivo");
@@ -277,7 +300,7 @@ namespace ProyectoWPF {
         /**
          * Añade una carpeta de las multiples carpetas seleccionadas
          */
-        private Carpeta addCarpetaCompleta(string filename) {
+        private Carpeta addCarpetaCompleta(string filename, LoadingWindow loadingWindow) {
             try {
                 Carpeta p1 = new Carpeta(this, Lista.getWrapVisible(), menuCarpetas, null);
 
@@ -286,6 +309,9 @@ namespace ProyectoWPF {
                 s.idMenu = Lista.getMenuFromText(_activatedButton.Content.ToString()).id;
                 s.rutaPadre = "";
                 p1.actualizar();
+                try {
+                    loadingWindow.notifyNewFolder(Path.GetFileName(filename));
+                } catch (Exception) { }
 
                 string name = _activatedButton.Content.ToString();
                 p1.getClass().rutaPadre = _profile.nombre + "|C/" + name;
@@ -313,13 +339,11 @@ namespace ProyectoWPF {
                 return p1;
             } catch (MySqlException exc) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
-            } catch (SQLiteException exc2) {
-                MessageBox.Show("No se ha podido conectar a la base de datos");
             }
             return null;
         }
 
-        private Carpeta addSubCarpetaCompleta(Carpeta c, string filename) {
+        private Carpeta addSubCarpetaCompleta(Carpeta c, string filename, LoadingWindow loadingWindow) {
             try {
                 Carpeta p1 = new Carpeta(this, Lista.getWrapVisible(), menuCarpetas, c);
 
@@ -328,6 +352,10 @@ namespace ProyectoWPF {
                 s.idMenu = Lista.getMenuFromText(_activatedButton.Content.ToString()).id;
                 s.rutaPadre = "";
                 p1.actualizar();
+
+                try {
+                    loadingWindow.notifyNewFolder(Path.GetFileName(filename));
+                } catch (Exception) { }
 
                 string name = _activatedButton.Content.ToString();
                 p1.getClass().rutaPadre = c.getClass().ruta;
@@ -365,11 +393,11 @@ namespace ProyectoWPF {
          * Recorre todas las carpetas hijo de la carpeta seleccionada, asi como sus archivos
          * Recorre todo el arbol de carpetas hasta que no haya mas por leer
          */
-        private void addText(string[] files) {
+        private void addText(string[] files, LoadingWindow loadingWindow) {
 
             for (int i = 0; i < files.Length; i++) {
                 if (files == _folders) {
-                    _aux = addCarpetaCompleta(files[i]);
+                    _aux = addCarpetaCompleta(files[i],loadingWindow);
                     if (_aux == null) {
                         if (i != files.Length - 1) {
                             i++;
@@ -381,7 +409,7 @@ namespace ProyectoWPF {
                         for (int j = 0; j < archivos.Length; j++) {
                             foreach (string s in Lista._extensiones) {
                                 if (s.CompareTo(System.IO.Path.GetExtension(archivos[j])) == 0) {
-                                    addFileCarpeta(archivos[j], _aux);
+                                    addFileCarpeta(archivos[j], _aux, loadingWindow);
                                 }
                             }
                         }
@@ -392,12 +420,12 @@ namespace ProyectoWPF {
                     _aux2 = Lista.searchRuta(Directory.GetParent(files[i]).FullName);
                     if (!checkString(files[i])) {
                         if (_aux2 != null) {
-                            _aux2 = addSubCarpetaCompleta(_aux2, files[i]);
+                            _aux2 = addSubCarpetaCompleta(_aux2, files[i],loadingWindow);
                         }
                        
                     } else {
                         if (_aux != null) {
-                            _aux2 = addSubCarpetaCompleta(_aux, files[i]);
+                            _aux2 = addSubCarpetaCompleta(_aux, files[i],loadingWindow);
                         }
                     }
 
@@ -406,7 +434,7 @@ namespace ProyectoWPF {
                         for (int j = 0; j < archivos.Length; j++) {
                             foreach (string s in Lista._extensiones) {
                                 if (s.ToLower().CompareTo(System.IO.Path.GetExtension(archivos[j]).ToLower()) == 0) {
-                                    addFileCarpeta(archivos[j], _aux2);
+                                    addFileCarpeta(archivos[j], _aux2, loadingWindow);
                                     Console.WriteLine("Added: " + archivos[j]);
                                 }
                             }
@@ -415,7 +443,7 @@ namespace ProyectoWPF {
                 }
                 if (Directory.GetDirectories(files[i]) != null) {
                     string[] directorios = OrderClass.orderArrayOfString(Directory.GetDirectories(files[i]));
-                    addText(directorios);
+                    addText(directorios, loadingWindow);
                 }
 
 
@@ -446,7 +474,7 @@ namespace ProyectoWPF {
 
             NewFolder newFolder = actionPanel.getNewFolder();
             newFolder.setData(p1, _activatedButton);
-            actionPanel.setMode(ActionPanel.NEW_FOLDER_GENDER_MODE, null, null);
+            actionPanel.setMode(ActionPanel.NEW_FOLDER_GENDER_MODE, null, null,null);
             actionPanel.Visibility = Visibility.Visible;
             
 
@@ -454,6 +482,24 @@ namespace ProyectoWPF {
 
         public void notifyNewGendersSelected() {
             actionPanel.getNewFolder().hideGenderSelection();
+        }
+
+        public void notifyBeginFolderUpdate(Carpeta c) {
+            _updateCarpeta = c;
+            actionPanel.setMode(ActionPanel.MODIFY_FOLDER_MODE, null, null, c);
+            actionPanel.Visibility = Visibility.Visible;
+            
+        }
+
+        public void notifyEndFolderUpdate(bool updated, CarpetaClass c) {
+            if (updated) {
+                if(_updateCarpeta != null) {
+                    _updateCarpeta.update(c);
+                }
+            }
+            _updateCarpeta = null;
+            actionPanel.clearData();
+            actionPanel.Visibility = Visibility.Hidden;
         }
 
         public void notifyNewFolder() {
@@ -487,12 +533,13 @@ namespace ProyectoWPF {
             } catch (SQLiteException exc2) {
                 MessageBox.Show("No se ha podido conectar a la base de datos");
             }
+            actionPanel.clearData();
         }
 
         public void notifyCanceled() {
 
             actionPanel.Visibility = Visibility.Hidden;
-            actionPanel.getNewFolder().clearData();
+            actionPanel.clearData();
             actionPanel.getGenderSelection().clearData();
             
         }
@@ -1011,7 +1058,7 @@ namespace ProyectoWPF {
          */
         private void bButtonGender_Click(object sender, EventArgs e) {
             Button cb = (Button)sender;
-            actionPanel.setMode(ActionPanel.FILTER_MODE,null,filteredGenders);
+            actionPanel.setMode(ActionPanel.FILTER_MODE,null,filteredGenders, null);
             actionPanel.Visibility = Visibility.Visible;
             actionPanel.getGenderSelection().loadGenders();
         }
@@ -1090,6 +1137,25 @@ namespace ProyectoWPF {
             actionPanel.getGenderSelection().clearData();
         }
 
-        
+        private void Window_ContentRendered(object sender, EventArgs e) {
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
+
+            worker.RunWorkerAsync();
+        }
+
+        void worker_DoWork(object sender, DoWorkEventArgs e) {
+            for (int i = 0; i < 100; i++) {
+                (sender as BackgroundWorker).ReportProgress(i);
+                Thread.Sleep(100);
+            }
+        }
+
+        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e) {
+            //pbStatus.Value = e.ProgressPercentage;
+        }
+
     }
 }
